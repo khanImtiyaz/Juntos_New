@@ -1,0 +1,109 @@
+{% extends 'vendor/vendor_registration_header.html' %}
+{% load staticfiles %}
+{%block content%}
+<section class="vendor_section">
+   <div class="container">
+      <div class="vendor_inner_pages">
+         <div class="row">
+            <section class="cart_section">
+               <div class="container">
+                  <div class="row bs-wizard" style="border-bottom:0;">
+                     <div class="col-xs-3 bs-wizard-step complete">
+                        <div class="text-center bs-wizard-stepnum">Step 1</div>
+                        <div class="progress">
+                           <div class="progress-bar"></div>
+                        </div>
+                        <a href="#" class="bs-wizard-dot"></a>
+                        <div class="bs-wizard-info text-center">Phone No Verification</div>
+                     </div>
+                     <div class="col-xs-3 bs-wizard-step complete">
+                        <!-- complete -->
+                        <div class="text-center bs-wizard-stepnum">Step 2</div>
+                        <div class="progress">
+                           <div class="progress-bar"></div>
+                        </div>
+                        <a href="#" class="bs-wizard-dot"></a>
+                        <div class="bs-wizard-info text-center">Seller Information</div>
+                     </div>
+                     <div class="col-xs-3 bs-wizard-step complete active">
+                        <!-- active -->
+                        <div class="text-center bs-wizard-stepnum">Step 3</div>
+                        <div class="progress">
+                           <div class="progress-bar"></div>
+                        </div>
+                        <a href="#" class="bs-wizard-dot"></a>
+                        <div class="bs-wizard-info text-center">Bank Account Details</div>
+                     </div>
+                     <div class="col-xs-3 bs-wizard-step disabled">
+                        <div class="text-center bs-wizard-stepnum">Step 4</div>
+                        <div class="progress">
+                           <div class="progress-bar"></div>
+                        </div>
+                        <a href="#" class="bs-wizard-dot"></a>
+                        <div class="bs-wizard-info text-center">Dashboard</div>
+                     </div>
+                  </div>
+                  <div class="progress_content">
+                     <div class="row">
+                        <div class="col-md-12">
+                           {{ wizard.management_form }}
+                           <form class="form-horizontal form_custom_edit" id="vender_reg_form3" method="POST" action="{% url 'Vendor:vendor-signup-3' %}">
+                              {% csrf_token %}
+                              <fieldset>
+                                 <h4 class="heading_info">Bank Account Details</h4>
+                                 <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                       <div class="form-group">
+                                          <label class="control-label col-sm-5 required">Select Bank</label>
+                                          <div class="col-sm-7">
+                                             <select class="form-control selectpicker" name='bank_name'>
+                                                <option>ICICI</option>
+                                                <option>Bank Of America</option>
+                                                <option>Bank of New York</option>
+                                                <option>Bank of Moscow</option>
+                                                <option>Bank of Jamaica</option>
+                                             </select>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                       <div class="form-group">
+                                          <label class="control-label col-sm-5 required">Account Number</label>
+                                          <div class="col-sm-7">
+                                             <input id="account_number" name="account_number" type="text" placeholder="Please enter account number" class="form-control" maxlength="16" >
+                                             {% if vendor.errors.account_number %}
+                                             <strong style="color:red">{{ vendor.errors.account_number | escape }}</strong>
+                                             {% endif %}
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                                 <div class="row">
+                                    <div class="col-md-6 col-sm-12">
+                                       <div class="form-group">
+                                          <label class="control-label col-sm-5 required">Routing Number</label>
+                                          <div class="col-sm-7">
+                                             <input id="routing_number" name="routing_number" type="text" placeholder="Please enter routing number code" class="form-control" maxlength="11" >
+                                             {% if vendor.errors.routing_number %}
+                                             <strong style="color:red">{{ vendor.errors.routing_number | escape }}</strong>
+                                             {% endif %}
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </fieldset>
+                              <div class="next-pre-cart-btn text-right">
+                                 <input name="step" type="hidden" value="step3" >
+                                 <input type="submit" value="Save" class="btn btn-custom" />
+                              </div>
+                           </form>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </section>
+         </div>
+      </div>
+   </div>
+</section>
+{% endblock%}

@@ -1,0 +1,188 @@
+{% block subject %} Peru Order Confirmation{% endblock %}
+{% block plain %}
+  Hi {{username}},
+
+  You have successfully placed your order on Peru
+  Thanks, {{username}}!
+{% endblock %}
+
+
+{% block html %}
+<html>
+    <head>
+        <title>Order Confirmation</title>
+
+    </head>
+<body style="font-family: Arial, Helvetica, sans-serif;   font-size: 13px;   line-height: 20px;  text-align: left;">
+    <!-- Container Table -->
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+    {% for order_temp in customer_order %}
+        <tr>
+            <td>
+                <table cellpadding="0" cellspacing="0" border="0" width="640" style="margin:0 auto;">
+                    <tr style="background:rgba(255, 193, 7,1);">
+                        <td><img src="http://res.cloudinary.com/djzssjqyt/image/upload/v1498894243/vnlfgnmbhnoxvvbj4w5w.png"></td>
+                        <td align="right">
+                            <span style="font-size:16px; font-weight:bold; color:#000;">Order - </span>
+                            <span style="font-size:16px; font-weight:bold; color:#000;">Placed</span>
+                        </td>
+                    </tr>
+                    <tr>
+                      <th>
+                      <p> Hi, {{username}}</p></th>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                      <p><b>We are pleasent to inform you that your order has placed successfully.</b> <br><i>
+                      You will receive order confirmation mail, once vendor will confirm your order.</i>
+                      <td>
+                    </tr>
+
+                    <tr>
+                        <td height="20px"></td>
+                    </tr>
+
+                    <tr style="background:rgba(255, 193, 7,1);">
+                    
+                        <td width="50%" style="border:1px solid #ccc; padding:5px; border-right:0;">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td width="20%">Order No:</td>
+                                    <td width="45%">{{order_temp.order_number}}</td>
+                                </tr>
+                                <tr>
+                                    <td  width="23%">Request Date:</td>
+                                    <td  width="45%" style="vertical-align:top;">{{order_temp.order_date}}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="50%" style="border:1px solid #ccc; padding:5px; border-left:0;">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td  width="20%">Order Amount:</td>
+                                    <td  width="45%">$ {{order_temp.total_price}}</td>
+                                </tr>
+                                <tr>
+                                    <td  width="23%">Delivery Days:</td>
+                                    <td  width="45%" style="vertical-align:top;">{{order_temp.expected_delivery_time}}</td>
+                                </tr>
+
+                            </table>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td height="20px"></td>
+                    </tr>
+                    <tr>
+                        <td >
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td width="20%">Customer Name:</td>
+                                    <td width="45%">{{username}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="23%">Mobile:</td>
+                                    <td width="45%">{{order_temp.mobile}}</td>
+                                </tr>
+                                <tr>
+                                    <td width="23%">Payment Method:</td>
+                                    <td width="45%">{{payment_method}}</td>
+                                </tr>
+
+                            </table>
+                        </td>
+
+                    </tr>
+
+                        <td height="20px"></td>
+                    </tr>
+                     {% endfor %}
+                    <tr>
+                        <td colspan="2">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                                    <td>Delivery Addresssss:</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    Name: {{address}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                    Phone No.: {{s_phone}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      Country: {{s_country}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      State: {{s_state}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      City: {{s_city}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                      Address: {{s_address}}
+                                    </td>
+                                </tr>
+                                <!--  <tr>
+                                    <td>
+                                      Delivery Mode: {{mode_of_transport}}
+                                    </td>
+                                </tr> -->
+                            </table>
+                        </td>
+                    </tr>
+                    </tr>
+                        <td height="20px"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table cellpadding="0" cellspacing="0" style="border:1px solid #ccc;">
+                                <tr style="background:rgba(255, 193, 7,1);">
+                                    <th style="background:rgba(255, 193, 7,1); padding:5px;"></th>
+                                    <th align="center" style="background:rgba(255, 193, 7,1); padding:5px;">QTY</th>
+                                    <th align="center" style="background:rgba(255, 193, 7,1); padding:5px;">Unit Price</th>
+                                    <th align="center" style="background:rgba(255, 193, 7,1); padding:5px;">TOTAL</th>
+                                </tr>
+                                {% for order in orders %}
+                                <tr >
+                                    <td style="border:1px solid #ccc; border-left:0; border-top:0; padding:5px;">{{order.product_title}}</td>
+                                    <td align="center" style="border:1px solid #ccc; border-left:0; border-top:0; padding:5px;">{{order.quantity}}</td>
+                                    <td align="center" style="border:1px solid #ccc; border-left:0; border-top:0; padding:5px;">{{order.price}}</td>
+                                    <td align="center" style="border:1px solid #ccc; border-left:0;  border-right:0; padding:5px; border-top:0;">$ {{order.total_price}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding:5px 0;"><b>Your payment has been Processed</b></td>
+                    </tr>
+                    </tr>
+                        <td height="50px"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" style="padding:5px 0; text-align:center; font-size:10px; line-height:12px;">
+                            Menulog Pty Ltd Level 23, 227 Elizabeth Street Sydney NSW 2000</br>
+                            ABN: 76 120 943 615</br>
+                            Phone:1300 787 955 Fax:61 2 8572 9908 Email:orders@menulog.com</br>
+                            https://www.menulog.com.au</br>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+{% endblock %}

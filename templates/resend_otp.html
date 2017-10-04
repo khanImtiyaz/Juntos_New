@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<section class="change_password_section" style="height: 60vh;">
+   <div class="inner_password">
+      <div class="password_container">
+         <div class="pwd_panel" >
+            <figure class="p_logo text-center">
+               <img src="{% static 'img/logo2.png' %}" alt="" />
+            </figure>
+            <div class="panel panel-info">
+               <div class="panel-heading">
+                  <h3 class="panel-title">Enter OTP</h3>
+               </div>
+               <div class="panel-body">
+                  <p>Enter the OTP (One Time Password sent to your registered Mobile No.)</p>
+                  <div class="row">
+                     <div class="col-md-12 col-lg-12 ">
+                        <form id="otp" class="form-horizontal form_custom_edit" method="POST" action="{% url 'Juntos:check-otp' %}">
+                           {% csrf_token %}
+                           <fieldset>
+                              <div class="form-group">
+                                 <label class="control-label required col-sm-4">OTP Code</label>
+                                 <div class="col-sm-8">
+                                    <input type="text" name="mobile_otp" value="" class="form-control"  onkeypress="return isNumber(event);" maxlength="6" >
+                                 </div>
+                              </div>
+                              <div class="form-group">
+                                 <div class="col-sm-12">
+                                    <button type="submit" value="submit" class="btn btn-custom pull-right" value="Submit">Submit </button>
+                                 </div>
+                              </div>
+                           </fieldset>
+                        </form>
+                        <div class="text-center">In case you didn't receive OTP, click here and we'll send it again <a href="{% url 'Juntos:resend-otp' %}">Click here</a></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<script>
+   $(document).ready(function () {
+       $('#otp').validate({
+           rules: {
+               mobile_otp: {
+                   required: true,
+               },
+           },
+    messages: {
+       mobile_otp: {
+                   required: 'Please enter otp',
+                   },
+                  },
+       highlight: function (element) {
+           $(element).parent().addClass('error')
+           },
+       unhighlight: function (element) {
+           $(element).parent().removeClass('error')
+           },
+       submitHandler: function (form) { // for demo
+            form.submit();
+           }
+       });
+   
+   });
+   function isNumber(evt) {
+       evt = (evt) ? evt : window.event;
+       var charCode = (evt.which) ? evt.which : evt.keyCode;
+       if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+           return false;
+       }
+       return true;
+   }  
+</script>
+{% endblock %}

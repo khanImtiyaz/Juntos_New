@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+	<section class="cart_section">
+		<div class="container">
+		<div class="col-sm-12">
+			<div class="heading_top">
+				<h2>Wish List</h2>
+			</div>
+      {% if user.is_customer %}
+			<div class="table-responsive">
+				<table class="table table-hover table-bordered">
+					<thead>
+						<tr>
+							<th>PRODUCT</th>
+							<th>PRODUCT DESCRIPTION</th>
+							<th>PRICE</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for product in lists %}
+						<tr>
+							<td>
+								<figure class="cart_figure">
+									<img src="{{product.product.image.name}}" alt="" />
+								</figure>
+							</td>
+							<td style="width:55%;">
+								<p>{{product.product.title | safe}} {{product.product.description | safe}}</p>
+
+							</td>
+
+							<td>$ <strong id="price{{product.product.id}}" class="{{product.product.selling_price}}"> {{product.product.selling_price |floatformat:2}}
+ 
+							</strong></td>
+							<td><button class="btn btn-red2"><i class="fa fa-trash"></i><a href="{% url 'customer:remove_whishlist' product.product.id %}" onclick="openConfirm();">Remove </a></button></td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+      {% else%}
+
+      <div class="col-md-5 alert alert-warning alert-dismissable ">
+        <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> -->
+       <strong>Information !</strong>
+       Please login to view your wish-list !
+      </div>
+
+      {% endif %}
+			<!-- 8750814924 -->
+			<div class="next-pre-cart-btn">
+				<a class="pull-left btn btn-green leftm" style="margin:10px;" href="{% url 'Peru:home' %}"><i class="fa fa-angle-double-left"></i>&nbsp; Continue Shopping</a>
+
+				<button class=" btn btn-primary leftm" style="margin:10px;" onclick="window.history.back();"><i class="fa fa-angle-double-left"></i>&nbsp; Back</button>
+
+
+			</div>
+
+		</div></div>
+	</section>
+
+<style type="text/css">
+	button{    background-color: #98a598;}
+
+
+</style>
+
+ {% endblock %}

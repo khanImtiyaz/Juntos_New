@@ -1,0 +1,312 @@
+{% extends 'vendor/account_header.html'%}
+{% load staticfiles %}
+{% block content %}
+	<section class="vendor_section">
+		<div class="container">
+			<div class="vendor_inner_pages">
+				 <div class="row profile">
+					<div class="col-md-3">
+						<div class="profile-sidebar">
+							<div class="profile-userpic">
+								{% if not user.avatar.name%}
+								<img src="{% static 'img/dummy.png' %}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
+								{% else %}
+								<img src="{{user.avatar.name}}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
+								{% endif %}
+							</div>
+							<div class="profile-usertitle">
+								<div class="profile-usertitle-name">
+								<a href="{% url 'vendor:vendor_profile_view'  %}">{{user.first_name}} {{user.last_name}}</a>
+								</div>
+							</div>
+							<div class="profile-usermenu">
+								<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content" aria-expanded="true"></i>
+								<ul id="menu-content" class="nav collapse out">
+									<li>
+										<a href="{% url 'vendor:vendor_dashboard' %}">
+										<i class="fa fa-tachometer"></i>
+										My Dashboard </a>
+									</li>
+									<li>
+										<a href="{% url 'vendor:vendor_profile_view' %}">
+										<i class="fa fa-user"></i>
+										Profile </a>
+									</li>
+									<li>
+										<a href="{% url 'vendor:product_list'%}">
+										<i class="fa fa-list"></i>
+										Products List </a>
+									</li>
+									<li class="active">
+										<a href="{% url 'vendor:orders_history'%}">
+										<i class="fa fa-history"></i>
+										Order History </a>
+									</li>
+									<li>
+										<a href="{% url 'vendor:add_product' %}">
+										<i class="fa fa-puzzle-piece"></i>
+										Add New Product </a>
+									</li>
+									<li>
+										<a href="{% url 'vendor:notifications' %}">
+										<i class="fa fa-comment"></i>
+										Notifications </a>
+									</li>
+									<li>
+										<a href="{% url 'vendor:payments' %}">
+										<i class="fa fa-credit-card-alt"></i>
+										Payment Management </a>
+									</li>
+									<li>
+										<a href="{% url 'vendor:dhl_credential' %}">
+										<i class="fa fa-credit-card-alt"></i>
+										Dhl Credentials </a>
+									</li>
+																		                        <li>
+                           <a href="{% url 'customer:view_order' %}">
+                           <i class="fa fa-shopping-cart"></i>
+                           My Orders </a>
+                        </li>
+                        <li>
+                           <a href="{% url 'customer:view_order' %}">
+                           <i class="glyphicon glyphicon-eye-open"></i>
+                           Uploaded Products </a>
+                        </li>
+								</ul>
+							</div>
+							<!-- END MENU -->
+						</div>
+					</div>
+					<!-- messages from view after redirect use-->
+
+
+					<!-- end message show -->
+					<div class="col-md-9">
+				    {% if messages %}
+						<div class="alert alert-success alert-dismissable">
+					  	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					 	 <strong>Success!</strong>
+				        {% for message in messages %}
+				            {{ message.message }}
+				        {% endfor %}
+				    </div>
+				   {% endif %}
+					<div class="col-md-10">
+						<div class="profile-content">
+							<div class="table_heading">
+							<h4>ORDER # {{order_number}}</h4>
+						</div>
+						<div class="table-responsive">
+							<table class="table table-bordered inc-text table-user-information">
+								<tbody>
+									<tr>
+										<td><strong>Order Date : </strong></td>
+										<td>{{order_date}}</td>
+									</tr>
+									<tr>
+										<td><strong>Total Price :</strong></td>
+										<td>$ {{total_price |floatformat:2}}</td>
+									</tr>
+									<tr>
+										<td><strong>Order Status :</strong></td>
+										<td>{{status}}</td>
+									</tr>
+									<tr>
+										<td><strong>Delivery Date :</strong></td>
+										<td>  {{delivery_date}}</td>
+									</tr>
+									<tr>
+										<td><strong>Product Name :</strong></td>
+										<td>{{product_name}}</td>
+									</tr>
+									<!-- <tr>
+										<td><strong>Pickup Time :</strong></td>
+										<td>{{pickup_time}}</td>
+									</tr> -->
+
+									{% if size %}
+									<tr>
+										<td><strong>Product Size :</strong></td>
+										<td>{{size}}</td>
+									</tr>
+									{% endif %}
+									{% if color %}
+									<tr>
+										<td><strong>Product Color :</strong></td>
+										<td><span style="background-color:{{color}}; border-radius:10px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
+									</tr>
+									{% endif %}
+									<tr>
+										<td><strong>Quantity :</strong></td>
+										<td>{{quantity}}</td>
+									</tr>
+									<tr>
+										<td><strong>Insured Amount :</strong></td>
+										<td>{{insured_amount}}</td>
+									</tr>
+									<tr>
+										<td><strong>Product Weight :</strong></td>
+										<td>{{product_weight}}</td>
+									</tr>
+									<tr>
+										<td><strong>Product height :</strong></td>
+										<td>{{product_height}}</td>
+									</tr>
+									<tr>
+										<td><strong>Product Depth :</strong></td>
+										<td>{{product_depth}}</td>
+									</tr>
+									<tr>
+										<td><strong>Product Width :</strong></td>
+										<td>{{product_width}}</td>
+									</tr>
+									<tr>
+										<td><strong>Customer Email :</strong></td>
+										<td>{{customer}}</td>
+									</tr>
+									<tr>
+										<td><strong>Customer's Mobile No :</strong></td>
+										<td>{{mobile}}</td>
+									</tr>
+									<tr>
+										<td><strong>Address :</strong></td>
+										<td>{{address}}.</td>
+									</tr>
+									<tr>
+										<td><strong>City :</strong></td>
+										<td>{{city}}.</td>
+									</tr>
+									<tr>
+										<td><strong>State :</strong></td>
+										<td>{{state}}.</td>
+									</tr>
+									<tr>
+										<td><strong>Postcode :</strong></td>
+										<td>{{postcode}}.</td>
+									</tr>
+									<tr>
+										<td><strong>Country :</strong></td>
+										<td>{{country}}.</td>
+									</tr>
+									<tr>
+										<td><strong>Country Abbriviation :</strong></td>
+										<td>{{country_abbriviation}}.</td>
+									</tr>
+
+									<tr>
+										<td><strong>Payment Method :</strong></td>
+										<td><b>{{order_payment_type}}</b></td>
+									</tr>
+									<tr>
+										<td><strong>Delivery Mode :</strong></td>
+										<td><b>{{mode_of_transport}}</b></td>
+									</tr>
+
+								</tbody>
+							</table>
+							<!-- create invoice -->
+							<!-- create invoice -->
+
+							<form action="{% url 'vendor:invoice_order' %}" class="form-horizontal form_custom_edit" id="invoice_form_id"  method="POST">{% csrf_token %}
+
+									<!-- <div class="col-md-8 col-sm-12">
+										<div class="form-group">
+											<label class="control-label col-sm-5 required">Select Delivery Option</label>
+											<div class="col-sm-7">
+												<select class="form-control selectpicker" name='delivery_option'>
+														<option value="">Select Delivery Option</option>
+														<option value="DHL">DHL</option>
+														<option value="NPS">National Postal Service</option>
+														<option value="Fedex">Fedex</option>
+														<option value="JPP">Juntos Peru Packaging</option>
+													</select>
+											</div>
+										</div>
+									</div> -->
+									<div class="col-md-8 col-sm-12">
+										<div class="form-group">
+											<label class="control-label col-sm-5 required">Expected Delivery Date</label>
+											<div class="col-sm-7">
+													<input type="text" name="shippment_date" id="shippment_date" placeholder="Expected Delivery Date" class="form-control">
+											</div>
+										</div>
+									</div>
+									<div class="col-md-8 col-sm-12">
+									<div class="form-group">
+									<label class="control-label col-sm-5 ">Pickup Date</label>
+									<div class="col-sm-7">
+										<input type="text" name="pickup_date" id="pickup_date" placeholder="Pickup Date" class="form-control">
+									</div>
+									</div>
+									</div>
+									<div class="col-md-8 col-sm-12">
+									<div class="form-group">
+									<label class="control-label col-sm-5 ">Ready by Time</label>
+										<div class="col-sm-7">
+											<input type="text" name="ready_by_time" id="datetimepicker1" placeholder="Ready by Time" class="form-control">
+										<span>Time format HH:MM Exm:-06:00</span>
+										</div>
+									</div>
+									</div>
+								<div class="col-md-8 col-sm-12">
+									<div class="form-group">
+										<label class="control-label col-sm-5 ">Close Time</label>
+										<div class="col-sm-7">
+											<input type="text" name="close_time" id="datetimepicker" placeholder="Close Time" class="form-control">
+											<span>Time format HH:MM Exm:-07:00</span>
+										</div>
+									</div>
+									</div>
+
+									<div class="text-right">
+									<input name="order_id" type="hidden" value="{{order_id}}" >
+
+									<input type="submit" value="Create Invoice" class="btn btn-custom" />
+									</div>
+							</form>
+							 <script src="{% static 'js/jquery-ui.js'%}"></script>
+							  <link rel="stylesheet" href="{% static 'css/jquery-ui.css'%}">
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+<script>
+ $( function() {
+	 $("#shippment_date").datepicker();
+ } );
+
+$( function() {
+	 $("#pickup_date").datepicker();
+ } );
+
+ $(document).ready(function(){
+	    $("#myBtn").click(function(){
+	        $("#myModal").modal();
+	    });
+
+			$('[data-toggle="tooltip"]').tooltip();
+	});
+
+ // $('#datetimepicker1').datetimepicker({
+	// datepicker:false,
+	// format: 'HH:mm',
+
+ //    step:15,
+	// theme:'dark',
+	// pick12HourFormat: false
+	// });
+ // $('#datetimepicker').datetimepicker({
+	// datepicker:false,
+ //    format : 'hh:mm',
+ //    step:5,
+	// theme:'dark',
+	// pick12HourFormat: false
+	// });
+	
+ </script>
+	{% endblock %}
+
+	

@@ -1,0 +1,55 @@
+<div class="recomen-panel">
+  <h2>{{header_name}} Products <a class="pull-right view-det" href="/?all=all"></a></h2>
+  <div class="row">
+    {% for sub in contacts %}
+    {{sub.product}}
+    <div class="col-md-3 col-lg-3 pro-main">
+      <div class="prodct-anchor">
+        <a href="{% url 'Peru:product_detail' sub.slug %}">
+          <div class="product-panel1">
+            <span><img src="{{sub.image}}" alt=""/></span>
+          </div>
+        </a>
+        <h3>{{sub.title | truncatechars:28}}</h3>
+        <div class="pro-price">
+          <div class="tbl-cell d1p1">$ {{sub.selling_price |floatformat:2}}<span>$ {{sub.price |floatformat:2}}</span></div>
+          <div class="tbl-cell d1p2">
+
+            {% if sub.subs_category.sub_category_tag != "CP" %}
+            <a href="javascript:void(0)" onclick="add_card(this, {{sub.id}})"> ADD TO CART </a> {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if contacts.has_other_pages %}
+  <div class="bdr-bottom"></div>
+  <div class="pagination-top text-center">
+    <ul class="pagination text-center">
+      {% if contacts.has_previous %}
+      <li>
+        <a href="?page={{ contacts.previous_page_number }}" class="paginate left">&#xab;</a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a class="paginate left">&#xab;</a>
+      </li>
+      {% endif %} {% for i in contacts.paginator.page_range %} {% if contacts.number == i %}
+      <li class="active"><a>{{ i }}</a></li>
+      {% else %}
+      <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %} {% endfor %} {% if contacts.has_next %}
+      <li>
+        <a href="?page={{ contacts.next_page_number }}" class="paginate right">&#xbb;</a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a class="paginate right">&#xbb;</a>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>

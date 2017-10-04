@@ -1,0 +1,291 @@
+{% load staticfiles %}
+<section class="mid-section">
+   <div class="container">
+      <div class="product-block-l">
+         <div class="row">
+            <div id="images_view_id">
+               {% include 'partial-product_image_view.html' with images=details.image %}
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12">
+               <div class="prdouct-detail-l">
+                  <h2 class="product-name">{{details.title}}
+                     <a class="pull-right" href="http://pinterest.com/pin/create/button/?url=http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:8000{{ request.get_full_path }}&media={{details.image}} class="pin-it-button" count-layout="horizontal" target="_blank">
+                     <img border="0" src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/pinterest.png" title="Pin It" />
+                     </a>
+                     <a class="pull-right" href="https://twitter.com/home?status=http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:8000{{ request.get_full_path }}" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/twitter.png" border="0" alt="Twitter" style="margin: 3px;"/></a>
+                     <a class="pull-right" href="https://www.facebook.com/sharer/sharer.php?u=http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:8000{{ request.get_full_path }}&title={{details.title}}&image={{details.image}}" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/facebook.png" border="0" alt="Facebook" style="margin:3px;"/></a>
+                     <a class="pull-right" href="https://api.addthis.com/oexchange/0.8/forward/email/offer?url=http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:8000/product_detail/handi/" target="_blank"><img src="https://cache.addthiscdn.com/icons/v3/thumbs/32x32/email.png" border="0" alt="Email" style="margin:3px;"/></a>
+                  </h2>
+                  <div class="product-rating row">
+                     <div class="col-sm-6">
+                        <div class="star-rank-block">
+                           <div class="star-rank" style="margin-right:-8px !important">
+                              {% for rate in star_rating %} 
+                              {% if rate < details.product_rating %}
+                              <i class="fa fa-star y-color"></i> 
+                              {% else %}
+                              <i class="fa fa-star"></i> 
+                              {% endif %}
+                              {% endfor %}
+                           </div>
+                           <div>
+                              {% if total_review %}
+                              <a href="javascript:void(0);">{{total_review.count}} Customer Reviews</a>
+                              {% else %}
+                              <a href="javascript:void(0);">No Customer Reviews</a>
+                              {% endif %}
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-sm-6 stock-btn-block">
+                        <!-- <strong>Availability</strong>  -->
+                        {% if details.in_stock %}
+                        <button class="btn btn-green"> In Stock</button> 
+                        {% else %}
+                        <button class="btn btn-red2"> Out Of Stock </button>
+                        {%endif%}
+                     </div>
+                  </div>
+                  <div class="cod-block">
+                     <div class="row">
+                        {% if details.selling_price %}
+                        <div class="col-sm-6">
+                           <div class="price-block">
+                              <span class="new-price">${{details.selling_price |floatformat:2}}</span>
+                              $<del class="old-price">{{details.price |floatformat:2}}</del>
+                           </div>
+                        </div>
+                        {% else %}
+                        <div class="col-sm-6">
+                           <div class="price-block">
+                              <span class="new-price">${{details.price |floatformat:2}}</span>
+                           </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-sm-6 cod-btn-block">
+                           <a href="javascript:void(0);">COD
+                           {% if "COD" in details.payment_mode %} 
+                           Available 
+                           {% else %} 
+                           not available
+                           {% endif %}</a>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="product-description">
+                     <h3 class="desc-head">{{details.description | safe}}</h3>
+                  </div>
+                  <div class="product-sold">
+                     <p>Sold by<span class="r-color">{{details.vendor.first_name}}</span> ({{details.product_rating}} out of 5 | {{details.product_review.count}} ratings) and fulfilled by<span class="r-color">Juntos Peru.</span></p>
+                  </div>
+                  <div class="product-sold">
+                     <p>Available stock<span class="r-color" id='stock'>{{details.product_quantity}}</span></p>
+                  </div>
+                  {% if details.in_stock %}
+                  <div class="product-varity cus_varity_prod">
+                     <div class="row">
+                        <div class="col-sm-4">
+                           <div class="quantity-block varity-common">
+                              <label class="control-label">Quantity</label>
+                              <div class="sp-quantity">
+                                 <div class="sp-minus fff">
+                                    <button id="btnSubmit" class="ddd" onclick="increase_by_one_simple('qnty-{{details.id}}');">+</button>
+                                 </div>
+                                 <div class="sp-input">
+                                    <input type="text" name="quantity" value="1" class="quntity-input" id="qnty-{{details.id}}">
+                                 </div>
+                                 <div class="sp-plus fff">
+                                    <button class="ddd" onclick="decrease_by_one_simple('qnty-{{details.id}}');">-</button>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="add-to-cart-btn cus_cart m-t-15">
+                              {% if details.in_stock %}
+                              <form id="form2" name="form1" class="form-horizontal popup-container" method="POST" action="{% url 'Juntos:views-cart' %}">
+                                 {% csrf_token %}
+                                 <input type="hidden" name="card_data" id="card_data">
+                                 <button type="submit" class="btn btn-primary" onclick="add_cart_details_simple_product(this, {{details.id}})">ADD TO CART</button>
+                              </form>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="col-sm-8">
+                           {% if details.feature %}
+                           <label class="control-label">Features</label>
+                           <p class="card-text" style="margin: 0 10px !important;">{{details.feature | safe}}</p>
+                           {% endif %}
+                            {% if details.payment_mode %}
+                               <label class="control-label">Available Mode of Payment</label>
+                                {% for mode in details.payment_mode %}
+                                 <li style="margin: 0 10px !important;">
+                                    {{mode}}
+                                 </li>
+                                {% endfor %}
+                             {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  {% else %}
+                  {% if user.is_customer %}
+                  <a href="{% url 'Juntos:add_whishlist' details.id %}"><i style="color: red;" class="fa fa-heart text-primary"></i> Add to Wishlist</a>
+                  {% endif %}
+                  {% endif %}
+               </div>
+              
+            </div>
+         </div>
+      </div>
+   </div>
+   <script type="text/javascript">
+      function increase_by_one_simple(field) {
+          stock = $("#stock").text()
+          if(stock==document.getElementById(field).value)
+            return
+          document.getElementById(field).value = parseInt(document.getElementById(field).value)+1;
+      }
+      function decrease_by_one_simple(field) {
+          if(document.getElementById(field).value==1)
+            return
+          document.getElementById(field).value = parseInt(document.getElementById(field).value)-1;
+      }
+   </script>
+   <script type="text/javascript">
+      function check_availability(select_val, id,field) {
+      $.ajax({
+      type: 'POST',
+      url: "{% url 'Juntos:check-availability' %}",
+      dataType: 'json',
+      data: {
+          'product': id,
+          'csrfmiddlewaretoken': '{{csrf_token}}',
+      },
+      success: function(e) {
+          if(select_val >= e.quantity)
+          {
+            Lobibox.notify('error', {
+                    position:'top right',
+                    size: 'mini',
+                    sound: false,
+                    msg: "We're sorry! Only "+e.quantity+" quantity are available ",
+                    title: 'Peru Juntos',
+                 });
+            $('#btnSubmit').attr("disabled", true);
+            if(select_val > e.quantity)
+                document.getElementById(field).value = select_val-1
+          }
+          else{
+              $('#btnSubmit').removeAttr("disabled");
+          }
+      },
+      });
+      }
+   </script>
+   <script>
+      function get_images(obj, color) {
+          var url = "{% url 'Juntos:product-image-view' 1 %}";
+          $('#images_view_id').load(url.replace('1', color));
+      }
+   </script>
+   <script type="text/javascript">
+      {% if user.is_customer %}
+      function add_cart_details_simple_product(data, product) {
+          var quantity = $("input[type='text'][name='quantity']").val();
+          var color = $("input[type='radio'][name='colors']:checked").val();
+          var size = $("input[type='radio'][name='sizes']:checked").val();
+          if (!color)
+            color = 0;
+          if (!size)
+            size = 0;
+          if(!quantity)
+            quantity = 1;
+          $.ajax({
+            type: 'POST',
+            url: "{% url 'Juntos:add-cart' %}",
+            dataType: 'json',
+            data: {
+              'product_id': product,
+              'color': color,
+              'size': size,
+              'quantity': quantity,
+              'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(e) {
+              if (e.exists) {
+                Lobibox.notify('info', {
+                  position: 'top right',
+                  size: 'mini',
+                  sound: false,
+                  title: 'Peru Juntos',
+                  msg: 'Product Add'
+                });
+              }
+              window.location.assign("{% url 'Juntos:views-cart' %}");
+              $('#initial_card').text(e.cart_count);
+            },
+          });
+      }
+      function helpfull_review(btn, review) {
+          $.ajax({
+              type: 'POST',
+              url: "{% url 'Juntos:helpfull-review' %}",
+              dataType: 'json',
+              data: {
+                  'review_id': review,
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+              },
+              success: function(e) {
+                  console.log(e);
+              },
+          });
+      }
+         {% else %}
+         function add_cart_details_simple_product(cart, product) {
+          var quantity = $("input[type='text'][name='quantity']").val();
+          var color = $("input[type='radio'][name='colors']:checked").val();
+          var size = $("input[type='radio'][name='sizes']:checked").val();
+          if (!color) {
+              color = 0;
+          }
+          if (!size) {
+              size = 0;
+          }
+          if(!quantity){
+              quantity = 1;
+          }
+           var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+           $('#initial_card').text(Object.keys(oldItems).length);
+           exits = false;
+           Object.keys(oldItems).forEach(function(key) {
+               if (oldItems[key]['product_id'] == product) {
+                   oldItems[key]['color'] = color;
+                   oldItems[key]['size'] = size;
+                   oldItems[key]['quantity'] = quantity;
+                   exits = true;
+               }
+           });
+           if (exits) {
+               localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+           } else {
+               var newItem = {
+                   'product_id': product,
+                   'color': color,
+                   'size': size,
+                   'quantity': quantity,
+               };
+               oldItems.push(newItem);
+               localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+               var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+               $('#initial_card').text(Object.keys(oldItems).length);
+           }
+           card_product_id = []
+           var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+           Object.keys(oldItems).forEach(function(key) {
+               card_product_id.push(oldItems[key]);
+           });
+           console.log(card_product_id)
+           $("#card_data").val(JSON.stringify(card_product_id));
+       }
+       {% endif %}
+          
+   </script>
+</section>

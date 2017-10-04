@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load natural_time %}
+{% block content %}
+<script src="//cdn.ckeditor.com/4.6.2/basic/ckeditor.js"></script>
+<style>
+   .modal-header, h4, .close {
+   background-color: #daac0a;
+   color:white !important;
+   text-align: center;
+   font-size: 30px;
+   }
+   .modal-footer {
+   background-color: #f9f9f9;
+   }
+</style>
+{% if banner_list.exists %}
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+   <div class="search-bar col-md-5 col-sm-12">
+      <form class="navbar-form" role="search" action="{%url 'Juntos:search-product'%}" method="POST">
+         {% csrf_token %}
+         <div class="input-group">
+            <input type="text" class="form-control" maxlength="30" placeholder="Buscar..." name="q">
+            <div class="input-group-btn">
+               <button class="btn btn-default btn-red" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+         </div>
+      </form>
+   </div>
+   <ol class="carousel-indicators">
+      {% for banner in banner_list %} {% if forloop.counter0 == 0 %}
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      {% else %}
+      <li data-target="#carousel-example-generic" data-slide-to="{{forloop.counter0}}" ></li>
+      {% endif %} {% endfor %}
+   </ol>
+   <div class="carousel-inner">
+      {% for banner in banner_list %}
+      <div class="item {% if forloop.first %} active{% endif %}">
+         <img src="{{banner.image.url}}" alt="Juntos">
+         <div class="carousel-caption">
+            <div class="off_banner">
+               <h2>{{banner.title}}</h2>
+               <div class="off-round">
+                  <span>{{banner.description | safe}}</span>
+               </div>
+               <strong class="off-text "></strong>
+            </div>
+         </div>
+      </div>
+      {% endfor %} 
+   </div>
+</div>
+{% else %}
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+   <div class="search-bar col-md-5 col-sm-12">
+      <form class="navbar-form" role="search" action="{%url 'Juntos:search-product'%}" method="POST">
+         {% csrf_token %}
+         <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar..." name="q">
+            <div class="input-group-btn">
+               <button class="btn btn-default btn-red" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+            </div>
+         </div>
+      </form>
+   </div>
+   <ol class="carousel-indicators">
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active">
+   </ol>
+   <div class="carousel-inner">
+      <div class="item active">
+         <img src="{% static 'img/banner.png' %}" alt="juntos">
+      </div>
+      <div class="item">
+         <img src="{% static 'img/banner.png' %}" alt="...">
+         <div class="carousel-caption"></div>
+      </div>
+   </div>
+</div>
+{% endif %}
+<section class="mid-section y-mid-sec">
+   <div class="container">
+      <div class="clearfix m-t-lr-15">
+         <div class="col-md-3 col-lg-3" >
+            <div class="nav-side-menu">
+               <div class="brand">Categorias</div>
+               <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+               <div class="menu-list">
+                  <ul id="menu-content" class="menu-content collapse out">
+                     {% for category in categories %}
+                     <li data-toggle="collapse" data-target="#{{category | cut:" " }}" class="collapsed">
+                        <i class="fa"><img src="{{category.Image.url}}" class="categoryicon" alt=""/></i> <span>{{category.category_name | safe }}</span>
+                        <ul class="sub-menu collapse" id="{{category | cut:" " }}">
+                           {% if category.sub_category.exists %} 
+                              {% for sub_data in category.sub_category.values %}
+                                 <li>
+                                    <a href="{% url 'Juntos:index' sub_data.slug %}">{{sub_data.sub_category_name}}</a>
+                                 </li>
+                              {% endfor %}
+                           {% endif%}
+                        </ul>
+                     </li>
+                     {% endfor %}
+                  </ul>
+               </div>
+            </div>
+            <div class="clearfix" id="slider1" style="color: red;">
+               {% if hot_items %}
+               <div class="hotdeal-sidebar">
+                  <div class="row">
+                     <div class="col-md-12" data-wow-delay="0.2s">
+                        <h2>Hot Deals</h2>
+                        <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+                           <div class="carousel-inner text-center">
+                              {% for item in hot_items %}
+                              {% if forloop.first %}
+                              <div class="item active">
+                                 <div class="row">
+                                    <div class="col-sm-12 pro-highlight text-center">
+                                       <div class="prod-image text-center">
+                                          <img src="{{item.image}}" alt="" />
+                                       </div>
+                                       <h3 class="text-center">{{item.title}}</h3>
+                                       <div class="pr-pro text-center">$ {{item.selling_price |floatformat:2}}</div>
+                                       {% if item.sub_cat_tag != "CP" %}
+                                       <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                                       {% else %}
+                                       <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                                       {% endif %}
+                                    </div>
+                                 </div>
+                              </div>
+                              {% else %}
+                              <div class="item">
+                                 <div class="row" style="color: red;">
+                                    <div class="col-sm-12 pro-highlight text-center">
+                                       <div class="prod-image text-center">
+                                          <img src="{{item.image}}" alt="" />
+                                       </div>
+                                       <h3 class="text-center">{{item.title}}</h3>
+                                       <div class="pr-pro text-center">$ {{item.selling_price |floatformat:2}}</div>
+                                       {% if item.sub_cat_tag != "CP" %}
+                                       <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                                       {% else %}
+                                       <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                                       {% endif %}
+                                    </div>
+                                 </div>
+                              </div>
+                              {% endif %}
+                              {% endfor %}
+                           </div>
+                           <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+                           <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {% endif %}
+            </div>
+            {% if  offers %}
+            {% include 'partial-offer.html' with offers=offers %}
+            {% endif %}
+         </div>
+         <div class="col-md-9 col-lg-9">
+            {% if recomended_product %}
+            {% include 'partial-recomended_product.html' with recomended_product=recomended_product %}
+            <div class="bdr-bottom"></div>
+            {% endif %}
+            {% if all_recommendeds %}
+            {% include 'partial-all_recommended_product.html' with all_recommendeds=all_recommendeds %}
+            {% endif %}
+            {% if product_list %}
+            {% include 'partial-new_product_list.html' with product_list=product_list %}
+            {% endif%}
+            {% if all_product_list %}
+            {% include 'partial-all_product_list.html' with all_product_list=all_product_list %}
+            {% endif%}
+            {% if sub_cats %}
+            {% include 'partial-sub_category_product.html' with sub_cats=sub_cats header_name=header_name contacts=contacts %}
+            {% endif %}
+            {% if advertisements %}
+            <div class="recomen-panel">
+               <h2><a class="pull-right view-det" href=""></a></h2>
+               <div class="row">
+                  {% for sub in advertisements %}
+                  <div class="col-sm-6 col-lg-6 pro-main">
+                     <div class="prodct-anchor pos-rel">
+                        <div class="new-prod"><a href="">New</a></div>
+                        <a href="{% url 'Juntos:ad_detail' sub.slug %}">
+                           <div class="product-panel1">
+                              <span><img src="{{sub.image}}" alt=""/></span>
+                           </div>
+                        </a>
+                        <h3>{{sub.title}}</h3>
+                        <div class="Description">
+                           <span>{{sub.description | truncatechars:50 | safe }}</span>
+                        </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+            </div>
+            {% endif %}
+         </div>
+      </div>
+   </div>
+</section>
+{% endblock %}

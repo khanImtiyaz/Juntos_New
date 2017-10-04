@@ -1,0 +1,29 @@
+{% load staticfiles %}
+<div class="col-lg-4 col-md-4 col-sm-12">
+   <div class="carousel slide article-slide" id="article-photo-carousel">
+      <div class="carousel-inner">
+         {% for img in images %}
+         {% if forloop.counter0 == 0 %}
+         <div class="item active">
+            <img title="{{id}}" src="{{img}}">
+         </div>
+         {% else %}
+         <div class="item">
+            <img title="{{id}}" src="{{img}}">
+         </div>
+         {% endif %}
+         {% endfor %}
+      </div>
+      <div class="indicators_thumb">
+         <ol class="carousel-indicators text-center" id="thumb-click">
+            <li class="thm t-left"><span class="left-thumb"><img src="{% static 'img/t-left.png' %}" alt="" /></span></li>
+            {% for img in images%}
+            <li class="active" data-slide-to="{{forloop.counter0}}" data-target="#article-photo-carousel">
+               <img alt="" src="{{img}}">
+            </li>
+            {% endfor %}
+            <li class="thm t-right"><span class="right-thumb"><img src="{% static 'img/t-right.png' %}" alt="" /></span></li>
+         </ol>
+      </div>
+   </div>
+</div>

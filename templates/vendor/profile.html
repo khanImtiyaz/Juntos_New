@@ -1,0 +1,180 @@
+{% extends 'vendor/account_header.html'%}
+{% load staticfiles %}
+{% block content %}
+ <div class="col-md-9">
+   {% if messages %}
+   <div class="alert alert-success alert-dismissable">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Success!</strong>
+      {% for message in messages %}
+      {{ message.message }}
+      {% endfor %}
+   </div>
+   {% endif %}
+   <div class="profile-content">
+      <div class="panel panel-info">
+         <div class="panel-heading">
+            <h3 class="panel-title">PROFILE</h3>
+         </div>
+         <div class="panel-body">
+            <div class="row">
+               <div class=" col-md-12 col-lg-12">
+                  <form class="form-horizontal form_custom_edit" id="profile_update_form" action="{% url 'Vendor:vendor-update-profile' %}" method="POST">
+                     {% csrf_token %}
+                     <fieldset>
+                        <h4 class="heading_info">Personal Details</h4>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Full Name</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control" name='first_name' value="{{user.first_name}}" maxlength="30" />
+                              {% if vendor_profile_form.errors.first_name %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.first_name | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Email Address</label>
+                           <div class="col-sm-9">
+                              <input type="email" class="form-control" name='email' value='{{user.email}}' id="email_id" maxlength="40" />
+                              <p class="suggest required">This email address must be linked to your Paypal account.</p>
+                              {% if vendor_profile_form.errors.email %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.email | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Mobile Number</label>
+                           <div class="col-sm-9">
+                              <input  id="mobile" name="mobile" type="text" value="{{user.mobile}}" class="form-control" readonly="readonly" maxlength="13" minlength="10">
+                              {% if vendor_profile_form.errors.mobile %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.mobile | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">City</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control"  name='city' value='{{user.city}}' id="city_id" maxlength="30" />
+                              {% if vendor_profile_form.errors.city %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.city | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Country</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control selectpicker" name='country' id="country_id" value="{{user.country}}">
+                              {% if vendor_profile_form.errors.country %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.country | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">State</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control selectpicker"  name='state' id="state_id" value="{{user.state}}">
+                              {% if vendor_profile_form.errors.state %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.state | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <h4 class="heading_info">Seller Information</h4>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Seller / Business Name</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control" name='business_name' value='{{user.account.business_name}}' id="business_name_id" maxlength="30" />
+                              {% if vendor_profile_form.errors.business_name %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.business_name | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Legal Name</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control" name='legal_name' value='{{user.account.legal_name}}' id="legal_name_id" maxlength="30" />
+                              {% if vendor_profile_form.errors.legal_name %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.legal_name | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3 ">Address Line 1</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control"  name='address1' value='{{user.account.address1}}' id="address1_id" maxlength="100" />
+                              {% if vendor_profile_form.errors.address1 %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.address1 | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Address Line 2</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control"  name='address2' value='{{user.account.address2}}' id="address2_id" maxlength="100" />
+                              {% if vendor_profile_form.errors.address2 %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.address2 | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Pincode</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control"  name='pincode' value='{{user.pincode}}' id="pincode_id" maxlength="50" />
+                              {% if vendor_profile_form.errors.pincode %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.pincode | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <h4 class="heading_info">Bank Account Information</h4>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Bank Name</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control selectpicker" name='bank_name' id="bank_name_id" value="{{user.account.bank_name}}">
+                              {% if vendor_profile_form.errors.bank_name %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.bank_name | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Account Number</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control" name='account_number' value='{{user.account.account_number}}' id="account_number_id" maxlength="16" />
+                              {% if vendor_profile_form.errors.account_number %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.account_number | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <label class="control-label col-sm-3">Routing Nuumber</label>
+                           <div class="col-sm-9">
+                              <input type="text" class="form-control" name='routing_number' value='{{user.account.routing_number}}' id="routing_number_id" maxlength="9" />
+                              {% if vendor_profile_form.errors.routing_number %}
+                              <strong style="color:red">{{ vendor_profile_form.errors.routing_number | escape }}</strong>
+                              {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="col-sm-12 edit-sec-btn">
+                              <button type='submit' class="btn btn-custom pull-right" href="#">Save Changes</button>
+                           </div>
+                        </div>
+                     </fieldset>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script>
+   $(document).ready(function(){
+    $("#menu-content li:eq(1)").attr('class','active')
+    $("#email_id").attr("readonly","readonly");
+      $(function() {
+         $("#address1_id").geocomplete();
+         $("#address2_id").geocomplete();
+      });
+   })
+   
+   
+</script>
+{% endblock %}

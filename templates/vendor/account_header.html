@@ -1,0 +1,262 @@
+{% load staticfiles %}
+{% load natural_time %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Django</title>
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script src="{% static 'js/pusher.js'%}"></script>
+      <script src="{% static 'js/canvasjs.min.js' %}"></script>
+      <link rel="stylesheet" href="{% static 'css/lobibox.css' %}"/>
+      <script src="{% static  'js/lobibox.js' %}"></script>
+      <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+      <script src="{% static 'js/loader.js'%}"></script>
+      <link rel="stylesheet" type="text/css" href="{% static 'js/datetimepicker/jquery.datetimepicker.css' %}"/>
+      <script src="{% static 'js/datetimepicker/build/jquery.datetimepicker.full.js' %}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDurDU6FM4D6yrmVpEF9LqcCmxqcLhG3AU&libraries=places"></script>
+      <script src="{% static 'js/jquery.geocomplete.js' %}"> </script>
+   </head>
+   <body>
+      <section class="flash-panel">
+         <div class="container">
+            <a  href="" style="color: red;">
+               <p class="text-center">
+                  <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();" direction="left" >{% for new in news|adv %}  {{new.title}}  {% endfor %}</marquee>
+               </p>
+            </a>
+         </div>
+      </section>
+      <header class="y-chnge">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="top-cnt-pad clearfix">
+                  <div class="col-lg-9 col-md-9 col-sm-7">
+                     <div class="logo-contain">
+                        <a class="logo" href="{% url 'Juntos:home' %}"><img src="{% static 'img/logo2.png' %}" alt="logo here"/></a>
+                     </div>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-5">
+                     <div class="pull-right">
+                        <ul class="login_head new-login-head">
+                           <li class="dropdown">
+                              <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                              <i class="fa fa-bell" id="notify_top" aria-hidden="true">{{notification_unread_count.count}}</i></a>
+                              <ul class="dropdown-menu hh">
+                                 {% if notification_unread_count %}
+                                 {% for noti in notification_unread_count|slice:":3"%}
+                                 <!-- <li class="active">{{noti.content}}</li> -->
+                                 {% endfor %}
+                                 {% if notification_unread_count.count > 3 %}
+                                 <li><a href="{% url 'Vendor:notifications' %}">View all</a></li>
+                                 {% endif %}
+                                 {% endif %}
+                              </ul>
+                           </li>
+                           <li>
+                              <span class="user-active">
+                              {% if user.avatar.name%}
+                              <img src="{{user.avatar.name}}" class="img-responsive" alt="" style="display: initial;" /> {% else %}
+                              <img src="{% static 'img/dummy.png' %}" class="img-responsive" style="display: initial;"/>
+                              {% endif %}
+                              Hi <strong>{{user.first_name}}</strong></span>
+                           </li>
+                           <li class=" dropdown">
+                              <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
+                              <ul class="dropdown-menu">
+                                 {{account}}
+                                 {% if not account %}
+                                 <li><a href="{% url 'Vendor:vendor-profile-view'%}">My Profile</a></li>
+                                 {% endif %}
+                                 <li><a href="{% url 'Vendor:change-password' %}">Change Password</a></li>
+                                 <li><a href="{% url 'Vendor:vendor-logout' %}">Log Out</a></li>
+                              </ul>
+                           </li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </header>
+      <section class="vendor_section">
+         <div class="container">
+            <div class="vendor_inner_pages">
+               <div class="row profile">
+                  <div class="col-md-3">
+                     <div class="profile-sidebar">
+                        <div class="profile-userpic">
+                           {% if not user.avatar.name%}
+                           <img src="{% static 'img/dummy.png' %}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
+                           {% else %}
+                           <img src="{{user.avatar.name}}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
+                           {% endif %}
+                        </div>
+                        <div class="profile-usertitle">
+                           <div class="profile-usertitle-name">
+                              <a href="{% url 'Vendor:vendor-profile-view'  %}">{{user.first_name}} {{user.last_name}}</a>
+                           </div>
+                        </div>
+                        <div class="profile-usermenu">
+                           <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content" aria-expanded="true"></i>
+                           <ul id="menu-content" class="nav collapse out">
+                              <li>
+                                 <a href="{% url 'Vendor:vendor-dashboard' %}">
+                                 <i class="fa fa-tachometer"></i>
+                                 Panel personal </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:vendor-profile-view' %}">
+                                 <i class="fa fa-user"></i>
+                                 Perfil </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:product-list'%}">
+                                 <i class="fa fa-list"></i>
+                                 Lista de sus productos </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:orders-history'%}">
+                                 <i class="fa fa-history"></i>
+                                 Ordenes de sus productos</a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:add-product' %}">
+                                 <i class="fa fa-puzzle-piece"></i>
+                                 Suba nuevo producto </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:notifications' %}">
+                                 <i class="fa fa-comment"></i>
+                                 Mensajes </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:payments' %}">
+                                 <i class="fa fa-credit-card-alt"></i>
+                                 Manejo de pago </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:dhl-credential' %}">
+                                 <i class="fa fa-credit-card-alt"></i>
+                                 Credenciales DHL </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:view-order' %}">
+                                 <i class="fa fa-shopping-cart"></i>
+                                 Sus pedidos </a>
+                              </li>
+                              <li>
+                                 <a href="{% url 'Vendor:view-order' %}">
+                                 <i class="glyphicon glyphicon-eye-open"></i>
+                                 Lista de sus ordenes </a>
+                              </li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  {% block content %}
+                  {% endblock %}
+               </div>
+            </div>
+         </div>
+      </section>
+      {% if messages %}
+      {% for message in messages %}
+      <script>
+         Lobibox.notify('{{ message.tags }}', {
+         	size: 'mini',
+         	showClass: 'fadeInDown',
+         	hideClass: 'fadeUpDown',
+         	sound: false,
+         	msg: '{{ message.message }}',
+         	title: 'Peru Juntos',
+         	});
+      </script>
+      {% endfor %}
+      </div>
+      {% endif %}
+      <script>
+         window.addEventListener('load', function(e) {
+         	e.preventDefault();
+         	if (!window.Notification) {
+         		Lobibox.notify('error', {
+         			sound: false,
+         			msg: 'Sorry this browser does not support notification ! ',
+         			title: 'Peru Juntos',
+         		});
+         	}
+         });
+         var pusher = new Pusher('8d36327fa3019f8c74ac', {
+         	cluster: 'ap2',
+         	encrypted: true
+         });
+         var channel = pusher.subscribe('vendor_notifications');
+         channel.bind('click change load', function(data) {
+         	var notify = $("#notify_top").text();
+         		$("#notify_top").text(parseInt(notify)+1);
+         	Lobibox.notify('info', {
+         		sound: false,
+         		msg: data.message,
+         		title: 'Peru Juntos Vendor Notifications',
+         	});
+         });
+      </script>
+      <div id="profileImage" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog">
+            <div class="modal-content">
+               <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>
+               <div class="modal-body">
+                  <img src="{{user.avatar.name}}" style="width:100%;">
+               </div>
+            </div>
+         </div>
+      </div>
+      <footer>
+         <div class="container">
+            <div class="row xs-new-row">
+               <div class="col-lg-4 col-md-4 col-sm-4 new-first-col">
+                  <h2 class="new-m-left-15">Sobrone Nosotros</h2>
+                  <div class="head-btm new-m-left-15"></div>
+                  <p>{{abouts|safe}}</p>
+               </div>
+               <div class="col-lg-3 col-md-4 col-md-3 col-md-offset-1 col-lg-offset-1 col-sm-4">
+                  <h2>Enlaces</h2>
+                  <div class="head-btm"></div>
+                  <ul>
+                     <li><a href="">FAQs</a></li>
+                     <li><a href="">Términos y Condiciones </a></li>
+                     <li><a href="">Carreras</a></li>
+                     <li><a href="">Contáctenos</a></li>
+                  </ul>
+               </div>
+               <div class="col-lg-4 col-md-4 col-sm-4">
+                  <h2>Suscribrise A Nuestro Bolentein De Noticias</h2>
+                  <div class="head-btm"></div>
+                  <div class="form-group col-md-8 md-margin-left-15">
+                     <input type="text" class="form-control footer-srch" id="usr_email" value="" placeholder="Email Address" />
+                     <label class="btm-text">Subscribete ahora</label>
+                  </div>
+                  <button class="btn btn-footer" id="subscribe">Enviar</button>
+               </div>
+            </div>
+         </div>
+         <div class="cppy-ryt">
+            <div class="container">
+               <div class="row">
+                  <p class="text-center"><strong>Todos los derechos reservados. ©Juntos Peru 2016</strong></p>
+               </div>
+            </div>
+         </div>
+      </footer>
+   </body>
+</html>

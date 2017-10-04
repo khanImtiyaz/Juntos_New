@@ -1,0 +1,268 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load natural_time %}
+{% block content %}
+<section class="add-cart_s new-add-cart">
+   <div class="container">
+      <div class="add-cart-row">
+         <div class="cart-part-left">
+            <div class="cart-part-left-inner">
+               <div class="right_icon">
+                  <i class="fa fa-check" aria-hidden="true"></i>
+               </div>
+               {% for prod in all_cart %}
+                   {% if forloop.last %}
+                       <div class="item_image">
+                          <img src="{{prod.product.image.0}}">
+                          <div class="hover-popup-div">
+                             <div class="h_pro-dtl">
+                                <div class="l_img-pro">
+                                   <img src="{{prod.product.image.0}}">
+                                </div>
+                                <div class="r_pro-dtl">
+                                   <div class="h_outer-top">
+                                      <div class="h_p_dtl">
+                                         {{prod.product.title}}
+                                      </div>
+                                      <div class="star_h">
+                                         <div class="star-rank">
+                                          {% for rate in star_rating %} 
+                                              {% if rate < prod.product.product_rating %}
+                                                <i class="fa fa-star y-color"></i> 
+                                              {% else %}
+                                                <i class="fa fa-star"></i> 
+                                              {% endif %}
+                                          {% endfor %}
+                                         </div>
+                                      </div>
+                                   </div>
+                                   <div class="h_outer-bottom">
+                                      <div class="h_price"></div>
+                                      <div class="h_stock">{{prod.product.description |truncatechars:200 |safe}}</div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                       </div>
+                   {% endif %}
+               {% endfor %}
+               <div class="item_text">
+                  Added to Cart
+               </div>
+            </div>
+         </div>
+         <div class="cart-part-right">
+            <div class="cart-part-right-inner">
+               <div class="item_details">
+                  <h2>Cart subtotal <span class="quantity">({{all_cart|length}} items)</span>: <span class="value">${{total_price|floatformat:2}}</span></h2>
+                  <div class="para_item"> 
+                  </div>
+               </div>
+               <div class="btn_cart">
+                  <button type="button" class="btn btn-default"><a href="{% url 'Juntos:home' %}" style="color:white;text-decoration: none;">Continue Shopping</a></button>
+                  <form id="form2" name="form1" class="form-horizontal popup-container" method="POST" action="{% url 'Juntos:proceed-cart' %}">
+                     {% csrf_token %}
+                     <input type="hidden" name="card_data" id="card_data">
+                     <button type="submit" class="btn btn-primary" id='proceed_item'>Proceed to checkout ({{all_cart|length}} items)</button>
+                  </form>
+                  <script type="text/javascript">
+                     card_product_id = []
+                     var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+                     Object.keys(oldItems).forEach(function(key) {
+                     card_product_id.push(oldItems[key]);
+                     });
+                     console.log(card_product_id)
+                     $("#card_data").val(JSON.stringify(card_product_id));
+                  </script>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+{% if related_post %}
+<section class="post-review-sec new-post-review">
+   <div class="container">
+      <div class="post_list">
+         <div class="recomen-panel" style="margin:0;">
+            <h2>Related Posts</h2>
+         </div>
+         <div class="row custom-row">
+            {% for post in related_post %}
+            <div class="col-md-15 pro-main">
+               <div class="prodct-anchor">
+                  <a href="{% url 'Juntos:product-detail' post.slug %}">
+                     <div class="product-panel1">
+                        <span><img src="{{post.image.name}}" alt=""/></span>    
+                     </div>
+                  </a>
+                  <h3>{{post.title}}</h3>
+                  <div class="pro-price">
+                     <div class="d1p1">$ {{post.price}}<span>$ {{post.selling_price}}</span></div>
+                     {% if user.is_authenticated %}
+                     <form id="form_s" name="form_s" class="text-center m-t-20" method="POST" action="{% url 'Juntos:views-cart' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="card_data" id="card_data">
+                        <button type="button" class="btn btn-primary" onclick="add_cart_details(this, {{post.id}})">ADD TO CART</button>
+                     </form>
+                     {% else %}
+                     <form id="add_new_view_cart"  name="add_new_view_cart" class="form-horizontal popup-container" method="POST" action="{% url 'Juntos:views-cart' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="card_data" id={{post.id}}>
+                        <button type="submit" class="btn btn-primary" onclick="add_new_cart(this, {{post.id}})">ADD TO CART</button>
+                     </form>
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+</section>
+{% else %}
+{% endif %}
+<script type="text/javascript">
+   function add_cart_details(data, product) {
+    var quantity = $("input[type='text'][name='quantity']").val();
+    var color = $("input[type='radio'][name='colors']:checked").val();
+    var size = $("input[type='radio'][name='sizes']:checked").val();
+    if (!color) {
+        color = 0;
+    }
+    if (!size) {
+        size = 0;
+    }
+    if(!quantity){
+        quantity = 1;
+    }
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'Juntos:add-cart' %}",
+        dataType: 'json',
+        data: {
+            'product_id': product,
+            'color': color,
+            'size': size,
+            'quantity': quantity,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function(e) {
+            if (e.exists) {
+                Lobibox.notify('info', {
+                    position: 'top right',
+                    size: 'mini',
+                    sound: false,
+                    msg: 'Cart updated',
+                    title: 'Peru Juntos',
+                }); 
+            }
+            window.location.assign("{% url 'Juntos:views-cart' %}");
+            $('#initial_card').text(e.cart_count);
+        },
+    });
+   }
+</script>
+<script type="text/javascript">
+   {% if user.is_customer %}
+   function add_new_cart(data, product) {
+    var quantity = $("input[type='text'][name='quantity']").val();
+    var color = $("input[type='radio'][name='colors']:checked").val();
+    var size = $("input[type='radio'][name='sizes']:checked").val();
+    if (!color) {
+        color = 1;
+    }
+    if (!size) {
+        size = 1;
+    }
+    console.log(quantity);
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'Juntos:add-cart' %}",
+        dataType: 'json',
+        data: {
+            'product_id': product,
+            'color': color,
+            'size': size,
+            'quantity': quantity,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function(e) {
+            if (e.exists) {
+                Lobibox.notify('info', {
+                    position: 'top right',
+                    size: 'mini',
+                    sound: false,
+                    msg: 'Cart updated',
+                    title: 'Peru Juntos',
+                });
+            }
+            window.location.assign("{% url 'Juntos:views-cart' %}");
+            $('#initial_card').text(e.cart_count);
+        },
+    });
+   }
+   function helpfull_review(btn, review) {
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'Juntos:helpfull-review' %}",
+        dataType: 'json',
+        data: {
+            'review_id': review,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function(e) {
+            console.log(e);
+        },
+    });
+   }
+   {% else %}
+   function add_new_cart(cart, product) {
+     var quantity = 1;
+     var color = 1;
+     var size = 1;
+     if (!color) {
+         color = 1;
+     }
+     if (!size) {
+         size = 1;
+     }
+     if (!quantity) {
+         quantity = 1;
+     }
+     var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+     $('#initial_card').text(Object.keys(oldItems).length);
+     exits = false;
+     Object.keys(oldItems).forEach(function(key) {
+         if (oldItems[key]['product_id'] == product) {
+             oldItems[key]['color'] = color;
+             oldItems[key]['size'] = size;
+             oldItems[key]['quantity'] = quantity;
+             exits = true;
+         }
+     });
+     if (exits) {
+         localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+     } else {
+         var newItem = {
+             'product_id': product,
+             'color': color,
+             'size': size,
+             'quantity': quantity,
+         };
+         oldItems.push(newItem);
+         localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+         var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+         $('#initial_card').text(Object.keys(oldItems).length);
+     }
+     card_product_id = []
+     var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+     Object.keys(oldItems).forEach(function(key) {
+         card_product_id.push(oldItems[key]);
+     });
+     console.log(card_product_id)
+     $("#"+product).val(JSON.stringify(card_product_id));
+   }
+   {% endif %}
+</script>
+{% endblock %}

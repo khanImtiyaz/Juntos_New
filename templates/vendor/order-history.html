@@ -1,0 +1,111 @@
+{% extends 'vendor/account_header.html'%}
+{% load staticfiles %}
+{% block content %}
+<div class="col-md-9">
+               {% if messages %}
+               <div class="alert alert-success alert-dismissable">
+                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                  <strong>Success!</strong>
+                  {% for message in messages %}
+                  {{ message.message }}
+                  {% endfor %}
+               </div>
+               {% endif %}
+               <div class="profile-content">
+                  <div class="heading_top clearfix">
+                     <h4>Total No of Orders Received : {{total_order | safe}}</h4>
+                  </div>
+                  <div class="table-responsive">
+                     <table class="table table-hover table-bordered">
+                        <thead>
+                           <tr>
+                              <th>Order Id</th>
+                              <th>Status</th>
+                              <th>Total Price</th>
+                              <th>Customer Email</th>
+                              <th>Order Date</th>
+                              <th>Action</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           {% for order in order_data %}
+                           <tr>
+                              <td>
+                                 {{order.order_id.order_number}}
+                              </td>
+                              <td>
+                                 {{order.delivery_status}}
+                              </td>
+                              <td>
+                                 ${{order.price |floatformat:2}}
+                              </td>
+                              <td>{{order.order_id.customer.email}} </td>
+                              <td>{{order.created_at}}</td>
+                              <td>
+                                 <a href="{% url 'Vendor:order-details' order.id %}" class="btn btn-custom"><i class="fa fa-eye"></i> View</a><button class="btn btn-red2 btn-xs" onclick="remove_order_history(this,{{order.id}})"><i class="fa fa-trash"></i> </button>
+                              </td>
+                           </tr>
+                           {% endfor %}
+                        </tbody>
+                     </table>
+                  </div>
+                  <div class="pagination-in text-center">
+                     {% if order_data%}
+                     {% if order_data.has_other_pages %}
+                     <div class="bdr-bottom"></div>
+                     <div class="pagination-top text-center"></div>
+                     <ul class="pagination text-center">
+                        {% if order_data.has_previous %}
+                        <li><a href="?page={{ order_data.previous_page_number }}" class="paginate left" >&#xab;</a></li>
+                        {% else %}
+                        <li class="disabled"><a class="paginate left">&#xab;</a></li>
+                        {% endif %}
+                        {% for i in order_data.paginator.page_range %}
+                        {% if order_data.number == i %}
+                        <li class="active"><a>{{ i }}</a></li>
+                        {% else %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                        {% if order_data.has_next %}
+                        <li><a href="?page={{ order_data.next_page_number }}" class="paginate right">&#xbb;</a></li>
+                        {% else %}
+                        <li class="disabled"><a class="paginate right">&#xbb;</a></li>
+                        {% endif %}
+                     </ul>
+                     {% endif %}
+                     {% else %}
+                     No Order Data Available !
+                     {% endif %}
+                  </div>
+               </div>
+            </div>
+<script>
+$(document).ready(function(){
+   $("#menu-content li:eq(3)").attr('class','active')
+	function remove_order_history(file,product){
+		$.ajax({
+			url : "{% url 'Vendor:remove-product' %}",
+			type : 'POST',
+			dataType : 'json',
+			data : {'product': product, 'csrfmiddlewaretoken':'{{ csrf_token }}',},
+			success : function(e) {
+				file.closest("tr").remove()
+				if(e.total_product ==0){
+					$(".pagination > li").remove();
+					$(".pagination").append("<li>	No Product available ! </li>");
+				}
+				if(e.code == 200){
+					Lobibox.notify('info', {
+						sound: false,
+						msg: e.message,
+						title: 'Peru Juntos Vendor',
+					});
+					return true;
+				}
+			},
+		});
+	}
+})
+</script>
+{% endblock%}

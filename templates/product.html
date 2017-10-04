@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}" />
+{% if images %}
+{% include 'configured_product.html' with details=details images=images loop_count=loop_count rating_comp=rating_comp total_review=total_review seller=seller colors=colors %}
+{% else %}
+{% include 'simple_product.html' with details=details loop_count=loop_count rating_comp=rating_comp total_review=total_review seller=seller %}
+{% endif %}
+<section class="post-review-sec new-product-review">
+   <div class="container">
+      <div class="post_list">
+         {% if related_products.exists  %}
+         <div class="recomen-panel col-sm-12">
+            <h2>Related Products <a href="" class="pull-right view-det"></a></h2>
+         </div>
+         {% endif %}
+         <div class="row custom-row">
+            {% for related_pro in related_products %}
+            <div class="col-md-15 pro-main">
+               <div class="product-panel">
+                  <a href="{% url 'Juntos:product-detail' related_pro.slug %}">
+                     <div class="new-related-pro">
+                        <div class="inner-review-prodct">
+                           <div class="child-new-rel">
+                              <img alt="" src="{{related_pro.image.name}}">
+                           </div>
+                        </div>
+                        <div class="prodct-detl">
+                           <h3>{{related_pro}}</h3>
+                           <div class="pro-price text-center clearfix">
+                              <span class="red">$ {{related_pro.selling_price |floatformat:2}}</span>
+                              <span>$ {{related_pro.price |floatformat:2}}</span>
+                           </div>
+                        </div>
+                     </div>
+                  </a>
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+      <div class="customer_review" style="border-top: none;">
+         <div class="recomen-panel">
+            <h2>Customer Review</h2>
+         </div>
+         {% for review in total_review %}
+         <div class="review_contain">
+            <div class="star-rank-block">
+               <div class="star-rank">
+                  {% if review.rating_value %}
+                  <i class="fa fa-star y-color">{{review.rating_value}}</i>
+                  {% else %}
+                  <a href="javascript:void(0)" onclick="rat_product({{review.id}},1)"><i class="fa fa-star "></i></a>
+                  <a href="javascript:void(0)" onclick="rat_product({{review.id}},2)"><i class="fa fa-star "></i></a>
+                  <a href="javascript:void(0)" onclick="rat_product({{review.id}},3)"><i class="fa fa-star "></i></a>
+                  <a href="javascript:void(0)" onclick="rat_product({{review.id}},4)"><i class="fa fa-star "></i></a>
+                  <a href="javascript:void(0)" onclick="rat_product({{review.id}},5)"><i class="fa fa-star "></i></a>
+                  {% endif %}
+               </div>
+               <strong>{{ review.content}}</strong>
+            </div>
+            <div class="customer_name"><strong>By<span class="text-danger">&nbsp;&nbsp;&nbsp;{{review.given_by.first_name}}</span></strong></div>
+         </div>
+         {% endfor %}
+         {% if user.is_authenticated and user.is_customer %}
+         <a href="" data-toggle="modal" data-target="#review_rating" class="btn btn-info">Comment And Rating</a></li>
+         {% endif %}
+      </div>
+   </div>
+</section>
+<div id="review_rating" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <div class="panel panel-success">
+            <div class="panel-heading">{{details.title}}</div>
+            <div class="panel-body">
+               <form method="POST" id="rating_form_id" action="{% url 'Juntos:customer-review' %}" >
+                  {% csrf_token %}
+                  <input type="hidden" name="product" value="{{details.id}}">
+                  <input type="hidden" name="slug" value="{{details.slug}}">
+                  <textarea style="width:100%;height:100px; padding:2em;" name="content" placeholder="Type your comment here .." > </textarea>
+                  <br>
+                  Rating Value: 
+                  <select name="rating_value">
+                     <option value="1">1</option>
+                     <option value="2">2</option>
+                     <option value="3">3</option>
+                     <option value="4">4</option>
+                     <option value="5">5</option>
+                  </select>
+            </div>
+         </div>
+         <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+         <button type="submit" name="submit" value="submit" class="btn btn-success">Submit</button>
+         </form>
+         </div>
+      </div>
+   </div>
+</div>
+<script language="Javascript" type="text/javascript">
+   $("input:radio[name='sizes']").click(function(){
+     $("#checker").css({'background': '#fff'});
+   });
+   function check_selection_configured(check){
+     radio= $("input:radio[name='sizes']");
+     colors = $("input:radio[name='colors']");
+     if(radio.is(":checked") && colors.is(":checked")){
+       {% if user.is_customer %}
+       var quantity =  $("input[type='text'][name='quantity']").val();
+       var color  = $("input[type='radio'][name='colors']:checked").val();
+       var size = $("input[type='radio'][name='sizes']:checked").val();
+       if(! color){
+         color = 1;
+       }
+       if(! size){
+         size = 1;
+       }
+       console.log(quantity);
+       $.ajax({
+        type : 'POST',
+        url : "{% url 'Juntos:add-cart' %}",
+        dataType : 'json',
+        data : {'product_id': {{details.id}},
+                 'color':color,
+                 'size': size,
+                 'quantity':quantity,
+                 'csrfmiddlewaretoken':'{{ csrf_token }}',},
+        success : function(e) {
+               window.location.assign("{% url 'Juntos:add-shipping' %}");
+                 },
+           });
+           {% else %}
+           $("#login").modal("show");
+           {% endif %}
+   
+     }
+     else{
+       $("#checker").css({'background': '#000'});
+     }
+   }
+   
+   function buynow_simple_product(check){
+       {% if user.is_customer %}
+       var quantity =  $("input[type='text'][name='quantity']").val();
+       console.log(quantity);
+       $.ajax({
+        type : 'POST',
+        url : "{% url 'Juntos:add-cart' %}",
+        dataType : 'json',
+        data : {'product_id': {{details.id}},
+   
+                 'quantity':quantity,
+                 'csrfmiddlewaretoken':'{{ csrf_token }}',},
+        success : function(e) {
+               window.location.assign("{% url 'Juntos:add-shipping' %}");
+                 },
+           });
+           {% else %}
+           $("#login").modal("show");
+           {% endif %}
+   
+   }
+   $("#close_reg").click(function(){
+   $("#register1").modal('hide');
+   });
+   function rat_product(review,value){
+     {% if not user.is_authenticated %}
+        $("#login").modal('show');
+     {% else %}
+     $.ajax({
+       type:'post',
+       url:"{% url 'Juntos:rating' %}",
+       dataType : 'json',
+       data : {'review_id': review,'rating_value': value, 'csrfmiddlewaretoken':'{{ csrf_token }}',},
+       success: function(data){
+          console.log(data);
+       },
+     });
+     {% endif %}
+   }
+   function onlyAlphabets(e, t) {
+         try {
+             if (window.event) {
+        var charCode = window.event.keyCode;
+    }
+    else if (e) {
+        var charCode = e.which;
+    }
+    else { return true; }
+    if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 32 || charCode == 8)
+        return true;
+    else
+        return false;
+         }
+         catch (err) {
+             alert(err.Description);
+         }
+     }
+   function isNumber(evt) {
+   evt = (evt) ? evt : window.event;
+   var charCode = (evt.which) ? evt.which : evt.keyCode;
+   if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+     return false;
+   }
+   return true;
+   }
+   
+</script>
+<script>
+   {% if user.is_customer %}
+   function add_cart_details(data, product) {
+   radio = $("input:radio[name='sizes']");
+   colors = $("input:radio[name='colors']");
+   if (radio.is(":checked") && colors.is(":checked")) {
+    var quantity = $("input[type='text'][name='quantity']").val();
+    var color = $("input[type='radio'][name='colors']:checked").val();
+    var size = $("input[type='radio'][name='sizes']:checked").val();
+    if (!color) {
+        color = 1;
+    }
+    if (!size) {
+        size = 1;
+    }
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'Juntos:add-cart' %}",
+        dataType: 'json',
+        data: {
+            'product_id': product,
+            'color': color,
+            'size': size,
+            'quantity': quantity,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function(e) {
+            if (e.exists) {
+                Lobibox.notify('info', {
+                    position: 'top right',
+                    size: 'mini',
+                    sound: false,
+                    msg: 'Cart updated',
+                    title: 'Peru Juntos',
+                });
+            }
+            window.location.assign("{% url 'Juntos:views-cart' %}");
+            $('#initial_card').text(e.cart_count);
+        },
+    });
+   }
+   else {
+        $("#checker").css({
+            'display': 'inline-block'
+        });
+    }
+   }
+   
+   
+   function helpfull_review(btn, review) {
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'Juntos:helpfull-review' %}",
+        dataType: 'json',
+        data: {
+            'review_id': review,
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function(e) {
+            console.log(e);
+        },
+    });
+   }
+   
+   {% else %}
+    function add_cart_details(cart, product) {
+        radio = $("input:radio[name='sizes']");
+        colors = $("input:radio[name='colors']");
+        var color = 1;
+        var size = 1;
+        if (radio.is(":checked") && colors.is(":checked")) {
+            var quantity = $("input[type='text'][name='quantity']").val();
+            color = $("input[type='radio'][name='colors']:checked").val();
+            size = $("input[type='radio'][name='sizes']:checked").val();
+            
+            var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+            $('#initial_card').text(Object.keys(oldItems).length);
+            exits = false;
+            Object.keys(oldItems).forEach(function(key) {
+                if (oldItems[key]['product_id'] == product) {
+                    oldItems[key]['color'] = color;
+                    oldItems[key]['size'] = size;
+                    oldItems[key]['quantity'] = quantity;
+                    exits = true;
+                }
+            });
+            if (exits) {
+                localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+   
+            } else {
+                var newItem = {
+                    'product_id': product,
+                    'color': color,
+                    'size': size,
+                    'quantity': quantity,
+                };
+                oldItems.push(newItem);
+                localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+                var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+                $('#initial_card').text(Object.keys(oldItems).length);
+            }
+   
+            card_product_id = []
+            var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+            Object.keys(oldItems).forEach(function(key) {
+                card_product_id.push(oldItems[key]);
+            });
+            console.log(card_product_id)
+            $("#card_data").val(JSON.stringify(card_product_id));
+            $('#form_configure').submit()
+        } else {
+            $("#checker").css({
+                'display': 'inline-block'
+            });
+        }
+    }
+   {% endif %}
+</script>
+<div id="size_chart" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <img src="{% static 'img/size_chart_all.png' %}" style="width:100%;">
+      </div>
+   </div>
+</div>
+{% endblock %}

@@ -1,0 +1,89 @@
+<div class="recomen-panel">
+
+<div class="col-sm-12 in_panel_head clearfix">
+  <div class="new-prodct-heding">New Products <a class="pull-right view-det" href="/?all=all">View All</a></div>
+  <!-- <button  id="myBtn" class="btn btn-info  pull-right"><span class="glyphicon glyphicon-plus"></span>Pay for ad</button> -->
+  <!-- div class="add_address_sec add_address_sec21 col-md-7" id="ads">
+      
+   </div> -->
+  </div> 
+  <div class="clearfix">
+    {% for product in product_list %}
+    {% if product.date_check <= 15 %}
+      {% if product.in_stock %}
+    <div class="col-md-3 col-lg-3 pro-main">
+      <div class="prodct-anchor">
+           <a href="{% url 'Peru:product_detail' product.slug %}">
+          <div class="product-panel1">
+            <span><img src="{{product.image.name}}" alt=""/></span>
+          </div>
+        </a>
+     
+        <h3>{{product.title | truncatechars:28}}</h3>
+        <div class="pro-price">
+          <div class="tbl-cell d1p1">$ {{product.selling_price |floatformat:2}}<span>$ {{product.price |floatformat:2}}</span></div>
+          <div class="tbl-cell d1p2">
+            {% if product.subs_category.sub_category_tag != "CP" %}
+            <a href="javascript:void(0)" onclick="add_card(this, {{product.id}})"> ADD TO CART </a> {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    {% else %}
+    <div class="col-md-3 col-lg-3 pro-main">
+      <div class="prodct-anchor">
+                 <a href="{% url 'Peru:product_detail' product.slug %}">
+             <div class="product-panel1">
+            <span><img src="{{product.image.name}}" alt=""/></span>
+          </div>
+          </a>
+         <h3>{{product.title | truncatechars:28}}</h3>
+          <div style="color: red; text-align: center;"><span >Sold Out</span></div>
+          <div class="pro-price">
+          <div class="tbl-cell d1p1">$ {{product.selling_price |floatformat:2}}<span>$ {{product.price |floatformat:2}}</span></div>
+          <div class="tbl-cell d1p2">
+            {% if product.subs_category.sub_category_tag != "CP" %}
+            <!-- <a href="javascript:void(0)" onclick="add_card(this, {{product.id}})"> ADD TO CART </a> --> {% endif %}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+        {% endif %} 
+        {% endif %}  
+
+    {% endfor %}
+  </div>
+
+  {% if product_list.has_other_pages %}
+  <div class="bdr-bottom"></div>
+  <div class="pagination-top text-center">
+    <ul class="pagination text-center">
+      {% if product_list.has_previous %}
+      <li>
+        <a href="?page={{ product_list.previous_page_number }}" class="paginate left">&#xab;</a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a class="paginate left">&#xab;</a>
+      </li>
+      {% endif %} {% for i in product_list.paginator.page_range %} {% if product_list.number == i %}
+      <li class="active"><a>{{ i }}</a></li>
+      {% else %}
+      <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %} {% endfor %} {% if product_list.has_next %}
+      <li>
+        <a href="?page={{ product_list.next_page_number }}" class="paginate right">&#xbb;</a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a class="paginate right">&#xbb;</a>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>

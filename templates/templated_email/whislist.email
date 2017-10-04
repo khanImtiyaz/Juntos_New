@@ -1,0 +1,84 @@
+{% block subject %} Registration on Peru  {% endblock %}
+{% block plain %}
+  Hi {{username}},
+
+  You just signed up on Peru using:
+      email: {{email}}
+
+
+  Thanks, {{username}}!
+{% endblock %}
+
+
+{% block html %}<html lang="en">
+
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+</head>
+
+<body style="margin: 0px; padding: 0px;">
+    <div style="min-width:600px;padding-top:20px;margin:0px;font-family:'Open Sans',Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;color:#777;line-height:30px">
+
+        <table style="border: 1px solid #ccc;border-radius: 15px;box-shadow: 2px 2px 2px 1px #ccc;margin: 0 auto;width: 570px;" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr>
+                    <td>
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="padding:0px;overflow:hidden;color:#000;">
+                            <tbody>
+                                <tr>
+                                    <tr style="background:rgba(255, 193, 7,1);">
+                            <td><img src="http://res.cloudinary.com/djzssjqyt/image/upload/v1498894243/vnlfgnmbhnoxvvbj4w5w.png"></td>
+                       
+                                </tr>
+                                </tr>
+                                <tr style="background: rgba(252, 224, 224, 0);">
+                                    <td style='padding: 10px 70px 0;text-align:left;'>
+                                        <p style="color:#000;margin: 25px 0px 0;">Hi,{{username}}</p>
+
+                                        <p style="color:#000;margin: 25px 0px 0;">Thanks for showing Your Interest<br> in {{product}} <span>
+                                        <div>
+
+                                        <img src="{{image}}" alt="Smiley face" height="200" width="200">
+                                        
+                                        </div>
+                                        <div>
+                                        Now It is available please click
+                                        <span>
+                                        <a href="http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:8000">Here</a></span>
+                                        </div>
+                                        </p>
+                                        <p style="color:#000;margin: 10px 0px 0;">The Peru Juntos Team</p>
+                                        <p style="color:#000;">--------------------------------------------</p>
+                                        <p style="color:#000;margin: 10px 0px 0;">http://www.peru.com</p>
+                                        <p style="color:#000;margin: 25px 0px 0;">Ph: +1 615 771 5611</p>
+                                        <p style="color:#000;margin: 25px 0px 50px;">Email: peru@site.com</p>
+
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+
+
+
+
+
+
+            </tbody>
+        </table>
+
+
+</body>
+
+</html>
+{% endblock %}

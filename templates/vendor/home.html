@@ -1,0 +1,378 @@
+{% load staticfiles %}
+{% load natural_time %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Django</title>
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+      <link rel="stylesheet" href="{% static 'css/lobibox.css' %}" />
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+      <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+      <script src="{% static  'js/lobibox.js' %}"></script>
+
+   </head>
+   <body>
+      <section class="flash-panel">
+         <div class="container">
+            <a  href="" style="color: red;">
+               <p class="text-center">
+                  <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();" direction="left" >{% for new in news|adv %}  {{new.title}}  {% endfor %}</marquee>
+               </p>
+            </a>
+         </div>
+      </section>
+      <header class="y-chnge clearfix">
+         <div class="col-xs-12">
+            <div class="row">
+               <div class="col-sm-3 col-md-4 col-xs-4">
+                  <div class="web-logo">
+                     <a class="logo" href="{% url 'Peru:home' %}"><img src="{% static 'img/logo2.png' %}" alt="logo here" /></a>
+                  </div>
+               </div>
+               <div class="search-bar1 col-md-4 col-sm-12">
+                  <!-- <form class="navbar-form" role="search" action="{%url 'Peru:search_product'%}" method="POST">{% csrf_token %}
+                     <div class="input-group">
+                     	<input type="text" class="form-control" placeholder="Search by keywords..." name="q">
+                     	<div class="input-group-btn">
+                     		<button class="btn btn-default btn-red" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                     	</div>
+                     </div>
+                     </form> -->
+               </div>
+               <div class="col-sm-9 col-xs-8 col-md-4">
+                  <div class="nav-right vendor">
+                     <!--<a href="#" class="pull-right stuff_link">Want to sell my stuff ?</a>-->
+                     <ul>
+                        {% if user.is_vendor and user.is_customer %}
+                        <li class="l1"><a href="{% url 'vendor:vendor_dashboard' %}" >Dashboard</a></li>
+                        <li class="l1"><a href="{% url 'vendor:vendor_signup'%}">Registration</a></li>
+                        {% else %}
+                        <!--<li><a href="#">Loreum</a></li>-->
+                        <li class="l1"><a href="" data-toggle="modal" data-target="#login">Login</a></li>
+                        <li class="l1"><a href="{% url 'vendor:vendor_signup'%}">Registration</a></li>
+                        {% endif %}
+                        <!--<li><a class="cart" href=""><img src="img/cart1.png" alt=""/><span class="cart-count">2</span></a></li>-->
+                     </ul>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </header>
+      <section class="banner-panel vendor-h">
+         <div class="container">
+            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+               <ol class="carousel-indicators">
+                  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                  <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+               </ol>
+               <div class="carousel-inner">
+                  <div class="item active">
+                     <img src="{% static 'img/banner1.png' %}" alt="...">
+                     <div class="carousel-caption">
+                        <!-- <div class="off_banner">
+                           <h2>Womens  Fashion</h2>
+                           <div class="off-round">
+                           	<span>30%</span>
+                           </div>
+                           <strong class="off-text ">OFF</strong>
+                           </div> -->
+                     </div>
+                  </div>
+                  <div class="item">
+                     <img src="{% static 'img/banner1.png' %}" alt="">
+                     <div class="carousel-caption"></div>
+                  </div>
+                  <div class="item">
+                     <img src="{% static 'img/banner1.png' %}" alt="...">
+                     <div class="carousel-caption">
+                     </div>
+                  </div>
+                  <div class="item">
+                     <img src="{% static 'img/banner1.png' %}" alt="...">
+                     <div class="carousel-caption">
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <section class="vendor_section">
+      <div class="container">
+         <div class="vendor_inner_pages">
+            <div class="vedor_heading m-b-20">
+               <h3><u>FEATURES & BENEFITS</u></h3>
+            </div>
+            <!-- Boxes de Acoes -->
+            <div class="text-center dis-tbl">
+               <div class="fsd">
+                  <figure>
+                     <span>
+                     <img src="{% static 'img/icon51.png' %}" alt="" />
+                     </span>
+                  </figure>
+                  <div class="fig-text">Crores of customers across the world </div>
+               </div>
+               <div class="fsd">
+                  <figure>
+                     <span>
+                     <img src="{% static 'img/icon41.png' %}" alt="" />
+                     </span>
+                  </figure>
+                  <div class="fig-text">Fast and stress free shipping</div>
+               </div>
+               <div class="fsd">
+                  <figure>
+                     <span>
+                     <img src="{% static 'img/bag.png' %}" alt="" />
+                     </span>
+                  </figure>
+                  <div class="fig-text">Pay when you sell, No Listing fee</div>
+               </div>
+               <div class="fsd">
+                  <figure>
+                     <span>
+                     <img src="{% static 'img/card.png' %}" alt="" />
+                     </span>
+                  </figure>
+                  <div class="fig-text">Secure and Timely Payments</div>
+               </div>
+               <div class="fsd">
+                  <figure>
+                     <span>
+                     <img src="{% static 'img/icon21.png'%}" alt="" />
+                     </span>
+                  </figure>
+                  <div class="fig-text">Professional Services to help you through every step of selling online</div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <section>
+      <div class="container">
+         <div class="vedor_heading m-b-20">
+            <h3><u>HOW IT'S WORK</u></h3>
+         </div>
+      </div>
+      <section>
+         <div class="container v1">
+            <ul class="nav nav-tabs">
+               <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+               <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+               <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+               <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+            </ul>
+            <div class="tab-content">
+               <div id="home" class="tab-pane fade in active">
+                  <div class="container-fluid">
+                     <div class="row">
+                        <div class="col-md-3"><img src="{% static 'img/product43.png' %}" class="img-responsive"></div>
+                        <div class="col-md-9">
+                           <h2>Slide 1</h2>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, labore, magni illum nemo ipsum quod voluptates ab natus nulla possimus incidunt aut neque quaerat mollitia perspiciatis assumenda asperiores consequatur soluta.</p>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div id="menu1" class="tab-pane fade">
+                  <div class="container-fluid">
+                     <div class="row">
+                        <div class="col-md-3"><img src="{% static 'img/product43.png' %}" class="img-responsive"></div>
+                        <div class="col-md-9">
+                           <h2>Slide 1</h2>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, labore, magni illum nemo ipsum quod voluptates ab natus nulla possimus incidunt aut neque quaerat mollitia perspiciatis assumenda asperiores consequatur soluta.</p>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div id="menu2" class="tab-pane fade">
+                  <div class="container-fluid">
+                     <div class="row">
+                        <div class="col-md-3"><img src="{% static 'img/product43.png' %}" class="img-responsive"></div>
+                        <div class="col-md-9">
+                           <h2>Slide 1</h2>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, labore, magni illum nemo ipsum quod voluptates ab natus nulla possimus incidunt aut neque quaerat mollitia perspiciatis assumenda asperiores consequatur soluta.</p>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div id="menu3" class="tab-pane fade">
+                  <div class="container-fluid">
+                     <div class="row">
+                        <div class="col-md-3"><img src="{% static 'img/product43.png' %}" class="img-responsive"></div>
+                        <div class="col-md-9">
+                           <h2>Slide 1</h2>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, labore, magni illum nemo ipsum quod voluptates ab natus nulla possimus incidunt aut neque quaerat mollitia perspiciatis assumenda asperiores consequatur soluta.</p>
+                           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- ========== Footer =======================================-->
+      <footer>
+         <div class="container">
+            <div class="row">
+               <div class="col-md-2">
+                  <h2>How to Buy?</h2>
+                  <div class="head-btm"></div>
+                  <ul>
+                     <li><a href="">Shopping FAQ</a></li>
+                     <li><a href="">Order Status </a></li>
+                     <li><a href="">Shopping Process</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2">
+                  <h2>Payment Methods</h2>
+                  <div class="head-btm"></div>
+                  <ul>
+                     <li><a href="">Cash on Delivery</a></li>
+                     <li><a href="">Delivery Payment </a></li>
+                     <li><a href="">Intelligent Query</a></li>
+                     <li><a href="">Online Payment</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2">
+                  <h2>Shipping & Delivery</h2>
+                  <div class="head-btm"></div>
+                  <ul>
+                     <li><a href="">Delivery Fees Range</a></li>
+                     <li><a href="">Notice of Receipt </a></li>
+                     <li><a href="">Express Delivery</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2">
+                  <h2>About Us</h2>
+                  <div class="head-btm"></div>
+                  <ul>
+                     <li><a href="">Sina Weibo</a></li>
+                     <li><a href="">QQ Space </a></li>
+                     <li><a href="">The Official Micro-Letter</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2">
+                  <h2>After Sales Services</h2>
+                  <div class="head-btm"></div>
+                  <ul>
+                     <li><a href="">Return Process</a></li>
+                     <li><a href="">Return Policy </a></li>
+                     <li><a href="">Service Policy</a></li>
+                  </ul>
+               </div>
+               <div class="col-md-2">
+                  <h2>Follow Us</h2>
+                  <div class="head-btm"></div>
+                  <ul class="dis-in-icon">
+                     <li><a href=""><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                     <li><a href=""><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                     <li><a href=""><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                  </ul>
+               </div>
+            </div>
+         </div>
+         <div class="cppy-ryt">
+            <div class="container">
+               <div class="row">
+                  <p class="text-center">Todos los derechos reservados. ©Juntos Peru 2016</p>
+               </div>
+            </div>
+         </div>
+      </footer>
+      <!-- ========== End Footer =======================================-->
+      <!--=========================== vendor Login Model ========================================-->
+      <div id="login" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-md">
+            <div class="modal-content clearfix">
+               <!--<button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>-->
+               <a href="#" data-dismiss="modal"><img src="{% static 'img/cross.png' %}" class="cross"></a>
+               <div class="modal-body login-popup">
+                  <div class="col-sm-10 col-sm-offset-1">
+                     <h3>LOGIN</h3>
+                     <form class="form-horizontal popup-container" id="login_customer_id" method="POST" action="{% url 'vendor:vendor_login' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                           <input type="email" id="email" name="email" placeholder="Email" value="{{form.email.value}}" class="form-control">
+                           {% if formss.errors.email %}
+                           <strong style="color:red">{{ formss.errors.email }}</strong>
+                           {% endif %}
+                        </div>
+                        <div class="form-group">
+                           <input type="password" id="password" name="password" value="{{form.password.value}}" placeholder="Password" class="form-control">
+                           {% if formss.errors.password %}
+                           <strong style="color:red">{{ formss.errors.password | escape }}</strong>
+                           {% endif %}
+                        </div>
+                        <div class="form-group c1-tab">
+                           <div class="checkbox cus-check">
+                              <label class="myCheckbox">
+                              <input type="checkbox" name="test">
+                              <span></span></label>
+                              <div class="checkbox-text">Remember me</div>
+                           </div>
+                           <div class="forgot-txt">
+                              <u><a href="" data-toggle="modal" data-target="#forgot_password">Forgot Password?</a></u>
+                           </div>
+                        </div>
+                        <div class="popup-logn-btn text-center">
+                           <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                        <div class="dont-text">
+                           Don't have an account yet? <a href="{% url 'vendor:vendor_signup'%}">Sign Up</a>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!--  -->
+      <!-- ===================================== Login model finish ==========================================-->
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <!-- ===================================== FORGOT PASSWORD Model  ==========================================-->
+      
+      <!-- ===================================== FORGOT PASSWORD Model Finish ==========================================-->
+      <!-- =========================== Script for model open After error occur ==========================================-->
+      {% if formss.errors %}
+      <script type="text/javascript">
+         $("#login").modal('show');
+      </script>
+      {% endif %}
+      <!-- =========================== Script for model open After error occur finish==========================================-->
+<!-- lobibox models for message -->
+      {% if messages %}
+      {% for message in messages %}
+      <script>
+         Lobibox.notify('{{ message.tags }}', {
+            delayIndicator: true,
+            delay: 9000,
+            width: 400,
+            msg: '{{ message }}'
+         });
+      </script>
+      {% endfor %}
+      {% endif %}	
+<!-- lobibox models models finish -->
+
+      <script>
+         $(document).ready(function(ev){
+         	$('#custom_carousel').on('slide.bs.carousel', function (evt) {
+         	  $('#custom_carousel .controls li.active').removeClass('active');
+         	  $('#custom_carousel .controls li:eq('+$(evt.relatedTarget).index()+')').addClass('active');
+         	})
+         });
+      </script>
+   </body>
+</html>

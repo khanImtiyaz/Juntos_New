@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load natural_time %}
+{% block content %}
+{% if all_cart %}
+<section class="shopping-cart-wrapper">
+   <div class="container-fluid">
+      <div class="col-sm-9">
+         <div class="left-shopping-table xs-new-lr-15">
+            <div class="shopping-heading">Shopping Cart</div>
+            <div class="table-responsive">
+               <table class="table">
+                  <thead>
+                     <tr>
+                        <th class="th-img"></th>
+                        <th class="th-details"></th>
+                        <th class="th-price">Total Price</th>
+                        <th class="th-qty">Quantity</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {%  for product in all_cart %}
+                     <tr>
+                        <td class="th-img"><img src="{{product.product.image.0}}"></td>
+                        <td class="th-details">
+                           <div class="cart-detl-s">
+                              <h3>{{product.product.title}}</h3>
+                              {% if product.product.in_stock %}
+                              <p>In Stock</p>
+                              {% else %}
+                              <p>Out of Stock</p>
+                              {% endif %}
+                              <div class="black-text">
+                                 {{product.product.description |truncatechars:200 |safe}}
+                              </div>
+                              <div class="shop-a">
+                                 {% if user.id %}
+                                 <a href="{% url 'Juntos:remove-from-cart' product.product.id %}">Delete</a>
+                                 {% else %}
+                                 <form id="form_delete" name="form2" class="form-horizontal popup-container" method="POST" action="{% url 'Juntos:proceed-cart' %}" style="margin: 0px;padding: 10px 0px;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="card_data" id="card_data">
+                                    <a href="javascript:void(0)" onclick="removeCartItem({{product.product.id}})">Delete</a>
+                                 </form>
+                                 {% endif %}
+                                 {% if user.is_customer %}
+                                 <a href="{% url 'Juntos:add-whishlist' product.product.id %}"><i style="color: red;" class="fa fa-heart text-primary"></i> Move to Wishlist</a>
+                                 {% endif %}
+                              </div>
+                           </div>
+                        </td>
+                        <td class="th-price">
+                           <div class="cart-price">
+                              <div class="price">
+                                 $
+                                 <div style='display:inline;' id="product_{{product.product.id}}">{{product.price |floatformat:2}}</div>
+                                 {% if product.product.selling_price %}
+                                 <input type="hidden" id="producthid{{product.product.id}}" value="{{product.product.selling_price |floatformat:2}}">
+                                 {% else %}
+                                 <input type="hidden" id="producthid{{product.product.id}}" value="{{product.product.price |floatformat:2}}">
+                                 {% endif %}
+                                 <input type="hidden" id="product_id" value="{{product.product.id}} ">
+                              </div>
+                           </div>
+                        </td>
+                        <td class="th-qty">
+                           <div class="cart-qty">
+                              <div class="qty-val">
+                                 <select class="form-control sel" id='quantity_drop_down_{{product.product.id}}' value="{{product.quantity}}_{{product.product.id}}">
+                                    {% for quant in product.product.product_quantity|product_quantity %}
+                                    <option value="{{quant}}_{{product.product.id}}">{{quant}}</option>
+                                    {% endfor %}
+                                 </select>
+                              </div>
+                              <script type="text/javascript">
+                                 $("#quantity_drop_down_{{product.product.id}}").val('{{product.quantity}}_{{product.product.id}}')
+                              </script>
+                           </div>
+                        </td>
+                     </tr>
+                     {% endfor %}
+                     <tr>
+                        <td colspan="4">
+                           <div class="subtotal-row">
+                              <div class="text-right">
+                                 Tax: <span>18%</span>
+                              </div>
+                              <div class="text-right">
+                              </div>
+                              <div class="text-right">
+                                 Grandtotal ({{all_cart|length}} Items) :<span>$</span><span id='grand_payment'>{{total_price |floatformat:2}}</span>
+                              </div>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <div class="col-sm-3">
+         <div class="right-shopping xs-new-lr-15">
+            <div class="right-suborder">
+            </div>
+            <div class="subtotal-price">
+               <h2>Tax : <span>18%</span></h2>
+               <h2>Grandtotal ({{all_cart|length}} items):<span>$</span><span id='proceed_payment'>{{total_price |floatformat:2}}</span></h2>
+               <div class="subtotal-row">
+                  <div class="checkbox">
+                     <label>
+                     </label>
+                  </div>
+                  <div class="proceed-checkout">
+                     <a href="javascript:void(0)" class="btn btn-green" onclick="return Proceed(this);" >Proceed to Payment</a>
+                  </div>
+               </div>
+               <div class="estimate-shipping">
+                  <div class="estimate-s" data-toggle="collapse" data-target="#demo">
+                  </div>
+                  <div id="demo" class="collapse">
+                     <div class="form-group">
+                        <label>Enter a PIN Code</label>
+                        <input type="text" class="form-control">
+                     </div>
+                     <button type="submit" class="btn btn-default">Get Estimate</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="right-bottom-sec xs-new-lr-15">
+            <div class="panel panel-primary">
+               <div class="panel-heading">Recommended For You</div>
+               <div class="panel-body">
+                  {% for r in recomended_product %}
+                  <div class="recommemd-prod">
+                     <a href="{% url 'Juntos:product-detail' r.slug %}">
+                        <div class="recomd-l-img">
+                           <img src="{{r.image}}">
+                        </div>
+                     </a>
+                     <div class="recomd-r-img">
+                        <h3>{{r.title}}</h3>
+                        {% for review in r.total_review %}
+                        <div class="star-rank">
+                           {% if review.rating_value %}
+                           <i class="fa fa-star y-color">{{review.rating_value}}</i>
+                           {% else %}
+                           <i class="fa fa-star "></i>
+                           <i class="fa fa-star "></i>
+                           <i class="fa fa-star "></i>
+                           <i class="fa fa-star "></i>
+                           <i class="fa fa-star "></i>
+                           {% endif %}
+                        </div>
+                        {% endfor %}
+                        <div class="recom-price">
+                           ${{r.price}}
+                        </div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   </div>
+</section>
+<script type="text/javascript">
+   $('.sel').on('change',function() {
+       quant_Array = $(this).val().split('_');
+       previous_amount = parseFloat($("#product_"+quant_Array[1]).text())
+       $("#product_"+quant_Array[1]).text((quant_Array[0]*$("#producthid"+quant_Array[1]).val()).toFixed(2))
+       new_amount = parseFloat($("#product_"+quant_Array[1]).text())
+       if(previous_amount>new_amount)
+            difference_amount = $('#grand_payment').text()-(previous_amount-new_amount)-((previous_amount-new_amount)*18)/100
+        else
+            difference_amount = parseFloat($('#grand_payment').text())+parseFloat(new_amount - previous_amount)+parseFloat(((new_amount - previous_amount)*18)/100)
+       $('#grand_payment').text(difference_amount.toFixed(2))
+       $('#proceed_payment').text(difference_amount.toFixed(2))
+       // add_cart_details_simple_shipp(quant_Array[0], quant_Array[1]);
+   });
+   
+   function add_cart_details_simple_shipp(data, product) {
+       $.ajax({
+           type: 'POST',
+           url: "{% url 'Juntos:increase-cart' %}",
+           dataType: 'json',
+           data: {
+               'product_id': product,
+               'quantity': data,
+               'csrfmiddlewaretoken': '{{ csrf_token }}',
+           },
+           success: function(e) {
+               if (e.exists) {
+                   Lobibox.notify('info', {
+                       position: 'top right',
+                       size: 'mini',
+                       sound: false,
+                       msg: 'Cart updated',
+                       title: 'Peru Juntos',
+                   });
+               }
+               $('#initial_card').text(e.cart_count);
+           },
+       });
+   }
+</script>
+<script type="text/javascript">
+   function removeCartItem(id){
+       card_product_id = []
+       var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+       Object.keys(oldItems).forEach(function(key) {
+           if(oldItems[key]['product_id']!=id)
+               card_product_id.push(oldItems[key]);
+       });
+       localStorage.setItem($.cookie("add_card_token"), JSON.stringify(card_product_id));
+       $("#card_data").val(JSON.stringify(card_product_id));
+       setTimeout(function(){
+           console.log($("#card_data").val())
+           $('#form_delete').submit()
+       },1000)
+   }
+</script>
+{% else %}
+<center><img style="margin-top: 20px; height: 300px;" src="//img1a.flixcart.com/www/linchpin/fk-cp-zion/img/empty-cart_ee6141.png"></center>
+<h1 class="pull-left-down">
+   <span style="color: black">Your Shopping Cart is empty.</span>
+</h1>
+<center style="margin-bottom: 40px;" >  <a href="{% url 'Juntos:home' %}" class="btn btn-lg btn-keep_shop">KEEP SHOPPING</a></center>
+{% endif %}
+<script type="text/javascript">
+   function Proceed(check){
+     {% if user.is_customer %}
+           window.location.assign("{% url 'Juntos:add-shipping' %}");
+     {% else %}
+       $("#login").modal("show");
+     {% endif %}
+   
+   }
+</script>
+{% endblock %}

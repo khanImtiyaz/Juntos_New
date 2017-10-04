@@ -1,0 +1,218 @@
+{% extends 'vendor/account_header.html'%} {% load staticfiles %} {% block content %}
+<section class="vendor_section">
+    <div class="container">
+        <div class="vendor_inner_pages">
+            <div class="row profile">
+                <div class="col-md-3">
+                    <div class="profile-sidebar">
+                        <div class="profile-userpic">
+                            {% if not user.avatar.name%}
+                            <img src="{% static 'img/dummy.png' %}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal"> {% else %}
+                            <img src="{{user.avatar.name}}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal"> {% endif %}
+                        </div>
+                        <div class="profile-usertitle">
+                            <div class="profile-usertitle-name">
+                                <a href="{% url 'vendor:vendor_profile_view'%}">{{user.first_name}} {{user.last_name}}</a>
+                            </div>
+                        </div>
+                        <div class="profile-usermenu">
+                            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content" aria-expanded="true"></i>
+                            <ul id="menu-content" class="nav collapse out">
+                                <li>
+                                    <a href="{% url 'vendor:vendor_dashboard' %}">
+                                        <i class="fa fa-tachometer"></i> My Dashboard </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'vendor:vendor_profile_view' %}">
+                                        <i class="fa fa-user"></i> Profile </a>
+                                </li>
+                                <li class="active">
+                                    <a href="{% url 'vendor:product_list'%}">
+                                        <i class="fa fa-list"></i> Products List </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'vendor:orders_history'%}">
+                                        <i class="fa fa-history"></i> Order History </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'vendor:add_product' %}">
+                                        <i class="fa fa-puzzle-piece"></i> Add New Product </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'vendor:notifications' %}">
+                                        <i class="fa fa-comment"></i> Notifications </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'vendor:payments' %}">
+                                        <i class="fa fa-credit-card-alt"></i> Payment Management </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'vendor:dhl_credential' %}">
+                                        <i class="fa fa-credit-card-alt"></i> Dhl Credentials </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'customer:view_order' %}">
+                                        <i class="fa fa-shopping-cart"></i> My Orders </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- END MENU -->
+                    </div>
+                </div>
+                <!-- messages from view after redirect use-->
+
+                <!-- end message show -->
+                <div class="col-md-9">
+
+                    {% if messages %}
+                    <div class="alert alert-success alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> {% for message in messages %} {{ message.message }} {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="profile-content">
+                        <div class="heading_top clearfix">
+                            <h2 class="pull-left">Uploaded PRODUCTS</h2>
+                            <!-- <a class="btn btn-custom pull-right" href="{% url 'vendor:add_product' %}">Add New Product ➕</a> -->
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width:12%;">Product Id</th>
+                                        <th style="width:12%;">Product Name</th>
+                                        <th style="width:14%;">Product Category </th>
+                                        <th style="width:13%;">Sub-Category</th>
+
+                                        <!-- <th>Price </th>
+											<th style="width:11%;">Selling Price </th>
+											<th class="text-center">Quantity</th>
+											<th>Status</th> -->
+										
+                                        <th style="width:10%;">Left Days</th>
+                                        <th style="width:10%;">Action</th>
+                                        <th style="width:10%;">Reposting</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="id_product_details">
+                                    {% if previous_products %} {% for product in previous_products %}
+
+                                    <tr id="rem">
+                                        <td>
+                                            {{product.product_sku}}
+                                        </td>
+                                        <td>
+                                            {{product.title}}
+                                        </td>
+
+                                        <td>{{product.subs_category.category}}
+                                        </td>
+                                        <td>
+                                            {{product.subs_category}}
+                                        </td>
+                                        <td>
+                                            {{product.expire_products}}
+                                        </td>
+
+                                        <!-- <td>
+												${{product.price |floatformat:2}}
+											</td>
+											<td>
+												$ {{product.selling_price |floatformat:2}}
+											</td>
+											<td class="text-center">{{product.product_quantity}}</td>
+											<td><strong>{% if product.in_stock %}Available {% else %} Out of stock{% endif %}</strong></td> -->
+                                        <td>
+                                            <button class="btn btn-red2 btn-xs" onclick="remove_product(this,{{product.id}})"><i class="fa fa-trash"></i> </button>
+                                            <!-- <a href="{% url 'vendor:update_product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a> --></td>
+                                        <!-- <i class="fa fa-plus-circle"></i>  -->
+                                        <td><label class="checkbox-inline"><button id="checkbox_id" style="font-size:large;" type="button" class="btn btn-info" value="" onclick="myFunction(this,{{product.id}})">RePost</button></label></td>
+                                        
+                                    </tr>
+                                    {% endfor %} {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!--  -->
+                        <div class="pagination-in text-center">
+                            <ul class="pagination">
+
+                                {% if previous_products %} {% if previous_products.has_other_pages %}
+                                <div class="pagination-top text-center"></div>
+                                <ul class="pagination text-center">
+                                    {% if previous_products.has_previous %}
+                                    <li><a href="?page={{ previous_products.previous_page_number }}" class="paginate left">&#xab;</a></li>
+                                    {% else %}
+                                    <li class="disabled"><a class="paginate left">&#xab;</a></li>
+                                    {% endif %} {% for i in previous_products.paginator.page_range %} {% if previous_products.number == i %}
+                                    <li class="active"><a>{{ i }}</a></li>
+                                    {% else %}
+                                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %} {% endfor %} {% if previous_products.has_next %}
+                                    <li><a href="?page={{ previous_products.next_page_number }}" class="paginate right">&#xbb;</a></li>
+                                    {% else %}
+                                    <li class="disabled"><a class="paginate right">&#xbb;</a></li>
+                                    {% endif %}
+                                </ul>
+                                {% endif %} {% else %} No Previous Product Available ! {% endif %}
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function remove_product(file, product) {
+        $.ajax({
+            url: "{% url 'vendor:remove_product' %}",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'product': product,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(e) {
+                file.closest("tr").remove()
+                if (e.total_product == 0) {
+                    $(".pagination > li").remove();
+                    $(".pagination").append("<li>	No Product available ! </li>");
+                }
+                if (e.code == 200) {
+                    Lobibox.notify('info', {
+                        sound: false,
+                        msg: e.message,
+                        title: 'Peru Juntos Vendor',
+                    });
+                    return true;
+                }
+
+            },
+        });
+
+    }
+</script>
+<script type="text/javascript">
+	function myFunction(obj, id){
+		$.ajax({
+            url: "{% url 'vendor:repost_products' %}",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                'id': id,
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(e) {
+            	$( "#rem" ).remove();
+               	
+
+            },
+        });
+	}
+</script>
+{% endblock%}

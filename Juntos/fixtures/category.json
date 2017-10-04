@@ -1,0 +1,316 @@
+[
+  {
+    "model": "Juntos.Category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Articulos de vestir y accesorios",
+      "priority": 1
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 1,
+    "fields": {
+      "sub_category_name": "Para ella",
+      "priority": 1,
+      "category": 1,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 2,
+    "fields": {
+      "sub_category_name": "Para él",
+      "priority": 2,
+      "category": 1,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 3,
+    "fields": {
+      "sub_category_name": "Joyeria",
+      "priority": 3,
+      "category": 1,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 4,
+    "fields": {
+      "sub_category_name": "Accesorios",
+      "priority": 4,
+      "category": 1,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 5,
+    "fields": {
+      "sub_category_name": "Articulos deportivos",
+      "priority": 5,
+      "category": 1,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.Category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Articulos para el hogar",
+      "priority": 2
+    }
+  },{
+    "model": "Juntos.SubCategory",
+    "pk": 6,
+    "fields": {
+      "sub_category_name": "Muebles",
+      "priority": 6,
+      "category": 2,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 7,
+    "fields": {
+      "sub_category_name": "Articulos de cocina",
+      "priority": 7,
+      "category": 2,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 8,
+    "fields": {
+      "sub_category_name": "Patio y plantas",
+      "priority": 8,
+      "category": 2,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.Category",
+    "pk": 3,
+    "fields": {
+      "category_name": "Articulos para bebe",
+      "priority": 3
+    }
+  },{
+    "model": "Juntos.SubCategory",
+    "pk": 9,
+    "fields": {
+      "sub_category_name": "Juego de ropa",
+      "priority": 9,
+      "category": 3,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 10,
+    "fields": {
+      "sub_category_name": "Juguetes",
+      "priority": 10,
+      "category": 3,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 11,
+    "fields": {
+      "sub_category_name": "Varios",
+      "priority": 11,
+      "category": 3,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.Category",
+    "pk": 4,
+    "fields": {
+      "category_name": "Entretenimiento",
+      "priority": 4
+    }
+  },{
+    "model": "Juntos.SubCategory",
+    "pk": 12,
+    "fields": {
+      "sub_category_name": "Música",
+      "priority": 12,
+      "category": 4,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 13,
+    "fields": {
+      "sub_category_name": "Video",
+      "priority": 13,
+      "category": 4,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 14,
+    "fields": {
+      "sub_category_name": "Juegos electronicos",
+      "priority": 14,
+      "category": 4,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.Category",
+    "pk": 5,
+    "fields": {
+      "category_name": "Arte",
+      "priority": 5
+    }
+  },{
+    "model": "Juntos.SubCategory",
+    "pk": 15,
+    "fields": {
+      "sub_category_name": "Pintura",
+      "priority": 15,
+      "category": 5,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 16,
+    "fields": {
+      "sub_category_name": "Tejidos",
+      "priority": 16,
+      "category": 5,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 17,
+    "fields": {
+      "sub_category_name": "Artesania",
+      "priority": 17,
+      "category": 5,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.Category",
+    "pk": 6,
+    "fields": {
+      "category_name": "Libros",
+      "priority": 6
+    }
+  },{
+    "model": "Juntos.SubCategory",
+    "pk": 18,
+    "fields": {
+      "sub_category_name": "Textos escolares",
+      "priority": 18,
+      "category": 6,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 19,
+    "fields": {
+      "sub_category_name": "Textos universitarios",
+      "priority": 19,
+      "category": 6,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 20,
+    "fields": {
+      "sub_category_name": "Entretenimiento y curiosidades",
+      "priority": 20,
+      "category": 6,
+      "sub_category_flage":"SHOES",
+      "subcategory_shoes_size":"6,7,8,9,10,11"
+    }
+  },
+  {
+    "model": "Juntos.Category",
+    "pk": 7,
+    "fields": {
+      "category_name": "Servicios",
+      "priority": 7
+    }
+  },{
+    "model": "Juntos.SubCategory",
+    "pk": 21,
+    "fields": {
+      "sub_category_name": "Profesionales",
+      "priority": 21,
+      "category": 7,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 22,
+    "fields": {
+      "sub_category_name": "General",
+      "priority": 22,
+      "category": 7,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 23,
+    "fields": {
+      "sub_category_name": "Venta de terrenos",
+      "priority": 23,
+      "category": 7,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  },
+  {
+    "model": "Juntos.SubCategory",
+    "pk": 24,
+    "fields": {
+      "sub_category_name": "Venta de terrenos",
+      "priority": 24,
+      "category": 7,
+      "sub_category_flage":"CLOTH",
+      "subcategory_size":"1,2,3,4,5"
+    }
+  }
+]

@@ -1,0 +1,57 @@
+<div class="recomen-panel" style="color: red;">
+  <h2>All Products</h2>
+  <div class="row">
+    {% for product in all_product_list %}
+    <div class="col-md-3 col-lg-3 pro-main">
+      <div class="prodct-anchor">
+        <a href="{% url 'Juntos:product-detail' product.slug %}">
+          <div class="product-panel1">
+            <span><img src="{{product.image.0}}" alt=""/></span>
+          </div>
+        </a>
+        <h3>{{product.title | truncatechars:28}}</h3>
+        <div class="pro-price">
+        {% if product.selling_price %}
+          <div class="tbl-cell d1p1">$ {{product.selling_price |floatformat:2}}<span>$ {{product.price |floatformat:2}}</span></div>
+        {% else %}
+        <div class="tbl-cell d1p1">$ {{product.price |floatformat:2}}</div>
+        {% endif %}
+          <div class="tbl-cell d1p2">
+            {% if not product.subs_category.sub_category_tag == "CP" %}
+            <a href="javascript:void(0)" onclick="add_card(this, {{product.id}})"> ADD TO CART </a> {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% if all_product_list.has_other_pages %}
+  <div class="bdr-bottom"></div>
+  <div class="pagination-top text-center">
+    <ul class="pagination text-center">
+      {% if all_product_list.has_previous %}
+      <li>
+        <a href="?page={{ all_product_list.previous_page_number }}" class="paginate left">&#xab;</a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a class="paginate left">&#xab;</a>
+      </li>
+      {% endif %} {% for i in all_product_list.paginator.page_range %} {% if contacts.number == i %}
+      <li class="active"><a>{{ i }}</a></li>
+      {% else %}
+      <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %} {% endfor %} {% if all_product_list.has_next %}
+      <li>
+        <a href="?page={{ all_product_list.next_page_number }}" class="paginate right">&#xbb;</a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a class="paginate right">&#xbb;</a>
+      </li>
+      {% endif %}
+    </ul>
+    {% endif %}
+
+  </div>
+</div>

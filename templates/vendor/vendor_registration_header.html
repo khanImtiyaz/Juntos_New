@@ -1,0 +1,123 @@
+{% load staticfiles %}
+{% load natural_time %}
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Django</title>
+      <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <link href="{% static 'css/style.css' %}" rel="stylesheet">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
+      <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDurDU6FM4D6yrmVpEF9LqcCmxqcLhG3AU&libraries=places"></script>
+      <script src="{% static 'js/jquery.validate.min.js' %}"></script>
+      <script src="{% static 'js/custom.js' %}"></script>
+      <link rel="stylesheet" href="{% static 'css/lobibox.css' %}"/>
+      <script src="{% static  'js/lobibox.js' %}"></script>
+      <script src="{% static 'js/jquery.geocomplete.js' %}"> </script>
+   </head>
+   <body>
+      <section class="flash-panel">
+         <div class="container">
+            <a  href="" style="color: red;">
+               <p class="text-center">
+                  <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();" direction="left" >{% for new in news|adv %}  {{new.title}}  {% endfor %}</marquee>
+               </p>
+            </a>
+         </div>
+      </section>
+      <header class="y-chnge">
+         <div class="container-fluid">
+            <div class="row">
+               <div class="top-cnt-pad clearfix new_search">
+                  <div class="col-lg-9 col-md-9 col-sm-7">
+                     <div class="row">
+                        <div class="col-md-4 col-sm-5 logo-contain">
+                           <a class="logo" href="{% url 'Juntos:home' %}"><img src="{% static 'img/logo2.png' %}" alt="logo here"/></a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </header>
+      {% block content %}
+      {% endblock %}
+      <script>
+         $('#avatar_id').change(function () {
+            var ext = this.value.match(/\.(.+)$/)[1];
+            switch (ext) {
+               case 'jpg':
+               case 'jpeg':
+               case 'png':
+         $("#img_error").text(' ');
+         break;
+         default:
+         
+         $("<span style='color:#ba2121;' id='img_error'></spn>").insertAfter("#avatar_id");
+         Lobibox.alert('error', {
+            sound: false,
+            msg: 'Please upload valid image.'
+         });
+         this.value = '';
+         }
+         });
+      </script>
+      {% if messages %}
+      {% for message in messages %}
+      <script>
+         Lobibox.notify('{{ message.tags }}', {
+            size: 'mini',
+            showClass: 'fadeInDown',
+            hideClass: 'fadeUpDown',
+            sound: false,
+            msg: '{{ message.message }}',
+            title: 'Peru Juntos',
+         });
+      </script>
+      {% endfor %}
+      </div>
+      {% endif %}
+      <script type="text/javascript">
+         history.pushState(null, null, document.URL);
+         window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.URL);
+         });
+         $("#avatar_id").on('change', function() {
+            var countFiles = $(this)[0].files.length;
+            var imgPath = $(this)[0].value;
+            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            var image_holder = $("#profile_image_preview");
+            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+               if (typeof(FileReader) != "undefined") {
+                  for (var i = 0; i < countFiles; i++)
+                  {
+                     var reader = new FileReader();
+                     reader.onload = function(e) {
+                        image_holder.empty();
+                        $("<img />", {
+                           "src": e.target.result,
+                           "class": "thumb-image"
+                        }).appendTo(image_holder);
+                     }
+                     image_holder.show();
+                     reader.readAsDataURL($(this)[0].files[i]);
+                  }
+               } else {
+                  alert("This browser does not support FileReader.");
+               }
+            } else {
+               Lobibox.alert('error', {
+                  sound: false,
+                  msg: 'Please upload valid image.'
+                  });
+               this.value = "";
+            }
+         });
+      </script>
+   </body>
+</html>

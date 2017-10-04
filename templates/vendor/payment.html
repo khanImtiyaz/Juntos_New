@@ -1,0 +1,50 @@
+{% extends 'vendor/account_header.html'%}
+{% load staticfiles %}
+{% block content %}
+<div class="col-md-9">
+   <div class="profile-content">
+      <div class="panel panel-info">
+         <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+               <thead>
+                  <tr>
+                     <th>Sender Email</th>
+                     <th>Order Number </th>
+                     <th>Payment Key</th>
+                     <th>Payment Status</th>
+                     <th>Transaction ID</th>
+                  </tr>
+               </thead>
+               <tbody id="id_product_details">
+                  {% if payments %}
+                  {% for payment in payments %}
+                  <tr>
+                     <td>{{payment.sender_email}}
+                     </td>
+                     <td>
+                        #	{{payment.order_id.order_number}}
+                     </td>
+                     <td>
+                        {{payment.pay_key}}
+                     </td>
+                     <td>
+                        {{payment.payment_status}}
+                     </td>
+                     <td>
+                        #{{payment.tranaction_id}}
+                     </td>
+                  </tr>
+                  {% endfor %}
+                  {% endif %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+   $(document).ready(function(){
+      $("#menu-content li:eq(6)").attr('class','active')
+   })
+</script>
+{% endblock %}

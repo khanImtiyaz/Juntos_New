@@ -1,0 +1,129 @@
+{% extends 'vendor/vendor_registration_header.html' %}
+{% load staticfiles %}
+{%block content%}
+<section class="vendor_section">
+<div class="container">
+<div class="vendor_inner_pages">
+<div class="row">
+   <div class="col-sm-10 col-md-12  col-lg-offset-0 toppad">
+      <div class="heading_top">
+         <h2>Register and Start Selling</h2>
+      </div>
+      <div class="panel panel-info">
+         <div class="panel-heading">
+            <h3 class="panel-title">Please have the following ready before you begin:</h3>
+         </div>
+         <div class="panel-body">
+            <div class="row">
+               <div class="col-sm-12">
+                  <ul class="frm-list-43">
+                     <li>1. Your Paypal account details for receiving payments from Junto Peru</li>
+                     <li>2. Tax( VAT/CST/TIN) details of your business if you sell in taxable products</li>
+                  </ul>
+               </div>
+               <div class=" col-md-12 col-lg-12">
+                  <fieldset>
+                     <form id="vendor_reg" class="form-horizontal form_custom_edit" method="POST" action="{% url 'Vendor:vendor-signup-1' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% if message %}
+                        <script>
+                           alert('{{ message }}');
+                        </script>
+                        {% endif %}
+                        <div class="col-md-6" style="border-right: 1px solid #e8e6e6;">
+                           <div class="form-group">
+                              <label class="control-label col-sm-3 required">City Name</label>
+                              <div class="col-sm-9">
+                                 <input id="city" name="city" type="text" placeholder="Please Enter City Name" value="{{vendor.city.value}}" class="form-control" maxlength="30" >
+                                 {% if vendor.errors.city %}
+                                 <strong style="color:red">{{ vendor.errors.city | escape }}</strong>
+                                 {% endif %}
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label col-sm-3 required">State Name</label>
+                              <div class="col-sm-9">
+                                 <input id="state" name="state" type="text" placeholder="Please Enter State Name" value="{{vendor.state.value}}" class="form-control" maxlength="30" >
+                                 {% if vendor.errors.state %}
+                                 <strong style="color:red">{{ vendor.errors.state | escape }}</strong>
+                                 {% endif %}
+                              </div>
+                           </div>
+                           <!-- devision point -->
+                           <div class="form-group">
+                              <label class="control-label col-sm-3 required">Country Name</label>
+                              <div class="col-sm-9">
+                                 <input id="country" name="country" type="text" placeholder="Please Enter Country Name" value="{{vendor.country.value}}" class="form-control" maxlength="30" >
+                                 {% if vendor.errors.country %}
+                                 <strong style="color:red">{{ vendor.errors.country | escape }}</strong>
+                                 {% endif %}
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label col-sm-3 required">Postal code</label>
+                              <div class="col-sm-9">
+                                 <input id="pincode" name="pincode" type="text" placeholder="Please Enter Postal Code" class="form-control" maxlength="10" value="{{vendor.country.value}}" >
+                                 {% if vendor.errors.pincode %}
+                                 <strong style="color:red">{{ vendor.errors.pincode | escape }}</strong>
+                                 {% endif %}
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <label class="control-label col-sm-3">Profile Image</label>
+                              <!-- profile image -->
+                              <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                 <div class="hovereffect">
+                                    <div id="profile_image_preview">
+                                       <img  class="img-responsive" src="{% static 'img/dummy.png'%}">
+                                    </div>
+                                    <div class="overlay">
+                                       <a class="javascript:void(0)">
+                                          <div class=" file-preview-input info">
+                                             <span class="glyphicon glyphicon-folder-open">Browse</span>
+                                             <input id="avatar_id" name="avatar" type="file" value="{{vendor.avatar.url}}"/>
+                                          </div>
+                                       </a>
+                                    </div>
+                                 </div>
+                              </div>
+                              </div>
+
+                              {% if vendor.errors.avatar %}
+                              <strong style="color:red">{{ vendor.errors.avatar | escape }}</strong>
+                              {% endif %}
+                              <!-- end -->
+                        </div>
+                        <div class="col-md-12">
+                           <hr>
+                           <div class="seller-agree">
+                              <h4 class="required">Seller Agreement</h4>
+                              <div class="checkbox ">
+                                 <label>
+                                 <input type="checkbox" name="agree_terms_condition" id="agree_terms_condition">
+                                 <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                                 I have read and agree to comply with and/or be bound by the terms and conditions of <a href="#">Junto Paro Services Business Solutions Agreement</a> and the <a href="#">Easy Ship Service & Runway Terms and Conditions</a>
+                                 {% if vendor.errors.agree_terms_condition %}
+                                 <strong style="color:red">
+                                 {{ vendor.errors.agree_terms_condition | escape }}</strong>
+                                 {% endif %}
+                                 </label>
+                              </div>
+                           </div>
+                           <hr>
+                           <input name="step" type="hidden" value="validate" >
+                           <div class="form-group">
+                              <div class="col-sm-12">
+                                 <a href="{% url 'Vendor:bevendor' %}" class="btn btn-danger"> CANCEL</a>
+                                 <input type="submit" id="form1"  value="CONTINUE" class="btn btn-custom pull-right" />
+                              </div>
+                           </div>
+                        </div>
+                     </form>
+                  </fieldset>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% endblock %}
