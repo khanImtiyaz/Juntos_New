@@ -29,7 +29,6 @@ urlpatterns = [
 	url(r'^update$', views.UpdateProfile.as_view(), name='update-profile'),
 	url(r'^my-orders$', views.ViewOrder.as_view(), name='view-order'),
 	url(r'^check-otp$', views.CheckOTP.as_view(), name='check-otp'),
-	url(r'^check-otp$', views.CheckOTP.as_view(), name='check-otp'),
 	url(r'^resend-otp$', views.ResendOTP.as_view(), name='resend-otp'),
 	url(r'^confirmation/(?P<confirmation_code>\w+)$', views.ConfirmationEmail.as_view(), name="cofirmation"),
 	url(r'^add-cart$', views.AddToCart.as_view(), name='add-cart'),
@@ -45,6 +44,11 @@ urlpatterns = [
 	url(r'^add-shipping$', views.AddShipping.as_view(), name='add-shipping'),
 	url(r'^rating$', views.Rating.as_view(), name='rating'),
 	url(r'^change-cart-quantity$', views.IncreaseCartQuantity.as_view(), name='increase-cart'),
+	url(r'^removecart/(?P<pk>[0-9]+)$', views.RemoveFromCart.as_view(), name='remove-from-cart'),
+	url(r'^wish-list-add/(?P<product_id>[0-9]+)$', views.AddWhishlist.as_view(), name='add-whishlist'),
+	url(r'^dhl_shippingprice$', views.DhlShippingPrice.as_view(), name="dhl-shippingprice"),
+
+
 
 
 

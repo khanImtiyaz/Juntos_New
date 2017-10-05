@@ -43,3 +43,49 @@ class UserLoginForm(forms.Form):
    email=forms.CharField(required=True, error_messages = {"required":"Please Enter Your Email."})
    password=forms.CharField(required=True, strip=False, error_messages = {"required":"Please Enter Your Password."})
 
+class ShippingForm(forms.ModelForm):
+    billing_first_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",
+                                  error_messages = {"invalid":"Please Enter valid name.","required":"Please Enter your first name."})
+    billing__last_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",
+                                  error_messages = {"invalid":"Please Enter valid name.","required":"Please Enter your last name."})
+    billing__phone=forms.RegexField(required = True, regex=r'^\+?1?\d{9,18}$',
+                            error_messages = {"invalid":"The mobile number you Entered is not valid.","required":"Please Enter your phone number."})
+    billing__company=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter company."})
+    billing__country=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter your country."})
+    billing__city=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter city."})
+    billing__address=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter address."})
+    billing__country_abbriviation=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter country abbriviation letters"})
+    billing__state=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter state."})
+    billing__zip=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter zip."})
+    billing__email = forms.EmailField(required = True, error_messages = {"required":"Please Enter a email."})
+
+    shipping_first_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",
+                                  error_messages = {"invalid":"Please enter valid name.","required":"Please enter your first name."})
+    shipping_last_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",
+                                  error_messages = {"invalid":"Please enter valid name.","required":"Please enter your last name."})
+    shipping_phone=forms.RegexField(required = True, regex=r'^\+?1?\d{9,18}$',
+                            error_messages = {"invalid":"The mobile number you entered is not valid.","required":"Please enter your mobile number."})
+    shipping_company=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter Company."})
+    shipping_country=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter Country."})
+    shipping_city=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter City."})
+    shipping_address=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter Address."})
+    shipping_country_abbriviation=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter country Abbriviation Letters"})
+    shipping_state=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter State."})
+    shipping_zip=forms.CharField(required = True,
+                         error_messages = {"required":"Please Enter Zipcode"})
+    shipping_email = forms.EmailField(required = True, error_messages = {"required":"Please Enter A Email."})
+    mode_of_transport = forms.CharField(required=False)
+    

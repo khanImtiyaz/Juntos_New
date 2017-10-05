@@ -11,40 +11,40 @@
                   <i class="fa fa-check" aria-hidden="true"></i>
                </div>
                {% for prod in all_cart %}
-                   {% if forloop.last %}
-                       <div class="item_image">
-                          <img src="{{prod.product.image.0}}">
-                          <div class="hover-popup-div">
-                             <div class="h_pro-dtl">
-                                <div class="l_img-pro">
-                                   <img src="{{prod.product.image.0}}">
-                                </div>
-                                <div class="r_pro-dtl">
-                                   <div class="h_outer-top">
-                                      <div class="h_p_dtl">
-                                         {{prod.product.title}}
-                                      </div>
-                                      <div class="star_h">
-                                         <div class="star-rank">
-                                          {% for rate in star_rating %} 
-                                              {% if rate < prod.product.product_rating %}
-                                                <i class="fa fa-star y-color"></i> 
-                                              {% else %}
-                                                <i class="fa fa-star"></i> 
-                                              {% endif %}
-                                          {% endfor %}
-                                         </div>
-                                      </div>
-                                   </div>
-                                   <div class="h_outer-bottom">
-                                      <div class="h_price"></div>
-                                      <div class="h_stock">{{prod.product.description |truncatechars:200 |safe}}</div>
-                                   </div>
-                                </div>
-                             </div>
-                          </div>
-                       </div>
-                   {% endif %}
+               {% if forloop.last %}
+               <div class="item_image">
+                  <img src="{{prod.product.image.0}}">
+                  <div class="hover-popup-div">
+                     <div class="h_pro-dtl">
+                        <div class="l_img-pro">
+                           <img src="{{prod.product.image.0}}">
+                        </div>
+                        <div class="r_pro-dtl">
+                           <div class="h_outer-top">
+                              <div class="h_p_dtl">
+                                 {{prod.product.title}}
+                              </div>
+                              <div class="star_h">
+                                 <div class="star-rank">
+                                    {% for rate in star_rating %} 
+                                    {% if rate < prod.product.product_rating %}
+                                    <i class="fa fa-star y-color"></i> 
+                                    {% else %}
+                                    <i class="fa fa-star"></i> 
+                                    {% endif %}
+                                    {% endfor %}
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="h_outer-bottom">
+                              <div class="h_price"></div>
+                              <div class="h_stock">{{prod.product.description |truncatechars:200 |safe}}</div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {% endif %}
                {% endfor %}
                <div class="item_text">
                   Added to Cart
@@ -52,28 +52,41 @@
             </div>
          </div>
          <div class="cart-part-right">
-            <div class="cart-part-right-inner">
-               <div class="item_details">
-                  <h2>Cart subtotal <span class="quantity">({{all_cart|length}} items)</span>: <span class="value">${{total_price|floatformat:2}}</span></h2>
-                  <div class="para_item"> 
+            <div class="row" style="margin: 15px 0px!important">
+               <div class="col-md-12">
+                  <div class="item_details" style="text-align: center;">
+                     <h2>Cart subtotal <span class="quantity">({{all_cart|length}} items)</span>: <span class="value">${{total_price|floatformat:2}}</span></h2>
+                     <div class="para_item"> 
+                     </div>
                   </div>
                </div>
-               <div class="btn_cart">
-                  <button type="button" class="btn btn-default"><a href="{% url 'Juntos:home' %}" style="color:white;text-decoration: none;">Continue Shopping</a></button>
-                  <form id="form2" name="form1" class="form-horizontal popup-container" method="POST" action="{% url 'Juntos:proceed-cart' %}">
-                     {% csrf_token %}
-                     <input type="hidden" name="card_data" id="card_data">
-                     <button type="submit" class="btn btn-primary" id='proceed_item'>Proceed to checkout ({{all_cart|length}} items)</button>
-                  </form>
-                  <script type="text/javascript">
-                     card_product_id = []
-                     var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
-                     Object.keys(oldItems).forEach(function(key) {
-                     card_product_id.push(oldItems[key]);
-                     });
-                     console.log(card_product_id)
-                     $("#card_data").val(JSON.stringify(card_product_id));
-                  </script>
+            </div>
+            <div class="row" style="margin: 30px 0px !important;">
+               <div class="col-md-6">
+                  <div class="btn_cart">
+                     <button type="button" class="btn btn-default"><a href="{% url 'Juntos:home' %}" style="color:white;text-decoration: none;">Continue Shopping</a></button>
+                  </div>
+               </div>
+               <div class="col-md-6">
+                  <div class="btn_cart">
+                    {% if user.is_customer %}
+                     <form id="form2" name="form1" class="form-horizontal popup-container" method="GET" action="{% url 'Juntos:proceed-cart' %}" style="padding: 0px !important">
+                     {% else %}
+                     <form id="form2" name="form1" class="form-horizontal popup-container" method="POST" action="{% url 'Juntos:proceed-cart' %}" style="padding: 0px !important">
+                     {% endif %}
+                        {% csrf_token %}
+                        <input type="hidden" name="card_data" id="card_data">
+                        <button type="submit" class="btn btn-primary" id='proceed_item'>Proceed to checkout ({{all_cart|length}} items)</button>
+                     </form>
+                     <script type="text/javascript">
+                        card_product_id = []
+                        var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token")))||[];
+                        Object.keys(oldItems).forEach(function(key) {
+                        card_product_id.push(oldItems[key]);
+                        });
+                        $("#card_data").val(JSON.stringify(card_product_id));
+                     </script>
+                  </div>
                </div>
             </div>
          </div>

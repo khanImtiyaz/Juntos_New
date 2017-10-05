@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 from django.views import View
 from random import randint
 import ast
+import json
 from .twillio import send_sms
 from .models import *
 from .forms import *
@@ -202,27 +203,34 @@ class Index(View):
 
 class ProceedCart(View):
 	"""docstring for ProceedCart"""
-	def post(self,request):
+	def get(self,request):
+		print('GET')
 		user = request.user
 		if user.is_authenticated and user.is_customer:
-			return render(request, 'new_shipping_cart.html')
-		else:
-			card_Array = []
 			total_price = 0.0
-			if 'card_data' in request.POST and request.POST['card_data']:
-				for items in ast.literal_eval(request.POST['card_data']):
-					product = ProductsManagement.objects.get(id=items['product_id'])
-					print(int(items['quantity']))
-					card_Array.append({
-						"product":product,
-						"product_size":int(items['size']),
-						"product_color": int(items['color']),
-						"quantity": int(items['quantity']),
-						"price": (product.selling_price if product.selling_price else product.price) * int(items['quantity'])
-					})
-					total_price = total_price + ((product.selling_price if product.selling_price else product.price) * int(items['quantity']))
-				total_price  = total_price + (total_price * 18)/100
-				return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price})
+			product_cart = Cart.objects.filter(user=user)
+			total_price = product_cart.aggregate(Sum('price'))['price__sum']
+			total_price = total_price + (total_price * 18)/100
+			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price})
+	def post(self,request):
+		print('POST')
+
+		card_Array = []
+		total_price = 0.0
+		if 'card_data' in request.POST and request.POST['card_data']:
+			for items in ast.literal_eval(request.POST['card_data']):
+				product = ProductsManagement.objects.get(id=items['product_id'])
+				print(int(items['quantity']))
+				card_Array.append({
+					"product":product,
+					"product_size":int(items['size']),
+					"product_color": int(items['color']),
+					"quantity": int(items['quantity']),
+					"price": (product.selling_price if product.selling_price else product.price) * int(items['quantity'])
+				})
+				total_price = total_price + ((product.selling_price if product.selling_price else product.price) * int(items['quantity']))
+			total_price  = total_price + (total_price * 18)/100
+			return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price})
 
 
 # @login_required(login_url="/")
@@ -342,73 +350,73 @@ class ContactList(View):
 		JuntosContact = JuntosContactUs.objects.all()
 		return render(request, 'contact_us.html',{"lists":JuntosContact})
 														
-# def login_view(request):
-#     redirect_to = request.POST.get('next', request.GET.get('next', ''))
-#     if request.method=='POST':
-#         product   = Products_Management.objects.all()
-#         paginator = Paginator(product, 10)
+def login_view(request):
+    redirect_to = request.POST.get('next', request.GET.get('next', ''))
+    if request.method=='POST':
+        product   = Products_Management.objects.all()
+        paginator = Paginator(product, 10)
 
-#         all_category = Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             contacts = paginator.page(page)
-#         except PageNotAnInteger:
-#             contacts = paginator.page(1)
-#         except EmptyPage:
-#             contacts = paginator.page(paginator.num_pages)
-#         form = UserLoginForm(request.POST, None)
-#         if form.is_valid():
-#             email = form.cleaned_data["email"]
-#             password = form.cleaned_data["password"]
-#             try:
-#                 user = Customer.objects.get(email=email)
-#                 user = authenticate(username=user.email, password=password)
-#                 if not user.mobile_verified:
-#                     request.session['email'] = user.email
-#                     return redirect('customer:resend_otp')
-#                 else:
-#                     login(request, user)
-#                 if request.POST.get('card_data'):
-#                     """ Add all cart item in Cart after login"""
-#                     for items in ast.literal_eval(request.POST['card_data']):
-#                         product = Products_Management.objects.get(id=items['product_id'])
-#                         card = Cart.objects.filter(user_id=user.id, product_id=items['product_id'])
-#                         print("Card",card)
-#                         if card.count()==1:
-#                             cart = Cart.objects.get(user_id=user.id, product_id=items['product_id'])
-#                             cart.product_size = int(items['size'])
-#                             cart.product_color = int(items['color'])
-#                             cart.quantity = int(items['quantity'])
-#                             cart.price = product.price * int(items['quantity'])
-#                             cart.save()
-#                         else:
-#                             cart1 = Cart(user_id=user.id, product_id=items['product_id'])
-#                             cart1.product_size = int(items['size'])
-#                             cart1.product_color = int(items['color'])
-#                             cart1.quantity = int(items['quantity'])
-#                             cart1.price = product.price * int(items['quantity'])
-#                             cart1.save()
-#                 total_cart = user.card_user.count()
-#                 messages.success(request, "Login successfully.")
-#                 try:
-#                     remember = request.POST.get('remember_me')
-#                     if remember:
-#                         settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-#                 except MultiValueDictKeyError:
-#                     settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-#                 responss = redirect(redirect_to)
-#                 responss.delete_cookie('add_card_token')
-#                 if redirect_to and is_safe_url(url=redirect_to, host=request.get_host()):
-#                     return redirect(redirect_to)
-#                 else:
-#                     return redirect("Peru:home")
-#             except:
-#                 return redirect('Peru:home')
-#         else:
-#             return render(request,"index.html", {'forms':form,"categorys":all_category, "product_list":contacts})
-#     else:
-#         return redirect('Peru:home')
+        all_category = Category.objects.all()
+        index=1
+        page = request.GET.get('page')
+        try:
+            contacts = paginator.page(page)
+        except PageNotAnInteger:
+            contacts = paginator.page(1)
+        except EmptyPage:
+            contacts = paginator.page(paginator.num_pages)
+        form = UserLoginForm(request.POST, None)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            try:
+                user = Customer.objects.get(email=email)
+                user = authenticate(username=user.email, password=password)
+                if not user.mobile_verified:
+                    request.session['email'] = user.email
+                    return redirect('customer:resend_otp')
+                else:
+                    login(request, user)
+                if request.POST.get('card_data'):
+                    """ Add all cart item in Cart after login"""
+                    for items in ast.literal_eval(request.POST['card_data']):
+                        product = Products_Management.objects.get(id=items['product_id'])
+                        card = Cart.objects.filter(user_id=user.id, product_id=items['product_id'])
+                        print("Card",card)
+                        if card.count()==1:
+                            cart = Cart.objects.get(user_id=user.id, product_id=items['product_id'])
+                            cart.product_size = int(items['size'])
+                            cart.product_color = int(items['color'])
+                            cart.quantity = int(items['quantity'])
+                            cart.price = product.price * int(items['quantity'])
+                            cart.save()
+                        else:
+                            cart1 = Cart(user_id=user.id, product_id=items['product_id'])
+                            cart1.product_size = int(items['size'])
+                            cart1.product_color = int(items['color'])
+                            cart1.quantity = int(items['quantity'])
+                            cart1.price = product.price * int(items['quantity'])
+                            cart1.save()
+                total_cart = user.card_user.count()
+                messages.success(request, "Login successfully.")
+                try:
+                    remember = request.POST.get('remember_me')
+                    if remember:
+                        settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+                except MultiValueDictKeyError:
+                    settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+                responss = redirect(redirect_to)
+                responss.delete_cookie('add_card_token')
+                if redirect_to and is_safe_url(url=redirect_to, host=request.get_host()):
+                    return redirect(redirect_to)
+                else:
+                    return redirect("Peru:home")
+            except:
+                return redirect('Peru:home')
+        else:
+            return render(request,"index.html", {'forms':form,"categorys":all_category, "product_list":contacts})
+    else:
+        return redirect('Peru:home')
 
 class LoginView(View):
 	"""docstring for LoginView"""
@@ -422,6 +430,11 @@ class LoginView(View):
 			user = authenticate(username=email, password=password)
 			if user and user.mobile_verified and user.confirmation_code=="Confirmed":
 				login(request, user)
+				if request.POST.get('card_data'):
+					print(request.POST.get('card_data'))
+					for items in ast.literal_eval(request.POST['card_data']):
+						product = ProductsManagement.objects.get(id=items['product_id'])
+						cart = Cart.objects.create(user=user, product=product,product_size=int(items['size']),product_color=int(items['color']),quantity=int(items['quantity']),price=(product.selling_price if product.selling_price else product.price) * int(items['quantity']))
 				messages.success(request, "Login successfully.")
 				return redirect('Juntos:home')
 			elif not user.mobile_verified:
@@ -712,10 +725,7 @@ class ConfirmationEmail(View):
 #         cart_count = request.user.card_user.count()
 #         return HttpResponse(json.dumps({"cart_count": cart_count, "code":500}), content_type='application/json')
 
-class AddToCart(View):
-	"""docstring for AddToCart"""
-	def get(self,request):
-		return redirect("Juntos:home")
+
 
 # @register.filter("truncate_chars")
 # def product_detail(request, slug=None):
@@ -758,69 +768,79 @@ class ProductDetail(View):
 		return render(request, 'product.html',{"details":product})	
 
 
-def view_cart(request, address=None):
-    user = request.user
-    if user.is_authenticated and user.is_customer:
-        if address:
-            shipa = Shipping_Address.objects.filter(user=user)
-            if shipa.exists():
-                shipa.update(selected = False)
-                try:
-                    ship = Shipping_Address.objects.get(id=address)
-                    ship.selected = True
-                    ship.save()
-                except:
-                    messages.error(request,"No Address selected !")
-        product_cart = Cart.objects.filter(user=user)
-        if product_cart:
-            product_p = product_cart[0].product
-            related_category = product_p.category
-            related_sub_category = product_p.subs_category
-            related_post = Products_Management.objects.filter(category=related_category,subs_category=related_sub_category).exclude(id=product_cart[0].product.id)[:5]
-        else:
-            related_post = []
+# def view_cart(request, address=None):
+#     user = request.user
+#     if user.is_authenticated and user.is_customer:
+#         if address:
+#             shipa = Shipping_Address.objects.filter(user=user)
+#             if shipa.exists():
+#                 shipa.update(selected = False)
+#                 try:
+#                     ship = Shipping_Address.objects.get(id=address)
+#                     ship.selected = True
+#                     ship.save()
+#                 except:
+#                     messages.error(request,"No Address selected !")
+#         product_cart = Cart.objects.filter(user=user)
+#         if product_cart:
+#             product_p = product_cart[0].product
+#             related_category = product_p.category
+#             related_sub_category = product_p.subs_category
+#             related_post = Products_Management.objects.filter(category=related_category,subs_category=related_sub_category).exclude(id=product_cart[0].product.id)[:5]
+#         else:
+#             related_post = []
 
-        sub_total    = product_cart.aggregate(Sum('price'))['price__sum']
-        if sub_total:
-            grand_total = sub_total
-            total_price = grand_total
-        else:
-            grand_total = 0.0
-            total_price = grand_total
-        if len(product_cart):
-            pro_detail = product_cart[len(product_cart)-1]
-        elif len(product_cart)==0:
-            pro_detail = {}
-        return render(request, 'new_view_cart.html', {"all_cart":pro_detail, "sub_total": sub_total, "grand_total": grand_total,"cart_count":len(product_cart),"total_price":total_price,"related_post":related_post})
-    else:
-        card_Array = []
-        total_price = 0.0
-        if 'card_data' in request.POST and request.POST['card_data']:
-            for items in ast.literal_eval(request.POST['card_data']):
-                product = Products_Management.objects.get(id=int(items['product_id']))
-                card_Array.append({
-                        "product":product,
-                        "product_size":int(items['size']),
-                        "product_color": int(items['color']),
-                        "quantity": int(items['quantity']),
-                        "price": product.selling_price * int(items['quantity'])
-                    })
-                total_price = total_price + product.selling_price * int(items['quantity'])
-            related_post_category = card_Array[-1]['product'].category
-            related_post_sub_category = card_Array[-1]['product'].subs_category
-            related_post = Products_Management.objects.filter(category=related_post_category,subs_category=related_post_sub_category).exclude(id=card_Array[-1]['product'].id)[:5]
-            return render(request, 'new_view_cart.html', {"all_cart":card_Array[-1], "sub_total": 0.0, "grand_total": 0.0,"cart_count":len(card_Array),"total_price":total_price,"related_post":related_post,"product":product})
-        else:
-            return render(request, 'new_view_cart.html', {"all_cart":[], "sub_total": 0.0, "grand_total": 0.0})
+#         sub_total    = product_cart.aggregate(Sum('price'))['price__sum']
+#         if sub_total:
+#             grand_total = sub_total
+#             total_price = grand_total
+#         else:
+#             grand_total = 0.0
+#             total_price = grand_total
+#         if len(product_cart):
+#             pro_detail = product_cart[len(product_cart)-1]
+#         elif len(product_cart)==0:
+#             pro_detail = {}
+#         return render(request, 'new_view_cart.html', {"all_cart":pro_detail, "sub_total": sub_total, "grand_total": grand_total,"cart_count":len(product_cart),"total_price":total_price,"related_post":related_post})
+#     else:
+#         card_Array = []
+#         total_price = 0.0
+#         if 'card_data' in request.POST and request.POST['card_data']:
+#             for items in ast.literal_eval(request.POST['card_data']):
+#                 product = Products_Management.objects.get(id=int(items['product_id']))
+#                 card_Array.append({
+#                         "product":product,
+#                         "product_size":int(items['size']),
+#                         "product_color": int(items['color']),
+#                         "quantity": int(items['quantity']),
+#                         "price": product.selling_price * int(items['quantity'])
+#                     })
+#                 total_price = total_price + product.selling_price * int(items['quantity'])
+#             related_post_category = card_Array[-1]['product'].category
+#             related_post_sub_category = card_Array[-1]['product'].subs_category
+#             related_post = Products_Management.objects.filter(category=related_post_category,subs_category=related_post_sub_category).exclude(id=card_Array[-1]['product'].id)[:5]
+#             return render(request, 'new_view_cart.html', {"all_cart":card_Array[-1], "sub_total": 0.0, "grand_total": 0.0,"cart_count":len(card_Array),"total_price":total_price,"related_post":related_post,"product":product})
+#         else:
+#             return render(request, 'new_view_cart.html', {"all_cart":[], "sub_total": 0.0, "grand_total": 0.0})
 
 class ViewCart(View):
 	"""docstring for ViewCart"""
-	def post(self,request,address=None):
+	def get(self,request):
 		user = request.user
 		if user.is_authenticated and user.is_customer:
-			if address:
-				pass
-			return render(request, 'new_view_cart.html')
+			total_price = 0.0
+			product_cart = Cart.objects.filter(user=user)
+			total_price = product_cart.aggregate(Sum('price'))['price__sum']
+			total_price = total_price + (total_price * 18)/100
+			return render(request,'new_view_cart.html',{"all_cart":product_cart,"total_price":total_price})
+	def post(self,request):
+		user = request.user
+		if user.is_authenticated and user.is_customer:
+			total_price = 0.0
+			product_cart = Cart.objects.filter(user=user)
+			total_price = product_cart.aggregate(Sum('price'))['price__sum']
+			total_price = total_price + (total_price * 18)/100
+			return render(request,'new_view_cart.html',{"all_cart":product_cart,"total_price":total_price})
 		else:
 			card_Array = []
 			total_price = 0.0
@@ -887,73 +907,53 @@ class CustomerReview(View):
 		params = request.POST
 		return redirect("Juntos:product-detail", params['slug'])
 		
-
-# @login_required(login_url="/")
-# def add_to_cart(request):
-#     try:
-#         params = request.POST
-#         user = request.user
-#         exists = None
-#         product_obj   = Products_Management.objects.get(id=params['product_id'])
-#         price_on_cart = (product_obj.selling_price*int(params['quantity']))
-#         print("aaaaaa",price_on_cart)
-#         product_card  = Cart.objects.filter(product=product_obj, user=user)
-#         if product_card.exists():
-#             product_card = product_card.first()
-#             product_card.quantity = params['quantity']
-#             product_card.product_size = params.get('size',None)
-#             product_card.product_color = params.get('color',None)
-#             product_card.price = price_on_cart
-#             product_card.save()
-#             exists = True
-#         else:
-#             card = Cart(user=request.user, active=True, product=product_obj)
-#             card.quantity=params['quantity']
-#             card.product_size=params.get('size',None)
-#             card.product_color=params.get('color',None)
-#             card.price=price_on_cart
-#             card.save()
-#         cart_count = user.card_user.count()
-#         return HttpResponse(json.dumps({"cart_count": cart_count, "code":200,'exists':exists}), content_type='application/json')
-#     except Exception as e:
-#         cart_count = request.user.card_user.count()
-#         return HttpResponse(json.dumps({"cart_count": cart_count, "code":500}), content_type='application/json')
-
 class AddToCart(View):
 	"""docstring for AddToCart"""
-	def get(self,request):
-		return HttpResponse(json.dumps({"code":500}), content_type='application/json')
-
-	
-
-
-# @login_required(login_url="/")
-# def add_shipping(request):
-#     if request.user.is_authenticated() and request.user.is_customer:
-#         form = ShippingForm(user=request.user)
-#         shiping_address  = Shipping_Address.objects.filter(user=request.user)
-#         product_cart = Cart.objects.filter(user=request.user)
-#         if request.method == 'POST':
-#             form = ShippingForm(request.POST, user=request.user)
-#             if form.is_valid():
-#                 obj  = form.save(commit=False)
-#                 obj.selected = True
-#                 obj.save()
-#                 messages.success(request, "Shipping address saved successfully")
-#                 return redirect('customer:customer_order_summery')
-#             else:
-#                 return render(request, 'shipping_billing.html',{"messagesss":"Please enter valid address data.","form_shipping":form, "shiping_address":shiping_address})
-#         else:
-#            return render(request, 'shipping_billing.html',{"form":form,"shiping_address":shiping_address})
-#     else:
-#         messages.info(request, "Before you place your order! Please Sign In First.")
-#         return render(request, 'new_shipping_cart.html')
-
+	def post(self,request):
+		params = request.POST
+		user = request.user
+		try:
+			product_obj = ProductsManagement.objects.get(id=params['product_id'])
+			price_on_cart = (product_obj.selling_price if product_obj.selling_price else product_obj.price)*int(params['quantity'])
+			try:
+				product_card = Cart.objects.get(product=product_obj, user=user)
+				product_card.quantity = params['quantity']
+				product_card.product_size = params.get('size',None)
+				product_card.product_color = params.get('color',None)
+				product_card.price = price_on_cart
+				product_card.save()
+			except Exception as e:
+				card = Cart(user=user, active=True, product=product_obj)
+				card.quantity=params['quantity']
+				card.product_size=params.get('size',None)
+				card.product_color=params.get('color',None)
+				card.price=price_on_cart
+				card.save()
+			return HttpResponse(json.dumps({"code":200}), content_type='application/json')
+		except Exception as e:
+			return HttpResponse(json.dumps({"code":500}), content_type='application/json')
 
 class AddShipping(View):
 	"""docstring for AddShipping"""
+	def post(self,request):
+		print("POST")
+		if request.user.is_authenticated() and request.user.is_customer:
+			shiping_address  = ShippingAddress.objects.filter(user=request.user)
+			product_cart = Cart.objects.filter(user=request.user)
+			form = ShippingForm(request.POST, user=request.user)
+			if form.is_valid():
+				obj  = form.save(commit=False)
+				obj.selected = True
+				obj.save()
+				messages.success(request, "Shipping address saved successfully")
+				return redirect('customer:customer_order_summery')
+			else:
+				return render(request, 'shipping_billing.html',{"messagesss":"Please enter valid address data.","form_shipping":form, "shiping_address":shiping_address})
+		else:
+			messages.info(request, "Before you place your order! Please Sign In First.")
+			return render(request, 'new_shipping_cart.html')
 	def get(self,request):
-		return render(request, 'new_shipping_cart.html')
+		return render(request, 'shipping_billing.html')
 
 # @login_required(login_url="/")
 # def customer_review(request):
@@ -971,10 +971,6 @@ class Rating(View):
 		params = request.POST
 		return redirect("Juntos:product-detail", params['slug'])
 
-
-
-
-
 class IncreaseCartQuantity(View):
 	"""docstring for IncreaseCartQuantity"""
 	def post(self,request):
@@ -985,6 +981,58 @@ class IncreaseCartQuantity(View):
 	    cart.price    = price
 	    cart.save()
 	    return HttpResponse(json.dumps({"code":200}), content_type='application/json')
-				
-																																																																																																																																																																																																																																																																																																																										
+																																																																																																																																																																																																																																																																																																																													
+class RemoveFromCart(View):
+	"""docstring for RemoveFromCart"""
+	def get(self,request,pk=None):
+	    user = request.user
+	    if user.is_authenticated:
+	        cart = Cart.objects.filter(product_id=pk,user=request.user)
+	        cart.active = False
+	        cart.delete()
+	        messages.success(request,"Item deleted successfully from your cart")
+	        return redirect("Juntos:proceed-cart")
+	    else:
+	        return redirect("customer:proceed_cart")
+
+class AddWhishlist(View):
+	"""docstring for AddWhishlist"""
+	def get(self,request):
+		if request.user.is_customer:
+			product_obj = Products_Management.objects.filter(id=product_id)
+			if product_obj.exists():
+				product = product_obj.first()
+				Wishlist.objects.create(user=request.user, product=product)
+				try:
+					Cart.objects.get(product=product).delete()
+				except Exception as e:
+					return redirect("customer:wish_list")
+			else:
+				messages.error(request, "Product does not exists !")
+				return redirect("customer:views_cart")
+		else:
+			messages.info(request, "Please login before access wishlist !")
+			return redirect("Juntos:views-cart")
+
+
+
+class DhlShippingPrice(View):
+	"""docstring for DhlShippingPrice"""
+	def get(self,request):
+		product_cart = Cart.objects.filter(user=request.user)
+		total_shipping_charges = 0.0
+		for pro in product_cart:
+			try:
+				v_details = Vendor_Account_Details.objects.get(vendor = pro.product.vendor.id)
+				product_ship_detail = Products_Management.objects.get(id=pro.product.id)
+				total_shipping_charges = total_shipping_charges + dhl_charges.ship(v_details,product_ship_detail)
+			except Exception as e:
+				total_shipping_charges = total_shipping_charges + pro.price
+				grand_total = (total_shipping_charges*23)/100
+				charges_amount = grand_total + total_shipping_charges
+				total_amount = charges_amount
+		return HttpResponse(json.dumps({"total_shipping_charges": total_amount}), content_type='application/json')
+ 
+
 		
+														

@@ -86,8 +86,6 @@
                                  Tax: <span>18%</span>
                               </div>
                               <div class="text-right">
-                              </div>
-                              <div class="text-right">
                                  Grandtotal ({{all_cart|length}} Items) :<span>$</span><span id='grand_payment'>{{total_price |floatformat:2}}</span>
                               </div>
                            </div>
@@ -106,10 +104,6 @@
                <h2>Tax : <span>18%</span></h2>
                <h2>Grandtotal ({{all_cart|length}} items):<span>$</span><span id='proceed_payment'>{{total_price |floatformat:2}}</span></h2>
                <div class="subtotal-row">
-                  <div class="checkbox">
-                     <label>
-                     </label>
-                  </div>
                   <div class="proceed-checkout">
                      <a href="javascript:void(0)" class="btn btn-green" onclick="return Proceed(this);" >Proceed to Payment</a>
                   </div>
@@ -217,7 +211,6 @@
        localStorage.setItem($.cookie("add_card_token"), JSON.stringify(card_product_id));
        $("#card_data").val(JSON.stringify(card_product_id));
        setTimeout(function(){
-           console.log($("#card_data").val())
            $('#form_delete').submit()
        },1000)
    }
@@ -236,7 +229,6 @@
      {% else %}
        $("#login").modal("show");
      {% endif %}
-   
    }
 </script>
 {% endblock %}
