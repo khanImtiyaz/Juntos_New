@@ -171,11 +171,13 @@
                <div class="form-heading ">SHIPPING INFORMATION</div>
                <div class="form-check">
                   <label class="margin-bottom">
-                  <input type="checkbox" id="billing_checkbox_id" onclick="same_as_billing(this)" class="form-check-input" >
-                  SAME AS BILLLING INFORMATION
+                  SAME AS BILLLING INFORMATION &nbsp; &nbsp;
+                  <input type="radio" name='radio' id="billing_checkbox_id" onclick="same_as_billing(true)" class="form-check-input" /> Yes
+                  <input type="radio" name='radio' id="billing_checkbox_id" onclick="same_as_billing(false)" class="form-check-input" checked="checked"/> No 
+                  
                   </label>
                </div>
-               <div class="row">
+               <div class="row" id='Billing'">
                   <div class="col-sm-6">
                      <div class="form-group">
                         <label for="SHIP-FIRSTNAME"  class="col-sm-4 control-label padding-top">FIRST NAME<span class="required-field">*</span></label>
@@ -420,7 +422,9 @@
 <script language="javascript">
    populateCountries("Bill-COUNTRY", "BILL-STATE");
    populateCountries("country3", "SHIP-STATE");
-   var same_as_billing = function(){
+   var same_as_billing = function(val){
+    if(val == true){
+    
    $('#SHIP-FIRSTNAME').val($('#FIRSTNAME').val())
    $('#SHIP-LASTNAME').val($('#LASTNAME').val())
    $('#SHIP-COMPANY').val($('#COMPANY').val())
@@ -433,6 +437,11 @@
    $('#SHIP-PHONE').val($('#PHONE').val())
    $('#SHIP-EMAIL').val($('#Email').val())
    $('#SHIP-country_abbriviation').val($('#BILL-country_abbriviation').val())
+   document.getElementById('Billing').style.display = 'none';
    }
+   else{
+    document.getElementById('Billing').style.display = 'block';
+   }
+    }
 </script>
 {% endblock %}
