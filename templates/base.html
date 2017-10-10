@@ -47,9 +47,7 @@
                </div>
                {% if user.is_customer %}
                <script type="text/javascript">
-                  console.log(localStorage.getItem($.cookie("add_card_token")))
                   localStorage.removeItem($.cookie("add_card_token"))
-                  console.log(localStorage.getItem($.cookie("add_card_token")))
                </script>
                <div class="col-sm-9 col-xs-8">
                   <ul class="login_head1">

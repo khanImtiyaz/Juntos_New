@@ -936,24 +936,63 @@ class AddToCart(View):
 class AddShipping(View):
 	"""docstring for AddShipping"""
 	def post(self,request):
-		print("POST")
 		if request.user.is_authenticated() and request.user.is_customer:
-			shiping_address  = ShippingAddress.objects.filter(user=request.user)
-			product_cart = Cart.objects.filter(user=request.user)
-			form = ShippingForm(request.POST, user=request.user)
-			if form.is_valid():
-				obj  = form.save(commit=False)
-				obj.selected = True
-				obj.save()
+			b_form = BillingForm(request.POST or None)
+			s_form = ShippingForm(request.POST or None)
+			if b_form.is_valid() and s_form.is_valid():
+				b_form.save()
+				s_form.save()
 				messages.success(request, "Shipping address saved successfully")
-				return redirect('customer:customer_order_summery')
+				return redirect('Juntos:customer-order-summary')
 			else:
-				return render(request, 'shipping_billing.html',{"messagesss":"Please enter valid address data.","form_shipping":form, "shiping_address":shiping_address})
+				# print("B_FORM",b_form.errors)
+				# print("S_FORM",s_form.errors)
+				return render(request, 'shipping_billing.html',{"s_form":s_form,"b_form":b_form})
 		else:
 			messages.info(request, "Before you place your order! Please Sign In First.")
 			return render(request, 'new_shipping_cart.html')
+
 	def get(self,request):
 		return render(request, 'shipping_billing.html')
+
+class CustomerOrderSummary(View):
+	"""docstring for CustomerOrderSummary"""
+	def get(self,request):
+		if request.user.is_customer:
+			user_details = request.user
+			address = ShippingAddress.objects.filter(user=user_details, selected=True)
+			if address.exists():
+				address = address.last()
+				cart_items = Cart.objects.filter(user=user_details)
+				delivery_date = (datetime.today()+timedelta(days=8)).date()
+				total = cart_items.aggregate(Sum('price'))['price__sum']
+				grand_total  = (total * 23)/100
+				grand_total = grand_total + total
+				total_price = grand_total
+				return render(request, "order-summary.html",{"user_details":user_details,"address":address, "cart_items":cart_items, "delivery_date":delivery_date, "total":total_price})
+			else:
+				messages.info(request, "Please add Your Shipping Address")
+				return redirect("Juntos:add-shipping")
+		else:
+			messages.info(request, "You are not authorize to access this page.")
+			return redirect("Juntos:home")
+	
+
+# class DhlShippingPrice(View):
+# 	"""docstring for DhlShippingPrice"""
+# 	def get(self,request):
+# 		total_shipping_charges = 0.0
+# 		for pro in product_cart:
+# 			try:
+# 				v_details = Vendor_Account_Details.objects.get(vendor = pro.product.vendor.id)
+# 				product_ship_detail = Products_Management.objects.get(id=pro.product.id)
+# 				total_shipping_charges = total_shipping_charges + dhl_charges.ship(v_details,product_ship_detail)
+# 			except Exception as e:
+# 				total_shipping_charges = total_shipping_charges + pro.price
+# 				grand_total = (total_shipping_charges*23)/100
+# 				charges_amount = grand_total + total_shipping_charges
+# 				total_amount = charges_amount
+# 		return HttpResponse(json.dumps({"total_shipping_charges": total_amount}), content_type='application/json')
 
 # @login_required(login_url="/")
 # def customer_review(request):
@@ -1015,23 +1054,6 @@ class AddWhishlist(View):
 			return redirect("Juntos:views-cart")
 
 
-
-class DhlShippingPrice(View):
-	"""docstring for DhlShippingPrice"""
-	def get(self,request):
-		product_cart = Cart.objects.filter(user=request.user)
-		total_shipping_charges = 0.0
-		for pro in product_cart:
-			try:
-				v_details = Vendor_Account_Details.objects.get(vendor = pro.product.vendor.id)
-				product_ship_detail = Products_Management.objects.get(id=pro.product.id)
-				total_shipping_charges = total_shipping_charges + dhl_charges.ship(v_details,product_ship_detail)
-			except Exception as e:
-				total_shipping_charges = total_shipping_charges + pro.price
-				grand_total = (total_shipping_charges*23)/100
-				charges_amount = grand_total + total_shipping_charges
-				total_amount = charges_amount
-		return HttpResponse(json.dumps({"total_shipping_charges": total_amount}), content_type='application/json')
  
 
 		

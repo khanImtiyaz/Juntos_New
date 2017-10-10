@@ -243,24 +243,38 @@ class CustomerReview(models.Model):
     class Meta:
         verbose_name_plural = 'Customer Reviews'
 
-
+class BillingAddress(models.Model):
+  """docstring for BillingAddress"""
+  user = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,related_name="billing_address")
+  billing_first_name =  models.CharField(('Billing First Name'),max_length=50,blank=False)
+  billing_last_name  =  models.CharField(('Billing Last Name'),max_length=50,blank=False)
+  billing_phone      =  models.CharField(('Billing Phone'),max_length=15,null=False)
+  billing_company    =  models.CharField(('Billing Company'),max_length=50,blank=False)
+  billing_country    = models.CharField(('Billing Country'),max_length=50, blank=False)
+  billing_country_abbreviation  = models.CharField(('Billing Country Abbreviation'),max_length=20, blank=False)
+  billing_state      =  models.CharField(('Billing State'),max_length=50,blank=False)
+  billing_city       =  models.CharField(('Billing City'),max_length=50,blank=False)
+  billing_zip        =  models.CharField(('Billing Zip'),max_length=50,blank=False)
+  billing_address    =  models.CharField(('Billing Address'),max_length=500,blank=False)
+  billing_email      =  models.CharField(('Billing Email'),max_length=50,blank=False)
+  mode_of_transport  =  models.CharField(('Mode of Transport'),max_length=50,blank=False)
+  created_at = models.DateTimeField(('created_at'), auto_now = True)
+  updated_at = models.DateTimeField(('updated_at'), auto_now = True)
 
 class ShippingAddress(models.Model):
   user = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,related_name="shiping_address")
-  shipping_first_name =  models.CharField(('Shipping First Name'),max_length=50,blank=False, default='')
-  shipping_last_name  =  models.CharField(('Shipping Last Name'),max_length=50,blank=False, default='')
-  shipping_phone      =  models.CharField(('Billing Phone'),max_length=15,null=False, blank=False)
-  shipping_company    =  models.CharField(('Shipping Company'),max_length=50,blank=False, default='')
-  shipping_country    = models.CharField(('Shipping Country'),max_length=50, blank=False, default='')
-  shipping_country_abbreviation  = models.CharField(('Shipping Country Abbreviation'),max_length=50, blank=False, default='')
-  shipping_state      =  models.CharField(('Shipping State'),max_length=50,blank=False, default='')
-  shipping_city       =  models.CharField(('Shipping City'),max_length=50,blank=False, default='')
-  shipping_zip        =  models.CharField(('Shipping Zip'),max_length=50,blank=False, default='')
-  shipping_address    =  models.CharField(('Shipping Address'),max_length=50,blank=False, default='')
+  shipping_first_name =  models.CharField(('Shipping First Name'),max_length=50,blank=False)
+  shipping_last_name  =  models.CharField(('Shipping Last Name'),max_length=50,blank=False)
   shipping_phone      =  models.CharField(('Shipping Phone'),max_length=15,null=False, blank=False)
-  shipping_email      =  models.CharField(('Shipping Email'),max_length=50,blank=False, default='')
-  mode_of_transport  =  models.CharField(('Mode of Transport'),max_length=50,blank=True, default='')
-  selected = models.BooleanField(('Select Shipping Address'),default=False)
+  shipping_company    =  models.CharField(('Shipping Company'),max_length=50,blank=False)
+  shipping_country    = models.CharField(('Shipping Country'),max_length=50, blank=False)
+  shipping_country_abbreviation  = models.CharField(('Shipping Country Abbreviation'),max_length=20, blank=False)
+  shipping_state      =  models.CharField(('Shipping State'),max_length=50,blank=False)
+  shipping_city       =  models.CharField(('Shipping City'),max_length=50,blank=False)
+  shipping_zip        =  models.CharField(('Shipping Zip'),max_length=50,blank=False)
+  shipping_address    =  models.CharField(('Shipping Address'),max_length=500,blank=False)
+  shipping_email      =  models.CharField(('Shipping Email'),max_length=50,blank=False)
+  mode_of_transport  =  models.CharField(('Mode of Transport'),max_length=50,blank=False)
   created_at = models.DateTimeField(('created_at'), auto_now = True)
   updated_at = models.DateTimeField(('updated_at'), auto_now = True)
 
@@ -272,20 +286,3 @@ class ShippingAddress(models.Model):
   def details(self):
     return (self.shipping_first_name+" ,"+self.shipping_address+" ,"+self.shipping_city+" ,"+self.shipping_state+" ,"+self.shipping_phone+" ,"+self.shipping_country)
 
-class BillingAddress(models.Model):
-  """docstring for BillingAddress"""
-  user = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,related_name="billing_address")
-  billing_first_name =  models.CharField(('Billing First Name'),max_length=50,blank=False, default='')
-  billing_last_name  =  models.CharField(('Billing Last Name'),max_length=50,blank=False, default='')
-  billing_company    =  models.CharField(('Billing Company'),max_length=50,blank=False, default='')
-  billing_country    = models.CharField(('Billing Country'),max_length=50, blank=False, default='')
-  billing_country_abbreviation  = models.CharField(('Billing Country Abbreviation'),max_length=50, blank=False, default='')
-  billing_state      =  models.CharField(('Billing State'),max_length=50,blank=False, default='')
-  billing_city       =  models.CharField(('Billing City'),max_length=50,blank=False, default='')
-  billing_zip        =  models.CharField(('Billing Zip'),max_length=50,blank=False, default='')
-  billing_address    =  models.CharField(('Billing Address'),max_length=50,blank=False, default='')
-  billing_email      =  models.CharField(('Billing Email'),max_length=50,blank=False, default='')
-  mode_of_transport  =  models.CharField(('Mode of Transport'),max_length=50,blank=True, default='')
-  selected = models.BooleanField(('Select Shipping Address'),default=False)
-  created_at = models.DateTimeField(('created_at'), auto_now = True)
-  updated_at = models.DateTimeField(('updated_at'), auto_now = True)

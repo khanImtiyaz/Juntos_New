@@ -79,7 +79,7 @@ TEMPLATES = [
                 'Juntos.context_processors.about',
                 'Juntos.context_processors.products', 
                 'Juntos.context_processors.star_rating',
-
+                'Juntos.context_processors.cart',
             ],
         },
     },

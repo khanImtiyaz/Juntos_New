@@ -19,6 +19,15 @@ def products(request):
 def star_rating(request):
     return {"star_rating":[1,2,3,4,5]}
 
+def cart(request):
+	if request.user.is_authenticated():
+		cartObj = Cart.objects.filter(user=request.user).aggregate(Sum('price'))
+		total_amount = float(cartObj['price__sum'])+  float((cartObj['price__sum']*18)/100)
+		shipping_amount = total_amount + ((total_amount*5)/100)
+		return {"total_amount":total_amount,"shipping_amount":shipping_amount}
+	else:
+		return {"total_amount":"","shipping_amount":""}
+
 
 # def all_data(request):
 # 	banner = Banner.objects.all()

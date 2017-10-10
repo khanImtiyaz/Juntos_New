@@ -46,8 +46,8 @@ urlpatterns = [
 	url(r'^change-cart-quantity$', views.IncreaseCartQuantity.as_view(), name='increase-cart'),
 	url(r'^removecart/(?P<pk>[0-9]+)$', views.RemoveFromCart.as_view(), name='remove-from-cart'),
 	url(r'^wish-list-add/(?P<product_id>[0-9]+)$', views.AddWhishlist.as_view(), name='add-whishlist'),
-	url(r'^dhl_shippingprice$', views.DhlShippingPrice.as_view(), name="dhl-shippingprice"),
-
+	# url(r'^dhl_shippingprice$', views.DhlShippingPrice.as_view(), name="dhl-shippingprice"),
+	url(r'^customer-order-summary/$', views.CustomerOrderSummary.as_view(), name="customer-order-summary"),
 
 
 
