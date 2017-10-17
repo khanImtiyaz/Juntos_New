@@ -18,11 +18,13 @@ from django.contrib.auth import (REDIRECT_FIELD_NAME, get_user_model, login as a
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from random import randint
+from datetime import datetime, timedelta
 import ast
 import json
 from .twillio import send_sms
 from .models import *
 from .forms import *
+from .decorator import *
 
 # Create your views here.
 
@@ -204,17 +206,18 @@ class Index(View):
 class ProceedCart(View):
 	"""docstring for ProceedCart"""
 	def get(self,request):
-		print('GET')
 		user = request.user
 		if user.is_authenticated and user.is_customer:
 			total_price = 0.0
 			product_cart = Cart.objects.filter(user=user)
-			total_price = product_cart.aggregate(Sum('price'))['price__sum']
-			total_price = total_price + (total_price * 18)/100
+			if product_cart:
+				total_price = product_cart.aggregate(Sum('price'))['price__sum']
+				total_price = total_price + (total_price * 18)/100
+			else:
+				total_price = None
 			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price})
-	def post(self,request):
-		print('POST')
 
+	def post(self,request):
 		card_Array = []
 		total_price = 0.0
 		if 'card_data' in request.POST and request.POST['card_data']:
@@ -350,73 +353,73 @@ class ContactList(View):
 		JuntosContact = JuntosContactUs.objects.all()
 		return render(request, 'contact_us.html',{"lists":JuntosContact})
 														
-def login_view(request):
-    redirect_to = request.POST.get('next', request.GET.get('next', ''))
-    if request.method=='POST':
-        product   = Products_Management.objects.all()
-        paginator = Paginator(product, 10)
+# def login_view(request):
+#     redirect_to = request.POST.get('next', request.GET.get('next', ''))
+#     if request.method=='POST':
+#         product   = Products_Management.objects.all()
+#         paginator = Paginator(product, 10)
 
-        all_category = Category.objects.all()
-        index=1
-        page = request.GET.get('page')
-        try:
-            contacts = paginator.page(page)
-        except PageNotAnInteger:
-            contacts = paginator.page(1)
-        except EmptyPage:
-            contacts = paginator.page(paginator.num_pages)
-        form = UserLoginForm(request.POST, None)
-        if form.is_valid():
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password"]
-            try:
-                user = Customer.objects.get(email=email)
-                user = authenticate(username=user.email, password=password)
-                if not user.mobile_verified:
-                    request.session['email'] = user.email
-                    return redirect('customer:resend_otp')
-                else:
-                    login(request, user)
-                if request.POST.get('card_data'):
-                    """ Add all cart item in Cart after login"""
-                    for items in ast.literal_eval(request.POST['card_data']):
-                        product = Products_Management.objects.get(id=items['product_id'])
-                        card = Cart.objects.filter(user_id=user.id, product_id=items['product_id'])
-                        print("Card",card)
-                        if card.count()==1:
-                            cart = Cart.objects.get(user_id=user.id, product_id=items['product_id'])
-                            cart.product_size = int(items['size'])
-                            cart.product_color = int(items['color'])
-                            cart.quantity = int(items['quantity'])
-                            cart.price = product.price * int(items['quantity'])
-                            cart.save()
-                        else:
-                            cart1 = Cart(user_id=user.id, product_id=items['product_id'])
-                            cart1.product_size = int(items['size'])
-                            cart1.product_color = int(items['color'])
-                            cart1.quantity = int(items['quantity'])
-                            cart1.price = product.price * int(items['quantity'])
-                            cart1.save()
-                total_cart = user.card_user.count()
-                messages.success(request, "Login successfully.")
-                try:
-                    remember = request.POST.get('remember_me')
-                    if remember:
-                        settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-                except MultiValueDictKeyError:
-                    settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-                responss = redirect(redirect_to)
-                responss.delete_cookie('add_card_token')
-                if redirect_to and is_safe_url(url=redirect_to, host=request.get_host()):
-                    return redirect(redirect_to)
-                else:
-                    return redirect("Peru:home")
-            except:
-                return redirect('Peru:home')
-        else:
-            return render(request,"index.html", {'forms':form,"categorys":all_category, "product_list":contacts})
-    else:
-        return redirect('Peru:home')
+#         all_category = Category.objects.all()
+#         index=1
+#         page = request.GET.get('page')
+#         try:
+#             contacts = paginator.page(page)
+#         except PageNotAnInteger:
+#             contacts = paginator.page(1)
+#         except EmptyPage:
+#             contacts = paginator.page(paginator.num_pages)
+#         form = UserLoginForm(request.POST, None)
+#         if form.is_valid():
+#             email = form.cleaned_data["email"]
+#             password = form.cleaned_data["password"]
+#             try:
+#                 user = Customer.objects.get(email=email)
+#                 user = authenticate(username=user.email, password=password)
+#                 if not user.mobile_verified:
+#                     request.session['email'] = user.email
+#                     return redirect('customer:resend_otp')
+#                 else:
+#                     login(request, user)
+#                 if request.POST.get('card_data'):
+#                     """ Add all cart item in Cart after login"""
+#                     for items in ast.literal_eval(request.POST['card_data']):
+#                         product = Products_Management.objects.get(id=items['product_id'])
+#                         card = Cart.objects.filter(user_id=user.id, product_id=items['product_id'])
+#                         print("Card",card)
+#                         if card.count()==1:
+#                             cart = Cart.objects.get(user_id=user.id, product_id=items['product_id'])
+#                             cart.product_size = int(items['size'])
+#                             cart.product_color = int(items['color'])
+#                             cart.quantity = int(items['quantity'])
+#                             cart.price = product.price * int(items['quantity'])
+#                             cart.save()
+#                         else:
+#                             cart1 = Cart(user_id=user.id, product_id=items['product_id'])
+#                             cart1.product_size = int(items['size'])
+#                             cart1.product_color = int(items['color'])
+#                             cart1.quantity = int(items['quantity'])
+#                             cart1.price = product.price * int(items['quantity'])
+#                             cart1.save()
+#                 total_cart = user.card_user.count()
+#                 messages.success(request, "Login successfully.")
+#                 try:
+#                     remember = request.POST.get('remember_me')
+#                     if remember:
+#                         settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+#                 except MultiValueDictKeyError:
+#                     settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+#                 responss = redirect(redirect_to)
+#                 responss.delete_cookie('add_card_token')
+#                 if redirect_to and is_safe_url(url=redirect_to, host=request.get_host()):
+#                     return redirect(redirect_to)
+#                 else:
+#                     return redirect("Peru:home")
+#             except:
+#                 return redirect('Peru:home')
+#         else:
+#             return render(request,"index.html", {'forms':form,"categorys":all_category, "product_list":contacts})
+#     else:
+#         return redirect('Peru:home')
 
 class LoginView(View):
 	"""docstring for LoginView"""
@@ -431,10 +434,17 @@ class LoginView(View):
 			if user and user.mobile_verified and user.confirmation_code=="Confirmed":
 				login(request, user)
 				if request.POST.get('card_data'):
-					print(request.POST.get('card_data'))
 					for items in ast.literal_eval(request.POST['card_data']):
 						product = ProductsManagement.objects.get(id=items['product_id'])
-						cart = Cart.objects.create(user=user, product=product,product_size=int(items['size']),product_color=int(items['color']),quantity=int(items['quantity']),price=(product.selling_price if product.selling_price else product.price) * int(items['quantity']))
+						try:
+							cart_exists = Cart.objects.get(product=product,user=user)
+							cart_exists.product_size = int(items['size'])
+							cart_exists.product_color = int(items['color'])
+							cart_exists.quantity = int(items['quantity'])
+							cart_exists.price = (product.selling_price if product.selling_price else product.price) * int(items['quantity'])
+							cart_exists.save()
+						except:
+							Cart.objects.create(user=user, product=product,product_size=int(items['size']),product_color=int(items['color']),quantity=int(items['quantity']),price=(product.selling_price if product.selling_price else product.price) * int(items['quantity']))
 				messages.success(request, "Login successfully.")
 				return redirect('Juntos:home')
 			elif not user.mobile_verified:
@@ -566,7 +576,6 @@ class SendMail(View):
 
 class SubscribeNewsLetter(View):
 	"""docstring for SubscribeNewsLetter"""
-	
 	def get(self,request):
 		return HttpResponse(json.dumps({"message":"You have subscribed for news letter", "code":200}), content_type='application/json')
 
@@ -607,32 +616,36 @@ class UpdateProfile(View):
 
 
 
-# @login_required(login_url="/")
-# def view_order(request):
-#     # print(request.user.id)
-#     orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, order_cancel_request=False)
-#     if orders:
-#         total_price=[]
-#         for order in orders:
-#             price = order.price
-#             grand_total = (price*23)/100
-#             total_price.append(grand_total + price)
-#             # print("view_order",total_price)
-#         paginator = Paginator(orders, 8)
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             orders = paginator.page(page)
-#         except PageNotAnInteger:
-#             orders = paginator.page(1)
-#         except EmptyPage:
-#             orders = paginator.page(paginator.num_pages)
-#         return render(request, 'orders.html' , {'orders':orders,"total_price":total_price})
-#     return render(request, 'orders.html' , {'orders':orders})
+@login_required(login_url="/")
+def view_order(request):
+    # print(request.user.id)
+    orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, order_cancel_request=False)
+    if orders:
+        total_price=[]
+        for order in orders:
+            price = order.price
+            grand_total = (price*23)/100
+            total_price.append(grand_total + price)
+        paginator = Paginator(orders, 8)
+        index=1
+        page = request.GET.get('page')
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
+        return render(request, 'orders.html' , {'orders':orders,"total_price":total_price})
+    return render(request, 'orders.html' , {'orders':orders})
 
 class ViewOrder(View):
 	"""docstring for ViewOrder"""
 	def get(self,request):
+		print("GET")
+		orders = OrderItems.objects.filter(order__customer=request.user,order_cancel_request=False)
+		return render(request, 'orders.html', {'orders':orders})
+	def post(self,request):
+		print("POST")
 		return render(request, 'orders.html')
 
 class CheckOTP(View):
@@ -945,38 +958,135 @@ class AddShipping(View):
 				messages.success(request, "Shipping address saved successfully")
 				return redirect('Juntos:customer-order-summary')
 			else:
-				# print("B_FORM",b_form.errors)
-				# print("S_FORM",s_form.errors)
 				return render(request, 'shipping_billing.html',{"s_form":s_form,"b_form":b_form})
 		else:
 			messages.info(request, "Before you place your order! Please Sign In First.")
 			return render(request, 'new_shipping_cart.html')
 
 	def get(self,request):
-		return render(request, 'shipping_billing.html')
+		shipping = ShippingAddress.objects.filter(user=request.user)
+		if request.user.is_authenticated() and request.user.is_customer and shipping:
+			return redirect("Juntos:customer-order-summary")
+		else:
+			return render(request, 'shipping_billing.html')
+
 
 class CustomerOrderSummary(View):
 	"""docstring for CustomerOrderSummary"""
 	def get(self,request):
 		if request.user.is_customer:
-			user_details = request.user
-			address = ShippingAddress.objects.filter(user=user_details, selected=True)
-			if address.exists():
-				address = address.last()
-				cart_items = Cart.objects.filter(user=user_details)
-				delivery_date = (datetime.today()+timedelta(days=8)).date()
-				total = cart_items.aggregate(Sum('price'))['price__sum']
-				grand_total  = (total * 23)/100
-				grand_total = grand_total + total
-				total_price = grand_total
-				return render(request, "order-summary.html",{"user_details":user_details,"address":address, "cart_items":cart_items, "delivery_date":delivery_date, "total":total_price})
-			else:
-				messages.info(request, "Please add Your Shipping Address")
-				return redirect("Juntos:add-shipping")
+			return render(request, "order-summary.html")
 		else:
 			messages.info(request, "You are not authorize to access this page.")
 			return redirect("Juntos:home")
-	
+
+
+def order_payment(request):
+    user = request.user
+    if request.method == 'POST':
+        if shipping_address:
+            product_cart = Cart.objects.filter(user=user)
+            user_data = []
+            cart_items = Cart.objects.filter(user=user)
+            admin_commission = 0
+            for cart in cart_items:
+                if not any( vendor.get('email') == cart.product.vendor.email for vendor in user_data):
+                    total_pay = cart_items.filter(product__vendor__email=cart.product.vendor.email).aggregate(Sum('price'))['price__sum']
+                    chek_price = (total_pay*23)/100
+                    total_payment = chek_price + total_pay
+                    price = total_payment - total_payment*5/100
+                    user_data.append({"email":cart.product.vendor.email, "amount": int(price)})
+                else:
+                    pass
+                admin_commission +=  cart.price*5/100
+            respons_url =  payment(user_data, admin_commission, user)
+            if respons_url['ack']=="Success":
+                return redirect(respons_url['url'])
+            else:
+                messages.error(request, respons_url['error'][0]['message'])
+                return render(request, "payment.html",{"errorId":respons_url['error'][0]['errorId']})
+        else:
+            messages.error(request, "Please select your order shiping address")
+            return redirect("customer:add_shipping")
+    else:
+        product_cart = Cart.objects.filter(user=user, product__payment_method__case_on_delivery=True)
+        return render(request, "payment.html",{"card_product":product_cart})
+
+class OrderPayment(View):
+	"""docstring for OrderPayment"""
+	def get(self,request):
+		return render(request, "payment.html")
+
+def create_order(user, shiping_address):
+	cart = Cart.objects.filter(user=user)
+	base_price = cart.aggregate(Sum('price'))['price__sum']
+	shipping_charge = (base_price*5)/100
+	tax_charges = (base_price*18)/100
+	total_price = base_price+shipping_charge+tax_charges
+	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type='COD',delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_charge=shipping_charge,tax_charges=tax_charges,total=total_price)
+	order_items(cart,order)
+
+def order_items(cart,order):
+	for obj in cart:
+		shipping_charge = (obj.price*5)/100
+		tax_charges = (obj.price*18)/100
+		total_price = obj.price+shipping_charge+tax_charges
+		OrderItems.objects.create(order=order,product=obj.product,product_color=obj.product_color,product_size=obj.product_size,quantity=obj.quantity,base_price=obj.price,shipping_charge=shipping_charge,tax_charges=tax_charges,total=total_price)
+		obj.product.product_quantity = obj.product.product_quantity - obj.quantity
+		obj.product.save()
+		obj.delete()
+		# product = ProductsManagement.objects.get(id=obj.product.id)
+		# product.product_quantity = product.product_quantity - obj.quantity
+		# product.save()
+		# Cart.objects.get(id=obj.id).delete()
+		message = "New Order have been received for '"+obj.product.subs_category.sub_category_name+"' types product."
+		notification = Notifications.objects.create(vendor=obj.product.vendor, ntype=1, content=message)
+		notification_data = {}
+		notification_data['content'] = notification.content
+		notification_data['ntype']   = notification.ntype
+		notification_data['vendor']  = notification.vendor.id
+		# send_notification_task.delay(notification_data)
+
+class CODOrder(View):
+	"""docstring for CODOrder"""
+	def get(self,request):
+		if request.user.is_customer:
+			address = ShippingAddress.objects.filter(user=request.user).latest('created_at')
+			if address:
+				create_order(request.user,address)
+				return redirect("Juntos:order-placed")
+		else:
+			messages.error(request, "You are not authenticated to access this page.")
+			return redirect("Juntos:home")
+
+
+@login_required(login_url="/")
+def order_placed(request):
+    user_detail = request.user
+    address = Shipping_Address.objects.filter(user=user_detail).last()
+    order_detail = CustomerOrder.objects.filter(customer=user_detail).last()
+    quantiy_handle = CustomerOrder_items.objects.filter(order_id=order_detail.id)
+    for p in quantiy_handle:
+        product = Products_Management.objects.get(id=p.product.id)
+        product.product_quantity = product.product_quantity-p.quantity
+        if product.product_quantity < 1:
+            product.product_quantity = 0
+            product.in_stock = False
+            product.save()
+        else:
+            product.in_stock = True
+            product.save()
+    b = CustomerOrder_items.objects.filter(order_id=order_detail)
+    return render(request, "order_confirmation_page.html",{"address":address,"order_detail":order_detail,"b":b[0].product})	
+
+class OrderPlaced(View):
+	"""docstring for OrderPlaced"""
+	def get(self,request):
+		Cart.objects.filter(user=request.user).delete()
+		last_order = CustomerOrder.objects.filter(customer=request.user).latest('created_at')
+		order_items = last_order.order_items.all()
+		billing_details = BillingAddress.objects.filter(user=request.user).latest('created_at')
+		return render(request, "order_confirmation_page.html",{"last_order":last_order,"order_items":order_items,'billing_details':billing_details})	
 
 # class DhlShippingPrice(View):
 # 	"""docstring for DhlShippingPrice"""
@@ -1004,6 +1114,7 @@ class CustomerOrderSummary(View):
 #                                              given_by=request.user)
 #     total_review  = Customer_Review.objects.all().count()
 #     return redirect("Peru:product_detail", slug)
+
 class Rating(View):
 	"""docstring for Rating"""
 	def post(self,request):
@@ -1054,7 +1165,44 @@ class AddWhishlist(View):
 			return redirect("Juntos:views-cart")
 
 
- 
+# @login_required(login_url="/")
+# def cancel_order_and_refund(request, order):
+#     orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, id=order)
+#     if orders:
+#         for order in orders:
+#             price = order.price
+#             grand_total = (price*23)/100
+#             total_price = grand_total + price
+#             # print("cancel_order_and_refund",total_price)
+#     for cancel_item in orders:
+#         # print("CABCELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",cancel_item)
+#         product = Products_Management.objects.get(id=cancel_item.product.id)
+#         product.product_quantity = product.product_quantity+cancel_item.quantity
+#         if product.product_quantity > 0:
+#             product.in_stock = True
+#             product.save()
+#     if request.method == "POST":
+#         order = orders.last()
+#         CalcelOrderRequest.objects.create(customer=request.user,
+#                                           order=order,
+#                                           reason=request.POST['reason'])
+#         messages.success(request, "Order cancel request send to vendor !")
+#         message = "Order cancel request for Order number: #"+str(order.order_id.order_number)+", for product SKU #"+str(order.product.product_sku)+" received."
+#         Notifications.objects.create(vendor=order.product.vendor,
+#                                      ntype="Order Cancel Request.",
+#                                      content=message)
+#         order.order_cancel_request = True
+#         order.save()
+#         return redirect("customer:view_order")
+#     else:
+#         return render(request, "cancel_order_request.html",{'order_id':orders.last().id, "cancel_orders":orders,"total_price":total_price})
+
+class CancelOrderAndRefund(View):
+	"""docstring for CancelOrderAndRefund"""
+	def get(self,request):
+		return redirect("Juntos:view-order")
 
 		
+	
+						
 														

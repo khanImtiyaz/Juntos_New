@@ -57,7 +57,7 @@
                      <li><a href="{% url 'Vendor:vendor-signup'%}">Anuncie su producto</a></li>
                      {% endif %}
                      <li>
-                        <span class="user-active"> Hi <strong>{{user.first_name |truncatechars:1091}}</strong></span>
+                        <span class="user-active">Hi <strong>{{user.first_name |truncatechars:1091}}</strong></span>
                      </li>
                      <li class=" dropdown">
                         <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
@@ -139,10 +139,8 @@
                      <ul>
                         <li><a href="{% url 'Juntos:faq' %}">Preguntas comunes</a></li>
                         <li><a href="{% url 'Juntos:conditions' %}">Términos y Condiciones </a></li>
-                        <li><a href="{% url 'Juntos:carrer' %}">Carreras</a></li>
-                        {#                        
+                        <li><a href="{% url 'Juntos:carrer' %}">Carreras</a></li>                     
                         <li><a href="#contactUsmodal" data-toggle="modal" data-target="#contactUsmodal">Contactenos por e-mail</a></li>
-                        #}
                         <li><a href="{% url 'Juntos:contact' %}">Contáctenos</a></li>
                      </ul>
                   </div>
@@ -210,7 +208,7 @@
                         <div class="popup-logn-btn text-center">
                            <button type="submit" class="btn btn-primary">Iniciar</button>
                         </div>
-                        <div class="m-tb-30"><img src="{% static 'img/o.png' %}" class="img-responsive"></div>
+                        <div class="m-tb-30"><img src="{%static 'img/o.png'%}" class="img-responsive"></div>
                         <div class="popup-face-btn  text-center"><a href="{% url 'social:begin' 'facebook' %}" class="btn  btn-primary" >
                            </i>Iniciar con Facebook</a>
                         </div>

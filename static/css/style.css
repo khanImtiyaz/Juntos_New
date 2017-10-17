@@ -102,7 +102,7 @@ footer ul li a {font-size:14px; color:#534201;}
 #quote-carousel1 .carousel-indicators .active {background: #333333;width: 128px;height: 128px;border-radius: 100px;border-color: #f33;opacity: 1;overflow: hidden; }
 #quote-carousel .item .row{margin-top:0;}
 
- .carousel-inner {min-height:300px;}
+.carousel-inner {min-height:300px;}
  
 .carousel-control {position: absolute;top: 0;bottom: 0;left: 0;width: 15%;font-size: 20px;color: #fff; text-align: center;    text-shadow: 0 1px 2px rgba(0,0,0,.6);background-color: rgba(0,0,0,0);filter: alpha(opacity=50);opacity: 10;}
 
@@ -1765,9 +1765,16 @@ section.shopping-cart-wrapper {margin: 30px 0;}
 .order-cesar_text-part img{width:55px;margin-right: 15px;}
 .order-id_part{font-weight: bold;  font-size: 1.2em;     text-transform: uppercase; }
 .cesar,.order-id { color: red;}
-.form-info_heading { border-bottom: 2px solid;     font-size: 1.1em;     font-weight: bold;     padding-bottom: 4px;     text-transform: uppercase; }
+.form-info_heading { border-bottom: 2px solid;     /*font-size: 1.1em;*/     font-weight: bold;     padding-bottom: 4px;     text-transform: uppercase; }
 .order-info_form,.billing-info_form,.shipping-info_form,.payment-info_form { margin: 20px 0;}
-.custom-label{ color: grey;  margin-left: 25px;}
+.order-info_form{border-bottom: 1px dotted}
+.custom-label{ color: black;  margin-left: 15px;    margin-bottom: 0px}
+.custom-label span{color: grey !important;}
+.custom-label.text-span{display: inline;}
+.order-info_form .form-group{margin-bottom: 0px !important}
+.shipping-info_form .form-group{margin-bottom: 0px !important}
+.billing-info_form .form-group{margin-bottom: 0px !important}
+.custom-input-field{margin: 0px 15px;width: 90%;}
 .form-control.custom-inputbgcolor{ background-color: lightgrey;}
 .order_info img {border-bottom: 3px solid yellow; border-top: 3px solid yellow; max-width: 115px; float: left;  margin-right: 5px;max-height: 43px;}
 .order_info p{text-transform:uppercase;font-weight:bold;}

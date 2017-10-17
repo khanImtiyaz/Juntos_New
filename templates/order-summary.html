@@ -1,0 +1,151 @@
+{% extends 'base.html' %} {% load staticfiles %} {% block content %}
+<section class="cart_section order-summary">
+    <div class="container">
+        <div class="row">
+        <div class="col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 toppad">
+        <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Order Summary</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+             <div class="col-md-12 col-lg-12">
+                <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                   <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingOne">
+                         <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="more-less glyphicon glyphicon-plus pull-right"></i>
+                            <span><i class="fa fa-check" aria-hidden="true"></i></span>1. LOGIN
+                            </a>
+                         </h4>
+                      </div>
+                      <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                         <div class="panel-body">
+                           <ul>
+                              <li>
+                                 {{user.email}}
+                              </li>
+                              <li>{{user.mobile}}</li>
+                           </ul>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingtwo">
+                         <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsetwo" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="more-less glyphicon glyphicon-plus pull-right"></i>
+                            <span><i class="fa fa-check" aria-hidden="true"></i></span>2. DELIVERY ADDRESS
+                            </a>
+                         </h4>
+                      </div>
+                      <div id="collapsetwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                         <div class="panel-body">
+                            <div class="col-md-6">
+                               <p>Name : {{address.shipping_first_name}} {{address.shipping_last_name}}</p>
+                               <p>Mob : {{address.shipping_phone}}</p>
+                               <p>Postcode : {{address.shipping_zip}}</p>
+                               <p>Address : {{address.shipping_address}}</p>
+                            </div>
+                            <div class="col-md-6">
+                               <p>City : {{address.shipping_city}}</p>
+                               <p>Country Abbreviation : {{address.shipping_country_abbreviation}}</p>
+                               <p>State : {{address.shipping_state}}</p>
+                               <p>Country : {{address.shipping_country}}</p>
+                            </div>
+                            <div class="col-sm-12 pull-right">
+                               <a href="{% url 'Juntos:add-shipping' %}" class="pull-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Change</a>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="panel panel-default">
+                      <div class="panel-heading" role="tab" id="headingOne">
+                         <h4 class="panel-title">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapsethree" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="more-less glyphicon glyphicon-plus pull-right"></i>
+                            <span><i class="fa fa-check" aria-hidden="true"></i></span>3. REVIEW ORDER
+                            </a>
+                         </h4>
+                      </div>
+                      <div id="collapsethree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                         <div class="panel-body">
+                            <div class="table-responsive">
+                               <table class="table table-hover table-bordered">
+                                  <thead>
+                                     <th class="text-center">Item Details</th>
+                                     <th class="text-center">Quantity</th>
+                                     <th class="text-center">Sub-Total</th>
+                                     <th class="text-center">Expected Delivery Date</th>
+                                  </thead>
+                                  <tbody>
+                                     {% for item in cart_obj %}
+                                     <tr>
+                                        <td class="text-center">
+                                           <figure class="cart_figure">
+                                              <img src="{{ item.product.image.0}}" alt="" />
+                                              <span>{{item.product.title}}</span>
+                                           </figure>
+                                        </td>
+                                        {% if item.product.selling_price %}
+                                        <td class="text-center">
+                                           {{item.quantity}} * ${{item.product.selling_price}}
+                                        </td>
+                                        {% else %}
+                                        <td class="text-center">
+                                           {{item.quantity}} * ${{item.product.price}}
+                                        </td>
+                                        {% endif %}
+                                        <td class="text-center">
+                                           <p>${{item.price|floatformat:2}}</p>
+                                        </td>
+                                        <td class="text-center">
+                                           {{delivery_date}}
+                                        </td>
+                                     </tr>
+                                     {% endfor %}
+                                  </tbody>
+                               </table>
+                            </div>
+                            <div class="text-center">You have Pay :<span><strong>$ {{shipping_amount |floatformat:2}}</strong></span></div>
+                            <div class='form-row pay_btn_option'>
+                               <div class="row">
+                                  <div class='col-md-6 col-md-offset-3'>
+                                     <div class='form-control total btn btn-info'>
+                                        <a href="{% url 'Juntos:order-payment'%}">Proceed To Payment</a>
+                                     </div>
+                                     </br>
+                                     <a class="form-control btn btn-primary" href="http://www.precio-dolar.pe/">View Rates</a>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </div>
+        </div>
+        </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+   history.pushState(null, null, document.URL);
+   window.addEventListener('popstate', function() {
+       history.pushState(null, null, document.URL);
+   });
+</script>
+<script>
+   function toggleIcon(e) {
+       $(e.target)
+           .prev('.panel-heading')
+           .find(".more-less")
+           .toggleClass('glyphicon-plus glyphicon-minus');
+   }
+   $('.panel-group').on('hidden.bs.collapse', toggleIcon);
+   $('.panel-group').on('shown.bs.collapse', toggleIcon);
+</script>
+{% endblock %}

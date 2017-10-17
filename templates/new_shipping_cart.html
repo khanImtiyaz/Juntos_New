@@ -172,7 +172,6 @@
             difference_amount = parseFloat($('#grand_payment').text())+parseFloat(new_amount - previous_amount)+parseFloat(((new_amount - previous_amount)*18)/100)
        $('#grand_payment').text(difference_amount.toFixed(2))
        $('#proceed_payment').text(difference_amount.toFixed(2))
-       // add_cart_details_simple_shipp(quant_Array[0], quant_Array[1]);
    });
    
    function add_cart_details_simple_shipp(data, product) {
@@ -199,8 +198,7 @@
            },
        });
    }
-</script>
-<script type="text/javascript">
+
    function removeCartItem(id){
        card_product_id = []
        var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
@@ -217,7 +215,7 @@
 </script>
 {% else %}
 <center><img style="margin-top: 20px; height: 300px;" src="//img1a.flixcart.com/www/linchpin/fk-cp-zion/img/empty-cart_ee6141.png"></center>
-<h1 class="pull-left-down">
+<h1 class="pull-left-down" style="margin-bottom: 15px !important;">
    <span style="color: black">Your Shopping Cart is empty.</span>
 </h1>
 <center style="margin-bottom: 40px;" >  <a href="{% url 'Juntos:home' %}" class="btn btn-lg btn-keep_shop">KEEP SHOPPING</a></center>

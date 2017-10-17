@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load natural_time %}
+{% block content %}
+<section class="cart_section">
+   <div class="container">
+      <div class="OrderConfirm-heading_top">
+         <h2>Order Confirmation</h2>
+      </div>
+      <div class="next-pre-cart-btn shoping-btn text-right">
+         <a href="{% url 'Juntos:home' %}" class="btn btn-lg btn-keep_shop">KEEP SHOPPING</a>
+      </div>
+      <div class="row bs-wizard" style="border-bottom:0;">
+         <div class="order-cesar_row">
+            <div class="row">
+               <div class="col-sm-6">
+                  <div class="order-cesar_text-part">
+                     <img src="{{b.image}}" alt="">
+                     Thank you for your order: <span class="cesar">{{user.first_name}}</span>
+                  </div>
+               </div>
+               <div class="col-sm-6">
+                  <div class="order-id_part text-right">
+                     Order id: <span class="order-id">{{last_order.order_number}} </span>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<section class="info-sec">
+   <div class="container">
+      <div class="info-inner-container clearfix">
+         <div class="col-sm-4">
+            <div class="order-info_form-section">
+               <div class="form-info_heading">
+                  Order information
+               </div>
+               {% for item in order_items %}
+               <div class="order-info_form">
+                  <div class="form-group">
+                     <label for="order-name" class="custom-label">NAME: <span class="text-span">{{item.product.title}}</span></label>
+                  </div>
+                  <div class="form-group">
+                     <label for="order-orderid" class="custom-label">ORDER ID: <span class="text-span">{{item.order_number}}</span></label>
+                  </div>
+                  <div class="form-group">
+                     <label for="order-purchasedate" class="custom-label">PURCHASE DATE: <span class="text-span">{{item.created_at|date:"D d M Y"}}</span></label>
+                  </div>
+               </div>
+               {% endfor %}
+               
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="shipping-info_form-section">
+               <div class="form-info_heading">
+                  Shipping information
+               </div>
+               <div class="shipping-info_form">
+                  <div class="form-group">
+                     <label for="ship-name" class="custom-label">NAME: <span>{{last_order.shipping_address.shipping_first_name}}</span></label>
+                  </div>
+                  <div class="form-group">
+                     <label for="ship-address" class="custom-label">ADDRESS: <span>{{last_order.shipping_address.shipping_address}}</span></label>
+                  </div>
+                  <div class="form-group">
+                     <label for="shippingtype" class="custom-label">SHIPPING TYPE:  <span>{{address.mode_of_transport}}</span></label>
+                  </div>
+               </div>
+            </div>
+         </div>
+        <div class="col-sm-4">
+            <div class="billing-info_form-section">
+               <div class="form-info_heading">
+                  Billing information
+               </div>
+               <div class="billing-info_form">
+                  <div class="form-group">
+                     <label for="bill-name" class="custom-label">NAME: <span>{{billing_details.billing_first_name}}</span></label>
+                  </div>
+                  <div class="form-group">
+                     <label for="bill-address" class="custom-label">ADDRESS: <span>{{billing_details.billing_address}}</span></label>
+                  </div>
+                  <div class="form-group">
+                     <label for="shippingtype" class="custom-label">SHIPPING TYPE:  <span>{{address.mode_of_transport}}</span></label>
+                  </div>
+               </div>
+            </div>
+        </div>
+
+      </div>
+      <div class="order-info_section col-sm-12">
+         <div class="order_info">
+            <img src="{% static 'img/logo2.png' %}" alt="logo2">
+            <p> Thankyou for your order. you will be receiving a confirmation email shortly with your order details and invoice. please verify your order details.
+               <br> please check your spam folder if you didn't get any email from us within the next 5 minutes. 
+            </p>
+         </div>
+      </div>
+      <div class="next-pre-cart-btn shoping-btn text-right">
+      </div>
+   </div>
+</section>
+{% endblock %}

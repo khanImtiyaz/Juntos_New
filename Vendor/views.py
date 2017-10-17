@@ -290,23 +290,24 @@ class ProductList(View):
 		return render(request, 'vendor/product-list.html', {'product_lists':data,"notification_unread_count":unread_count(request.user)})
 
 
-# @login_required(login_url="vendor:bevendor")
-# def order_history(request):
-#     order_data = CustomerOrder_items.objects.filter(product__vendor=request.user).order_by('-created_at')
-#     total_order = order_data.count()
-#     paginator = Paginator(order_data, 10)
-#     page = request.GET.get('page')
-#     try:
-#         orders = paginator.page(page)
-#     except PageNotAnInteger:
-#         orders = paginator.page(1)
-#     except EmptyPage:
-#         orders = paginator.page(paginator.num_pages)
-#     return render(request, 'vendor/order-history.html',{"notification_unread_count":unread_count(request.user),'order_data':orders, 'total_order':total_order})	
+@login_required(login_url="vendor:bevendor")
+def order_history(request):
+    total_order = order_data.count()
+    paginator = Paginator(order_data, 10)
+    page = request.GET.get('page')
+    try:
+        orders = paginator.page(page)
+    except PageNotAnInteger:
+        orders = paginator.page(1)
+    except EmptyPage:
+        orders = paginator.page(paginator.num_pages)
+    return render(request, 'vendor/order-history.html',{"notification_unread_count":unread_count(request.user),'order_data':orders, 'total_order':total_order})	
+
 class OrderHistory(View):
 	"""docstring for OrderHistory"""
 	def get(self,request):
-		return render(request, 'vendor/order-history.html')
+		orders = OrderItems.objects.filter(product__vendor=request.user).order_by('-created_at')
+		return render(request, 'vendor/order-history.html',{'orders':orders})
 
 def add_product(request):
     try:
@@ -477,10 +478,10 @@ class AddNotification(View):
 			messages.error(request, "You are not authorize to access this page.")
 			return redirect("Vendor:bevendor")
 
-# @login_required(login_url="vendor:bevendor")
-# def payment_transaction_details(request):
-#     payments = CustomerTransactionDetails.objects.filter(reciever_email=request.user.email)
-#     return render(request, 'vendor/payment.html', {"payments":payments, "notification_unread_count":unread_count(request.user)})
+@login_required(login_url="vendor:bevendor")
+def payment_transaction_details(request):
+    payments = CustomerTransactionDetails.objects.filter(reciever_email=request.user.email)
+    return render(request, 'vendor/payment.html', {"payments":payments, "notification_unread_count":unread_count(request.user)})
 
 class PaymentTransactionDetails(View):
 	"""docstring for PaymentTransactionDetails"""
@@ -767,73 +768,19 @@ class RemoveProduct(View):
 		return HttpResponse(json.dumps({"message":"Item removed successfully.", "code":200,'total_product':total}), content_type='application/json')
 
 	
-# @login_required(login_url="vendor:bevendor")
-# def order_details(request, order_id):
-#     user = request.user
-#     order_data   = CustomerOrder_items.objects.get(id=order_id)
-#     order_detail = {}
-#     order_detail['order_id']     = order_id
-#     order_detail['order_number'] = order_data.order_id.order_number
-#     order_detail['order_date']   = order_data.created_at
-#     order_detail['total_price']  = order_data.price
-#     order_detail['status']       = str(order_data.delivery_status)
-#     order_detail['delivery_date'] = order_data.created_at + timedelta(days=5)
-#     order_detail['pickup_time'] = order_data.created_at + timedelta(days=2)
-#     order_detail['product_name']  = order_data.product.title
-#     order_detail['quantity'] = order_data.quantity
-#     order_detail['insured_amount'] = order_data.product.insured_amount
-#     order_detail['product_weight'] = order_data.product.product_weight 
-#     order_detail['product_height'] = order_data.product.product_height
-#     order_detail['product_depth'] = order_data.product.product_depth
-#     order_detail['product_width'] = order_data.product.product_width
-
-
-#     # print("colorrr",order_data.product_color)
-
-#     if  order_data.product_color:
-#         try:
-#             color = Product_color.objects.get(id = order_data.product_color).color
-#         except Exception as e:
-#             print("error",e)
-#             color = []
-#         order_detail['color'] = color
-#     if  order_data.product_size:
-#         while True:
-#             if order_data.product_size == 0:
-#                 order_detail['size'] = "Extra Small"
-#                 break
-#             if order_data.product_size == 1:
-#                 order_detail['size'] = "Small"
-#                 break
-#             if order_data.product_size == 2:
-#                 order_detail['size'] = "Medium"
-#                 break
-#             if order_data.product_size == 3:
-#                 order_detail['size'] = "Large"
-#                 break
-#             if order_data.product_size == 4:
-#                 order_detail['size'] = "Extra Large"
-#                 break
-#     order_detail['customer'] = order_data.order_id.customer.email
-#     order_detail['mobile'] = order_data.order_id.customer.mobile
-#     shipping_address = order_data.order_id.customer.shiping_address.filter(selected=True)
-#     shipping_address = shipping_address.last()
-#     order_detail['address'] = shipping_address.s_address
-#     order_detail['city'] = shipping_address.s_city
-#     order_detail['state'] = shipping_address.s_state
-#     order_detail['postcode'] = shipping_address.s_zip
-#     order_detail['country'] = shipping_address.s_country
-#     order_detail['country_abbriviation'] = shipping_address.s_country_abbriviation
-#     order_detail['mode_of_transport'] = shipping_address.mode_of_transport
-
-#     order_detail['order_payment_type'] = order_data.order_id.order_payment_type
-#     order_detail["notification_unread_count"] = unread_count(request.user)
-#     return render(request, 'vendor/order-details.html', order_detail)
+@login_required(login_url="vendor:bevendor")
+def order_details(request, order_id):
+    user = request.user
+    order_detail['mode_of_transport'] = shipping_address.mode_of_transport
+    order_detail['order_payment_type'] = order_data.order_id.order_payment_type
+    order_detail["notification_unread_count"] = unread_count(request.user)
 
 class OrderDetails(View):
 	"""docstring for OrderDetails"""
-	def get(self,request):
-		return render(request, 'vendor/order-details.html', order_detail)
+	def get(self,request,order_id=None):
+		orders = OrderItems.objects.get(id=order_id)
+		address = orders.order.customer.shiping_address.all().latest('created_at')
+		return render(request, 'vendor/order-details.html',{"orders":orders,"address":address})
 
 # @login_required(login_url="vendor:bevendor")
 # def remove_notification(request, pk):
@@ -870,36 +817,84 @@ class DeleteColors(View):
 			return HttpResponse({"status":500,"message": "Not Deleted Successfully"}, content_type='application/json')
 
 
-# @login_required(login_url="/")
-# def view_order(request):
-#     # print(request.user.id)
-#     orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, order_cancel_request=False)
-#     if orders:
-#         total_price=[]
-#         for order in orders:
-#             price = order.price
-#             grand_total = (price*23)/100
-#             total_price.append(grand_total + price)
-#             # print("view_order",total_price)
-#         paginator = Paginator(orders, 8)
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             orders = paginator.page(page)
-#         except PageNotAnInteger:
-#             orders = paginator.page(1)
-#         except EmptyPage:
-#             orders = paginator.page(paginator.num_pages)
-#         return render(request, 'orders.html' , {'orders':orders,"total_price":total_price})
-#     return render(request, 'orders.html' , {'orders':orders})
+@login_required(login_url="/")
+def view_order(request):
+    # print(request.user.id)
+    orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, order_cancel_request=False)
+    if orders:
+        total_price=[]
+        for order in orders:
+            price = order.price
+            grand_total = (price*23)/100
+            total_price.append(grand_total + price)
+        paginator = Paginator(orders, 8)
+        index=1
+        page = request.GET.get('page')
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            orders = paginator.page(1)
+        except EmptyPage:
+            orders = paginator.page(paginator.num_pages)
+        return render(request, 'orders.html' , {'orders':orders,"total_price":total_price})
+    return render(request, 'orders.html' , {'orders':orders})
 
-class ViewOrder(View):
+
+class VendorViewOrder(View):
 	"""docstring for ViewOrder"""
 	def get(self,request):
-		return render(request, 'vendor/view-order.html')
+		print("GET")
+		orders = OrderItems.objects.filter(order__customer=request.user,order_cancel_request=False)
+		return render(request, 'vendor/view-order.html',{'orders':orders})
+	def post(self,request):
+		print("POST")
+		return render(request, 'vendor/view-order.html')		
 
+
+@login_required(login_url="vendor:bevendor")
+def invoice_order(request):
+    user = request.user
+    if request.user.is_vendor:
+        if request.method == "POST":
+            invoice_exist = CustomerOrderInvoice.objects.filter(item_order_id__id=request.POST['order_id'])
+            if not invoice_exist.exists():
+                order_id = request.POST['order_id']
+                order_data = CustomerOrder_items.objects.get(id=order_id)
+                invoice = CustomerOrderInvoice(item_order_id=order_data)
+                invoice.shippment_date = datetime.strptime(request.POST['shippment_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
+                invoice.pickup_date = datetime.strptime(request.POST['pickup_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
+                invoice.ready_by_time = request.POST['ready_by_time']
+                invoice.close_time = request.POST['close_time']
+                invoice.shipping_charge = order_data.price*18/100
+                invoice.billing_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
+                invoice.shipping_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
+                invoice.payment_method = order_data.order_id.order_payment_type
+                invoice.save()
+                vendor_dhl = request.user
+                # print(invoice.id)
+                order_details = invoice_data(invoice.id, order_id, request)
+                dhl_service(order_details, vendor_dhl, invoice)
+                ##  Create order_details Hash
+                messages.info(request, "Invoice # {1} for order # {0} has generated.".format(order_data.order_id.order_number, invoice.invoice_number))
+                return render(request, "vendor/order-invoice.html",order_details)
+            else:
+                messages.info(request, "Invoice for the same order already exits.")
+                return redirect("vendor:order_details",request.POST['order_id'] )
+        else:
+            return redirect('vendor:vendor_dashboard')
+    else:
+        messages.error(request, "You are not authorize to access this page.")
+        return redirect('vendor:bevendor')
 
 			
-				
-				
+class InvoiceOrder(View):
+	"""docstring for InvoiceOrder"""
+	def get(self,request):
+		return redirect("vendor:order-details",request.POST['order_id'] )
+
+	def post(self,request):
+		return redirect('Vendor:vendor-dashboard')
+
+
+										
 																																														

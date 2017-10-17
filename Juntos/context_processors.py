@@ -1,4 +1,6 @@
 from django.db.models import Sum, Avg, Count
+from datetime import datetime, timedelta
+import datetime
 from Static_Model.models import *
 from .models import *
 
@@ -21,12 +23,25 @@ def star_rating(request):
 
 def cart(request):
 	if request.user.is_authenticated():
-		cartObj = Cart.objects.filter(user=request.user).aggregate(Sum('price'))
-		total_amount = float(cartObj['price__sum'])+  float((cartObj['price__sum']*18)/100)
-		shipping_amount = total_amount + ((total_amount*5)/100)
-		return {"total_amount":total_amount,"shipping_amount":shipping_amount}
+		delivery_date = (datetime.today()+timedelta(days=8)).date()
+		cartObj = Cart.objects.filter(user=request.user)
+		if cartObj:
+			has_COD = cartObj.filter(product__payment_mode__contains=['COD'])
+			cart_sum = cartObj.aggregate(Sum('price'))
+			total_amount = float(cart_sum['price__sum'])+  float((cart_sum['price__sum']*18)/100)
+			shipping_amount = total_amount + ((total_amount*5)/100)
+			return {"total_amount":total_amount,"shipping_amount":shipping_amount,"cart_obj":cartObj,"delivery_date":delivery_date,"has_COD":True if len(cartObj) is len(has_COD) else False}
+		return {"total_amount":"","shipping_amount":"","cart_obj":cartObj,"delivery_date":"","has_COD":""}
 	else:
-		return {"total_amount":"","shipping_amount":""}
+		return {"total_amount":"","shipping_amount":"","cart_obj":"","delivery_date":"","has_COD":""}
+
+def userShippingDetail(request):
+	if request.user.is_authenticated():
+		address = ShippingAddress.objects.filter(user=request.user).latest('created_at')
+		return {"address":address}
+	else:
+		return {"address":""}
+	
 
 
 # def all_data(request):

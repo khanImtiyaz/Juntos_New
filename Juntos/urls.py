@@ -47,10 +47,11 @@ urlpatterns = [
 	url(r'^removecart/(?P<pk>[0-9]+)$', views.RemoveFromCart.as_view(), name='remove-from-cart'),
 	url(r'^wish-list-add/(?P<product_id>[0-9]+)$', views.AddWhishlist.as_view(), name='add-whishlist'),
 	# url(r'^dhl_shippingprice$', views.DhlShippingPrice.as_view(), name="dhl-shippingprice"),
-	url(r'^customer-order-summary/$', views.CustomerOrderSummary.as_view(), name="customer-order-summary"),
-
-
-
+	url(r'^customer-order-summary$', views.CustomerOrderSummary.as_view(), name="customer-order-summary"),
+	url(r'^order-payment$', views.OrderPayment.as_view(), name="order-payment"),
+	url(r'^order$', views.CODOrder.as_view(), name="cod-order"),
+	url(r'^order-placed$', views.OrderPlaced.as_view(), name='order-placed'),
+	url(r'^cancel-order-refund/(?P<order>[0-9]+)$', views.CancelOrderAndRefund.as_view(), name='cancel-order-and-refund'),
 
 ]
 

@@ -1,4 +1,7 @@
-{% extends 'vendor/account_header.html'%} {% load staticfiles %} {% block content %}
+{% extends 'vendor/account_header.html'%} 
+{% load staticfiles %} 
+{% block content %}
+{% load natural_time %}
 <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 <div class="col-md-9">
    <div class="profile-content">
@@ -13,43 +16,43 @@
                       <th style="text-align: center;">Order Number</th>
                       <th style="text-align: center;">Product</th>
                       <th style="text-align: center;">Product Name</th>
-                      <th style="text-align: center;">Quantity</th>
+                      <th style="text-align: center;">Quant.</th>
                       <th style="text-align: center;">Total Price</th>
                       <th style="text-align: center;">Order Date</th>
                       <th style="text-align: center;">Delivery Status</th>
+                      <th></th>
                    </tr>
                    {% for order in orders %}
-                   {% for price in total_price %}
-                   {% if forloop.counter == forloop.parentloop.counter %}
                    <tr>
                       <td style="text-align: center;">
-                         <strong># {{order.order_id.order_number}}</strong>
+                        <strong>#{{order.order_number|truncatechars:8}}</strong>
                       </td>
                       <td style="text-align: center;">
                          <figure class="cart_figure">
-                            <img src="{{order.product.image}}" alt=""/>
+                            <img src="{{order.product.image.0}}" alt=""/>
                          </figure>
                       </td>
-                      <td class="text-center">
-                         {{order.product.title}}
-                      </td>
-                      <td class="text-center" style="text-align: center;"> {{order.quantity}}</td>
-                      <td class="text-center" style="text-align: center;">$ {{ price |floatformat:2}}</td>
-                      <td class="text-center" style="text-align: center;">{{order.created_at}}</td>
-                      {% if order.order_id.delivery_status %}
-                      <td class="text-center" style="text-align: center;"> Delivered</td>
+                      <td class="text-center">{{order.product.title}}</td>
+                      <td class="text-center" style="text-align:center;">{{order.quantity}}</td>
+                      {% if order.product.selling_price %}
+                      <td class="text-center" style="text-align:center;">${{order.product.selling_price|tax:order.quantity|floatformat:2}}</td>
                       {% else %}
-                      <td class="text-center" style="text-align: center;"> Pending</td>
+                      <td class="text-center" style="text-align:center;">${{order.product.price|tax:order.quantity|floatformat:2}}</td>
                       {% endif %}
-                      <td class="text-center" style="text-align: center;">
+                      <td class="text-center" style="text-align:center;">{{order.created_at|date:"D, d M Y"}}</td>
+                      {% if order.order_id.delivery_status %}
+                      <td class="text-center" style="text-align:center;">Delivered</td>
+                      {% else %}
+                      <td class="text-center" style="text-align:center;">Pending</td>
+                      {% endif %}
+                      <td class="text-center" style="text-align:center;">
                          {% if order.order_id.delivery_status %}
                          {% else %}
-                         <a class="btn btn-red-custom"  href="{% url 'customer:cancel_order_and_refund' order.id %}" >Cancel Order</a>
+                         <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancel Order</a>
                          {% endif %}
                       </td>
                    </tr>
-                   {% endif %}
-                   {% endfor %} {% endfor %}
+                   {% endfor %}
                 </tbody>
              </table>
           </div>

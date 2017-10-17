@@ -20,6 +20,10 @@ def product_quantity(value):
 		result.append(i)
 	return result
 
+@register.filter
+def tax(value,quantity):
+	return quantity*(value + ((value*18)/100))
+
 
 # @register.filter
 # def thriceArray(value):

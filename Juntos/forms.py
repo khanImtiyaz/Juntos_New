@@ -70,7 +70,7 @@ class ShippingForm(forms.ModelForm):
     shipping_country=forms.CharField(required = True,error_messages = {"required":"Please enter Country."})
     shipping_city=forms.CharField(required = True,error_messages = {"required":"Please enter City."})
     shipping_address=forms.CharField(required = True,error_messages = {"required":"Please enter Address."})
-    shipping_country_abbriviation=forms.CharField(required = True,error_messages = {"required":"Please enter country abbreviations Letters"})
+    shipping_country_abbreviation=forms.CharField(required = True,error_messages = {"required":"Please enter country abbreviations Letters"})
     shipping_state=forms.CharField(required = True,error_messages = {"required":"Please enter State."})
     shipping_zip=forms.CharField(required = True,error_messages = {"required":"Please enter Zipcode"})
     shipping_email = forms.EmailField(required = True, error_messages = {"required":"Please enter email."})
