@@ -14,39 +14,51 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h4>Total No of Orders Received : {{orders.count | safe}}</h4>
+         <h2>Total No of Orders Received : {{orders.count | safe}}</h2>
       </div>
       <div class="table-responsive">
-         <table class="table table-hover table-bordered">
-            <thead>
-               <tr>
-                  <th style="text-align: center">Id</th>
-                  <th style="text-align: center">Status</th>
-                  <th style="text-align: center">Total Price</th>
-                  <th style="text-align: center">Customer Email</th>
-                  <th style="text-align: center">Order Date</th>
-                  <th style="text-align: center">Action</th>
-               </tr>
-            </thead>
-            <tbody>
-               {% for order in orders %}
-               <tr>
-                  <td>#{{order.order_number|truncatechars:8}}</td>
-                  <td>{{order.delivery_status}}</td>
-                  {% if order.product.selling_price %}
-                     <td class="text-center" style="text-align:center;">${{order.product.selling_price|tax:order.quantity|floatformat:2}}</td>
-                  {% else %}
-                     <td class="text-center" style="text-align:center;">${{order.product.price|tax:order.quantity|floatformat:2}}</td>
-                  {% endif %}
-                  <td>{{order.order.customer.first_name}} </td>
-                  <td>{{order.created_at|date:"D, d M Y"}}</td>
-                  <td>
-                     <a href="{% url 'Vendor:order-details' order.id %}" class="btn btn-custom"><i class="fa fa-eye"></i> View</a><button class="btn btn-red2 btn-xs" onclick="remove_order_history(this,{{order.id}})"><i class="fa fa-trash"></i> </button>
-                  </td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
+         {% if orders %}
+         {% regroup orders by created_at|date:"D, d M Y" as order_list %}
+         {% for order_obj in order_list %}
+         <h4>{{order_obj.grouper}}</h4>
+         {% for order in order_obj.list %}
+         <div class="col-sm-4">
+            <div class="order-list clearfix">
+               <div style="width: 100%">#{{order.order_number|truncatechars:12}}</div>
+               <div>
+                  <label>Status: </label>
+                  <div style="display: inline-block;">{{order.delivery_status}}</div>
+               </div>
+               <div>
+                  <label>Total Price: </label>
+                  <div style="display: inline-block;">{% if order.product.selling_price %}
+                     ${{order.product.selling_price|tax:order.quantity|floatformat:2}}
+                     {% else %}
+                     ${{order.product.price|tax:order.quantity|floatformat:2}}
+                     {% endif %}
+                  </div>
+               </div>
+               <div>
+                  <label>Cust. Name: </label>
+                  <div style="display: inline-block;">{{order.order.customer.first_name}}</div>
+               </div>
+               <div>
+                  <label>Order dt.: </label>
+                  <div style="display: inline-block;">{{order.created_at|date:"D, d M Y"}}</div>
+               </div>
+               <div>
+                  <div class="col-sm-5">
+                     <a class="remove-notify-btn" onclick="remove_order_history(this,{{order.id}})"> Remove</a>
+                  </div>
+                  <div class="col-sm-7">
+                     <a class="view-order-btn" href="{% url 'Vendor:order-details' order.id %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         {% endfor %}
+         {% endfor %}
+         {% endif %}
       </div>
       <div class="pagination-in text-center">
          {% if orders%}

@@ -5,86 +5,93 @@
 <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 <div class="col-md-9">
    <div class="profile-content">
-      <div class="panel panel-info">
-         <div class="panel-heading">
-            <h3 class="panel-title">My Orders</h3>
+      <div class="panel">
+         <div class="heading_top clearfix">
+            <h2 class="pull-left">MY ORDERS</h2>
          </div>
-          <div class="table-responsive">
-             <table class="table table-hover table-bordered">
-                <tbody>
-                   <tr>
-                      <th style="text-align: center;">Order Number</th>
-                      <th style="text-align: center;">Product</th>
-                      <th style="text-align: center;">Product Name</th>
-                      <th style="text-align: center;">Quant.</th>
-                      <th style="text-align: center;">Total Price</th>
-                      <th style="text-align: center;">Order Date</th>
-                      <th style="text-align: center;">Delivery Status</th>
-                      <th></th>
-                   </tr>
-                   {% for order in orders %}
-                   <tr>
-                      <td style="text-align: center;">
-                        <strong>#{{order.order_number|truncatechars:8}}</strong>
-                      </td>
-                      <td style="text-align: center;">
-                         <figure class="cart_figure">
-                            <img src="{{order.product.image.0}}" alt=""/>
-                         </figure>
-                      </td>
-                      <td class="text-center">{{order.product.title}}</td>
-                      <td class="text-center" style="text-align:center;">{{order.quantity}}</td>
-                      {% if order.product.selling_price %}
-                      <td class="text-center" style="text-align:center;">${{order.product.selling_price|tax:order.quantity|floatformat:2}}</td>
-                      {% else %}
-                      <td class="text-center" style="text-align:center;">${{order.product.price|tax:order.quantity|floatformat:2}}</td>
-                      {% endif %}
-                      <td class="text-center" style="text-align:center;">{{order.created_at|date:"D, d M Y"}}</td>
-                      {% if order.order_id.delivery_status %}
-                      <td class="text-center" style="text-align:center;">Delivered</td>
-                      {% else %}
-                      <td class="text-center" style="text-align:center;">Pending</td>
-                      {% endif %}
-                      <td class="text-center" style="text-align:center;">
-                         {% if order.order_id.delivery_status %}
-                         {% else %}
-                         <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancel Order</a>
-                         {% endif %}
-                      </td>
-                   </tr>
-                   {% endfor %}
-                </tbody>
-             </table>
-          </div>
-          <div class="pagination-in text-center">
-             {% if orders %}
-             {% if orders.has_other_pages %}
-             <div class="bdr-bottom"></div>
-             <div class="pagination-top text-center"></div>
-             <ul class="pagination text-center">
-                {% if orders.has_previous %}
-                <li><a href="?page={{ orders.previous_page_number }}" class="paginate left" >&#xab;</a></li>
-                {% else %}
-                <li class="disabled"><a class="paginate left">&#xab;</a></li>
-                {% endif %}
-                {% for i in orders.paginator.page_range %}
-                {% if orders.number == i %}
-                <li class="active"><a>{{ i }}</a></li>
-                {% else %}
-                <li><a href="?page={{ i }}">{{ i }}</a></li>
-                {% endif %}
-                {% endfor %}
-                {% if orders.has_next %}
-                <li><a href="?page={{ orders.next_page_number }}" class="paginate right">&#xbb;</a></li>
-                {% else %}
-                <li class="disabled"><a class="paginate right">&#xbb;</a></li>
-                {% endif %}
-             </ul>
-             {% endif %}
-             {% else %}
-             No Order Data Available !
-             {% endif %}
-          </div>
+         <div class="table-responsive">
+            {% if orders %}
+            {% for order in orders %}
+            <div class="col-sm-4">
+               <div class="order-list clearfix">
+                  <div style="width: 100%">#{{order.order_number|truncatechars:12}}</div>
+                  <div>
+                     <figure class="cart_figure">
+                        <img src="{{order.product.image.0}}" alt=""/>
+                     </figure>
+                  </div>
+                  <div>
+                     <label>Product Name: </label>
+                     <div style="display: inline-block;">{{order.product.title}}</div>
+                  </div>
+                  <div>
+                     <label>Quant.: </label>
+                     <div style="display: inline-block;">{{order.quantity}}
+                     </div>
+                  </div>
+                  <div>
+                     <label>Total Price: </label>
+                     <div style="display: inline-block;">{% if order.product.selling_price %}${{order.product.selling_price|tax:order.quantity|floatformat:2}}{% else %}${{order.product.price|tax:order.quantity|floatformat:2}}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div>
+                     <label>Order dt.: </label>
+                     <div style="display: inline-block;">{{order.created_at|date:"D, d M Y"}}</div>
+                  </div>
+                  <div>
+                     <label>Delivery Status: </label>
+                     <div style="display: inline-block;">{% if order.order_id.delivery_status %}Delivered
+                        {% else %}Pending{% endif %}
+                     </div>
+                  </div>
+                  <div>
+                     <div class="col-sm-12">
+                        {% if order.order_id.delivery_status %}
+                        {% else %}
+                        <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancel Order</a>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <!-- <td style="text-align: center;">
+               <figure class="cart_figure">
+                  <img src="{{order.product.image.0}}" alt=""/>
+               </figure>
+               </td> -->
+         </div>
+         <div class="pagination-in text-center">
+            {% if orders %}
+            {% if orders.has_other_pages %}
+            <div class="bdr-bottom"></div>
+            <div class="pagination-top text-center"></div>
+            <ul class="pagination text-center">
+               {% if orders.has_previous %}
+               <li><a href="?page={{ orders.previous_page_number }}" class="paginate left" >&#xab;</a></li>
+               {% else %}
+               <li class="disabled"><a class="paginate left">&#xab;</a></li>
+               {% endif %}
+               {% for i in orders.paginator.page_range %}
+               {% if orders.number == i %}
+               <li class="active"><a>{{ i }}</a></li>
+               {% else %}
+               <li><a href="?page={{ i }}">{{ i }}</a></li>
+               {% endif %}
+               {% endfor %}
+               {% if orders.has_next %}
+               <li><a href="?page={{ orders.next_page_number }}" class="paginate right">&#xbb;</a></li>
+               {% else %}
+               <li class="disabled"><a class="paginate right">&#xbb;</a></li>
+               {% endif %}
+            </ul>
+            {% endif %}
+            {% else %}
+            No Order Data Available !
+            {% endif %}
+         </div>
       </div>
    </div>
 </div>

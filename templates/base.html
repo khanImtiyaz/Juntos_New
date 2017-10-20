@@ -72,13 +72,13 @@
                      <li class="wishlist_icn" style="margin: 0;">
                         <a class="cart" href="{% url 'Juntos:proceed-cart' %}">
                         <img src="{% static 'img/cart1.png' %}"/>
-                        <span class="cart-count" id="initial_card">{{ user.cart_user.values.count }}
+                        <span class="cart-count" id="initial_card">{{user.cart_user.values.count}}
                         </span></a>
                      </li>
                      <li class="wishlist_icn" style="margin: 0;">
                         <a class="cart" href="{% url 'Juntos:wish-list'%}">
                         <img src="{% static 'img/wishlist.png' %}"/>
-                        <span class="cart-count" id="wishlist_id">{{ user.whislist.values.count }}</span></a>
+                        <span class="cart-count" id="wishlist_id">{{user.whislist.values.count}}</span></a>
                      </li>
                   </ul>
                   {% else %}

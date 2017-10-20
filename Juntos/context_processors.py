@@ -6,7 +6,7 @@ from .models import *
 
 
 
-def categories_data(request):
+def categoriesData(request):
     category = Category.objects.all().order_by('priority')
     return {"categories":category}
 
@@ -18,11 +18,11 @@ def products(request):
     product = ProductsManagement.objects.all().exclude(expire_products=0)
     return {"all_product_list":product}
 
-def star_rating(request):
+def starRating(request):
     return {"star_rating":[1,2,3,4,5]}
 
 def cart(request):
-	if request.user.is_authenticated():
+	if request.user.is_authenticated() and request.user.is_customer:
 		delivery_date = (datetime.today()+timedelta(days=8)).date()
 		cartObj = Cart.objects.filter(user=request.user)
 		if cartObj:
@@ -33,20 +33,25 @@ def cart(request):
 			return {"total_amount":total_amount,"shipping_amount":shipping_amount,"cart_obj":cartObj,"delivery_date":delivery_date,"has_COD":True if len(cartObj) is len(has_COD) else False}
 		return {"total_amount":"","shipping_amount":"","cart_obj":cartObj,"delivery_date":"","has_COD":""}
 	else:
-		return {"total_amount":"","shipping_amount":"","cart_obj":"","delivery_date":"","has_COD":""}
+		return {"total_amount":{},"shipping_amount":{},"cart_obj":{},"delivery_date":{},"has_COD":{}}
 
 def userShippingDetail(request):
-	if request.user.is_authenticated():
+	if request.user.is_authenticated() and request.user.is_customer:
 		address = ShippingAddress.objects.filter(user=request.user).latest('created_at')
 		return {"address":address}
 	else:
-		return {"address":""}
+		return {"address":{}}
 	
+def unreadCount(request):
+	if request.user.is_authenticated() and request.user.is_vendor:
+		count = Notifications.objects.filter(vendor=request.user,is_read=False)
+		return  {"notification_unread_count":count}
+	return {"notification_unread_count":[]}
 
 
-# def all_data(request):
-# 	banner = Banner.objects.all()
-# 	return {"banner_list": banner}
+def bannerList(request):
+	banner = Banner.objects.all()
+	return {"banner_list": banner}
 
 
 # def all_category_data(request):

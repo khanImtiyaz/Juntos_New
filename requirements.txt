@@ -20,6 +20,7 @@ django-colorfield==0.1.14
 django-jenkins==0.110.0
 django-jet==1.0.6
 django-js-asset==0.1.1
+django-material==1.0.0
 django-multiselectfield==0.1.7
 django-nested-admin==3.0.19
 django-nested-inline==0.3.7

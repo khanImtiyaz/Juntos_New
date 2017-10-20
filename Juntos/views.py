@@ -78,45 +78,45 @@ from .decorator import *
 #         return response_data
 
 def home(request):
-    return render(request,'index.html',{})
+    return render(request,'index.html')
 
-def product_detail(request, slug=None):
-    # try:
-    detail = Products_Management.objects.filter(slug=slug).first()
-    product_color = detail.product_colors
-    product_rating = detail.product_reviews.aggregate(Avg('rating_value'))['rating_value__avg']
-    if not product_rating:
-        product_rating = 0
-    total_review = detail.product_reviews.all()
-    # print(total_review)
-    seller = detail.vendor.first_name
-    if product_color.exists():
-        if request.GET.get('color',None):
-            try:
-                product_images = product_color.get(id=request.GET.get('color')).product_color_images.values()
-            except:
-                product_images = product_color.last().product_color_images.values()
-        else:
-            product_images = product_color.last().product_color_images.values()
-    else:
-        product_images = None
-    related_products = detail.subs_category.sub_cat_product.filter(selling_price__lte=detail.selling_price).exclude(id=detail.id)[:5]
-    # print(detail.subs_category.sub_category_flage)
-    context =  {'details':detail,
-                'colors':product_color,
-                "images":product_images,
-                "total_review":total_review,
-                "flage": True if detail.subs_category.sub_category_flage=="CLOTH"  else False ,
-                "related_products":related_products,
-                'seller':seller,
-                'rating_comp':int(product_rating),
-                'loop_count':range(1,6)}
-    return render(request, 'product.html',context)
+# def product_detail(request, slug=None):
+#     # try:
+#     detail = Products_Management.objects.filter(slug=slug).first()
+#     product_color = detail.product_colors
+#     product_rating = detail.product_reviews.aggregate(Avg('rating_value'))['rating_value__avg']
+#     if not product_rating:
+#         product_rating = 0
+#     total_review = detail.product_reviews.all()
+#     # print(total_review)
+#     seller = detail.vendor.first_name
+#     if product_color.exists():
+#         if request.GET.get('color',None):
+#             try:
+#                 product_images = product_color.get(id=request.GET.get('color')).product_color_images.values()
+#             except:
+#                 product_images = product_color.last().product_color_images.values()
+#         else:
+#             product_images = product_color.last().product_color_images.values()
+#     else:
+#         product_images = None
+#     related_products = detail.subs_category.sub_cat_product.filter(selling_price__lte=detail.selling_price).exclude(id=detail.id)[:5]
+#     # print(detail.subs_category.sub_category_flage)
+#     context =  {'details':detail,
+#                 'colors':product_color,
+#                 "images":product_images,
+#                 "total_review":total_review,
+#                 "flage": True if detail.subs_category.sub_category_flage=="CLOTH"  else False ,
+#                 "related_products":related_products,
+#                 'seller':seller,
+#                 'rating_comp':int(product_rating),
+#                 'loop_count':range(1,6)}
+#     return render(request, 'product.html',context)
 
 class ProductDetail(View):
 	"""docstring for ProductDetail"""
 	def get(self, request):
-		return render(request, 'product.html',{})
+		return render(request, 'product.html')
 		
 # def product_image_view(request, color):
 #     return render(request, "partial-product_image_view.html")
@@ -134,7 +134,7 @@ class SearchProduct(View):
 	"""docstring for SearchProduct"""
 	
 	def get(self, request):
-		return render(request,"index.html",{})
+		return render(request,"index.html")
 
 # def product_color(request, pk=None):
 #     return render(request, 'product.html', {})
@@ -143,7 +143,7 @@ class ProductColor(View):
 	"""docstring for ProductColor"""
 	
 	def get(self, request):
-		return render(request, 'product.html', {})
+		return render(request, 'product.html')
 		
 
 # @register.filter

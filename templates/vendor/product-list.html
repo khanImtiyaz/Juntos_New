@@ -1,102 +1,100 @@
 {% extends 'vendor/account_header.html'%}
 {% load staticfiles %}
 {% block content %}
- <div class="col-md-9">
-               {% if messages %}
-               <div class="alert alert-success alert-dismissable">
-                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  <strong>Success!</strong>
-                  {% for message in messages %}
-                  {{ message.message }}
-                  {% endfor %}
+<div class="col-md-9">
+   {% if messages %}
+   <div class="alert alert-success alert-dismissable">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Success!</strong>
+      {% for message in messages %}
+      {{ message.message }}
+      {% endfor %}
+   </div>
+   {% endif %}
+   <div class="profile-content">
+      <div class="heading_top clearfix">
+         <h2 class="pull-left">PRODUCTS LIST</h2>
+         <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}">Add New Product ➕</a>
+      </div>
+      <div class="table-responsive">
+         {% if product_lists %}
+         {% regroup product_lists by subs_category.category as products %}
+         {% for product_obj in products %}
+         <h4>{{product_obj.grouper}}</h4>
+         {% for product in product_obj.list %}
+         <div class="col-sm-4">
+            <div class="order-list clearfix">
+               <div style="width: 100%">#{{product.id}}</div>
+               <div>
+                  <label>Name: </label>
+                  <div style="display: inline-block;">{{product.title}}</div>
                </div>
-               {% endif %}
-               <div class="profile-content">
-                  <div class="heading_top clearfix">
-                     <h2 class="pull-left">PRODUCTS LIST</h2>
-                     <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}">Add New Product ➕</a>
+               <div>
+                  <label>Category: </label>
+                  <div style="display: inline-block;">{{product.subs_category.category}}</div>
+               </div>
+               <div>
+                  <label>Sub Category: </label>
+                  <div style="display: inline-block;">{{product.subs_category}}</div>
+               </div>
+               <div>
+                  <label>Selling Price: </label>
+                  <div style="display: inline-block;">${{product.price |floatformat:2}}</div>
+               </div>
+               <div>
+                  <label>Quantity: </label>
+                  <div style="display: inline-block;">{{product.product_quantity}}</div>
+               </div>
+               <div>
+                  <label>Status: </label>
+                  <div style="display: inline-block;">{% if product.product_quantity %}Available {% else %} Out of stock{% endif %}</div>
+               </div>
+               <div>
+                  <div class="col-sm-5">
+                     <a class="remove-notify-btn" onclick="remove_product(this,{{product.id}})"> Remove</a>
                   </div>
-                  <div class="table-responsive">
-                     <table class="table table-hover table-bordered">
-                        <thead>
-                           <tr>
-                              <th>Product Id</th>
-                              <th style="width:12%;">Product Name</th>
-                              <th style="width:14%;">Product Category </th>
-                              <th style="width:13%;">Sub-Category</th>
-                              <th>Price </th>
-                              <th style="width:11%;">Selling Price </th>
-                              <th class="text-center">Quantity</th>
-                              <th>Status</th>
-                              <th style="width:12%;">Action</th>
-                           </tr>
-                        </thead>
-                        <tbody id="id_product_details">
-                           {% if product_lists %}
-                           {% for product in product_lists %}
-                           <tr>
-                              <td>
-                                 <!-- {{product.product_sku}} -->
-                                 {{product.id}}
-                              </td>
-                              <td>
-                                 {{product.title}}
-                              </td>
-                              <td>
-                                 {{product.subs_category.category}}
-                              </td>
-                              <td>
-                                 {{product.subs_category}}
-                              </td>
-                              <td>
-                                 ${{product.price |floatformat:2}}
-                              </td>
-                              <td>
-                                 $ {{product.selling_price |floatformat:2}}
-                              </td>
-                              <td class="text-center">{{product.product_quantity}}</td>
-                              <td><strong>{% if product.in_stock %}Available {% else %} Out of stock{% endif %}</strong></td>
-                              <td><button class="btn btn-red2 btn-xs" onclick="remove_product(this,{{product.id}})"><i class="fa fa-trash"></i> </button>
-                                 <a href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
-                              </td>
-                           </tr>
-                           {% endfor %}
-                           {% endif %}
-                        </tbody>
-                     </table>
-                  </div>
-                  <div class="pagination-in text-center">
-                     <ul class="pagination">
-                        {% if product_lists %}
-                        {% if product_lists.has_other_pages %}
-                        <div class="pagination-top text-center"></div>
-                        <ul class="pagination text-center">
-                           {% if product_lists.has_previous %}
-                           <li><a href="?page={{ product_lists.previous_page_number }}" class="paginate left" >&#xab;</a></li>
-                           {% else %}
-                           <li class="disabled"><a class="paginate left">&#xab;</a></li>
-                           {% endif %}
-                           {% for i in product_lists.paginator.page_range %}
-                           {% if product_lists.number == i %}
-                           <li class="active"><a>{{ i }}</a></li>
-                           {% else %}
-                           <li><a href="?page={{ i }}">{{ i }}</a></li>
-                           {% endif %}
-                           {% endfor %}
-                           {% if product_lists.has_next %}
-                           <li><a href="?page={{ product_lists.next_page_number }}" class="paginate right">&#xbb;</a></li>
-                           {% else %}
-                           <li class="disabled"><a class="paginate right">&#xbb;</a></li>
-                           {% endif %}
-                        </ul>
-                        {% endif %}
-                        {% else %}
-                        No Order Data Available !
-                        {% endif %}
-                     </ul>
+                  <div class="col-sm-7">
+                     <a class="view-order-btn" href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
                   </div>
                </div>
             </div>
+         </div>
+         {% endfor %}
+         {% endfor %}
+         {% endif %}
+      </div>
+      <div class="pagination-in text-center">
+         <ul class="pagination">
+            {% if product_lists %}
+            {% if product_lists.has_other_pages %}
+            <div class="pagination-top text-center"></div>
+            <ul class="pagination text-center">
+               {% if product_lists.has_previous %}
+               <li><a href="?page={{ product_lists.previous_page_number }}" class="paginate left" >&#xab;</a></li>
+               {% else %}
+               <li class="disabled"><a class="paginate left">&#xab;</a></li>
+               {% endif %}
+               {% for i in product_lists.paginator.page_range %}
+               {% if product_lists.number == i %}
+               <li class="active"><a>{{ i }}</a></li>
+               {% else %}
+               <li><a href="?page={{ i }}">{{ i }}</a></li>
+               {% endif %}
+               {% endfor %}
+               {% if product_lists.has_next %}
+               <li><a href="?page={{ product_lists.next_page_number }}" class="paginate right">&#xbb;</a></li>
+               {% else %}
+               <li class="disabled"><a class="paginate right">&#xbb;</a></li>
+               {% endif %}
+            </ul>
+            {% endif %}
+            {% else %}
+            No Order Data Available !
+            {% endif %}
+         </ul>
+      </div>
+   </div>
+</div>
 <script>
    $(document).ready(function(){
        $("#menu-content li:eq(2)").attr('class','active')

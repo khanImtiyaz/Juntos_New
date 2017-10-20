@@ -135,15 +135,14 @@ class Category(models.Model):
         verbose_name = ('Category')
         verbose_name_plural = ("Categories")
 
-
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="sub_category")
-    sub_category_tag = models.CharField(('Subcategory tag'),max_length=120, choices=TAG,default='CP',blank=True,null=True)
-    sub_category_name = models.CharField(('Sub category name'),max_length=120)
-    priority = models.IntegerField(blank=True,null=True,default=1)
-    subcategory_size = MultiSelectField(choices=SIZE, max_length=50, default="", null=True, blank=True)
-    subcategory_shoes_size = MultiSelectField(choices=SHOES_SIZE, max_length=50, default="", null=True, blank=True)
-    sub_category_flage = models.CharField(('Sub Category Flag'),max_length=10,blank=True, choices=FLAGE, null=True, help_text="Is Cloth or Shoes ?")
+    sub_category_tag = models.CharField(('Tag'),max_length=120, choices=TAG,default='CP',blank=True,null=True)
+    sub_category_name = models.CharField(('Name'),max_length=120)
+    priority = models.IntegerField(('Priority'),blank=True,null=True,default=1)
+    subcategory_size = MultiSelectField(('Size'),choices=SIZE, max_length=50, default="", null=True, blank=True)
+    subcategory_shoes_size = MultiSelectField(('Shoes Size'),choices=SHOES_SIZE, max_length=50, default="", null=True, blank=True)
+    sub_category_flage = models.CharField(('Flag'),max_length=10,blank=True, choices=FLAGE, null=True, help_text="Is Cloth or Shoes ?")
     slug = AutoSlugField(populate_from=['sub_category_name', 'sub_category_tag'],unique=True)
     ordering = ['priority']
     def __str__(self):
@@ -159,50 +158,49 @@ class SubCategory(models.Model):
   ###It is important at this place please don't change it postition
 
 class ProductsManagement(models.Model):
-  vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="vendor_product")
-  product_sku = models.CharField("Product ID", max_length=50, blank=True)
-  category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="cat_product")
-  subs_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, related_name="sub_cat_product")
-  title = models.CharField('Product Title', max_length=200)
-  description = models.TextField('Product Description', blank=True)
-  feature = models.TextField('Product Features', blank=True, null=True, default="Not a feature product")
-  price = models.FloatField('Product Orignal Price', blank=False)
-  selling_price = models.FloatField('Product Selling Price', blank=True,null=True)
-  product_quantity = models.IntegerField('Product Available Quantity',default=0)
-  product_rating = models.IntegerField('Product Rating', default=0,blank=True)
-  image = ArrayField(models.ImageField('Product image'),null=True,blank=False)
-  product_tag = models.CharField('Product Tag', max_length=300, blank=True)
-  recommended = models.BooleanField('Mark as Recommended', default=False)
-  slug = AutoSlugField(populate_from='subs_category', unique_with='title', unique=True, max_length=100)
-  in_stock = models.BooleanField('Available', default=True)
-  insured_amount = models.FloatField('Insured Amount', blank=False)
-  product_weight = models.FloatField('Product Weight', blank=False)
-  product_height = models.FloatField('product_height', blank=False)
-  product_depth = models.FloatField('Product depth', blank=False)
-  product_width = models.FloatField('Product Width', blank=False)
-  payment_mode = ArrayField(models.CharField('Payment Mode', max_length=50, blank=False))
-  expire_products = models.IntegerField('Expired Products', blank=True, default=15, null=True)
-  services = models.TextField('Services', blank=False,default='')
-  updated = models.DateTimeField(auto_now=True)
-  created_at = models.DateTimeField(auto_now=True)
-  
-  def __str__(self):
-    return self.title
+    vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="vendor_product")
+    product_sku = models.CharField("Product ID", max_length=50, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="cat_product")
+    subs_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, related_name="sub_cat_product")
+    title = models.CharField('Product Title', max_length=200)
+    description = models.TextField('Product Description', blank=True)
+    feature = models.TextField('Product Features', blank=True, null=True, default="Not a feature product")
+    price = models.FloatField('Product Orignal Price', blank=False)
+    selling_price = models.FloatField('Product Selling Price', blank=True,null=True)
+    product_quantity = models.IntegerField('Product Available Quantity',default=0)
+    product_rating = models.IntegerField('Product Rating', default=0,blank=True,null=True)
+    image = ArrayField(models.ImageField('Product image'),null=True,blank=False)
+    product_tag = models.CharField('Product Tag', max_length=300, blank=True)
+    recommended = models.BooleanField('Mark as Recommended', default=False)
+    slug = AutoSlugField(populate_from='subs_category', unique_with='title', unique=True, max_length=100)
+    in_stock = models.BooleanField('Available', default=True)
+    insured_amount = models.FloatField('Insured Amount', blank=False)
+    product_weight = models.FloatField('Product Weight', blank=False)
+    product_height = models.FloatField('product_height', blank=False)
+    product_depth = models.FloatField('Product depth', blank=False)
+    product_width = models.FloatField('Product Width', blank=False)
+    payment_mode = ArrayField(models.CharField('Payment Mode', max_length=50, blank=False))
+    expire_products = models.IntegerField('Expired Products', blank=True, default=15, null=True)
+    services = models.TextField('Services', blank=False,default='')
+    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+      return self.title
 
-  def __unicode__(self):
-    return self.title
+    def __unicode__(self):
+      return self.title
 
-  class Meta:
-    verbose_name_plural = ("Products")
+    class Meta:
+      verbose_name_plural = ("Products")
 
-  def date_check(self):
-    d1  = self.created_at
-    dat = d1.date()
-    d2  = datetime.now().date()
-    return ((d2-dat).days)
+    def date_check(self):
+      d1  = self.created_at
+      dat = d1.date()
+      d2  = datetime.now().date()
+      return ((d2-dat).days)
 
 from .signals import * 
-
 
 class Notifications(models.Model):
     vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="nofify_vendor")
@@ -211,6 +209,8 @@ class Notifications(models.Model):
     is_read  = models.BooleanField(('Is read ?'), default=False)
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
+
+
 
 class Cart(models.Model):
   """add to cart """

@@ -50,18 +50,8 @@
                      <div class="pull-right">
                         <ul class="login_head new-login-head">
                            <li class="dropdown">
-                              <a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                              <i class="fa fa-bell" id="notify_top" aria-hidden="true">{{notification_unread_count.count}}</i></a>
-                              <ul class="dropdown-menu hh">
-                                 {% if notification_unread_count %}
-                                 {% for noti in notification_unread_count|slice:":3"%}
-                                 <!-- <li class="active">{{noti.content}}</li> -->
-                                 {% endfor %}
-                                 {% if notification_unread_count.count > 3 %}
-                                 <li><a href="{% url 'Vendor:notifications' %}">View all</a></li>
-                                 {% endif %}
-                                 {% endif %}
-                              </ul>
+                              <a href="{% url 'Vendor:notifications' %}">
+                              <i class="fa fa-bell" id="notify_top" aria-hidden="true"></i><span class="cart-count" id="initial_card">{{notification_unread_count.count}}</span></a>
                            </li>
                            <li>
                               <span class="user-active">
@@ -260,3 +250,15 @@
       </footer>
    </body>
 </html>
+
+
+<!-- <ul class="dropdown-menu hh">
+                                 {% if notification_unread_count %}
+                                 {% for noti in notification_unread_count|slice:":3"%}
+                                 <li class="active">{{noti.content}}</li>
+                                 {% endfor %}
+                                 {% if notification_unread_count.count > 3 %}
+                                 <li><a href="{% url 'Vendor:notifications' %}">View all</a></li>
+                                 {% endif %}
+                                 {% endif %}
+                              </ul> -->

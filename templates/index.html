@@ -28,8 +28,9 @@
       </form>
    </div>
    <ol class="carousel-indicators">
-      {% for banner in banner_list %} {% if forloop.counter0 == 0 %}
-      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      {% for banner in banner_list %} 
+      {% if forloop.counter0 == 0 %}
+         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
       {% else %}
       <li data-target="#carousel-example-generic" data-slide-to="{{forloop.counter0}}" ></li>
       {% endif %} {% endfor %}

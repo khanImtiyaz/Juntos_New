@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.conf import settings
 from django.contrib import messages
@@ -11,11 +12,10 @@ import os
 import base64
 import json
 from Juntos.models import *
+from itertools import groupby
+import operator
 from .forms import *
 
-def unread_count(vendor):
-    count = Notifications.objects.filter(vendor=vendor, is_read=False).count()
-    return  count
 # def vendor_signup(request):
 #     form = VendorRegistrationForm1()
 #     if request.method == 'POST':
@@ -203,8 +203,8 @@ class VendorSignupStep3(View):
 #             for product1 in total_product:
 #                 record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
 
-#         # return render(request, 'vendor/dashboard.html',{"total_customer":total_customer,"notification_unread_count":unread_count(vendor) ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
-#         return render(request, 'vendor/dashboard.html',{"total_customer":total_customer,"notification_unread_count":unread_count(vendor) ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
+#         # return render(request, 'vendor/dashboard.html',{"total_customer":total_customer ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
+#         return render(request, 'vendor/dashboard.html',{"total_customer":total_customer ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
 #     elif(vendor.is_vendor):
 #         messages.info(request, "You have received confirmation email, Please confirm your email.")
 #         return redirect("vendor:bevendor")
@@ -287,7 +287,7 @@ class ProductList(View):
 			data = paginator.page(1)
 		except EmptyPage:
 			data = paginator.page(paginator.num_pages)
-		return render(request, 'vendor/product-list.html', {'product_lists':data,"notification_unread_count":unread_count(request.user)})
+		return render(request, 'vendor/product-list.html', {'product_lists':data})
 
 
 @login_required(login_url="vendor:bevendor")
@@ -301,7 +301,7 @@ def order_history(request):
         orders = paginator.page(1)
     except EmptyPage:
         orders = paginator.page(paginator.num_pages)
-    return render(request, 'vendor/order-history.html',{"notification_unread_count":unread_count(request.user),'order_data':orders, 'total_order':total_order})	
+    return render(request, 'vendor/order-history.html',{'order_data':orders, 'total_order':total_order})	
 
 class OrderHistory(View):
 	"""docstring for OrderHistory"""
@@ -404,12 +404,12 @@ def add_product(request):
             							)
             pusher_client.trigger('juntos_peru', 'click change load', {'message': product.title,'image':product.image.name,'slug':product.slug})
             messages.success(request, 'Product added successfully.')
-            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form, "notification_unread_count":unread_count(request.user)})
+            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
         else:
-            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form, "notification_unread_count":unread_count(request.user)})
+            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
     else:
         category = Category.objects.all()
-        return render(request, 'vendor/add-new-product.html',{"categories":category, "notification_unread_count":unread_count(request.user)})
+        return render(request, 'vendor/add-new-product.html',{"categories":category})
 
 class AddProduct(View):
 	"""docstring for AddProduct"""
@@ -438,42 +438,39 @@ class AddProduct(View):
 				h=img.path				
 				print(h)
 				image_Array.append(h)
-			return render(request, 'vendor/add-new-product.html',{"add_form":form,"notification_unread_count":unread_count(request.user),"image":image_Array})
+			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
 
-@login_required(login_url="vendor:bevendor")
-def add_notification(request):
-    if request.user.is_vendor:
-        notifications = Notifications.objects.filter(vendor=request.user).order_by('-created_at')
-        data = []
-        for noti in notifications:
-            data.append({'id': noti.id, 'content': noti.content, 'created_at': str(noti.created_at.date()), "time": str(natural_time(noti.created_at))})
-        def extract_date(entity):
-            return entity['created_at']
-        list_of_lists = [list(g) for t, g in groupby(data, key=extract_date)]
-        booking_arr = []
-        for i in range(0, len(list_of_lists)):
-            booking_hash = {}
-            booking_hash["date"] = str(list_of_lists[i][0]['created_at'])
-            booking_hash["notify"] = list_of_lists[i]
-            booking_arr.append(booking_hash)
-        notifications.filter(is_read=False).update(is_read=True)
-        if booking_arr:
-            notify = booking_arr[0]['notify'][:3]
-        else:
-            notify = []
-        return render(request, 'vendor/notifications.html', {'notifications':booking_arr,"notify":notify, "notification_unread_count":unread_count(request.user)})
-    else:
-        messages.error(request, "You are not authorize to access this page.")
-        return redirect("vendor:bevendor")
-	
+# class AddNotification(View):
+# 	def get(self,request):
+# 		if request.user.is_vendor:
+# 			notifications = Notifications.objects.filter(vendor=request.user).order_by('-created_at')
+# 			def extract_date(entity):
+# 				return entity.created_at
+# 			list_of_lists = [list(g) for t, g in groupby(notifications, key=extract_date)]
+# 			print(list_of_lists)
+# 			booking_arr = []
+# 			booking_hash = {}
+# 			for i in range(0, len(list_of_lists)):
+# 				booking_hash['date'] = str(list_of_lists[i][0].created_at)
+# 				booking_hash['notify'] = list_of_lists[i]
+# 				booking_arr.append(booking_hash)
+# 			notifications.filter(is_read=False).update(is_read=True)
+# 			if booking_arr:
+# 				notify = booking_arr[0]['notify'][:3]
+# 			else:
+# 				notify = []
+# 			return render(request, 'vendor/notifications.html', {'notifications':booking_arr,"notify":notify})
+# 		else:
+# 			messages.error(request, "You are not authorize to access this page.")
+# 			return redirect("vendor:bevendor")
+
 class AddNotification(View):
 	"""docstring for AddNotification"""
 	def get(self,request):
 		user = request.user
 		if user.is_vendor:
 			notifications = Notifications.objects.filter(vendor=user).order_by('-created_at')
-			# return render(request, 'vendor/notifications.html', {'notifications':booking_arr,"notify":notify, "notification_unread_count":unread_count(request.user)})
-			return render(request, 'vendor/notifications.html', {'notifications':notifications, "notification_unread_count":unread_count(request.user)})
+			return render(request, 'vendor/notifications.html', {'notifications':notifications})
 		else:
 			messages.error(request, "You are not authorize to access this page.")
 			return redirect("Vendor:bevendor")
@@ -546,7 +543,7 @@ class UploadedProducts(View):
 #             for product1 in total_product:
 #                 record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
 #         # print(record_chart_array)
-#         return render(request,'vendor/partial-dashboard.html' ,{"sell_hash":record_chart_array,"notification_unread_count":unread_count(request.user) ,"ajax":"Day", "total_customer":total_customer,"total_sell":total_sell, "total_order":total_order})
+#         return render(request,'vendor/partial-dashboard.html' ,{"sell_hash":record_chart_array ,"ajax":"Day", "total_customer":total_customer,"total_sell":total_sell, "total_order":total_order})
 #     if query=='month':
 #         total_customer = MyUser.objects.filter(is_customer=True, is_active=True, created_at__month=datetime.today().month).count()
 #         order_data     = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__month=datetime.today().month).order_by('-created_at')
@@ -678,7 +675,7 @@ class ProfileView(View):
 	def get(self,request):
 		user = request.user
 		if user.is_vendor:
-			return render(request, "vendor/profile.html",{"user":user, "notification_unread_count":unread_count(request.user)}) 
+			return render(request, "vendor/profile.html") 
 		else:
 			messages.error(request, "You are not authorize to access this page.")
 			return redirect("Vendor:bevendor")
@@ -710,7 +707,7 @@ class UpdateProfile(View):
 				return redirect("Vendor:vendor-profile-view")
 			else:
 				print("Error",form.errors)
-				return render(request, 'vendor/profile.html',{"vendor_profile_form":form,"user":user,"notification_unread_count":unread_count(request.user)})
+				return render(request, 'vendor/profile.html',{"vendor_profile_form":form,"user":user})
 		else:
 			messages.error(request, "You are not authorize to access this page.")
 			return redirect("Vendor:bevendor")
@@ -727,7 +724,7 @@ class UpdateProfile(View):
 #         product    = Products_Management.objects.get(vendor=vendor, slug=slug)
 #         total_image = Product_Image.objects.filter(product_colr__product__slug=slug).count()
 #         total_color = product.product_colors.count()
-#         return render(request, 'vendor/update-product.html',{'edit_form':product,"total_image":total_image,"total_color":total_color,"categories":categories,"sub_cate":sub_cate,"notification_unread_count":unread_count(request.user)})
+#         return render(request, 'vendor/update-product.html',{'edit_form':product,"total_image":total_image,"total_color":total_color,"categories":categories,"sub_cate":sub_cate})
 #     except:
 #         messages.error(request, "Product may not exists or wrong url typed !")
 #         return redirect("vendor:vendor_dashboard")
@@ -773,7 +770,6 @@ def order_details(request, order_id):
     user = request.user
     order_detail['mode_of_transport'] = shipping_address.mode_of_transport
     order_detail['order_payment_type'] = order_data.order_id.order_payment_type
-    order_detail["notification_unread_count"] = unread_count(request.user)
 
 class OrderDetails(View):
 	"""docstring for OrderDetails"""

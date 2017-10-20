@@ -2,91 +2,90 @@
 {% load staticfiles %}
 {% block content %}
 <div class="col-md-9">
-               {% if messages %}
-               <div class="alert alert-success alert-dismissable">
-                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  <strong>Success!</strong>
-                  {% for message in messages %}
-                  {{ message.message }}
-                  {% endfor %}
+   {% if messages %}
+   <div class="alert alert-success alert-dismissable">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>Success!</strong>
+      {% for message in messages %}
+      {{ message.message }}
+      {% endfor %}
+   </div>
+   {% endif %}
+   {% if account %}
+   <div class="alert alert-info alert-dismissable">
+      <strong>Warning!</strong>
+      Please complete your registration process,
+      to get start selling your products on Peru.
+   </div>
+   {% else %}
+   <div class="profile-content">
+      <div class="head-pro clearfix">
+         <h3 class="pull-left">SALES</h3>
+         <div class="btn-group pull-right">
+            <a href="javascript:void(0)" class="btn btn-primary" id="id_day">Daily</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id='id_month'>Monthly</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id='id_year'>Annually</a>
+         </div>
+      </div>
+      <div id="chart_id">
+         {% if ajax %}
+         {% include 'vendor/partial-dashboard.html' with sell_hash=sell_hash %}
+         {% else %}
+         <div class="sals_heading">
+            <h4>Total Sales: <strong>$ {{ total_sell |floatformat:2}}</strong></h4>
+            <hr>
+            <div id="columnchart_material" style="width: 900px; height: 400px;"></div>
+            <script type='text/javascript'>
+               google.charts.load('current', {'packages':['bar']});
+                  google.charts.setOnLoadCallback(drawChart);
+                  function drawChart() {
+                    var data = google.visualization.arrayToDataTable({{sell_hash | safe }});
+                    var options = {
+                      chart: {
+                        title: 'Selling Performance',
+                        subtitle: 'Sales, Expenses, and Profit: Day',
+                      },
+                        axes: {
+                           y: {
+                             0: {label: 'Selling Prices '}, // Left y-axis.
+               
+                           },
+                         x: {
+                             0: { label: 'Selling per year'} // Top x-axis.
+                           }
+                        ,}
+                    };
+                    var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+                    chart.draw(data, options);
+                  };
+            </script>
+         </div>
+         <div class="cust_count">
+            <div class="row">
+               <div class="col-sm-6">
                </div>
-               {% endif %}
-               {% if account %}
-               <div class="alert alert-info alert-dismissable">
-                  <strong>Warning!</strong>
-                  Please complete your registration process,
-                  to get start selling your products on Peru.
+               <div class="col-sm-6">
+                  <h4>Total No of orders <strong>{{total_order}}</strong></h4>
                </div>
-               {% else %}
-               <div class="profile-content">
-                  <div class="head-pro clearfix">
-                     <h3 class="pull-left">SALES</h3>
-                     <div class="btn-group pull-right">
-                        <a href="javascript:void(0)" class="btn btn-primary" id="id_day">Daily</a>
-                        <a href="javascript:void(0)" class="btn btn-primary" id='id_month'>Monthly</a>
-                        <a href="javascript:void(0)" class="btn btn-primary" id='id_year'>Annually</a>
-                     </div>
-                  </div>
-                  <div id="chart_id">
-                     {% if ajax %}
-                     {% include 'vendor/partial-dashboard.html' with sell_hash=sell_hash %}
-                     {% else %}
-                     <div class="sals_heading">
-                        <h4>Total Sales: <strong>$ {{ total_sell |floatformat:2}}</strong></h4>
-                        <hr>
-                        <div id="columnchart_material" style="width: 900px; height: 400px;"></div>
-                        <script type='text/javascript'>
-                           google.charts.load('current', {'packages':['bar']});
-                              google.charts.setOnLoadCallback(drawChart);
-                              function drawChart() {
-                                var data = google.visualization.arrayToDataTable({{sell_hash | safe }});
-                                var options = {
-                                  chart: {
-                                    title: 'Selling Performance',
-                                    subtitle: 'Sales, Expenses, and Profit: Day',
-                                  },
-                                    axes: {
-                                       y: {
-                                         0: {label: 'Selling Prices '}, // Left y-axis.
-                     
-                                       },
-                                     x: {
-                                         0: { label: 'Selling per year'} // Top x-axis.
-                                       }
-                                    ,}
-                                };
-                                var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-                                chart.draw(data, options);
-                              };
-                        </script>
-                     </div>
-                     <div class="cust_count">
-                        <div class="row">
-                           <div class="col-sm-6">
-
-                           </div>
-                           <div class="col-sm-6">
-                              <h4>Total No of orders <strong>{{total_order}}</strong></h4>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  {% endif %}
-               </div>
-               {% endif %}
             </div>
+         </div>
+      </div>
+      {% endif %}
+   </div>
+   {% endif %}
+</div>
 <script>
-  $(document).ready(function(){
-    $("#menu-content li:eq(0)").attr('class','active')
-    $("#id_day").click(function(){
-      $('#chart_id').load("{% url 'Vendor:selling-chart' 'day' %}");
-     })
-     $("#id_month").click(function(){
-      $('#chart_id').load("{% url 'Vendor:selling-chart' 'month' %}");
-     })
-     $("#id_year").click(function(){
-      $('#chart_id').load("{% url 'Vendor:selling-chart' 'year' %}");
-     })
-  });
+   $(document).ready(function(){
+     $("#menu-content li:eq(0)").attr('class','active')
+     $("#id_day").click(function(){
+       $('#chart_id').load("{% url 'Vendor:selling-chart' 'day' %}");
+      })
+      $("#id_month").click(function(){
+       $('#chart_id').load("{% url 'Vendor:selling-chart' 'month' %}");
+      })
+      $("#id_year").click(function(){
+       $('#chart_id').load("{% url 'Vendor:selling-chart' 'year' %}");
+      })
+   });
 </script>
 {% endblock%}

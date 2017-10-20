@@ -26,14 +26,17 @@ SECRET_KEY = 'zoxd%l@)cn6_!+s4)79&*p@!_5*akl-phfbyjyu$6z(%bk4no+'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-JET_DEFAULT_THEME = 'green'
+# JET_DEFAULT_THEME = 'green'
 JET_SIDE_MENU_COMPACT = True
 
 # Application definition
 
 INSTALLED_APPS = [
-    'jet.dashboard',
-    'jet',
+    'material.theme.yellow',
+    'material',
+    'material.admin',
+    # 'jet.dashboard',
+    # 'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -75,12 +78,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'Juntos.context_processors.categories_data',
+                'Juntos.context_processors.categoriesData',
                 'Juntos.context_processors.about',
                 'Juntos.context_processors.products', 
-                'Juntos.context_processors.star_rating',
+                'Juntos.context_processors.starRating',
                 'Juntos.context_processors.cart',
-                'Juntos.context_processors.userShippingDetail'
+                'Juntos.context_processors.userShippingDetail',
+                'Juntos.context_processors.unreadCount',
+                'Juntos.context_processors.bannerList'
             ],
         },
     },

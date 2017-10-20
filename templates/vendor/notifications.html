@@ -1,7 +1,7 @@
 {% extends 'vendor/account_header.html'%}
 {% load staticfiles %}
 {% block content %}
-<div class="col-md-9">
+<div class="col-md-9" style="background: #fff">
    {% if messages %}
    <div class="alert alert-success alert-dismissable">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -15,14 +15,17 @@
       <div class="heading_top clearfix">
          <h2>NOTIFICATIONS</h2>
       </div>
-      {% for notification in notifications %}
-      <h4>{{notification.date}}</h4>
-      {% for notify in notification.notify %}
-      <div class="notification-list clearfix">
-         <div class="notify-msg"> {{notify.content}} </div>
-         <div class="notify-time">
-            <strong>{{notify.time }}</strong>
-            <a class="remove-notify-btn" href="{% url 'Vendor:remove-notifications' notify.id %}"> Remove</a>
+      {% regroup notifications by created_at|date:"D, d M Y" as notification_list %}
+      {% for notification in notification_list %}
+      <h4>{{notification.grouper}}</h4>
+      {% for notify in notification.list %}
+      <div class="col-sm-4">
+         <div class="notification-list clearfix">
+            <label style="float: right">At: {{notify.created_at|date:"h:m A"}}</label>
+            <div class="notify-msg"> {{notify.content}} </div>
+            <div class="notify-time">
+               <a class="remove-notify-btn" href="{% url 'Vendor:remove-notifications' notify.id %}"> Remove</a>
+            </div>
          </div>
       </div>
       {% endfor %}

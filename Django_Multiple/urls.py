@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^', include('Juntos.urls', namespace="Juntos")),
     url(r'^', include('Vendor.urls', namespace="Vendor")),
     url(r'^oauth/', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^jet/', include('jet.urls', 'jet')),
-    url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
+    # url(r'^jet/', include('jet.urls', 'jet')),
+    # url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
 ]
