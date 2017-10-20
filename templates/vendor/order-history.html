@@ -16,11 +16,12 @@
       <div class="heading_top clearfix">
          <h2>Total No of Orders Received : {{orders.count | safe}}</h2>
       </div>
-      <div class="table-responsive">
+      <div>
          {% if orders %}
          {% regroup orders by created_at|date:"D, d M Y" as order_list %}
          {% for order_obj in order_list %}
          <h4>{{order_obj.grouper}}</h4>
+         <div class="row">
          {% for order in order_obj.list %}
          <div class="col-sm-4">
             <div class="order-list clearfix">
@@ -57,6 +58,7 @@
             </div>
          </div>
          {% endfor %}
+         </div>
          {% endfor %}
          {% endif %}
       </div>

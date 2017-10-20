@@ -18,6 +18,7 @@
       {% regroup notifications by created_at|date:"D, d M Y" as notification_list %}
       {% for notification in notification_list %}
       <h4>{{notification.grouper}}</h4>
+      <div class="row">
       {% for notify in notification.list %}
       <div class="col-sm-4">
          <div class="notification-list clearfix">
@@ -29,6 +30,7 @@
          </div>
       </div>
       {% endfor %}
+      </div>
       {% endfor %}
    </div>
 </div>

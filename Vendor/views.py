@@ -440,29 +440,6 @@ class AddProduct(View):
 				image_Array.append(h)
 			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
 
-# class AddNotification(View):
-# 	def get(self,request):
-# 		if request.user.is_vendor:
-# 			notifications = Notifications.objects.filter(vendor=request.user).order_by('-created_at')
-# 			def extract_date(entity):
-# 				return entity.created_at
-# 			list_of_lists = [list(g) for t, g in groupby(notifications, key=extract_date)]
-# 			print(list_of_lists)
-# 			booking_arr = []
-# 			booking_hash = {}
-# 			for i in range(0, len(list_of_lists)):
-# 				booking_hash['date'] = str(list_of_lists[i][0].created_at)
-# 				booking_hash['notify'] = list_of_lists[i]
-# 				booking_arr.append(booking_hash)
-# 			notifications.filter(is_read=False).update(is_read=True)
-# 			if booking_arr:
-# 				notify = booking_arr[0]['notify'][:3]
-# 			else:
-# 				notify = []
-# 			return render(request, 'vendor/notifications.html', {'notifications':booking_arr,"notify":notify})
-# 		else:
-# 			messages.error(request, "You are not authorize to access this page.")
-# 			return redirect("vendor:bevendor")
 
 class AddNotification(View):
 	"""docstring for AddNotification"""

@@ -16,11 +16,12 @@
          <h2 class="pull-left">PRODUCTS LIST</h2>
          <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}">Add New Product ➕</a>
       </div>
-      <div class="table-responsive">
+      <div>
          {% if product_lists %}
          {% regroup product_lists by subs_category.category as products %}
          {% for product_obj in products %}
          <h4>{{product_obj.grouper}}</h4>
+         <div class="row">
          {% for product in product_obj.list %}
          <div class="col-sm-4">
             <div class="order-list clearfix">
@@ -60,6 +61,7 @@
             </div>
          </div>
          {% endfor %}
+         </div>
          {% endfor %}
          {% endif %}
       </div>
