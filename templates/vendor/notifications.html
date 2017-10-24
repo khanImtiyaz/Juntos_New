@@ -13,8 +13,13 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h2>NOTIFICATIONS</h2>
+         <h2 style="text-align: center;color: #daac0a">NOTIFICATIONS</h2>
+         <div class="product-btn">
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:notifications' 1%}">Read</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:notifications' 0%}">Unread</a>
+         </div>
       </div>
+      {% if notifications %}
       {% regroup notifications by created_at|date:"D, d M Y" as notification_list %}
       {% for notification in notification_list %}
       <h4>{{notification.grouper}}</h4>
@@ -22,16 +27,29 @@
       {% for notify in notification.list %}
       <div class="col-sm-4">
          <div class="notification-list clearfix">
-            <label style="float: right">At: {{notify.created_at|date:"h:m A"}}</label>
+            {% if notify.is_read %}
+            <div style="display:inline;float: right;"><i class="fa fa-check-circle" aria-hidden="true" style="color:#daac0a"></i></div>
+            {% else %}
+            <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
+            {% endif %}
+            <label style="float: right;margin-right:5px ">At: {{notify.created_at|date:"h:m A"}}</label>
             <div class="notify-msg"> {{notify.content}} </div>
+            {% if notify.is_read %}
+            {% else %}
             <div class="notify-time">
                <a class="remove-notify-btn" href="{% url 'Vendor:remove-notifications' notify.id %}"> Remove</a>
             </div>
+            {% endif %}
          </div>
       </div>
       {% endfor %}
       </div>
       {% endfor %}
+      {% else %}
+      <div class="pagination-in text-center">
+         <strong class="text-center">Sorry, you have no unread notification yet.</strong>
+      </div>
+      {% endif %}
    </div>
 </div>
 <script type="text/javascript">

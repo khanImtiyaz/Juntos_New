@@ -50,7 +50,6 @@ class MyUserManager(BaseUserManager):
        return user
 
 class MyUser(AbstractBaseUser,PermissionsMixin):
-  username = models.CharField(max_length=30, blank=True)
   email = models.EmailField(('email address'), max_length=255, unique=True, blank=False, error_messages={'unique':"This email has been already registered."})
   first_name = models.CharField(('first name'),max_length=50,blank=False,default='')
   last_name = models.CharField(('Last name'),max_length=50,blank=True,default='')
@@ -63,9 +62,8 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
   login_type = models.CharField(('Login Type'),max_length=10, default="normal")
   state = models.CharField(('State'),max_length=50,blank=True,null=True)
   country = models.CharField(('Country'),max_length=50,blank=True,null=True)
-  is_superuser = models.BooleanField(('Active'),default=False)
+  is_superuser = models.BooleanField(('Admin'),default=False)
   is_active = models.BooleanField(('Active'),default=True)
-  is_admin = models.BooleanField(('Admin'),default=False)
   is_customer = models.BooleanField(('Customer'), default=False)
   is_vendor = models.BooleanField(('Vendor'), default=False)
   vendor_step = models.CharField(('Vendor Step'),max_length=50,blank=True,null=True)
@@ -181,6 +179,7 @@ class ProductsManagement(models.Model):
     product_width = models.FloatField('Product Width', blank=False)
     payment_mode = ArrayField(models.CharField('Payment Mode', max_length=50, blank=False))
     expire_products = models.IntegerField('Expired Products', blank=True, default=15, null=True)
+    is_active = models.BooleanField("Active Product",default=True,blank=True)
     services = models.TextField('Services', blank=False,default='')
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -326,7 +325,7 @@ class Offer(models.Model):
 class OrderItems(models.Model):
     order  = models.ForeignKey(CustomerOrder, on_delete=models.CASCADE, related_name='order_items')
     order_number = models.UUIDField(('Order Number'),default=uuid.uuid4, editable=False)
-    product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="product")
+    product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="order")
     product_offer = models.ForeignKey(Offer, related_name="product_offer", null=True, blank=True)
     product_color = models.IntegerField(null=True,blank=True)
     product_size = models.IntegerField(null=True,blank=True)

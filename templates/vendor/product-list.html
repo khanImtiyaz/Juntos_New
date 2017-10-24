@@ -13,8 +13,12 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h2 class="pull-left">PRODUCTS LIST</h2>
-         <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}">Add New Product ➕</a>
+         <h2 style="text-align: center;color: #daac0a">PRODUCTS LIST</h2>
+         <div class="product-btn">
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1%}">Active</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 0%}">Inactive</a>
+            <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}" style="border-radius: 50%;color: white"><i class="fa fa-plus" aria-hidden="true"></i></a>
+         </div>
       </div>
       <div>
          {% if product_lists %}
@@ -22,45 +26,52 @@
          {% for product_obj in products %}
          <h4>{{product_obj.grouper}}</h4>
          <div class="row">
-         {% for product in product_obj.list %}
-         <div class="col-sm-4">
-            <div class="order-list clearfix">
-               <div style="width: 100%">#{{product.id}}</div>
-               <div>
-                  <label>Name: </label>
-                  <div style="display: inline-block;">{{product.title}}</div>
-               </div>
-               <div>
-                  <label>Category: </label>
-                  <div style="display: inline-block;">{{product.subs_category.category}}</div>
-               </div>
-               <div>
-                  <label>Sub Category: </label>
-                  <div style="display: inline-block;">{{product.subs_category}}</div>
-               </div>
-               <div>
-                  <label>Selling Price: </label>
-                  <div style="display: inline-block;">${{product.price |floatformat:2}}</div>
-               </div>
-               <div>
-                  <label>Quantity: </label>
-                  <div style="display: inline-block;">{{product.product_quantity}}</div>
-               </div>
-               <div>
-                  <label>Status: </label>
-                  <div style="display: inline-block;">{% if product.product_quantity %}Available {% else %} Out of stock{% endif %}</div>
-               </div>
-               <div>
-                  <div class="col-sm-5">
-                     <a class="remove-notify-btn" onclick="remove_product(this,{{product.id}})"> Remove</a>
+            {% for product in product_obj.list %}
+            <div class="col-sm-4">
+               <div class="order-list clearfix">
+                  <div style="display:inline">#{{product.id}}</div>
+                  {% if product.is_active %}
+                  <div style="display:inline;float: right;"><i class="fa fa-check-circle" aria-hidden="true" style="color:#daac0a"></i></div>
+                  {% else %}
+                  <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
+                  {% endif %}
+                  <div>
+                     <label>Name: </label>
+                     <div style="display: inline-block;">{{product.title}}</div>
                   </div>
-                  <div class="col-sm-7">
-                     <a class="view-order-btn" href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                  <div>
+                     <label>Category: </label>
+                     <div style="display: inline-block;">{{product.subs_category.category}}</div>
+                  </div>
+                  <div>
+                     <label>Sub Category: </label>
+                     <div style="display: inline-block;">{{product.subs_category}}</div>
+                  </div>
+                  <div>
+                     <label>Selling Price: </label>
+                     <div style="display: inline-block;">${{product.price |floatformat:2}}</div>
+                  </div>
+                  <div>
+                     <label>Quantity: </label>
+                     <div style="display: inline-block;">{{product.product_quantity}}</div>
+                  </div>
+                  <div>
+                     <label>Status: </label>
+                     <div style="display: inline-block;">{% if product.product_quantity %}Available {% else %} Out of stock{% endif %}</div>
+                  </div>
+                  <div>
+                     <div class="col-sm-5">
+                        {% if product.is_active %}
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}"> Remove</a>
+                        {% endif %}
+                     </div>
+                     <div class="col-sm-7">
+                        <a class="view-order-btn" href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                     </div>
                   </div>
                </div>
             </div>
-         </div>
-         {% endfor %}
+            {% endfor %}
          </div>
          {% endfor %}
          {% endif %}
@@ -91,7 +102,7 @@
             </ul>
             {% endif %}
             {% else %}
-            No Order Data Available !
+            <strong>Sorry, you have not added any Product yet.Please Add.</strong>
             {% endif %}
          </ul>
       </div>
@@ -101,28 +112,5 @@
    $(document).ready(function(){
        $("#menu-content li:eq(2)").attr('class','active')
    })
-   function remove_product(file,product){
-         $.ajax({
-            url : "{% url 'Vendor:remove-product' %}",
-            type : 'POST',
-            dataType : 'json',
-            data : {'product': product, 'csrfmiddlewaretoken':'{{ csrf_token }}',},
-            success : function(e) {
-               file.closest("tr").remove()
-               if(e.total_product ==0){
-                  $(".pagination > li").remove();
-                  $(".pagination").append("<li> No Product available ! </li>");
-               }
-               if(e.code == 200){
-                  Lobibox.notify('info', {
-                     sound: false,
-                     msg: e.message,
-                     title: 'Peru Juntos Vendor',
-                  });
-                  return true;
-               }
-            },
-         });
-      }
 </script>
 {% endblock%}

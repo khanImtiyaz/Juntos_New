@@ -6,57 +6,58 @@
 <section class="cart_section">
    <div class="container">
       <div class="heading_top">
-         <h2>My Orders</h2>
+         <h2 style="text-align: center;color: #daac0a">My Orders</h2>
       </div>
-      <div class="table-responsive">
-         <table class="table table-hover table-bordered">
-            <tbody>
-               <tr>
-                  <th style="text-align: center;">Order Number</th>
-                  <th style="text-align: center;">Product</th>
-                  <th style="text-align: center;">Product Name</th>
-                  <th style="text-align: center;">Quant.</th>
-                  <th style="text-align: center;">Total Price</th>
-                  <th style="text-align: center;">Order Date</th>
-                  <th style="text-align: center;">Delivery Status</th>
-                  <th></th>
-               </tr>
-               {% for order in orders %} 
-               <tr>
-                  <td style="text-align: center;">
-                     <strong>#{{order.order_number|truncatechars:8}}</strong>
-                  </td>
-                  <td style="text-align: center;">
+      <div>
+            {% if orders %}
+            {% regroup orders by created_at|date:"D, d M Y" as order_list %}
+            {% for order_obj in order_list %}
+            <h4>{{order_obj.grouper}}</h4>
+            <div class="row">
+            {% for order in order_obj.list %}
+               <div class="col-sm-3 order-list" style="background: white;margin: 0px 10px">
+                  <div style="width: 100%">#{{order.order_number|truncatechars:12}}</div>
+                  <div>
                      <figure class="cart_figure">
-                        <img src="{{order.product.image.0}}" alt="" />
+                        <img src="{{order.product.image.0}}" alt=""/>
                      </figure>
-                  </td>
-                  <td class="text-center">
-                     {{order.product.title}}
-                  </td>
-                  <td class="text-center" style="text-align: center;">{{order.quantity}}
-                  {% if order.product.selling_price %}
-                      <td class="text-center" style="text-align:center;">${{order.product.selling_price|tax:order.quantity|floatformat:2}}</td>
-                  {% else %}
-                      <td class="text-center" style="text-align:center;">${{order.product.price|tax:order.quantity|floatformat:2}}</td>
-                  {% endif %}
-                  <td class="text-center" style="text-align: center;">{{order.created_at|date:"D, d M Y"}}</td>
-                  {% if order.order_id.delivery_status %}
-                  <td class="text-center" style="text-align: center;">Delivered</td>
-                  {% else %}
-                  <td class="text-center" style="text-align: center;">Pending</td>
-                  {% endif %}
-                  <td class="text-center" style="text-align: center;">
-                     {% if order.order_id.delivery_status %}
+                  </div>
+                  <div>
+                     <label>Product Name: </label>
+                     <div style="display: inline-block;">{{order.product.title}}</div>
+                  </div>
+                  <div>
+                     <label>Quant.: </label>
+                     <div style="display: inline-block;">{{order.quantity}}
+                     </div>
+                  </div>
+                  <div>
+                     <label>Total Price: </label>
+                     <div style="display: inline-block;">{% if order.product.selling_price %}${{order.product.selling_price|tax:order.quantity|floatformat:2}}{% else %}${{order.product.price|tax:order.quantity|floatformat:2}}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div>
+                     <label>Order dt.: </label>
+                     <div style="display: inline-block;">{{order.created_at|date:"D, d M Y"}}</div>
+                  </div>
+                  <div>
+                     <label>Delivery Status: </label>
+                     <div style="display: inline-block;">{{order.delivery_status}}</div>
+                  </div>
+                  <div class="col-sm-12">
+                     {% if order.order.delivery_status %}
+                     <div style="height: 35px"></div>
                      {% else %}
                      <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancel Order</a>
                      {% endif %}
-                  </td>
-               </tr>
-               {% endfor %}
-            </tbody>
-         </table>
-      </div>
+                  </div>
+               </div>
+            {% endfor %}
+            </div>
+            {% endfor %}
+            {% endif %}
+         </div>
       <div class="pagination-in text-center">
          {% if orders %}
          {% if orders.has_other_pages %}

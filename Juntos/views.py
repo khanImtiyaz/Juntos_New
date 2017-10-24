@@ -447,13 +447,16 @@ class LoginView(View):
 							Cart.objects.create(user=user, product=product,product_size=int(items['size']),product_color=int(items['color']),quantity=int(items['quantity']),price=(product.selling_price if product.selling_price else product.price) * int(items['quantity']))
 				messages.success(request, "Login successfully.")
 				return redirect('Juntos:home')
-			elif not user.mobile_verified:
+			elif user and not user.mobile_verified:
 				request.session['email'] = user.email
 				messages.success(request, "Your account confirmed successfully")
 				return redirect('Juntos:resend_otp')
-			elif not user.confirmation_code=="Not Confirmed":
+			elif user and not user.confirmation_code=="Not Confirmed":
 				messages.success(request, "It seems that you are not activate your acccount via Email.Please click on the link send on your Registered Email to activate your Account.")
 				request.session['email'] = user.email
+				return redirect('Juntos:home')
+			else:
+				messages.success(request, "Authentication Failed.Please try again with valid Credentials.")
 				return redirect('Juntos:home')
 		else:
 			return render(request,"index.html", {'forms':form})
@@ -1039,7 +1042,7 @@ def order_items(cart,order):
 		# product.product_quantity = product.product_quantity - obj.quantity
 		# product.save()
 		# Cart.objects.get(id=obj.id).delete()
-		message = "New Order have been received for '"+obj.product.subs_category.sub_category_name+"' types product."
+		message = "Congrats, A New Order has been received for '"+obj.product.subs_category.sub_category_name+"' types product."
 		notification = Notifications.objects.create(vendor=obj.product.vendor, ntype=1, content=message)
 		notification_data = {}
 		notification_data['content'] = notification.content
@@ -1165,41 +1168,16 @@ class AddWhishlist(View):
 			return redirect("Juntos:views-cart")
 
 
-# @login_required(login_url="/")
-# def cancel_order_and_refund(request, order):
-#     orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, id=order)
-#     if orders:
-#         for order in orders:
-#             price = order.price
-#             grand_total = (price*23)/100
-#             total_price = grand_total + price
-#             # print("cancel_order_and_refund",total_price)
-#     for cancel_item in orders:
-#         # print("CABCELLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL",cancel_item)
-#         product = Products_Management.objects.get(id=cancel_item.product.id)
-#         product.product_quantity = product.product_quantity+cancel_item.quantity
-#         if product.product_quantity > 0:
-#             product.in_stock = True
-#             product.save()
-#     if request.method == "POST":
-#         order = orders.last()
-#         CalcelOrderRequest.objects.create(customer=request.user,
-#                                           order=order,
-#                                           reason=request.POST['reason'])
-#         messages.success(request, "Order cancel request send to vendor !")
-#         message = "Order cancel request for Order number: #"+str(order.order_id.order_number)+", for product SKU #"+str(order.product.product_sku)+" received."
-#         Notifications.objects.create(vendor=order.product.vendor,
-#                                      ntype="Order Cancel Request.",
-#                                      content=message)
-#         order.order_cancel_request = True
-#         order.save()
-#         return redirect("customer:view_order")
-#     else:
-#         return render(request, "cancel_order_request.html",{'order_id':orders.last().id, "cancel_orders":orders,"total_price":total_price})
-
 class CancelOrderAndRefund(View):
 	"""docstring for CancelOrderAndRefund"""
-	def get(self,request):
+	def get(self,request,order=None):
+		order_obj = OrderItems.objects.get(id=order)
+		message = "Order cancel request for Order number: #"+str(order_obj.order_number)+", for product SKU #"+str(order_obj.product.subs_category.sub_category_name)+" received."
+		Notifications.objects.create(vendor=order_obj.product.vendor,ntype="Order Cancel Request.",content=message)
+		order_obj.product.product_quantity = order_obj.product.product_quantity + order_obj.quantity
+		order_obj.product.save()
+		order_obj.order_cancel_request = True
+		order_obj.save()
 		return redirect("Juntos:view-order")
 
 		

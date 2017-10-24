@@ -84,6 +84,7 @@
                   {% if details.in_stock %}
                   <div class="product-varity cus_varity_prod">
                      <div class="row">
+                        {% if details.product_quantity %}
                         <div class="col-sm-4">
                            <div class="quantity-block varity-common">
                               <label class="control-label">Quantity</label>
@@ -109,6 +110,7 @@
                               {% endif %}
                            </div>
                         </div>
+                        {% endif %}
                         <div class="col-sm-8">
                            {% if details.feature %}
                            <label class="control-label">Features</label>

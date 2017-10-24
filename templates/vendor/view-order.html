@@ -7,7 +7,7 @@
    <div class="profile-content">
       <div class="panel">
          <div class="heading_top clearfix">
-            <h2 class="pull-left">MY ORDERS</h2>
+            <h2 style="text-align: center;color: #daac0a">MY ORDERS</h2>
          </div>
          <div>
             {% if orders %}
@@ -45,13 +45,13 @@
                   </div>
                   <div>
                      <label>Delivery Status: </label>
-                     <div style="display: inline-block;">{% if order.order_id.delivery_status %}Delivered
-                        {% else %}Pending{% endif %}
+                     <div style="display: inline-block;">{{order.delivery_status}}
                      </div>
                   </div>
                   <div>
                      <div class="col-sm-12">
-                        {% if order.order_id.delivery_status %}
+                        {% if order.order.delivery_status %}
+                           <div style="height: 35px"></div>
                         {% else %}
                         <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancel Order</a>
                         {% endif %}
@@ -63,11 +63,6 @@
             </div>
             {% endfor %}
             {% endif %}
-            <!-- <td style="text-align: center;">
-               <figure class="cart_figure">
-                  <img src="{{order.product.image.0}}" alt=""/>
-               </figure>
-               </td> -->
          </div>
          <div class="pagination-in text-center">
             {% if orders %}

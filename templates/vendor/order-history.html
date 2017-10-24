@@ -14,7 +14,12 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h2>Total No of Orders Received : {{orders.count | safe}}</h2>
+         <h2 style="text-align: center;color: #daac0a">Orders Received</h2>
+         <div class="product-btn">
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:orders-history' 'Pending'%}">Pending</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:orders-history' 'Delivered' %}">Delivered</a>
+            <h4 style="float: right">Total:{{orders.count | safe}}</h4>
+         </div>
       </div>
       <div>
          {% if orders %}
@@ -25,11 +30,12 @@
          {% for order in order_obj.list %}
          <div class="col-sm-4">
             <div class="order-list clearfix">
+               {% if order.delivery_status == "Delivered" %}
+               <div style="display:inline;float: right;"><i class="fa fa-check-circle" aria-hidden="true" style="color:#daac0a"></i></div>
+               {% else %}
+               <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
+               {% endif %}
                <div style="width: 100%">#{{order.order_number|truncatechars:12}}</div>
-               <div>
-                  <label>Status: </label>
-                  <div style="display: inline-block;">{{order.delivery_status}}</div>
-               </div>
                <div>
                   <label>Total Price: </label>
                   <div style="display: inline-block;">{% if order.product.selling_price %}
@@ -48,10 +54,12 @@
                   <div style="display: inline-block;">{{order.created_at|date:"D, d M Y"}}</div>
                </div>
                <div>
-                  <div class="col-sm-5">
-                     <a class="remove-notify-btn" onclick="remove_order_history(this,{{order.id}})"> Remove</a>
+                  <div class="col-sm-6" style="padding: 0px 10px !important">
+                     {% if order.delivery_status == "Pending" %}
+                        <a class="remove-notify-btn" href="{% url 'Vendor:order-delivered' order.id %}"> Delivered</a>
+                     {% endif %}
                   </div>
-                  <div class="col-sm-7">
+                  <div class="col-sm-6" style="padding: 0px 10px !important">
                      <a class="view-order-btn" href="{% url 'Vendor:order-details' order.id %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
                   </div>
                </div>
@@ -63,7 +71,7 @@
          {% endif %}
       </div>
       <div class="pagination-in text-center">
-         {% if orders%}
+         {% if orders %}
          {% if orders.has_other_pages %}
          <div class="bdr-bottom"></div>
          <div class="pagination-top text-center"></div>
@@ -88,37 +96,11 @@
          </ul>
          {% endif %}
          {% else %}
-         No Order Data Available !
+         <strong>Sorry, you have no order yet or you Delivered all of your orders on time.</strong>
          {% endif %}
       </div>
    </div>
 </div>
 <script>
-   $(document).ready(function(){
-      $("#menu-content li:eq(3)").attr('class','active')
-      function remove_order_history(file,product){
-         $.ajax({
-            url : "{% url 'Vendor:remove-product' %}",
-            type : 'POST',
-            dataType : 'json',
-            data : {'product': product, 'csrfmiddlewaretoken':'{{ csrf_token }}',},
-            success : function(e) {
-               file.closest("tr").remove()
-               if(e.total_product ==0){
-                  $(".pagination > li").remove();
-                  $(".pagination").append("<li> No Product available ! </li>");
-               }
-               if(e.code == 200){
-                  Lobibox.notify('info', {
-                     sound: false,
-                     msg: e.message,
-                     title: 'Peru Juntos Vendor',
-                  });
-                  return true;
-               }
-            },
-         });
-      }
-   })
 </script>
 {% endblock%}

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.db.models import Count
+from django.db.models import Count,Sum
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.conf import settings
 from django.contrib import messages
@@ -166,56 +166,62 @@ class VendorSignupStep3(View):
 
 
 
-# @login_required(login_url="vendor:bevendor")
-# @register.filter(is_safe=True, name='lookup')
-# def vendor_dashboard(request):
-#     vendor = request.user
-#     if (vendor.is_vendor and vendor.is_active):
-#         try:
-#             vendor.account
-#             account = False
-#         except:
-#             account = True
-#         total_customer = MyUser.objects.filter(is_customer=True, is_active=True).count()
-#         order_data = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__day=datetime.today().day).order_by('-created_at')
-#         total_sell = order_data.aggregate(Sum('product__selling_price'))['product__selling_price__sum']
-#         total_sell = total_sell if total_sell else  0.0
-#         total_order = CustomerOrder_items.objects.filter(product__vendor=request.user).count()
-#         total_product = Products_Management.objects.filter(vendor=vendor)
-#         order_hash = []
-#         record_chart_array = [['Year', 'Sales', 'Expenses', 'Profit']]
-#         for product in total_product:
-#             if product.order.exists():
-#                 order_item_list = product.order.filter(created_at__day=datetime.today().day)
-#                 for order in order_item_list:
-#                     if not any( orderl.get('id') == order.product.id for orderl in order_hash):
-#                         sales = order_item_list.filter(product_id=order.product.id).aggregate(Sum('price'))['price__sum']
-#                         total_original_price = order_item_list.filter(product_id=order.product.id).count() * order.product.price
-#                         print(total_original_price)
-#                         total_expenses_price = order_item_list.filter(product_id=order.product.id).count() * order.product.selling_price
-#                         order_hash.append({"id":order.product.id,"title":order.product.title, "sales":sales,"profit":order.price-total_original_price,"expenses":order.price-total_expenses_price})
-#                     else:
-#                         pass
-#         if order_hash:
-#             for record in order_hash:
-#                 record_chart_array.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
-#         else:
-#             for product1 in total_product:
-#                 record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
-
-#         # return render(request, 'vendor/dashboard.html',{"total_customer":total_customer ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
-#         return render(request, 'vendor/dashboard.html',{"total_customer":total_customer ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
-#     elif(vendor.is_vendor):
-#         messages.info(request, "You have received confirmation email, Please confirm your email.")
-#         return redirect("vendor:bevendor")
-#     else:
-#         messages.error(request, "You are not authorize to access this page.")
+def vendor_dashboard(request):
+    vendor = request.user
+    if (vendor.is_vendor and vendor.is_active):
+        try:
+            vendor.account
+            account = False
+        except:
+            account = True
+        order_data = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__day=datetime.today().day).order_by('-created_at')
+        total_product = Products_Management.objects.filter(vendor=vendor)
+        order_hash = []
+        record_chart_array = [['Year', 'Sales', 'Expenses', 'Profit']]
+        for product in total_product:
+            if product.order.exists():
+                order_item_list = product.order.filter(created_at__day=datetime.today().day)
+                for order in order_item_list:
+                    if not any( orderl.get('id') == order.product.id for orderl in order_hash):
+                        sales = order_item_list.filter(product_id=order.product.id).aggregate(Sum('price'))['price__sum']
+                        total_original_price = order_item_list.filter(product_id=order.product.id).count() * order.product.price
+                        print(total_original_price)
+                        total_expenses_price = order_item_list.filter(product_id=order.product.id).count() * order.product.selling_price
+                        order_hash.append({"id":order.product.id,"title":order.product.title, "sales":sales,"profit":order.price-total_original_price,"expenses":order.price-total_expenses_price})
+                    else:
+                        pass
+        if order_hash:
+            for record in order_hash:
+                record_chart_array.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
+        else:
+            for product1 in total_product:
+                record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
+        return render(request, 'vendor/dashboard.html',{"total_customer":total_customer ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
+    elif(vendor.is_vendor):
+        messages.info(request, "You have received confirmation email, Please confirm your email.")
+        return redirect("vendor:bevendor")
+    else:
+        messages.error(request, "You are not authorize to access this page.")
 #         return redirect("Vendor:bevendor")
 		
 class VendorDashboard(View):
 	"""docstring for VendorDashboard"""
 	def get(self,request):
-		return render(request, 'vendor/dashboard.html')
+		vendor = request.user
+		if not vendor.is_vendor or not vendor.is_active:
+			messages.error(request, "You are not authorize to access this page.")
+			return redirect('Juntos:home')
+		else:
+			orders = OrderItems.objects.filter(product__vendor=vendor).order_by('-created_at')
+			total_sell = orders.aggregate(Sum('product__selling_price'))['product__selling_price__sum'] if orders.aggregate(Sum('product__selling_price'))['product__selling_price__sum'] else  0.0
+			products = ProductsManagement.objects.filter(vendor=vendor)
+			typeArray = [['Year', 'Sales', 'Expenses', 'Profit']]
+			for product in products:
+				if product.order.exists():
+					print("sasas")
+	                
+
+			return render(request, 'vendor/dashboard.html',{'orders':orders,"total_sell":total_sell,"sell_hash": typeArray,})
 	
 
 class BVendor(View):
@@ -276,9 +282,9 @@ class ChangePassword(View):
 
 class ProductList(View):
 	"""docstring for ProductList"""
-	def get(self,request):
+	def get(self,request,active=None):
 		user  = request.user
-		product = ProductsManagement.objects.filter(vendor=user).order_by('-created_at')
+		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('-created_at')
 		paginator = Paginator(product, 5)
 		page = request.GET.get('page')
 		try:
@@ -288,128 +294,119 @@ class ProductList(View):
 		except EmptyPage:
 			data = paginator.page(paginator.num_pages)
 		return render(request, 'vendor/product-list.html', {'product_lists':data})
-
-
-@login_required(login_url="vendor:bevendor")
-def order_history(request):
-    total_order = order_data.count()
-    paginator = Paginator(order_data, 10)
-    page = request.GET.get('page')
-    try:
-        orders = paginator.page(page)
-    except PageNotAnInteger:
-        orders = paginator.page(1)
-    except EmptyPage:
-        orders = paginator.page(paginator.num_pages)
-    return render(request, 'vendor/order-history.html',{'order_data':orders, 'total_order':total_order})	
-
+	
 class OrderHistory(View):
 	"""docstring for OrderHistory"""
-	def get(self,request):
-		orders = OrderItems.objects.filter(product__vendor=request.user).order_by('-created_at')
+	def get(self,request,status):
+		orders = OrderItems.objects.filter(product__vendor=request.user,delivery_status=status).order_by('-created_at')
 		return render(request, 'vendor/order-history.html',{'orders':orders})
 
-def add_product(request):
-    try:
-        product = Products_Management.objects.get(id=request.POST['product_id'])
-    except Exception as e:
-        print('Error in Product Management',e)
-        product = False
-    # print(product)
-    if request.method == "POST":
-        category = Category.objects.all()
-        form = NewProductAddForm(request.POST, None)
-        if form.is_valid():
-            params = request.POST
-            if product:
-                product.vendor = request.user;
-                product.title=params['title']
-                product.description = params['description']
-                product.price = float(params['price'])
-                product.selling_price = params['selling_price']
-                product.category_id=params['category']
-                product.subs_category_id = params['subs_category']
-                product.product_quantity = params['product_quantity']
-                product.insured_amount = params['insured_amount']
-                product.product_weight = params['product_weight']
-                product.product_height = params['product_height']
-                product.product_depth = params['product_depth']
-                product.product_width = params['product_width']
-                # product.save()
-            else:
-                product = Products_Management(
-                    vendor = request.user,
-                    title=params['title'],
-                    description = params['description'],
-                    price = float(params['price']),
-                    selling_price = float(params['selling_price']),
-                    category_id=params['category'],
-                    subs_category_id = params['subs_category'],
-                    product_quantity = params['product_quantity'],
-                    insured_amount = float(params['insured_amount']) if params['insured_amount'] else None ,
-                    product_weight = float(params['product_weight']) if params['product_weight'] else None,
-                    product_height = float(params['product_height']) if params['product_height'] else None,
-                    product_depth =  float(params['product_depth']) if params['product_depth'] else None,
-                    product_width =  float(params['product_width']) if params['product_width'] else None
-                )
+class OrderDelivered(View):
+	"""docstring for OrderHistory"""
+	def get(self,request,pk=None):
+		order = OrderItems.objects.get(id=pk)
+		order.delivery_status = "Delivered"
+		order.order.delivery_status = True
+		order.order.save()
+		order.save()
+		return redirect("Vendor:orders-history", "Pending")
 
-            if request.POST.get('in_stock') == 'on':
-                product.in_stock = True
-            else:
-                 product.in_stock = False
-            if not request.POST.get('feature'):
-                product.feature = request.POST.get('feature')
+# def add_product(request):
 
-            if request.FILES.get('image',None):
-                upresult = upload(request.FILES['image'])
-                product.image = upresult['url']
-            product.save()
+#     if request.method == "POST":
+#         category = Category.objects.all()
+#         form = NewProductAddForm(request.POST, None)
+#         if form.is_valid():
+#             params = request.POST
+#             if product:
+#                 product.vendor = request.user;
+#                 product.title=params['title']
+#                 product.description = params['description']
+#                 product.price = float(params['price'])
+#                 product.selling_price = params['selling_price']
+#                 product.category_id=params['category']
+#                 product.subs_category_id = params['subs_category']
+#                 product.product_quantity = params['product_quantity']
+#                 product.insured_amount = params['insured_amount']
+#                 product.product_weight = params['product_weight']
+#                 product.product_height = params['product_height']
+#                 product.product_depth = params['product_depth']
+#                 product.product_width = params['product_width']
+#                 # product.save()
+#             else:
+#                 product = Products_Management(
+#                     vendor = request.user,
+#                     title=params['title'],
+#                     description = params['description'],
+#                     price = float(params['price']),
+#                     selling_price = float(params['selling_price']),
+#                     category_id=params['category'],
+#                     subs_category_id = params['subs_category'],
+#                     product_quantity = params['product_quantity'],
+#                     insured_amount = float(params['insured_amount']) if params['insured_amount'] else None ,
+#                     product_weight = float(params['product_weight']) if params['product_weight'] else None,
+#                     product_height = float(params['product_height']) if params['product_height'] else None,
+#                     product_depth =  float(params['product_depth']) if params['product_depth'] else None,
+#                     product_width =  float(params['product_width']) if params['product_width'] else None
+#                 )
+
+#             if request.POST.get('in_stock') == 'on':
+#                 product.in_stock = True
+#             else:
+#                  product.in_stock = False
+#             if not request.POST.get('feature'):
+#                 product.feature = request.POST.get('feature')
+
+#             if request.FILES.get('image',None):
+#                 upresult = upload(request.FILES['image'])
+#                 product.image = upresult['url']
+#             product.save()
            
-            # ###   Payment Method
-            payment_pay = Payment_method(product=product)
-            if request.POST.get('payment_method_case_on_delivery', None):
-                payment_pay.case_on_delivery = True
-            if request.POST.get('payment_method_online_payment', None):
-                payment_pay.online_payment = True
-            if request.POST.get('payment_method_paypal', None):
-                payment_pay.paypal = True
-            if request.POST.get('services', None):
-                payment_pay.services = request.POST.get('services')
-            payment_pay.save()
+#             # ###   Payment Method
+#             payment_pay = Payment_method(product=product)
+#             if request.POST.get('payment_method_case_on_delivery', None):
+#                 payment_pay.case_on_delivery = True
+#             if request.POST.get('payment_method_online_payment', None):
+#                 payment_pay.online_payment = True
+#             if request.POST.get('payment_method_paypal', None):
+#                 payment_pay.paypal = True
+#             if request.POST.get('services', None):
+#                 payment_pay.services = request.POST.get('services')
+#             payment_pay.save()
             
-            # # Product color management
-            if request.POST.get('total_color',None):
-                total_colors = int(request.POST.get('total_color',None))
-                response_total_colors = int(request.POST.get('response_total_color',0))
-                print("total_colors",response_total_colors)
-                print("total_colors",total_colors)
-                if total_colors != response_total_colors:
-                    total_colors = total_colors - 1
-                    while total_colors >= 0:
-                        color = Product_color.objects.create(color=params['product_colors-{}-color'.format(total_colors)],
-                                                             product = product)
-                        for x in range(0, len(request.FILES)):
-                            img = request.FILES.get('product_colors-{0}-product_color_images-{1}-product_images'.format(str(total_colors),str(x)), None)
-                            if img:
-                                uploaedimg = upload(img)
-                                Product_Image.objects.create(product_images=uploaedimg['url'],product_colr=color)
-                        total_colors = total_colors-1
-                else:
-                    pass
-            pusher_client = pusher.Pusher(app_id='296636',
-            							  key='8d36327fa3019f8c74ac',
-            							  secret='7c352f5a8fe248126f0e',
-            							  cluster='ap2',
-            							  ssl=True
-            							)
-            pusher_client.trigger('juntos_peru', 'click change load', {'message': product.title,'image':product.image.name,'slug':product.slug})
-            messages.success(request, 'Product added successfully.')
-            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
-        else:
-            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
-    else:
-        category = Category.objects.all()
-        return render(request, 'vendor/add-new-product.html',{"categories":category})
+#             # # Product color management
+#             if request.POST.get('total_color',None):
+#                 total_colors = int(request.POST.get('total_color',None))
+#                 response_total_colors = int(request.POST.get('response_total_color',0))
+#                 print("total_colors",response_total_colors)
+#                 print("total_colors",total_colors)
+#                 if total_colors != response_total_colors:
+#                     total_colors = total_colors - 1
+#                     while total_colors >= 0:
+#                         color = Product_color.objects.create(color=params['product_colors-{}-color'.format(total_colors)],
+#                                                              product = product)
+#                         for x in range(0, len(request.FILES)):
+#                             img = request.FILES.get('product_colors-{0}-product_color_images-{1}-product_images'.format(str(total_colors),str(x)), None)
+#                             if img:
+#                                 uploaedimg = upload(img)
+#                                 Product_Image.objects.create(product_images=uploaedimg['url'],product_colr=color)
+#                         total_colors = total_colors-1
+#                 else:
+#                     pass
+#             pusher_client = pusher.Pusher(app_id='296636',
+#             							  key='8d36327fa3019f8c74ac',
+#             							  secret='7c352f5a8fe248126f0e',
+#             							  cluster='ap2',
+#             							  ssl=True
+#             							)
+#             pusher_client.trigger('juntos_peru', 'click change load', {'message': product.title,'image':product.image.name,'slug':product.slug})
+#             messages.success(request, 'Product added successfully.')
+#             return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
+#         else:
+#             return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
+#     else:
+#         category = Category.objects.all()
+#         return render(request, 'vendor/add-new-product.html',{"categories":category})
 
 class AddProduct(View):
 	"""docstring for AddProduct"""
@@ -417,11 +414,14 @@ class AddProduct(View):
 		return render(request, 'vendor/add-new-product.html')
 	def post(self,request):
 		image_Array = []
-		queryset = ProductsManagement.objects.all()
 		params = request.POST
 		files = request.FILES
 		params['vendor'] = request.user.id
-		form = NewProductAddForm(params or None)
+		if 'product_id' in params:
+			product = ProductsManagement.objects.get(id=request.POST['product_id'])
+			form = NewProductAddForm(params or None,instance=product)
+		else:
+			form = NewProductAddForm(params or None)
 		if form.is_valid():
 			product = form.save()
 			if "image" in files:
@@ -431,22 +431,20 @@ class AddProduct(View):
 				product.image = image_Array
 				product.save()
 			messages.success(request, 'Product added successfully')
-			return redirect("Vendor:product-list")
+			return redirect("Vendor:product-list", 1)
 		else:
-			print("Errors",form.errors)
 			for img in files.getlist('image'):
 				h=img.path				
-				print(h)
 				image_Array.append(h)
 			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
 
 
-class AddNotification(View):
+class Notification(View):
 	"""docstring for AddNotification"""
-	def get(self,request):
+	def get(self,request,read=None):
 		user = request.user
 		if user.is_vendor:
-			notifications = Notifications.objects.filter(vendor=user).order_by('-created_at')
+			notifications = Notifications.objects.filter(vendor=user,is_read=read).order_by('-created_at')
 			return render(request, 'vendor/notifications.html', {'notifications':notifications})
 		else:
 			messages.error(request, "You are not authorize to access this page.")
@@ -720,28 +718,16 @@ class UpdateProduct(View):
 			messages.error(request, "Product may not exists or wrong url typed !")
 			return redirect("Vendor:vendor-dashboard")
 
-# @login_required(login_url="vendor:bevendor")
-# def remove_product(request):
-    # vendor = request.user
-    # params = request.POST
-    # prodct = Products_Management.objects.filter(id=params['product'],vendor=request.user)
-    # prodct.delete()
-    # products = Products_Management.objects.filter(vendor=vendor).order_by('-created_at')
-    # total = products.count()
-    # return HttpResponse(json.dumps({"message":"Item removed successfully.", "code":200,'total_product':total}), content_type='application/json')
-
 class RemoveProduct(View):
 	"""docstring for RemoveProduct"""
-	def post(self,request):
+	def get(self,request,pk=None):
 		vendor = request.user
 		params = request.POST
-		prodct = ProductsManagement.objects.filter(id=params['product'],vendor=request.user)
-		prodct.delete()
-		products = ProductsManagement.objects.filter(vendor=vendor).order_by('-created_at')
-		total = products.count()
-		return HttpResponse(json.dumps({"message":"Item removed successfully.", "code":200,'total_product':total}), content_type='application/json')
+		product = ProductsManagement.objects.get(id=pk,vendor=request.user)
+		product.is_active = False
+		product.save()
+		return redirect("Vendor:product-list", 1)
 
-	
 @login_required(login_url="vendor:bevendor")
 def order_details(request, order_id):
     user = request.user
@@ -755,16 +741,14 @@ class OrderDetails(View):
 		address = orders.order.customer.shiping_address.all().latest('created_at')
 		return render(request, 'vendor/order-details.html',{"orders":orders,"address":address})
 
-# @login_required(login_url="vendor:bevendor")
-# def remove_notification(request, pk):
-#     messages.success(request, "Notification removed .")
-#     Notifications.objects.filter(vendor=request.user, id=pk).delete()
-#     return redirect("vendor:notifications")
 
 class RemoveNotification(View):
 	"""docstring for RemoveNotification"""
-	def get(self,request):
-		return redirect("Vendor:notifications")
+	def get(self,request,pk=None):
+		notify = Notifications.objects.get(vendor=request.user, id=pk)
+		notify.is_read= True
+		notify.save()
+		return redirect("Vendor:notifications", 0)
 
 	
 		

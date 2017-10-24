@@ -22,9 +22,9 @@
       <div class="head-pro clearfix">
          <h3 class="pull-left">SALES</h3>
          <div class="btn-group pull-right">
-            <a href="javascript:void(0)" class="btn btn-primary" id="id_day">Daily</a>
-            <a href="javascript:void(0)" class="btn btn-primary" id='id_month'>Monthly</a>
-            <a href="javascript:void(0)" class="btn btn-primary" id='id_year'>Annually</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id="id_day" style="margin-right:5px;background:#daac0a">Daily</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id='id_month' style="margin-right:5px;background:#daac0a">Monthly</a>
+            <a href="javascript:void(0)" class="btn btn-primary" id='id_year' style="margin-right:5px;background:#daac0a">Annually</a>
          </div>
       </div>
       <div id="chart_id">
@@ -32,7 +32,7 @@
          {% include 'vendor/partial-dashboard.html' with sell_hash=sell_hash %}
          {% else %}
          <div class="sals_heading">
-            <h4>Total Sales: <strong>$ {{ total_sell |floatformat:2}}</strong></h4>
+            <h4>Total Sales: <strong>$ {{total_sell|floatformat:2}}</strong></h4>
             <hr>
             <div id="columnchart_material" style="width: 900px; height: 400px;"></div>
             <script type='text/javascript'>
@@ -60,14 +60,8 @@
                   };
             </script>
          </div>
-         <div class="cust_count">
-            <div class="row">
-               <div class="col-sm-6">
-               </div>
-               <div class="col-sm-6">
-                  <h4>Total No of orders <strong>{{total_order}}</strong></h4>
-               </div>
-            </div>
+         <div class="cust_count" style="text-align: center">
+            <h4>Total no of Orders:<strong>{{orders.count}}</strong></h4>
          </div>
       </div>
       {% endif %}

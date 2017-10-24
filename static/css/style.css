@@ -34,7 +34,7 @@ border-radius: 4px; -webkit-box-shadow: none;  box-shadow: none;  -webkit-transi
 .nav-side-menu .toggle-btn {  display: none;}
 .nav-side-menu ul,.nav-side-menu li {  list-style: none;  padding: 0px;  margin: 0px;  line-height: 15px;  cursor: pointer;}
 /*.nav-right ul li:last-child {float: right;}*/
-
+.product-btn a{margin: 0px 10px;}
 .recomen-panel {margin-bottom:20px;}
 .recomen-panel h2 {font-size:24px; margin:0px; padding:0px; color:#775e02; font-weight:400;}
 .product-panel {border: 1px solid #9eb2b9; background:#fff; display:table; height:272px; width:100%;}
@@ -299,7 +299,7 @@ i.y-color{color:#daac0a;}
 /*******order_page********/
 
 .table.table-hover.table-bordered tbody tr td strong{font-size:1.1em;}
-.btn-red-custom{background: #8a6d3b none repeat scroll 0 0; color: #ffffff;}
+.btn-red-custom{background: #8a6d3b none repeat scroll 0 0; color: #ffffff;width: 100%;}
 .btn-red-custom:hover, .btn-red-custom:focus{background: rgba(255, 0, 0, 0.8); color: #ffffff;}
 
 /*******Cancel Order********/
@@ -1841,7 +1841,7 @@ hr {border-top: 1px solid #ccc;}
 .envir-foot-btn{display:table-cell;width:150px;}
 .md-margin-left-15{margin-left:-15px;}
 .vendor_section.new-vendor-dash{padding: 0 15px 0;}
-.panel-info {border-color: #bce8f1;}
+.panel-info {border-color: #daac0a;;}
 .global-btn{border-color: #daac0a;background:#daac0a;}
 .btn.btn-success{border-color: #daac0a;background:#daac0a;}
 .new-slider-index .item{height:100%;text-align:center;}
