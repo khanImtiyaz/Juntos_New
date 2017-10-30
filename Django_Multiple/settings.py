@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'social.apps.django_app.default',
     'templated_email',
-    'social_django',
+    # 'social_django',
     'cloudinary',
     'nested_admin',
     'nested_inline',
