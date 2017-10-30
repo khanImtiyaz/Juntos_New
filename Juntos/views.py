@@ -424,12 +424,13 @@ class ContactList(View):
 class LoginView(View):
 	"""docstring for LoginView"""
 	def post(self,request):
-		queryset = MyUser.objects.all()
 		params = request.POST
 		form = UserLoginForm(params, None)
 		if form.is_valid():
 			email = form.cleaned_data["email"]
+			print(email)
 			password = form.cleaned_data["password"]
+			print(password)
 			user = authenticate(username=email, password=password)
 			if user and user.mobile_verified and user.confirmation_code=="Confirmed":
 				login(request, user)
