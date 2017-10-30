@@ -1,5 +1,3 @@
-{% block subject %}Welcome to Juntos{% endblock subject %}
-{% block html %}
 <!DOCTYPE HTML>
 <html>
 <title>Juntos Email</title>
@@ -15,7 +13,7 @@
                      <td style="background:#daac0a; text-align:center; padding:10px;"><a href="#"><img src="http://res.cloudinary.com/djzssjqyt/image/upload/v1509366357/lxcebc5t72dxpue6ksm5.png"></a></td>                 
                   </tr>
                   <tr>
-                     <td style="background-image: url(http://res.cloudinary.com/imtiyaz/image/upload/v1487829538/azzaqonclyxbc4zjcpq8.png); background-repeat: no-repeat; background-size:cover; width:100%; height:318px; text-align:center;"><span style="color:#ffffff; font-size:18px; font-weight:bold; text-align:center;">Welcome, {{username}}</span></td>
+                     <td style="background-image: url(http://res.cloudinary.com/imtiyaz/image/upload/v1487829538/azzaqonclyxbc4zjcpq8.png); background-repeat: no-repeat; background-size:cover; width:100%; height:318px; text-align:center;"><span style="color:#ffffff; font-size:18px; font-weight:bold; text-align:center;">Welcome<br/> {{username}}</span></td>
                   </tr>
                   <tr><td style="height:20px;"></td></tr>
                   <tr>
@@ -25,8 +23,8 @@
                   </tr>
                   <tr>
                      <td style="text-align:center; font-size:13px;">
-                        Thanks for showing Your Interest<br><span>
-                        <a href="http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:2000/confirmation/{{code}}">Please click here</a></span>
+                        Thanks for showing Your Interest<br>Please click <span>
+                        <a href="http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:2000/confirmation/{{code}}">Here</a></span>
                                  to confirm the email address you're registered in your account.
                      </td>
                   </tr>
@@ -74,4 +72,3 @@
       </table>
    </body>
 </html>
-{% endblock %}

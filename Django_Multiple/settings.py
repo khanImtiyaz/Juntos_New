@@ -197,3 +197,9 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = 'media/'
 MEDIA_URL = 'http://127.0.0.1:8000/media/'
 
+# It is only used for Development Purpose
+# try:
+#     from .local_settings import *
+# except ImportError:
+#     pass
+
