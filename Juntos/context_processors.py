@@ -37,8 +37,9 @@ def cart(request):
 
 def userShippingDetail(request):
 	if request.user.is_authenticated() and request.user.is_customer:
-		address = ShippingAddress.objects.filter(user=request.user).latest('created_at')
+		address = ShippingAddress.objects.filter(user=request.user)
 		if address:
+			address = address.latest('created_at')
 			return {"address":address}
 		else:
 			return {"address":{}}
