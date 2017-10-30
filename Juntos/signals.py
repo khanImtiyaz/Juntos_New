@@ -8,7 +8,7 @@ from .models import *
 @receiver(pre_save, sender=SubCategory)
 def model_pre_save_SubCategory(sender, **kwargs):
 	data = kwargs['instance']
-	kwargs['instance'].slug = slugify(data['sub_category_name']+str(data['id']))
+	kwargs['instance'].slug = slugify(data.sub_category_name+str(data.id))
 
 
 @receiver(pre_save, sender=ProductsManagement)
