@@ -275,25 +275,6 @@ class ChangePassword(View):
 			return redirect("Vendor:vendor_dashboard")
 		else:
 			return render(request,'vendor/change_password.html',{"forms":form})
-
-
-
-
-
-class ProductList(View):
-	"""docstring for ProductList"""
-	def get(self,request,active=None):
-		user  = request.user
-		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('-created_at')
-		paginator = Paginator(product, 5)
-		page = request.GET.get('page')
-		try:
-			data = paginator.page(page)
-		except PageNotAnInteger:
-			data = paginator.page(1)
-		except EmptyPage:
-			data = paginator.page(paginator.num_pages)
-		return render(request, 'vendor/product-list.html', {'product_lists':data})
 	
 class OrderHistory(View):
 	"""docstring for OrderHistory"""
@@ -438,6 +419,20 @@ class AddProduct(View):
 				image_Array.append(h)
 			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
 
+class ProductList(View):
+	"""docstring for ProductList"""
+	def get(self,request,active=None):
+		user  = request.user
+		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('-created_at')
+		paginator = Paginator(product, 5)
+		page = request.GET.get('page')
+		try:
+			data = paginator.page(page)
+		except PageNotAnInteger:
+			data = paginator.page(1)
+		except EmptyPage:
+			data = paginator.page(paginator.num_pages)
+		return render(request, 'vendor/product-list.html', {'product_lists':data})
 
 class Notification(View):
 	"""docstring for AddNotification"""
@@ -724,7 +719,10 @@ class RemoveProduct(View):
 		vendor = request.user
 		params = request.POST
 		product = ProductsManagement.objects.get(id=pk,vendor=request.user)
-		product.is_active = False
+		if product.is_active:
+			product.is_active = False
+		else:
+			product.is_active = True
 		product.save()
 		return redirect("Vendor:product-list", 1)
 

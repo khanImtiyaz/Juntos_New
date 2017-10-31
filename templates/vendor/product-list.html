@@ -62,7 +62,9 @@
                   <div>
                      <div class="col-sm-5">
                         {% if product.is_active %}
-                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}"> Remove</a>
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Remove</a>
+                        {% else %}
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">ReAdd</a>
                         {% endif %}
                      </div>
                      <div class="col-sm-7">
