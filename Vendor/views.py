@@ -447,6 +447,15 @@ class RemoveProduct(View):
 		return redirect("Vendor:product-list", active)
 
 
+def quantityChange(request):
+	params = request.POST
+	product = ProductsManagement.objects.get(id=params['product'],vendor=request.user)
+	product.product_quantity = params['quantity']
+	product.save()
+	return HttpResponse({"status":200})
+
+		
+
 class Notification(View):
 	"""docstring for AddNotification"""
 	def get(self,request,read=None):

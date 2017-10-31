@@ -55,9 +55,24 @@
                      <label>Selling Price: </label>
                      <div style="display: inline-block;">${{product.price |floatformat:2}}</div>
                   </div>
-                  <div>
-                     <label>Quantity: </label>
-                     <div style="display: inline-block;">{{product.product_quantity}}</div>
+                  <div class="row">
+                     <div class="col-sm-4" style="vertical-align: middle">
+                        <label>Quantity: </label>
+                        <!-- <div style="display: inline-block;">{{product.product_quantity}}</div> -->
+                     </div>
+                     <div class="col-sm-8">
+                        <div class="sp-quantity">
+                           <div class="sp-plus fff">
+                              <button class="ddd" onclick="decrease('{{product.id}}-quantityValue')">-</button>
+                           </div>
+                           <div class="sp-input">
+                              <input type="text" value="{{product.product_quantity}}" class="quntity-input" id="{{product.id}}-quantityValue">
+                           </div>
+                           <div class="sp-minus fff">
+                              <button id="btnSubmit" class="ddd" onclick="increase('{{product.id}}-quantityValue')">+</button>
+                           </div>
+                        </div>
+                     </div>
                   </div>
                   <div>
                      <label>Status: </label>
@@ -118,5 +133,33 @@
    $(document).ready(function(){
        $("#menu-content li:eq(2)").attr('class','active')
    })
+   var increase = function(field){
+      product = field.split('-')
+      $("#"+field).val(parseInt($("#"+field).val())+1)
+      quantity($("#"+field).val(),product[0])
+  }
+  var decrease = function(field){
+      product = field.split('-')
+      if(parseInt($("#"+field).val())==1)
+         return
+      $("#"+field).val(parseInt($("#"+field).val())-1)
+      quantity($("#"+field).val(),product[0])
+
+  }
+
+  var quantity = function(quant,id){
+   $.ajax({
+      type: 'POST',
+      url: "{% url 'Vendor:quantity-change' %}",
+      dataType: 'json',
+      data: {
+          'product': id,
+          'quantity': quant,
+          'csrfmiddlewaretoken': '{{csrf_token}}'
+      },
+      success: function(e) {
+      },
+      });
+  }
 </script>
 {% endblock%}

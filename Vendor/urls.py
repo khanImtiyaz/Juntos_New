@@ -19,6 +19,7 @@ urlpatterns = [
 	url(r'^add-product$', views.AddProduct.as_view(), name='add-product'),
 	url(r'^notification/(?P<read>[0-9]+)$', views.Notification.as_view(), name='notifications'),
 	url(r'^remove-notification/(?P<pk>[0-9]+)$', views.RemoveNotification.as_view(), name='remove-notifications'),
+	url(r'^quantity-change$', views.quantityChange, name='quantity-change'),
 	url(r'^payment$', views.PaymentTransactionDetails.as_view(), name='payments'),
 	url(r'^sub-category$', views.SubCategoryList.as_view(), name="subcategories"),
 	url(r'^vendorresetpassword$', views.ChangePassword.as_view(), name="change-password"),
