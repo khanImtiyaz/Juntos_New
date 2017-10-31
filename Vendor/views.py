@@ -432,7 +432,20 @@ class ProductList(View):
 			data = paginator.page(1)
 		except EmptyPage:
 			data = paginator.page(paginator.num_pages)
-		return render(request, 'vendor/product-list.html', {'product_lists':data})
+		return render(request, 'vendor/product-list.html', {'product_lists':data,'active':True if active=='1' else False})
+
+
+class RemoveProduct(View):
+	"""docstring for RemoveProduct"""
+	def get(self,request,pk=None):
+		vendor = request.user
+		params = request.POST
+		product = ProductsManagement.objects.get(id=pk,vendor=request.user)
+		product.is_active = False if product.is_active else True
+		active = 0 if product.is_active else 1
+		product.save()
+		return redirect("Vendor:product-list", active)
+
 
 class Notification(View):
 	"""docstring for AddNotification"""
@@ -712,19 +725,6 @@ class UpdateProduct(View):
 			print("Exception",e)
 			messages.error(request, "Product may not exists or wrong url typed !")
 			return redirect("Vendor:vendor-dashboard")
-
-class RemoveProduct(View):
-	"""docstring for RemoveProduct"""
-	def get(self,request,pk=None):
-		vendor = request.user
-		params = request.POST
-		product = ProductsManagement.objects.get(id=pk,vendor=request.user)
-		if product.is_active:
-			product.is_active = False
-		else:
-			product.is_active = True
-		product.save()
-		return redirect("Vendor:product-list", 1)
 
 @login_required(login_url="vendor:bevendor")
 def order_details(request, order_id):

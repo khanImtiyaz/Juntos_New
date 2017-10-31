@@ -13,10 +13,14 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h2 style="text-align: center;color: #daac0a">PRODUCTS LIST</h2>
+         {% if active %}
+         <h2 style="text-align: center;color: #daac0a">ACTIVE PRODUCTS LIST</h2>
+         {% else %}
+         <h2 style="text-align: center;color: #daac0a">INACTIVE PRODUCTS LIST</h2>
+         {% endif %}
          <div class="product-btn">
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1%}">Active</a>
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 0%}">Inactive</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1 %}">Active</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 0 %}">Inactive</a>
             <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}" style="border-radius: 50%;color: white"><i class="fa fa-plus" aria-hidden="true"></i></a>
          </div>
       </div>

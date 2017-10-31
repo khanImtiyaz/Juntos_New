@@ -15,7 +15,7 @@ def about(request):
     return {"abouts":content}
 
 def products(request):
-    product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0))
+    product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
     return {"all_product_list":product}
 
 def starRating(request):
