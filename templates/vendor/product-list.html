@@ -28,8 +28,8 @@
          {% if product_lists %}
          {% regroup product_lists by category as products %}
          {% for product_obj in products %}
-         <h4 class="heading_info" id='{{product_obj.grouper}}'>{{product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
-         <div class="row" id='{{product_obj.grouper}}'>
+         <h4 class="heading_info" id='active_{{product_obj.grouper.id}}'>{{product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
+         <div class="row" id='{{product_obj.grouper.id}}'>
             {% for product in product_obj.list %}
             <div class="col-sm-4">
                <div class="order-list clearfix">
@@ -39,21 +39,21 @@
                   {% else %}
                   <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
                   {% endif %}
-                  <div>
+                  <div style="overflow: hidden;height: 25px;">
                      <label>Name: </label>
-                     <div style="display: inline-block;">{{product.title}}</div>
+                     <div style="display: inline;"> {{product.title}}</div>
                   </div>
-                  <div>
+                  <div style="overflow: hidden;height: 25px;">
                      <label>Category: </label>
-                     <div style="display: inline-block;">{{product.subs_category.category}}</div>
+                     <div style="display: inline;"> {{product.subs_category.category}}</div>
                   </div>
-                  <div>
+                  <div style="overflow: hidden;height: 25px;">
                      <label>Sub Category: </label>
-                     <div style="display: inline-block;">{{product.subs_category}}</div>
+                     <div style="display: inline;"> {{product.subs_category}}</div>
                   </div>
-                  <div>
+                  <div style="overflow: hidden;height: 25px;">
                      <label>Selling Price: </label>
-                     <div style="display: inline-block;">${{product.price |floatformat:2}}</div>
+                     <div style="display: inline;"> ${{product.price |floatformat:2}}</div>
                   </div>
                   <div class="row">
                      <div class="col-sm-4" style="vertical-align: middle">
@@ -73,9 +73,9 @@
                         </div>
                      </div>
                   </div>
-                  <div>
+                  <div style="overflow: hidden;height: 25px;">
                      <label>Status: </label>
-                     <div style="display: inline-block;">{% if product.product_quantity %}Available {% else %} Out of stock{% endif %}</div>
+                     <div style="display: inline;">{% if product.product_quantity %} Available {% else %} Out of stock{% endif %}</div>
                   </div>
                   <div>
                      <div class="col-sm-5">
@@ -93,6 +93,12 @@
             </div>
             {% endfor %}
          </div>
+         <script type="text/javascript">
+            $("#{{product_obj.grouper.id}}").hide()
+            $("#active_{{product_obj.grouper.id}}").on("click",function(){
+               $("#{{product_obj.grouper.id}}").toggle();
+             })
+         </script>
          {% endfor %}
          {% endif %}
       </div>

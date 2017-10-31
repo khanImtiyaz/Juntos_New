@@ -423,7 +423,7 @@ class ProductList(View):
 	"""docstring for ProductList"""
 	def get(self,request,active=None):
 		user  = request.user
-		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('-created_at')
+		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('category','-created_at')
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
