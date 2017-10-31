@@ -1,4 +1,4 @@
-{% block subject %}Welcome to Juntos{% endblock subject %}
+{% block subject %}Welcome to Juntos Peru{% endblock subject %}
 {% block html %}
 <!DOCTYPE HTML>
 <html>

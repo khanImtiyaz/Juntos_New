@@ -1,328 +1,324 @@
-
 // $.validator.addMethod('email_tip', function(value, element) {
 // return this.optional(element) || /^[a-z0-9_\.\-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/.test(value);
 // }, "Please enter valid email.");
+$.validator.addMethod('picture_validator', function(value, element) {
+    var ext = this.value.match(/\.(.+)$/)[1];
+    if (ext != ("jpg" || "jpeg" || "png")) {
+        return false;
+    } else {
+        return true;
+    }
+}, "Please upload valid picture");
 
-$.validator.addMethod('picture_validator', function(value, element){
-  var ext = this.value.match(/\.(.+)$/)[1];
-  if(ext != ("jpg" || "jpeg" || "png"))
-  {
-    return false;
-  }
-  else{
-    return true;
-  }
-},"Please upload valid picture");
-
-$('document').ready(function () {
+$('document').ready(function() {
 
     $('#form4').validate({
         rules: {
             email: {
                 required: true,
-                minlength:12,
-                email_tip:true,
+                minlength: 12,
+                email_tip: true,
             },
             subs_category: {
                 required: true,
             },
             title: {
                 required: true,
-                minlength:9,
+                minlength: 9,
             },
             description: {
                 required: true,
-                minlength : 30,
-                maxlength:500,
+                minlength: 30,
+                maxlength: 500,
             },
             feature: {
-              required: true,
-              minlength : 30,
-              maxlength:100,
+                required: true,
+                minlength: 30,
+                maxlength: 100,
 
             },
-            image:{
-                required:true,
-                picture_validator:true,
+            image: {
+                required: true,
+                picture_validator: true,
             },
         },
 
-messages: {
-         email: {
-             required: "Please enter advertiser email",
-             minlength:"Email address must contain atleast 12 characters",
-         },
-         subs_category: {
-             required: "Please select category of advertisement",
-         },
-         title: {
-             required: "Please enter title for advertisement",
-             minlength: "Title must be atleast 9 characters",
-         },
-         description: {
-             required: "Please enter advertisement descriptions",
-             minlength : "Description must contain atleast 30 characters",
-             maxlength:"Description must contain atmost 500 characters",
-         },
-         feature: {
-           required: "Please enter featurs",
-           minlength : "Featurs must contain atleast 30 characters",
-           maxlength:"Featurs must contain atmost 100 characters",
+        messages: {
+            email: {
+                required: "Please enter advertiser email",
+                minlength: "Email address must contain atleast 12 characters",
+            },
+            subs_category: {
+                required: "Please select category of advertisement",
+            },
+            title: {
+                required: "Please enter title for advertisement",
+                minlength: "Title must be atleast 9 characters",
+            },
+            description: {
+                required: "Please enter advertisement descriptions",
+                minlength: "Description must contain atleast 30 characters",
+                maxlength: "Description must contain atmost 500 characters",
+            },
+            feature: {
+                required: "Please enter featurs",
+                minlength: "Featurs must contain atleast 30 characters",
+                maxlength: "Featurs must contain atmost 100 characters",
 
-         },
+            },
 
-         image:{
-             required:"Please upload advertisement picture",
-         },
-},
-
-    highlight: function (element) {
-        $(element).parent().addClass('error');
+            image: {
+                required: "Please upload advertisement picture",
+            },
         },
-    unhighlight: function (element) {
-        $(element).parent().removeClass('error');
+
+        highlight: function(element) {
+            $(element).parent().addClass('error');
         },
-    submitHandler: function (form) { // for demo
-         form.submit();
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error');
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
-//Cancel order request form
-$('#cancel_desc_reason').validate({
-    rules: {
-        reason:{
-          required: true,
-          minlength:10,
+    //Cancel order request form
+    $('#cancel_desc_reason').validate({
+        rules: {
+            reason: {
+                required: true,
+                minlength: 10,
+            },
         },
-    },
-  messages: {
-     reason: {
-         required: "Please enter cancellation reason",
-         minlength:"Please enter minimum 10 characters for reason",
-     },
- },
- highlight: function (element) {
-        $(element).parent().addClass('error');
+        messages: {
+            reason: {
+                required: "Please enter cancellation reason",
+                minlength: "Please enter minimum 10 characters for reason",
+            },
         },
-    unhighlight: function (element) {
-        $(element).parent().removeClass('error');
+        highlight: function(element) {
+            $(element).parent().addClass('error');
         },
-    submitHandler: function (form) { // for demo
-         form.submit();
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error');
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
-}); 
+    });
 
-// finish cancel order reason
-$('#customer_reg_form').validate({
+    // finish cancel order reason
+    $('#customer_reg_form').validate({
         rules: {
             email: {
                 required: true,
-                minlength:12,
-                email_tip:true,
+                minlength: 12,
+                email_tip: true,
             },
             first_name: {
                 required: true,
-                minimum:true,
+                minimum: true,
             },
             mobile: {
                 required: true,
-                minlength:9,
+                minlength: 9,
             },
             password: {
                 required: true,
-                minlength : 6,
-                maxlength:500,
+                minlength: 6,
+                maxlength: 500,
             },
             confirm_password: {
-              required: true,
-              
+                required: true,
+
             },
 
-            image:{
-                required:true,
-                picture_validator:true,
+            image: {
+                required: true,
+                picture_validator: true,
             },
         },
 
-messages: {
-           email: {
-               required: "Please enter your email",
-               minlength:"Email address must contain atleast 12 characters",
-           },
-           first_name: {
-               required: "Please enter first name",
-               minimum : "Please enter minimum 2 characters"
-           },
-           mobile: {
-               required: "Please enter your mobile number",
-               minlength: "Mobile must be atleast 9 digits + your country code",
-           },
-           password: {
-                          required: 'Please enter password.',
-                          minlength: 'Password must be at least 6 characters.',
-                        },
-           feature: {
-             required: "Please enter featurs",
-             minlength : "Featurs must contain atleast 30 characters",
-             maxlength:"Featurs must contain atmost 100 characters",
+        messages: {
+            email: {
+                required: "Please enter your email",
+                minlength: "Email address must contain atleast 12 characters",
+            },
+            first_name: {
+                required: "Please enter first name",
+                minimum: "Please enter minimum 2 characters"
+            },
+            mobile: {
+                required: "Please enter your mobile number",
+                minlength: "Mobile must be atleast 9 digits + your country code",
+            },
+            password: {
+                required: 'Please enter password.',
+                minlength: 'Password must be at least 6 characters.',
+            },
+            feature: {
+                required: "Please enter featurs",
+                minlength: "Featurs must contain atleast 30 characters",
+                maxlength: "Featurs must contain atmost 100 characters",
 
-           },
+            },
 
-           confirm_password:{
-               required:"Please Enter Your confirm password",
-           },
-  },
+            confirm_password: {
+                required: "Please Enter Your confirm password",
+            },
+        },
 
-          highlight: function (element) {
-              $(element).parent().addClass('error');
-              },
-          unhighlight: function (element) {
-              $(element).parent().removeClass('error');
-              },
-          submitHandler: function (form) { // for demo
-               form.submit();
-              }
-});
+        highlight: function(element) {
+            $(element).parent().addClass('error');
+        },
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error');
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
+        }
+    });
 
-//end reg-form validation
+    //end reg-form validation
 
-//forgot form valdation
-$('#vendor_forgot_pass').validate({
+    //forgot form valdation
+    $('#vendor_forgot_pass').validate({
         rules: {
             email: {
                 required: true,
-                email:true,
+                email: true,
             },
 
         },
- messages: {
-        email: {
+        messages: {
+            email: {
                 required: 'Please enter your email address.',
                 email: 'Please enter valid email',
-                },
-      },
-    submitHandler: function (form) { // for demo
-         form.submit();
+            },
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
 
-$('#forgot_password').validate({
+    $('#forgot_password').validate({
         rules: {
             email: {
                 required: true,
-                email:true,
+                email: true,
             },
 
         },
 
- messages: {
-          email: {
-                  required: 'Please enter email address.',
-                  email: 'Please enter valid email',
-                  },
-           },
-
-    highlight: function (element) {
-        $(element).parent().addClass('error')
+        messages: {
+            email: {
+                required: 'Please enter email address.',
+                email: 'Please enter valid email',
+            },
         },
 
-    submitHandler: function (form) { // for demo
-         form.submit();
+        highlight: function(element) {
+            $(element).parent().addClass('error')
+        },
+
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
-//end forgot form validation
+    //end forgot form validation
 
 
-//login form validaiton
+    //login form validaiton
 
 
     $('#login_customer_id').validate({
         rules: {
             email: {
                 required: true,
-                email:true,
+                email: true,
                 email_tip: true,
             },
             password: {
                 required: true,
-                minlength:6,
+                minlength: 6,
             },
         },
 
- messages: {
-    email: {
+        messages: {
+            email: {
                 required: 'Please enter email address.',
-                },
-    password: {
-                  required: 'Please enter password.',
-                  minlength: 'Password must be at least 6 characters.',
-                },
+            },
+            password: {
+                required: 'Please enter password.',
+                minlength: 'Password must be at least 6 characters.',
+            },
 
-               },
+        },
 
-    highlight: function (element) {
-        $(element).parent().addClass('error')
+        highlight: function(element) {
+            $(element).parent().addClass('error')
         },
-    unhighlight: function (element) {
-        $(element).parent().removeClass('error')
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
         },
-    submitHandler: function (form) { // for demo
-         form.submit();
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
 
-$.validator.addMethod('name_vlid', function(value, element) {
-return this.optional(element) ||  /^(?!\s)([a-zA-Z@_#$!$]){2,16}$/.test(value);
-}, "Please enter valid first name.");
+    $.validator.addMethod('name_vlid', function(value, element) {
+        return this.optional(element) || /^(?!\s)([a-zA-Z@_#$!$]){2,16}$/.test(value);
+    }, "Please enter valid first name.");
 
-$.validator.addMethod('last_vlid', function(value, element) {
-return this.optional(element) ||  /^(?!\s)([a-zA-Z@_#$!$]){2,16}$/.test(value);
-}, "Please enter valid last name.");
+    $.validator.addMethod('last_vlid', function(value, element) {
+        return this.optional(element) || /^(?!\s)([a-zA-Z@_#$!$]){2,16}$/.test(value);
+    }, "Please enter valid last name.");
 
-// $.validator.addMethod('password_val', function(value, element) {
-// return this.optional(element) ||  /(?=^.{6,30}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*/.test(value);
-// }, "Please enter valid password.");
-
-
+    // $.validator.addMethod('password_val', function(value, element) {
+    // return this.optional(element) ||  /(?=^.{6,30}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*/.test(value);
+    // }, "Please enter valid password.");
 
 
-// Vendor Section+++++++++++++++++++++++++++++++++
 
-$('#vendor_login_id').validate({
+
+    // Vendor Section+++++++++++++++++++++++++++++++++
+
+    $('#vendor_login_id').validate({
         rules: {
             email: {
                 required: true,
-                email:true,
+                email: true,
                 email_tip: true,
             },
             password: {
                 required: true,
-                minlength:6,
+                minlength: 6,
             },
         },
 
- messages: {
-    email: {
+        messages: {
+            email: {
                 required: 'Please enter email address.',
-                },
-    password: {
-                  required: 'Please enter password.',
-                  minlength: 'Password must be at least 6 characters.',
-                },
+            },
+            password: {
+                required: 'Please enter password.',
+                minlength: 'Password must be at least 6 characters.',
+            },
 
-               },
+        },
 
-    highlight: function (element) {
-        $(element).parent().addClass('error')
+        highlight: function(element) {
+            $(element).parent().addClass('error')
         },
-    unhighlight: function (element) {
-        $(element).parent().removeClass('error')
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
         },
-    submitHandler: function (form) { // for demo
-         form.submit();
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
@@ -330,27 +326,27 @@ $('#vendor_login_id').validate({
         rules: {
             first_name: {
                 required: true,
-                name_vlid:true,
+                name_vlid: true,
 
             },
             last_name: {
                 required: true,
-                last_vlid:true,
+                last_vlid: true,
             },
             email: {
                 required: true,
-                email:true,
+                email: true,
                 email_tip: true,
             },
             password: {
                 required: true,
-                password_val:true,
-                minimum:true,
+                password_val: true,
+                minimum: true,
 
             },
             confirm_password: {
                 required: true,
-                password_val:true,
+                password_val: true,
                 equalTo: "#password",
 
             },
@@ -368,16 +364,16 @@ $('#vendor_login_id').validate({
             },
             agree_terms_condition: {
                 checked: true,
-                required:true
+                required: true
             },
-             pincode: {
+            pincode: {
                 required: true,
-                
+
 
             },
-            avatar:{
-                required:true,
-                picture_validator:true,
+            avatar: {
+                required: true,
+                picture_validator: true,
             },
 
         },
@@ -402,7 +398,7 @@ $('#vendor_login_id').validate({
             },
             confirm_password: {
                 required: "Please enter confirm password",
-                equalTo:"Password and confirm password are not same !",
+                equalTo: "Password and confirm password are not same !",
             },
 
             country: {
@@ -420,377 +416,377 @@ $('#vendor_login_id').validate({
             agree_terms_condition: {
                 required: "Please mark tick, if you are agree on terms & conditions",
             },
-             pincode: {
+            pincode: {
                 required: "Please enter pincode",
 
             },
-            avatar:{
-              required: "Please upload a picture",
-              picture_validator:"Please check picture size",
+            avatar: {
+                required: "Please upload a picture",
+                picture_validator: "Please check picture size",
 
             },
 
         },
 
-    highlight: function (element) {
-        $(element).parent().addClass('error')
+        highlight: function(element) {
+            $(element).parent().addClass('error')
         },
-    unhighlight: function (element) {
-        $(element).parent().removeClass('error')
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
         },
-    submitHandler: function (form) { // for demo
-         form.submit();
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
-$("#vendor_reg_form2").validate({
-  rules: {
-      business_name: {
-          required: true,
-
-      },
-      pincode: {
-          required: true,
-          number:true,
-          minlength:6,
-          maxlength:7,
-      },
-      address1: {
-          required: true,
-
-      },
-      // address2: {
-      //     required: true,
-
-
-      // },
-      city: {
-          required: true,
-
-
-      },
-      state: {
-          required: true,
-
-      },
-      country: {
-          required: true,
-
-      },
-
-  },
-  messages: {
-      business_name: {
-          required: "Please enter business name",
-
-      },
-      pincode: {
-          required: "Please enter pincode",
-
-      },
-      address1: {
-          required: "Please enter addres line 1",
-
-      },
-      // address2: {
-      //     required: "Please enter address line 2",
-
-      // },
-      city: {
-          required: "Please enter city name",
-
-      },
-      state: {
-          required: "Please select state name",
-
-      },
-
-      country: {
-          required: "Please select country name",
-
-      },
-
-
-  },
-
-submitHandler: function (form) { // for demo
-   form.submit();
-  }
-});
-
-$.validator.addMethod('routing_code_val', function(value, element) {
-return this.optional(element) ||  /^(?!\s)([0-9]){9}$/.test(value);
-}, "Please enter valid IFSC code");
-
-$("#vender_reg_form3").validate({
-  rules:{
-    bank_name:{
-      required:true,
-    },
-    account_number:{
-      required:true,
-      number:true,
-      maxlength:16,
-      minlength:11,
-
-    },
-    routing_number:{
-      required:true,
-      routing_code_val:true,
-      maxlength:9,
-      minlength:9,
-      number:true,
-    }
-  },
-  messages:{
-    bank_name:{
-      required:"Please select bank name",
-    },
-    account_number:{
-      required:"Please enter account number",
-      number:"Oly digits are allowed",
-      minlength:"Account number must be between 11 to 16 digits.",
-    },
-    routing_number:{
-      required:"Please enter routing number",
-      routing_code_val:"Please enter valid routing number ",
-      minlength:"Routing number must be 9 digit.",
-      number: "Onl digits are allowed."
-    },
-  },
-  submitHandler: function (form) { // for demo
-     form.submit();
-   },
-});
-//forgot password validation
-
-
-$("#profile_update_form").validate({
-  rules: {
-      first_name: {
-          required: true,
-
-      },
-      last_name: {
-          required: true,
-
-      },
-      email: {
-          required: true,
-
-      },
-      mobile: {
-          required: true,
-
-      },
-      legal_name: {
-          required: true,
-
-      },
-      business_name: {
-          required: true,
-
-      },
-      pincode: {
-          required: true,
-          number:true,
-          minlength:6,
-          maxlength:7,
-      },
-      address1: {
-          required: true,
-
-      },
-      // address2: {
-      //     required: true,
-
-
-      // },
-      city: {
-          required: true,
-
-
-      },
-      state: {
-          required: true,
-
-      },
-      country: {
-          required: true,
-
-      },
-      bank_name: {
-          required: true,
-
-      },
-      account_number: {
-          required: true,
-          number: true,
-          minlength: 11,
-
-      },
-      routing_number: {
-          required: true,
-          number: true,
-          minlength: 9,
-          maxlength: 9,
-
-      },
-
-  },
-  messages: {
-      first_name: {
-          required: "Please enter first name.",
-
-      },
-      last_name: {
-          required: "Please enter last name",
-
-      },
-      email: {
-          required: "Please enter email address",
-
-      },
-      mobile: {
-          required: "Please enter mobile number",
-
-      },
-      legal_name: {
-          required: "Please enter legal name",
-
-      },
-      business_name: {
-          required: "Please enter business name",
-
-      },
-      pincode: {
-          required: "Please enter post code",
-          number:"Only number are allowed to enter.",
-          minlength:"Post code must be 6 to 7 digits.",
-      },
-      address1: {
-          required: "Please enter address line 1",
-
-      },
-      // address2: {
-      //     required: "Please enter address line 2",
-
-
-      // },
-      city: {
-          required: "Please enter city name",
-
-
-      },
-      state: {
-          required: "Please enter state name",
-
-      },
-      country: {
-          required: "Please enter country name",
-
-      },
-      bank_name: {
-          required: "Please enter Bank name",
-
-      },
-      account_number: {
-          required: "Please enter account number",
-          number:"Only number are allowed to enter.",
-          minlength:"Account number must be 11 to 16 digits.",
-
-      },
-      routing_number: {
-          required: "Please enter routing number.",
-          number:"Only number are allowed to enter.",
-          maxlength:"Routing number must be 9 digits.",
-
-      },
-
-
-
-  },
-
-submitHandler: function (form) { // for demo
-   form.submit();
-  }
-});
-
-
-//VALIDATION IN ADD PRODUCT FROM VENDOR
-$('#product_add_form').validate({
-  rules:{
-       title:{
-        required: true,
-       },
-       category:{
-        required: true,
-       },
-       subs_category:{
-        required: true,
-       },
-       price:{
-        required: true,
-       },
-       // selling_price:{
-       //  required: true,
-       // },
-       image:{
-        required: true,
-       },
-       // insured_amount:{
-       //  required: true,
-       // },
-       // product_weight:{
-       //  required: true,
-       // },
-       // product_height:{
-       //  required: true,
-       // },
-       // product_depth:{
-       //  required: true,
-       // },
-       //  product_width:{
-       //  required: true,
-       // },
-        description:{
-        required: true,
-       },
-        feature:{
-        required: true,
-       },
-        product_quantity:{
-        required: true,
-       },
-       services:{
-        required: true,
-       },
-   },
-  messages: {
+    $("#vendor_reg_form2").validate({
+        rules: {
+            business_name: {
+                required: true,
+
+            },
+            pincode: {
+                required: true,
+                number: true,
+                minlength: 6,
+                maxlength: 7,
+            },
+            address1: {
+                required: true,
+
+            },
+            // address2: {
+            //     required: true,
+
+
+            // },
+            city: {
+                required: true,
+
+
+            },
+            state: {
+                required: true,
+
+            },
+            country: {
+                required: true,
+
+            },
+
+        },
+        messages: {
+            business_name: {
+                required: "Please enter business name",
+
+            },
+            pincode: {
+                required: "Please enter pincode",
+
+            },
+            address1: {
+                required: "Please enter addres line 1",
+
+            },
+            // address2: {
+            //     required: "Please enter address line 2",
+
+            // },
+            city: {
+                required: "Please enter city name",
+
+            },
+            state: {
+                required: "Please select state name",
+
+            },
+
+            country: {
+                required: "Please select country name",
+
+            },
+
+
+        },
+
+        submitHandler: function(form) { // for demo
+            form.submit();
+        }
+    });
+
+    $.validator.addMethod('routing_code_val', function(value, element) {
+        return this.optional(element) || /^(?!\s)([0-9]){9}$/.test(value);
+    }, "Please enter valid IFSC code");
+
+    $("#vender_reg_form3").validate({
+        rules: {
+            bank_name: {
+                required: true,
+            },
+            account_number: {
+                required: true,
+                number: true,
+                maxlength: 16,
+                minlength: 11,
+
+            },
+            routing_number: {
+                required: true,
+                routing_code_val: true,
+                maxlength: 9,
+                minlength: 9,
+                number: true,
+            }
+        },
+        messages: {
+            bank_name: {
+                required: "Please select bank name",
+            },
+            account_number: {
+                required: "Please enter account number",
+                number: "Oly digits are allowed",
+                minlength: "Account number must be between 11 to 16 digits.",
+            },
+            routing_number: {
+                required: "Please enter routing number",
+                routing_code_val: "Please enter valid routing number ",
+                minlength: "Routing number must be 9 digit.",
+                number: "Onl digits are allowed."
+            },
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
+        },
+    });
+    //forgot password validation
+
+
+    $("#profile_update_form").validate({
+        rules: {
+            first_name: {
+                required: true,
+
+            },
+            last_name: {
+                required: true,
+
+            },
+            email: {
+                required: true,
+
+            },
+            mobile: {
+                required: true,
+
+            },
+            legal_name: {
+                required: true,
+
+            },
+            business_name: {
+                required: true,
+
+            },
+            pincode: {
+                required: true,
+                number: true,
+                minlength: 6,
+                maxlength: 7,
+            },
+            address1: {
+                required: true,
+
+            },
+            // address2: {
+            //     required: true,
+
+
+            // },
+            city: {
+                required: true,
+
+
+            },
+            state: {
+                required: true,
+
+            },
+            country: {
+                required: true,
+
+            },
+            bank_name: {
+                required: true,
+
+            },
+            account_number: {
+                required: true,
+                number: true,
+                minlength: 11,
+
+            },
+            routing_number: {
+                required: true,
+                number: true,
+                minlength: 9,
+                maxlength: 9,
+
+            },
+
+        },
+        messages: {
+            first_name: {
+                required: "Please enter first name.",
+
+            },
+            last_name: {
+                required: "Please enter last name",
+
+            },
+            email: {
+                required: "Please enter email address",
+
+            },
+            mobile: {
+                required: "Please enter mobile number",
+
+            },
+            legal_name: {
+                required: "Please enter legal name",
+
+            },
+            business_name: {
+                required: "Please enter business name",
+
+            },
+            pincode: {
+                required: "Please enter post code",
+                number: "Only number are allowed to enter.",
+                minlength: "Post code must be 6 to 7 digits.",
+            },
+            address1: {
+                required: "Please enter address line 1",
+
+            },
+            // address2: {
+            //     required: "Please enter address line 2",
+
+
+            // },
+            city: {
+                required: "Please enter city name",
+
+
+            },
+            state: {
+                required: "Please enter state name",
+
+            },
+            country: {
+                required: "Please enter country name",
+
+            },
+            bank_name: {
+                required: "Please enter Bank name",
+
+            },
+            account_number: {
+                required: "Please enter account number",
+                number: "Only number are allowed to enter.",
+                minlength: "Account number must be 11 to 16 digits.",
+
+            },
+            routing_number: {
+                required: "Please enter routing number.",
+                number: "Only number are allowed to enter.",
+                maxlength: "Routing number must be 9 digits.",
+
+            },
+
+
+
+        },
+
+        submitHandler: function(form) { // for demo
+            form.submit();
+        }
+    });
+
+
+    //VALIDATION IN ADD PRODUCT FROM VENDOR
+    $('#product_add_form').validate({
+        rules: {
             title: {
-                  required: 'Please enter title',
-
-                  },
+                required: true,
+            },
             category: {
-                  required: 'Please select category',
-
-                  },
+                required: true,
+            },
             subs_category: {
-                  required: 'Please select subs category',
-
-                  },
+                required: true,
+            },
             price: {
-                  required: 'Please enter price',
+                required: true,
+            },
+            // selling_price:{
+            //  required: true,
+            // },
+            image: {
+                required: true,
+            },
+            // insured_amount:{
+            //  required: true,
+            // },
+            // product_weight:{
+            //  required: true,
+            // },
+            // product_height:{
+            //  required: true,
+            // },
+            // product_depth:{
+            //  required: true,
+            // },
+            //  product_width:{
+            //  required: true,
+            // },
+            description: {
+                required: true,
+            },
+            feature: {
+                required: true,
+            },
+            product_quantity: {
+                required: true,
+            },
+            services: {
+                required: true,
+            },
+        },
+        messages: {
+            title: {
+                required: 'Please enter title',
 
-                  },
+            },
+            category: {
+                required: 'Please select category',
+
+            },
+            subs_category: {
+                required: 'Please select subs category',
+
+            },
+            price: {
+                required: 'Please enter price',
+
+            },
             // selling_price: {
             //       required: 'Please enter selling price',
 
             //       },
             image: {
-                  required: 'Please upload image',
+                required: 'Please upload image',
 
-                  },
+            },
             // insured_amount: {
             //       required: 'Please enter insured amount',
 
@@ -812,137 +808,137 @@ $('#product_add_form').validate({
 
             //       },
             description: {
-                  required: 'Please enter description',
+                required: 'Please enter description',
 
-                  },
+            },
             feature: {
-                  required: 'Please enter feature',
+                required: 'Please enter feature',
 
-                  },
+            },
             product_quantity: {
-                  required: 'Please enter product quantity',
+                required: 'Please enter product quantity',
 
-                  },
-             services: {
-                  required: 'Please enter services',
+            },
+            services: {
+                required: 'Please enter services',
 
-                  },
-          },
-       
-  highlight: function (element) {
-    $(element).parent().addClass('error')
-    },
-unhighlight: function (element) {
-    $(element).parent().removeClass('error')
-    },
-submitHandler: function (form) { // for demo
-     form.submit();
-
-    }
-});
-// FINISH ADD PRODUCT VALIDATION
-
-// Create 
-$('#invoice_form_id').validate({
-    rules: {
-        delivery_option: {
-            required: true,
-
-        },
-        // insured_amount: {
-        //     required: true,
-
-        // },
-        // product_height: {
-        //     required: true,
-
-        // },
-        //  product_depth: {
-        //     required: true,
-
-        // },
-        //  product_width: {
-        //     required: true,
-
-        // },
-        pickup_date: {
-            required: true,
-
-        },
-        ready_by_time: {
-            required: true,
-
-        },
-        close_time: {
-            required: true,
-
+            },
         },
 
-        // product_weight: {
-        //     required: true,
-
-        // },
-        delivery_date: {
-            required: true,
-
+        highlight: function(element) {
+            $(element).parent().addClass('error')
         },
-    },
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
 
-messages: {
-delivery_option: {
-            required: 'Please select shipping option',
+        }
+    });
+    // FINISH ADD PRODUCT VALIDATION
 
-            },
-// insured_amount: {
-//             required: 'Please enter insure amount',
-
-//             },
-// product_height: {
-//             required: 'Please enter Prouct Height',
-
-//             },
-// product_depth: {
-//             required: 'Please enter prouct depth',
-
-//             },
-// product_width: {
-//             required: 'Please enter product width',
-
-//             },
-pickup_date: {
-            required: 'Please enter pickup date',
+    // Create 
+    $('#invoice_form_id').validate({
+        rules: {
+            delivery_option: {
+                required: true,
 
             },
-ready_by_time: {
-            required: 'Please select ready by time',
+            // insured_amount: {
+            //     required: true,
+
+            // },
+            // product_height: {
+            //     required: true,
+
+            // },
+            //  product_depth: {
+            //     required: true,
+
+            // },
+            //  product_width: {
+            //     required: true,
+
+            // },
+            pickup_date: {
+                required: true,
 
             },
-product_weight: {
-            required: 'Please enter product weight',
+            ready_by_time: {
+                required: true,
 
             },
-close_time: {
-            required: 'Please select close time',
+            close_time: {
+                required: true,
 
             },
-delivery_date: {
-            required: 'Please select expected date of delivery',
+
+            // product_weight: {
+            //     required: true,
+
+            // },
+            delivery_date: {
+                required: true,
+
             },
-           },
+        },
 
-highlight: function (element) {
-    $(element).parent().addClass('error')
-    },
-unhighlight: function (element) {
-    $(element).parent().removeClass('error')
-    },
-submitHandler: function (form) { // for demo
-     form.submit();
-    }
-});
+        messages: {
+            delivery_option: {
+                required: 'Please select shipping option',
+
+            },
+            // insured_amount: {
+            //             required: 'Please enter insure amount',
+
+            //             },
+            // product_height: {
+            //             required: 'Please enter Prouct Height',
+
+            //             },
+            // product_depth: {
+            //             required: 'Please enter prouct depth',
+
+            //             },
+            // product_width: {
+            //             required: 'Please enter product width',
+
+            //             },
+            pickup_date: {
+                required: 'Please enter pickup date',
+
+            },
+            ready_by_time: {
+                required: 'Please select ready by time',
+
+            },
+            product_weight: {
+                required: 'Please enter product weight',
+
+            },
+            close_time: {
+                required: 'Please select close time',
+
+            },
+            delivery_date: {
+                required: 'Please select expected date of delivery',
+            },
+        },
+
+        highlight: function(element) {
+            $(element).parent().addClass('error')
+        },
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
+        }
+    });
 
 
-// VALIDATION FOR UPDATE PASSWORD
+    // VALIDATION FOR UPDATE PASSWORD
     $('#update_password').validate({
         rules: {
             new_password: {
@@ -955,181 +951,181 @@ submitHandler: function (form) { // for demo
             },
         },
 
- messages: {
-    new_password: {
+        messages: {
+            new_password: {
                 required: 'Please enter new password',
                 minlength: 'Password must be at least 6 characters.',
-                },
-    confirm_password: {
+            },
+            confirm_password: {
                 required: 'Please enter confirm password',
-                },
-               },
+            },
+        },
 
-    highlight: function (element) {
-        $(element).parent().addClass('error')
+        highlight: function(element) {
+            $(element).parent().addClass('error')
         },
-    unhighlight: function (element) {
-        $(element).parent().removeClass('error')
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
         },
-    submitHandler: function (form) { // for demo
-         form.submit();
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
-// FINISH UPDATE PASSWORD VAILDATION
+    // FINISH UPDATE PASSWORD VAILDATION
 
-// RATING FORM VALIDATION
+    // RATING FORM VALIDATION
     $("#rating_form_id").validate({
-      rules: {
-          content: {
-              required: true,
-              minlength: 6,
-          },
-          rating_value: {
-              required: true,
+        rules: {
+            content: {
+                required: true,
+                minlength: 6,
+            },
+            rating_value: {
+                required: true,
 
-          },
-      },
+            },
+        },
 
-messages: {
-  content: {
-              required: 'Please enter your comment',
-              minlength: 'Please enter at least 6 characters.',
-              },
-  rating_value: {
-              required: 'Please choose rating value',
-              },
-             },
+        messages: {
+            content: {
+                required: 'Please enter your comment',
+                minlength: 'Please enter at least 6 characters.',
+            },
+            rating_value: {
+                required: 'Please choose rating value',
+            },
+        },
 
-  highlight: function (element) {
-      $(element).parent().addClass('error')
-      },
-  unhighlight: function (element) {
-      $(element).parent().removeClass('error')
-      },
-  submitHandler: function (form) { // for demo
-       form.submit();
-      }
+        highlight: function(element) {
+            $(element).parent().addClass('error')
+        },
+        unhighlight: function(element) {
+            $(element).parent().removeClass('error')
+        },
+        submitHandler: function(form) { // for demo
+            form.submit();
+        }
     });
 
-// FINISH RATING FORM VALIDATION
+    // FINISH RATING FORM VALIDATION
 
-// VALIDAION FOR UPDATE PROFILE
+    // VALIDAION FOR UPDATE PROFILE
 
-$("#update_profile_form_id").validate({
-  rules: {
-      first_name: {
-          required: true,
-          minlength:2,
-      },
-      email: {
-          required: true,
-          minlength:6,
-          email:true,
-          email_tip:true,
-      },
-      mobile: {
-          required: true,
-          minlength:9,
-      },
-  },
+    $("#update_profile_form_id").validate({
+        rules: {
+            first_name: {
+                required: true,
+                minlength: 2,
+            },
+            email: {
+                required: true,
+                minlength: 6,
+                email: true,
+                email_tip: true,
+            },
+            mobile: {
+                required: true,
+                minlength: 9,
+            },
+        },
 
-messages: {
+        messages: {
 
-      first_name: {
+            first_name: {
                 required: 'Please enter your name.',
-                minlength:'Please enter minimum 2 character.',
-                },
-      email: {
+                minlength: 'Please enter minimum 2 character.',
+            },
+            email: {
                 required: 'Please enter email address.',
-                minlength:'Please enter minimum 6 character.',
-                },
-      mobile: {
+                minlength: 'Please enter minimum 6 character.',
+            },
+            mobile: {
                 required: 'Please enter a mobile number.',
-                minlength:'Please enter minimun 9 digit ',
-                },
-         },
+                minlength: 'Please enter minimun 9 digit ',
+            },
+        },
 
-submitHandler: function (form) {
-   form.submit();
-  }
-});
+        submitHandler: function(form) {
+            form.submit();
+        }
+    });
 
-// FINISH PROFILE VALIDATION
+    // FINISH PROFILE VALIDATION
 
-// VALIDATION FOR SHARE PRODUCT
+    // VALIDATION FOR SHARE PRODUCT
 
     $('#form_share_id').validate({
         rules: {
             friend_email: {
                 required: true,
-                email:true,
+                email: true,
             },
             product_link: {
                 required: true,
             },
             message: {
                 required: true,
-                minlength:25,
+                minlength: 25,
             },
         },
 
-  messages: {
+        messages: {
 
-    friend_email: {
+            friend_email: {
                 required: 'Please enter your friend email.',
-                },
-    product_link: {
+            },
+            product_link: {
                 required: 'Please put product address here.',
-                },
-    message: {
+            },
+            message: {
                 required: 'Please enter a message.',
-                minlength:'Please enter minimun 25 characters',
-                },
-               },
+                minlength: 'Please enter minimun 25 characters',
+            },
+        },
 
-    submitHandler: function (form) { // for demo
-         form.submit();
+        submitHandler: function(form) { // for demo
+            form.submit();
         }
     });
 
-// FINISH VALIDATION FOR SHARE PRODUCT
+    // FINISH VALIDATION FOR SHARE PRODUCT
 
 });
 //
 
 
 
-function changeColor(color){
-  $.ajax({
-    url:'/product_details2/'+color+'/',
-    data:{},
-    type:'GET',
-    success:function(response){
-      alert(response);
-    }
-  });
+function changeColor(color) {
+    $.ajax({
+        url: '/product_details2/' + color + '/',
+        data: {},
+        type: 'GET',
+        success: function(response) {
+            alert(response);
+        }
+    });
 }
 
 
 //VALIDATION FOR IMAGE
 
-$('#avatar_id').change(function () {
-        var ext = this.value.match(/\.(.+)$/)[1];
-        switch (ext) {
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-                // $('#uploadButton').attr('disabled', false);
-                $("#img_error").text(' ');
-                break;
-            default:
+$('#avatar_id').change(function() {
+    var ext = this.value.match(/\.(.+)$/)[1];
+    switch (ext) {
+        case 'jpg':
+        case 'jpeg':
+        case 'png':
+            // $('#uploadButton').attr('disabled', false);
+            $("#img_error").text(' ');
+            break;
+        default:
 
             $("<span style='color:#ba2121;' id='img_error'></spn>").insertAfter("#avatar_id");
-                $("#img_error").text('This is not an allowed file type.');
-                this.value = '';
-        }
-    });
+            $("#img_error").text('This is not an allowed file type.');
+            this.value = '';
+    }
+});
 
 $(document).ready(function() {
 
@@ -1199,7 +1195,7 @@ $(document).ready(function() {
  * Licensed under the BSD 3-Clause
  * https://github.com/kartik-v/bootstrap-star-rating/blob/master/LICENSE.md
  */
-(function (factory) {
+(function(factory) {
     "use strict";
     //noinspection JSUnresolvedVariable
     if (typeof define === 'function' && define.amd) { // jshint ignore:line
@@ -1215,7 +1211,7 @@ $(document).ready(function() {
             factory(window.jQuery);
         }
     }
-}(function ($) {
+}(function($) {
     "use strict";
 
     $.fn.ratingLocales = {};
@@ -1229,23 +1225,23 @@ $(document).ready(function() {
         DEFAULT_MIN: 0,
         DEFAULT_MAX: 5,
         DEFAULT_STEP: 0.5,
-        isEmpty: function (value, trim) {
+        isEmpty: function(value, trim) {
             return value === null || value === undefined || value.length === 0 || (trim && $.trim(value) === '');
         },
-        getCss: function (condition, css) {
+        getCss: function(condition, css) {
             return condition ? ' ' + css : '';
         },
-        addCss: function ($el, css) {
+        addCss: function($el, css) {
             $el.removeClass(css).addClass(css);
         },
-        getDecimalPlaces: function (num) {
+        getDecimalPlaces: function(num) {
             var m = ('' + num).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
             return !m ? 0 : Math.max(0, (m[1] ? m[1].length : 0) - (m[2] ? +m[2] : 0));
         },
-        applyPrecision: function (val, precision) {
+        applyPrecision: function(val, precision) {
             return parseFloat(val.toFixed(precision));
         },
-        handler: function ($el, event, callback, skipOff, skipNS) {
+        handler: function($el, event, callback, skipOff, skipNS) {
             var ev = skipNS ? event : event.split(' ').join($h.NAMESPACE + ' ') + $h.NAMESPACE;
             if (!skipOff) {
                 $el.off(ev);
@@ -1255,15 +1251,18 @@ $(document).ready(function() {
     };
 
     // rating constructor
-    Rating = function (element, options) {
+    Rating = function(element, options) {
         var self = this;
         self.$element = $(element);
         self._init(options);
     };
     Rating.prototype = {
         constructor: Rating,
-        _parseAttr: function (vattr, options) {
-            var self = this, $el = self.$element, elType = $el.attr('type'), finalVal, val, chk, out;
+        _parseAttr: function(vattr, options) {
+            var self = this,
+                $el = self.$element,
+                elType = $el.attr('type'),
+                finalVal, val, chk, out;
             if (elType === 'range' || elType === 'number') {
                 val = options[vattr] || $el.data(vattr) || $el.attr(vattr);
                 switch (vattr) {
@@ -1283,21 +1282,23 @@ $(document).ready(function() {
             }
             return isNaN(out) ? chk : out;
         },
-        _parseValue: function (val) {
-            var self = this, v = parseFloat(val);
+        _parseValue: function(val) {
+            var self = this,
+                v = parseFloat(val);
             if (isNaN(v)) {
                 v = self.clearValue;
             }
             return (self.zeroAsNull && (v === 0 || v === '0') ? null : v);
         },
-        _setDefault: function (key, val) {
+        _setDefault: function(key, val) {
             var self = this;
             if ($h.isEmpty(self[key])) {
                 self[key] = val;
             }
         },
-        _initSlider: function (options) {
-            var self = this, v = self.$element.val();
+        _initSlider: function(options) {
+            var self = this,
+                v = self.$element.val();
             self.initialValue = $h.isEmpty(v) ? 0 : v;
             self._setDefault('min', self._parseAttr('min', options));
             self._setDefault('max', self._parseAttr('max', options));
@@ -1313,16 +1314,21 @@ $(document).ready(function() {
             }
             self.diff = self.max - self.min;
         },
-        _initHighlight: function (v) {
-            var self = this, w, cap = self._getCaption();
+        _initHighlight: function(v) {
+            var self = this,
+                w, cap = self._getCaption();
             if (!v) {
                 v = self.$element.val();
             }
             w = self.getWidthFromValue(v) + '%';
             self.$filledStars.width(w);
-            self.cache = {caption: cap, width: w, val: v};
+            self.cache = {
+                caption: cap,
+                width: w,
+                val: v
+            };
         },
-        _getContainerCss: function () {
+        _getContainerCss: function() {
             var self = this;
             return 'rating-container' +
                 $h.getCss(self.theme, 'theme-' + self.theme) +
@@ -1332,23 +1338,32 @@ $(document).ready(function() {
                 $h.getCss(self.disabled || self.readonly, 'rating-disabled') +
                 $h.getCss(self.containerClass, self.containerClass);
         },
-        _checkDisabled: function () {
-            var self = this, $el = self.$element, opts = self.options;
+        _checkDisabled: function() {
+            var self = this,
+                $el = self.$element,
+                opts = self.options;
             self.disabled = opts.disabled === undefined ? $el.attr('disabled') || false : opts.disabled;
             self.readonly = opts.readonly === undefined ? $el.attr('readonly') || false : opts.readonly;
             self.inactive = (self.disabled || self.readonly);
-            $el.attr({disabled: self.disabled, readonly: self.readonly});
+            $el.attr({
+                disabled: self.disabled,
+                readonly: self.readonly
+            });
         },
-        _addContent: function (type, content) {
-            var self = this, $container = self.$container, isClear = type === 'clear';
+        _addContent: function(type, content) {
+            var self = this,
+                $container = self.$container,
+                isClear = type === 'clear';
             if (self.rtl) {
                 return isClear ? $container.append(content) : $container.prepend(content);
             } else {
                 return isClear ? $container.prepend(content) : $container.append(content);
             }
         },
-        _generateRating: function () {
-            var self = this, $el = self.$element, $rating, $container, w;
+        _generateRating: function() {
+            var self = this,
+                $el = self.$element,
+                $rating, $container, w;
             $container = self.$container = $(document.createElement("div")).insertBefore($el);
             $h.addCss($container, self._getContainerCss());
             self.$rating = $rating = $(document.createElement("div")).attr('class', 'rating-stars').appendTo($container)
@@ -1365,18 +1380,20 @@ $(document).ready(function() {
             }
             $el.appendTo($rating);
         },
-        _getCaption: function () {
+        _getCaption: function() {
             var self = this;
             return self.$caption && self.$caption.length ? self.$caption.html() : self.defaultCaption;
         },
-        _setCaption: function (content) {
+        _setCaption: function(content) {
             var self = this;
             if (self.$caption && self.$caption.length) {
                 self.$caption.html(content);
             }
         },
-        _renderCaption: function () {
-            var self = this, val = self.$element.val(), html, $cap = self.captionElement ? $(self.captionElement) : '';
+        _renderCaption: function() {
+            var self = this,
+                val = self.$element.val(),
+                html, $cap = self.captionElement ? $(self.captionElement) : '';
             if (!self.showCaption) {
                 return;
             }
@@ -1390,15 +1407,18 @@ $(document).ready(function() {
             self._addContent('caption', '<div class="caption">' + html + '</div>');
             self.$caption = self.$container.find(".caption");
         },
-        _renderClear: function () {
-            var self = this, css, $clr = self.clearElement ? $(self.clearElement) : '';
+        _renderClear: function() {
+            var self = this,
+                css, $clr = self.clearElement ? $(self.clearElement) : '';
             if (!self.showClear) {
                 return;
             }
             css = self._getClearClass();
             if ($clr.length) {
                 $h.addCss($clr, css);
-                $clr.attr({"title": self.clearButtonTitle}).html(self.clearButton);
+                $clr.attr({
+                    "title": self.clearButtonTitle
+                }).html(self.clearButton);
                 self.$clear = $clr;
                 return;
             }
@@ -1406,12 +1426,13 @@ $(document).ready(function() {
                 '<div class="' + css + '" title="' + self.clearButtonTitle + '">' + self.clearButton + '</div>');
             self.$clear = self.$container.find('.' + self.clearButtonBaseClass);
         },
-        _getClearClass: function () {
+        _getClearClass: function() {
             var self = this;
             return self.clearButtonBaseClass + ' ' + (self.inactive ? '' : self.clearButtonActiveClass);
         },
-        _toggleHover: function (out) {
-            var self = this, w, width, caption;
+        _toggleHover: function(out) {
+            var self = this,
+                w, width, caption;
             if (!out) {
                 return;
             }
@@ -1427,10 +1448,12 @@ $(document).ready(function() {
                 }
             }
         },
-        _init: function (options) {
-            var self = this, $el = self.$element.addClass('rating-input'), v;
+        _init: function(options) {
+            var self = this,
+                $el = self.$element.addClass('rating-input'),
+                v;
             self.options = options;
-            $.each(options, function (key, value) {
+            $.each(options, function(key, value) {
                 self[key] = value;
             });
             if (self.rtl || $el.attr('dir') === 'rtl') {
@@ -1453,14 +1476,14 @@ $(document).ready(function() {
             $el.val(v);
             return $el.removeClass('rating-loading');
         },
-        _initEvents: function () {
+        _initEvents: function() {
             var self = this;
             self.events = {
-                _getTouchPosition: function (e) {
+                _getTouchPosition: function(e) {
                     var pageX = $h.isEmpty(e.pageX) ? e.originalEvent.touches[0].pageX : e.pageX;
                     return pageX - self.$rating.offset().left;
                 },
-                _listenClick: function (e, callback) {
+                _listenClick: function(e, callback) {
                     e.stopPropagation();
                     e.preventDefault();
                     if (e.handled !== true) {
@@ -1470,14 +1493,14 @@ $(document).ready(function() {
                         return false;
                     }
                 },
-                _noMouseAction: function (e) {
+                _noMouseAction: function(e) {
                     return !self.hoverEnabled || self.inactive || (e && e.isDefaultPrevented());
                 },
-                initTouch: function (e) {
+                initTouch: function(e) {
                     //noinspection JSUnresolvedVariable
                     var ev, touches, pos, out, caption, w, width, params, clrVal = self.clearValue || 0,
                         isTouchCapable = 'ontouchstart' in window ||
-                            (window.DocumentTouch && document instanceof window.DocumentTouch);
+                        (window.DocumentTouch && document instanceof window.DocumentTouch);
                     if (!isTouchCapable || self.inactive) {
                         return;
                     }
@@ -1499,9 +1522,9 @@ $(document).ready(function() {
                         self.$filledStars.css('width', width);
                     }
                 },
-                starClick: function (e) {
+                starClick: function(e) {
                     var pos, params;
-                    self.events._listenClick(e, function (ev) {
+                    self.events._listenClick(e, function(ev) {
                         if (self.inactive) {
                             return false;
                         }
@@ -1512,15 +1535,15 @@ $(document).ready(function() {
                         self.starClicked = true;
                     });
                 },
-                clearClick: function (e) {
-                    self.events._listenClick(e, function () {
+                clearClick: function(e) {
+                    self.events._listenClick(e, function() {
                         if (!self.inactive) {
                             self.clear();
                             self.clearClicked = true;
                         }
                     });
                 },
-                starMouseMove: function (e) {
+                starMouseMove: function(e) {
                     var pos, out;
                     if (self.events._noMouseAction(e)) {
                         return;
@@ -1531,7 +1554,7 @@ $(document).ready(function() {
                     self._toggleHover(out);
                     self.$element.trigger('rating.hover', [out.val, out.caption, 'stars']);
                 },
-                starMouseLeave: function (e) {
+                starMouseLeave: function(e) {
                     var out;
                     if (self.events._noMouseAction(e) || self.starClicked) {
                         return;
@@ -1540,7 +1563,7 @@ $(document).ready(function() {
                     self._toggleHover(out);
                     self.$element.trigger('rating.hoverleave', ['stars']);
                 },
-                clearMouseMove: function (e) {
+                clearMouseMove: function(e) {
                     var caption, val, width, out;
                     if (self.events._noMouseAction(e) || !self.hoverOnClear) {
                         return;
@@ -1549,11 +1572,15 @@ $(document).ready(function() {
                     caption = '<span class="' + self.clearCaptionClass + '">' + self.clearCaption + '</span>';
                     val = self.clearValue;
                     width = self.getWidthFromValue(val) || 0;
-                    out = {caption: caption, width: width, val: val};
+                    out = {
+                        caption: caption,
+                        width: width,
+                        val: val
+                    };
                     self._toggleHover(out);
                     self.$element.trigger('rating.hover', [val, caption, 'clear']);
                 },
-                clearMouseLeave: function (e) {
+                clearMouseLeave: function(e) {
                     var out;
                     if (self.events._noMouseAction(e) || self.clearClicked || !self.hoverOnClear) {
                         return;
@@ -1562,7 +1589,7 @@ $(document).ready(function() {
                     self._toggleHover(out);
                     self.$element.trigger('rating.hoverleave', ['clear']);
                 },
-                resetForm: function (e) {
+                resetForm: function(e) {
                     if (e && e.isDefaultPrevented()) {
                         return;
                     }
@@ -1572,9 +1599,13 @@ $(document).ready(function() {
                 }
             };
         },
-        _listen: function () {
-            var self = this, $el = self.$element, $form = $el.closest('form'), $rating = self.$rating,
-                $clear = self.$clear, events = self.events;
+        _listen: function() {
+            var self = this,
+                $el = self.$element,
+                $form = $el.closest('form'),
+                $rating = self.$rating,
+                $clear = self.$clear,
+                events = self.events;
             $h.handler($rating, 'touchstart touchmove touchend', $.proxy(events.initTouch, self));
             $h.handler($rating, 'click touchstart', $.proxy(events.starClick, self));
             $h.handler($rating, 'mousemove', $.proxy(events.starMouseMove, self));
@@ -1589,15 +1620,19 @@ $(document).ready(function() {
             }
             return $el;
         },
-        _getStars: function (type) {
-            var self = this, stars = '<span class="' + type + '-stars">', i;
+        _getStars: function(type) {
+            var self = this,
+                stars = '<span class="' + type + '-stars">',
+                i;
             for (i = 1; i <= self.stars; i++) {
                 stars += '<span class="star">' + self[type + 'Star'] + '</span>';
             }
             return stars + '</span>';
         },
-        _setStars: function (pos) {
-            var self = this, out = arguments.length ? self.calculate(pos) : self.calculate(), $el = self.$element,
+        _setStars: function(pos) {
+            var self = this,
+                out = arguments.length ? self.calculate(pos) : self.calculate(),
+                $el = self.$element,
                 v = self._parseValue(out.val);
             $el.val(v);
             self.$filledStars.css('width', out.width);
@@ -1605,28 +1640,41 @@ $(document).ready(function() {
             self.cache = out;
             return $el;
         },
-        showStars: function (val) {
-            var self = this, v = self._parseValue(val);
+        showStars: function(val) {
+            var self = this,
+                v = self._parseValue(val);
             self.$element.val(v);
             return self._setStars();
         },
-        calculate: function (pos) {
-            var self = this, defaultVal = $h.isEmpty(self.$element.val()) ? 0 : self.$element.val(),
+        calculate: function(pos) {
+            var self = this,
+                defaultVal = $h.isEmpty(self.$element.val()) ? 0 : self.$element.val(),
                 val = arguments.length ? self.getValueFromPosition(pos) : defaultVal,
-                caption = self.fetchCaption(val), width = self.getWidthFromValue(val);
+                caption = self.fetchCaption(val),
+                width = self.getWidthFromValue(val);
             width += '%';
-            return {caption: caption, width: width, val: val};
+            return {
+                caption: caption,
+                width: width,
+                val: val
+            };
         },
-        getValueFromPosition: function (pos) {
-            var self = this, precision = $h.getDecimalPlaces(self.step), val, factor, maxWidth = self.$rating.width();
+        getValueFromPosition: function(pos) {
+            var self = this,
+                precision = $h.getDecimalPlaces(self.step),
+                val, factor, maxWidth = self.$rating.width();
             factor = (self.diff * pos) / (maxWidth * self.step);
             factor = self.rtl ? Math.floor(factor) : Math.ceil(factor);
             val = $h.applyPrecision(parseFloat(self.min + factor * self.step), precision);
             val = Math.max(Math.min(val, self.max), self.min);
             return self.rtl ? (self.max - val) : val;
         },
-        getWidthFromValue: function (val) {
-            var self = this, min = self.min, max = self.max, factor, $r = self.$emptyStars, w;
+        getWidthFromValue: function(val) {
+            var self = this,
+                min = self.min,
+                max = self.max,
+                factor, $r = self.$emptyStars,
+                w;
             if (!val || val <= min || min === max) {
                 return 0;
             }
@@ -1637,9 +1685,12 @@ $(document).ready(function() {
             }
             return (val - min) * factor * 100 / (max - min);
         },
-        fetchCaption: function (rating) {
-            var self = this, val = parseFloat(rating) || self.clearValue, css, cap, capVal, cssVal, caption,
-                vCap = self.starCaptions, vCss = self.starCaptionClasses;
+        fetchCaption: function(rating) {
+            var self = this,
+                val = parseFloat(rating) || self.clearValue,
+                css, cap, capVal, cssVal, caption,
+                vCap = self.starCaptions,
+                vCss = self.starCaptionClasses;
             if (val && val !== self.clearValue) {
                 val = $h.applyPrecision(val, $h.getDecimalPlaces(self.step));
             }
@@ -1650,35 +1701,39 @@ $(document).ready(function() {
             caption = (val === self.clearValue) ? self.clearCaption : cap;
             return '<span class="' + css + '">' + caption + '</span>';
         },
-        destroy: function () {
-            var self = this, $el = self.$element;
+        destroy: function() {
+            var self = this,
+                $el = self.$element;
             if (!$h.isEmpty(self.$container)) {
                 self.$container.before($el).remove();
             }
             $.removeData($el.get(0));
             return $el.off('rating').removeClass('rating rating-input');
         },
-        create: function (options) {
-            var self = this, opts = options || self.options || {};
+        create: function(options) {
+            var self = this,
+                opts = options || self.options || {};
             return self.destroy().rating(opts);
         },
-        clear: function () {
-            var self = this, title = '<span class="' + self.clearCaptionClass + '">' + self.clearCaption + '</span>';
+        clear: function() {
+            var self = this,
+                title = '<span class="' + self.clearCaptionClass + '">' + self.clearCaption + '</span>';
             if (!self.inactive) {
                 self._setCaption(title);
             }
             return self.showStars(self.clearValue).trigger('change').trigger('rating.clear');
         },
-        reset: function () {
+        reset: function() {
             var self = this;
             return self.showStars(self.initialValue).trigger('rating.reset');
         },
-        update: function (val) {
+        update: function(val) {
             var self = this;
             return arguments.length ? self.showStars(val) : self.$element;
         },
-        refresh: function (options) {
-            var self = this, $el = self.$element;
+        refresh: function(options) {
+            var self = this,
+                $el = self.$element;
             if (!options) {
                 return $el;
             }
@@ -1686,13 +1741,19 @@ $(document).ready(function() {
         }
     };
 
-    $.fn.rating = function (option) {
-        var args = Array.apply(null, arguments), retvals = [];
+    $.fn.rating = function(option) {
+        var args = Array.apply(null, arguments),
+            retvals = [];
         args.shift();
-        this.each(function () {
-            var self = $(this), data = self.data('rating'), options = typeof option === 'object' && option,
-                theme = options.theme || self.data('theme'), lang = options.language || self.data('language') || 'en',
-                thm = {}, loc = {}, opts;
+        this.each(function() {
+            var self = $(this),
+                data = self.data('rating'),
+                options = typeof option === 'object' && option,
+                theme = options.theme || self.data('theme'),
+                lang = options.language || self.data('language') || 'en',
+                thm = {},
+                loc = {},
+                opts;
             if (!data) {
                 if (theme) {
                     thm = $.fn.ratingThemes[theme] || {};
@@ -1781,7 +1842,7 @@ $(document).ready(function() {
     /**
      * Convert automatically inputs with class 'rating' into Krajee's star rating control.
      */
-    $(document).ready(function () {
+    $(document).ready(function() {
         var $input = $('input.rating');
         if ($input.length) {
             $input.removeClass('rating-loading').addClass('rating-loading').rating();
@@ -1789,11 +1850,13 @@ $(document).ready(function() {
     });
 }));
 
-// api city county
+var isoCountries = {'Afghanistan': 'AF','Aland Islands': 'AX','Albania': 'AL','Algeria': 'DZ','American Samoa': 'AS','Andorra': 'AD','Angola': 'AO','Anguilla': 'AI','Antartica': 'AQ','Antigua and Barbuda': 'AG','Argentina': 'AR','Armenia': 'AM','Aruba': 'AW','Australia': 'AU','Austria': 'AT','Azerbaijan': 'AZ','Bahamas': 'BS','Bahrain': 'BH','Bangladesh': 'BD','Barbados': 'BB','Belarus': 'BY','Belgium': 'BE','Belize': 'BZ','Benin': 'BJ','Bermuda': 'BM','Bhutan': 'BT','Bolivia': 'BO','Bosnia And Herzegovina': 'BA','Botswana': 'BW','Bouvet Island': 'BV','Brazil': 'BR','British Indian Ocean Territory': 'IO','Brunei Darussalam': 'BN','Bulgaria': 'BG','Burkina Faso': 'BF','Burundi': 'BI','Cambodia': 'KH','Cameroon': 'CM','Canada': 'CA','Cape Verde': 'CV','Cayman Islands': 'KY','Central African Republic': 'CF','Chad': 'TD','Chile': 'CL','China': 'CN','Christmas Island': 'CX','Cocos (Keeling) Islands': 'CC','Colombia': 'CO','Comoros': 'KM','Congo': 'CG','Congo, Democratic Republic': 'CD','Cook Islands': 'CK','Costa Rica': 'CR','Cote D\'Ivoire': 'CI','Croatia': 'HR','Cuba': 'CU','Cyprus': 'CY','Czech Republic': 'CZ','Denmark': 'DK','Djibouti': 'DJ','Dominica': 'DM','Dominican Republic': 'DO','Ecuador': 'EC','Egypt': 'EG','El Salvador': 'SV','Equatorial Guinea': 'GQ','Eritrea': 'ER','Estonia': 'EE','Ethiopia': 'ET','Falkland Islands': 'FK','Faroe Islands': 'FO','Fiji': 'FJ','Finland': 'FI','France': 'FR','French Guiana': 'GF','French Polynesia': 'PF','French Southern Territories': 'TF','Gabon': 'GA','Gambia': 'GM','Georgia': 'GE','Germany': 'DE','Ghana': 'GH','Gibraltar': 'GI','Greece': 'GR','Greenland': 'GL','Grenada': 'GD','Guadeloupe': 'GP','Guam': 'GU','Guatemala': 'GT','Guernsey': 'GG','Guinea': 'GN','Guinea-Bissau': 'GW','Guyana': 'GY','Haiti': 'HT','Heard Island and McDonald Islands': 'HM','Holy See (Vatican City)': 'VA','Honduras': 'HN','Hong Kong': 'HK','Hungary': 'HU','Iceland': 'IS','India': 'IN','Indonesia': 'ID','Iran': 'IR','Iraq': 'IQ','Ireland': 'IE','Man, Isle of': 'IM','Israel': 'IL','Italy': 'IT','Jamaica': 'JM','Japan': 'JP','Jersey': 'JE','Jordan': 'JO','Kazakhstan': 'KZ','Kenya': 'KE','Kiribati': 'KI','Korea, North': 'KR','Korea, South': 'KR','Kuwait': 'KW','Kyrgyzstan': 'KG','Lao People\'s Democratic Republic': 'LA','Latvia': 'LV','Lebanon': 'LB','Lesotho': 'LS','Liberia': 'LR','Libya': 'LY','Liechtenstein': 'LI','Lithuania': 'LT','Luxembourg': 'LU','Macao': 'MO','Macedonia': 'MK','Madagascar': 'MG','Malawi': 'MW','Malaysia': 'MY','Maldives': 'MV','Mali': 'ML','Malta': 'MT','Marshall Islands': 'MH','Martinique': 'MQ','Mauritania': 'MR','Mauritius': 'MU','Mayotte': 'YT','Mexico': 'MX','Micronesia, Federated States Of': 'FM','Moldova': 'MD','Monaco': 'MC','Mongolia': 'MN','Montenegro': 'ME','Montserrat': 'MS','Morocco': 'MA','Mozambique': 'MZ','Myanmar': 'MM','Namibia': 'NA','Nauru': 'NR','Nepal': 'NP','Netherlands': 'NL','Netherlands Antilles': 'AN','New Caledonia': 'NC','New Zealand': 'NZ','Nicaragua': 'NI','Niger': 'NE','Nigeria': 'NG','Niue': 'NU','Norfolk Island': 'NF','Northern Mariana Islands': 'MP','Norway': 'NO','Oman': 'OM','Pakistan': 'PK','Palau': 'PW','Palestinian Territory, Occupied': 'PS','Panama': 'PA','Papua New Guinea': 'PG','Paraguay': 'PY','Peru': 'PE','Philippines': 'PH','Pitcairn': 'PN','Poland': 'PL','Portugal': 'PT','Puerto Rico': 'PR','Qatar': 'QA','Reunion': 'RE','Romania': 'RO','Russia': 'RU','Rwanda': 'RW','Saint Barthelemy': 'BL','Saint Helena': 'SH','Saint Kitts And Nevis': 'KN','Saint Lucia': 'LC','Saint Martin': 'MF','Saint Pierre And Miquelon': 'PM','Saint Vincent And Grenadines': 'VC','Samoa': 'WS','San Marino': 'SM','Sao Tome And Principe': 'ST','Saudi Arabia': 'SA','Senegal': 'SN','Serbia': 'RS','Seychelles': 'SC','Sierra Leone': 'SL','Singapore': 'SG','Slovakia': 'SK','Slovenia': 'SI','Solomon Islands': 'SB','Somalia': 'SO','South Africa': 'ZA','South Georgia And Sandwich Isl.': 'GS','Spain': 'ES','Sri Lanka': 'LK','Sudan': 'SD','Suriname': 'SR','Svalbard And Jan Mayen': 'SJ','Swaziland': 'SZ','Sweden': 'SE','Switzerland': 'CH','Syria': 'SY','Taiwan': 'TW','Tajikistan': 'TJ','Tanzania': 'TZ','Thailand': 'TH','Timor-Leste': 'TL','Togo': 'TG','Tokelau': 'TK','Tonga': 'TO','Trinidad': 'TT','Tunisia': 'TN','Turkey': 'TR','Turkmenistan': 'TM','Turks And Caicos Islands': 'TC','Tuvalu': 'TV','Uganda': 'UG','Ukraine': 'UA','United Arab Emirates': 'AE','United Kingdom': 'GB','United States': 'US','United States Outlying Islands': 'UM','Uruguay': 'UY','Uzbekistan': 'UZ','Vanuatu': 'VU','Venezuela': 'VE','Vietnam': 'VN','Virgin Islands, British': 'VG','Virgin Islands, U.S.': 'VI','Wallis And Futuna': 'WF','Western Sahara': 'EH','Yemen': 'YE','Zambia': 'ZM','Zimbabwe': 'ZW'};
 
-// Countries
-var country_arr = new Array("Afghanistan", "Albania", "Algeria", "American Samoa", "Angola", "Anguilla", "Antartica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Ashmore and Cartier Island", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Clipperton Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo, Democratic Republic of the", "Congo, Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czeck Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Europa Island", "Falkland Islands (Islas Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern and Antarctic Lands", "Gabon", "Gambia, The", "Gaza Strip", "Georgia", "Germany", "Ghana", "Gibraltar", "Glorioso Islands", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Holy See (Vatican City)", "Honduras", "Hong Kong", "Howland Island", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Ireland, Northern", "Israel", "Italy", "Jamaica", "Jan Mayen", "Japan", "Jarvis Island", "Jersey", "Johnston Atoll", "Jordan", "Juan de Nova Island", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Man, Isle of", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Midway Islands", "Moldova", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcaim Islands", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romainia", "Russia", "Rwanda", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Scotland", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and South Sandwich Islands", "Spain", "Spratly Islands", "Sri Lanka", "Sudan", "Suriname", "Svalbard", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Tobago", "Toga", "Tokelau", "Tonga", "Trinidad", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "Uruguay", "USA", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands", "Wales", "Wallis and Futuna", "West Bank", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
+var country_abbrv = new Array("AF","AL","DZ","AS","AO","AI","AQ","AG","AR","AM","AW","Ashmore and Cartier Island","AU","AT","AZ","BS","BH","BD","BB","BY","BE","BZ","BJ","BM","BT","BO","Bosnia and Herzegovina","BW","BR","British Virgin Islands","Brunei","BG","BF","Burma","BI","KH","CM","CA","CV","KY","CF","TD","CL","CN","CX","Clipperton Island","CC","CO","KM","CD","Congo, Republic of the","CK","CR","Cote d'Ivoire","HR","CU","CY","Czeck Republic","DK","DJ","DM","DO","EC","EG","SV","GQ","ER","EE","ET","Europa Island","Falkland Islands (Islas Malvinas)","FO","FJ","FI","FR","GF","PF","French Southern and Antarctic Lands","GA","Gambia, The","Gaza Strip","GE","DE","GH","GI","Glorioso Islands","GR","GL","GD","GP","GU","GT","GG","GN","GW","GY","HT","HM","VA","HN","HK","Howland Island","HU","IS","IN","ID","IR","IQ","IE","Ireland, Northern","IL","IT","JM","Jan Mayen","JP","Jarvis Island","JE","Johnston Atoll","JO","Juan de Nova Island","KZ","KE","KI","KR","KR","KW","KG","Laos","LV","LB","LS","LR","LY","LI","LT","LU","Macau","Macedonia, Former Yugoslav Republic of","MG","MW","MY","MV","ML","MT","IM","MH","MQ","MR","MU","YT","MX","Micronesia, Federated States of","Midway Islands","MD","MC","MN","MS","MA","MZ","NA","NR","NP","NL","AN","NC","NZ","NI","NE","NG","NU","NF","MP","NO","OM","PK","PW","PA","PG","PY","PE","PH","Pitcaim Islands","PL","PT","PR","QA","RE","Romainia","RU","RW","SH","Saint Kitts and Nevis","LC","Saint Pierre and Miquelon","Saint Vincent and the Grenadines","WS","SM","Sao Tome and Principe","SA","Scotland","SN","SC","SL","SG","SK","SI","SB","SO","ZA","South Georgia and South Sandwich Islands","ES","Spratly Islands","LK","SD","SR","Svalbard","SZ","SE","CH","SY","TW","TJ","TZ","TH","Tobago","TG","TK","TO","TT","TN","TR","TM","TV","UG","UA","AE","GB","UY","US","UZ","VU","VE","VN","Virgin Islands","Wales","Wallis and Futuna","West Bank","EH","YE","Yugoslavia","ZM","ZW")
 
+    // api city county
+    // Countries
+var country_arr = new Array("Afghanistan", "Albania", "Algeria", "American Samoa", "Angola", "Anguilla", "Antartica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Ashmore and Cartier Island", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Clipperton Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czeck Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Europa Island", "Falkland Islands (Islas Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "French Guiana", "French Polynesia", "French Southern and Antarctic Lands", "Gabon", "Gambia, The", "Gaza Strip", "Georgia", "Germany", "Ghana", "Gibraltar", "Glorioso Islands", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard Island and McDonald Islands", "Holy See (Vatican City)", "Honduras", "Hong Kong", "Howland Island", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Ireland, Northern", "Israel", "Italy", "Jamaica", "Jan Mayen", "Japan", "Jarvis Island", "Jersey", "Johnston Atoll", "Jordan", "Juan de Nova Island", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Man, Isle of", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Midway Islands", "Moldova", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcaim Islands", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romainia", "Russia", "Rwanda", "Saint Helena", "Saint Kitts and Nevis", "Saint Lucia", "Saint Pierre and Miquelon", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Scotland", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and South Sandwich Islands", "Spain", "Spratly Islands", "Sri Lanka", "Sudan", "Suriname", "Svalbard", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Tobago", "Togo", "Tokelau", "Tonga", "Trinidad", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "Uruguay", "United States", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands", "Wales", "Wallis and Futuna", "West Bank", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe");
 // States
 var s_a = new Array();
 s_a[0] = "";
@@ -2054,20 +2117,39 @@ s_a[252] = "Bulawayo|Harare|ManicalandMashonaland Central|Mashonaland East|Masho
 
 
 function populateStates(countryElementId, stateElementId) {
-
     var selectedCountryIndex = document.getElementById(countryElementId).selectedIndex;
-
     var stateElement = document.getElementById(stateElementId);
-
     stateElement.length = 0; // Fixed by Julian Woods
     stateElement.options[0] = new Option('Select State', '');
     stateElement.selectedIndex = 0;
-
     var state_arr = s_a[selectedCountryIndex].split("|");
-
     for (var i = 0; i < state_arr.length; i++) {
         stateElement.options[stateElement.length] = new Option(state_arr[i], state_arr[i]);
     }
+}
+
+function allStates(stateElementId) {
+    var stateElement = document.getElementById(stateElementId);
+    stateElement.length = 0; // Fixed by Julian Woods
+    stateElement.options[0] = new Option('Select State', '');
+    stateElement.selectedIndex = 0;
+    for (var i = 0; i < s_a.length; i++) {
+        if (s_a[i]) {
+            var split_arr = s_a[i].split("|");
+            for (var j = 0; j < split_arr.length; j++) {
+                stateElement.options[stateElement.length] = new Option(split_arr[j], i);
+            }
+        }
+
+    }
+}
+
+function SelectedStateCountry(countryElementId, countryAbbrElementId, index) {
+    var countryElement = document.getElementById(countryElementId);
+    var countryAbbrElement = document.getElementById(countryAbbrElementId);
+    countryElement.value = country_arr[index - 1]
+    countryAbbrElement.value = country_abbrv[index - 1]
+
 }
 
 function populateCountries(countryElementId, stateElementId) {
@@ -2083,10 +2165,37 @@ function populateCountries(countryElementId, stateElementId) {
     // Assigned all countries. Now assign event listener for the states.
 
     if (stateElementId) {
-        countryElement.onchange = function () {
+        countryElement.onchange = function() {
             populateStates(countryElementId, stateElementId);
         };
     }
 }
 
+// var c = new Array()
+// for (key in isoCountries) {
+//     c.push(key)
+// }
+// // console.log(JSON.stringify(c))
+// var diff = $(country_arr).not(c).get();
+// console.log(diff)
+// console.log(diff.length)
 
+// var get_abbrevation = false
+// for (country of country_arr) {
+//     for (key in isoCountries) {
+//         if (country==key) {
+//             country_abbrv.push(isoCountries[key])
+//             get_abbrevation = true
+//             break;
+//         }
+//     }
+//     if(get_abbrevation){
+//       get_abbrevation = false
+//     }else{
+//       get_abbrevation = false
+//       country_abbrv.push(country)
+//     }
+// }
+// console.log(JSON.stringify(country_abbrv))
+// console.log(country_abbrv.length)
+// console.log(country_arr.length)
