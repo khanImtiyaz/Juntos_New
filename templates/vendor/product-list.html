@@ -24,12 +24,12 @@
             <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}" style="border-radius: 50%;color: white"><i class="fa fa-plus" aria-hidden="true"></i></a>
          </div>
       </div>
-      <div>
+      <div style="margin-top: 20px">
          {% if product_lists %}
-         {% regroup product_lists by subs_category.category as products %}
+         {% regroup product_lists by category as products %}
          {% for product_obj in products %}
-         <h4>{{product_obj.grouper}}</h4>
-         <div class="row">
+         <h4 class="heading_info" id='{{product_obj.grouper}}'>{{product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
+         <div class="row" id='{{product_obj.grouper}}'>
             {% for product in product_obj.list %}
             <div class="col-sm-4">
                <div class="order-list clearfix">
@@ -58,7 +58,6 @@
                   <div class="row">
                      <div class="col-sm-4" style="vertical-align: middle">
                         <label>Quantity: </label>
-                        <!-- <div style="display: inline-block;">{{product.product_quantity}}</div> -->
                      </div>
                      <div class="col-sm-8">
                         <div class="sp-quantity">

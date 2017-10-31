@@ -424,7 +424,7 @@ class ProductList(View):
 	def get(self,request,active=None):
 		user  = request.user
 		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('-created_at')
-		paginator = Paginator(product, 5)
+		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
 			data = paginator.page(page)

@@ -221,8 +221,8 @@
                               <div class="form-group">
                                  <label class="control-label col-sm-2">Services</label>
                                  <div class="col-sm-10">
-                                    <textarea class="form-control" placeholder="Include Services.." name="services">
-                                    {{edit_form.payment_method.services | safe}}</textarea>
+                                    <textarea class="form-control" placeholder="Include Services.." name="services" value="{{edit_form.feature}}">
+                                    {{edit_form.services | safe}}</textarea>
                                  </div>
                               </div>
                            </div>
@@ -292,14 +292,11 @@
    $(document).ready(function() {
        $("#product_quantity_id").blur(function() {
            var val = $("#product_quantity_id").val();
-   
            if (val > 0) {
                $("#id_in_stock").prop("checked", true)
-   
            } else {
                $("#id_in_stock").prop("checked", false)
            }
-   
        });
    });
 </script>
