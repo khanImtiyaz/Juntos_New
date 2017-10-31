@@ -1,4 +1,6 @@
-{% extends 'vendor/account_header.html'%} {% load staticfiles %} {% block content %}
+{% extends 'vendor/account_header.html'%} 
+{% load staticfiles %} 
+{% block content %}
 <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 <div class="col-md-9">
    <div class="profile-content">
@@ -27,8 +29,7 @@
                         <div class="form-group">
                            <label class="control-label col-sm-3">Category</label>
                            <div class="col-sm-9">
-                              <select class="form-control selectpicker" name="category" id="id_catgory">
-                                 <option value="{{edit_form.category.id}}" selected>{{edit_form.category.category_name}}</option>
+                              <select class="form-control selectpicker" name="category" id="id_category">
                                  {% for category in categories %}
                                  <option value="{{category.id}}">{{category.category_name}}</option>
                                  {% endfor %}
@@ -38,13 +39,9 @@
                            </div>
                         </div>
                         <div class="form-group">
-                           <label class="control-label col-sm-3">Sub Category{{edit_form.subs_category}}</label>
+                           <label class="control-label col-sm-3">Sub Category</label>
                            <div class="col-sm-9">
                               <select class="form-control selectpicker" name="subs_category" id="id_subs_category">
-                                 <option value="{{edit_form.subs_category.id}}" selected>{{edit_form.subs_category}}</option>
-                                 {% for subs_category in sub_cate %}
-                                 <option value="{{subs_category.id}}">{{subs_category.sub_category_name}}</option>
-                                 {% endfor %}
                               </select>
                               {% if edit_form.errors.subs_category %}
                               <strong style="color:red">{{ edit_form.errors.subs_category | escape }}</strong> {% endif %}
@@ -60,8 +57,10 @@
                         <div class="form-group">
                            <label class="control-label col-sm-3">Sale Price ($)</label>
                            <div class="col-sm-9">
-                              <input type="text" class="form-control" name="selling_price" id="sell_price_id" value="{{edit_form.selling_price}}" /> {% if edit_form.errors.selling_price %}
-                              <strong style="color:red">{{ edit_form.errors.selling_price | escape }}</strong> {% endif %}
+                              <input type="text" class="form-control" name="selling_price" id="sell_price_id" value="{{edit_form.selling_price}}" /> 
+                              {% if edit_form.errors.selling_price %}
+                              <strong style="color:red">{{ edit_form.errors.selling_price | escape }}</strong> 
+                              {% endif %}
                            </div>
                         </div>
                         {% if edit_form.image.name %}
@@ -178,9 +177,11 @@
                                  <div class="form-group">
                                     <label class="control-label col-sm-8">All</label>
                                     <div class="col-sm-4">
-                                       {% if edit_form.all.case_on_delivery %}
-                                       <input name="all" checked="checked" type="checkbox"> {% else %}
-                                       <input name="all" type="checkbox"> {% endif %}
+                                       {% if "COD,Online,Paypal" in edit_form.payment_mode %}
+                                       <input name="all" checked="checked" type="checkbox" id='all_payment'>
+                                       {% else %}
+                                       <input name="all" type="checkbox" id='all_payment'>
+                                       {% endif %}
                                     </div>
                                  </div>
                               </div>
@@ -188,9 +189,11 @@
                                  <div class="form-group">
                                     <label class="control-label col-sm-8">COD</label>
                                     <div class="col-sm-4">
-                                       {% if edit_form.payment_method.case_on_delivery %}
-                                       <input name="payment_method_case_on_delivery" checked="checked" type="checkbox"> {% else %}
-                                       <input name="payment_method_case_on_delivery" type="checkbox"> {% endif %}
+                                       {% if 'COD' in edit_form.payment_mode %}
+                                       <input name="payment_method_case_on_delivery" checked="checked" type="checkbox" id='payment_method_case_on_delivery'> 
+                                       {% else %}
+                                       <input name="payment_method_case_on_delivery" type="checkbox" id='payment_method_case_on_delivery'>
+                                       {% endif %}
                                     </div>
                                  </div>
                               </div>
@@ -198,9 +201,10 @@
                                  <div class="form-group">
                                     <label class="control-label col-sm-8">Online payment</label>
                                     <div class="col-sm-4">
-                                       {% if edit_form.payment_method.online_payment %}
-                                       <input name="payment_method_online_payment" checked="checked" type="checkbox"> {% else %}
-                                       <input name="payment_method_online_payment" type="checkbox"> {% endif %}
+                                       {% if 'Online' in edit_form.payment_mode %}
+                                       <input name="payment_method_online_payment" checked="checked" type="checkbox" id='payment_method_online_payment'> 
+                                       {% else %}
+                                       <input name="payment_method_online_payment" type="checkbox" id='payment_method_online_payment'> {% endif %}
                                     </div>
                                  </div>
                               </div>
@@ -208,13 +212,18 @@
                                  <div class="form-group">
                                     <label class="control-label col-sm-8">Payment via Paypal</label>
                                     <div class="col-sm-4">
-                                       {% if edit_form.payment_method.paypal %}
-                                       <input name="payment_method_paypal" checked="checked" type="checkbox"> {% else %}
-                                       <input name="payment_method_paypal" type="checkbox"> {% endif %}
+                                       {% if 'Paypal' in edit_form.payment_mode %}
+                                       <input name="payment_method_paypal" checked="checked" type="checkbox" id='payment_method_paypal'> 
+                                       {% else %}
+                                       <input name="payment_method_paypal" type="checkbox" id='payment_method_paypal'>
+                                       {% endif %}
                                     </div>
                                  </div>
                               </div>
                            </div>
+                        </div>
+                        <div class="form-group" style="display:none;">
+                           <input type="text" class="form-control" name="payment_mode" id='payment_mode'>
                         </div>
                         <div class="form-group">
                            <div class="col-sm-12">
@@ -288,34 +297,34 @@
       </div>
    </div>
 </div>
-<script>
-   $(document).ready(function() {
-       $("#product_quantity_id").blur(function() {
-           var val = $("#product_quantity_id").val();
-           if (val > 0) {
-               $("#id_in_stock").prop("checked", true)
-           } else {
-               $("#id_in_stock").prop("checked", false)
-           }
-       });
-   });
+{% if edit_form.category.id %}
+<script type="text/javascript">
+   $("#id_category").val({{edit_form.category.id}})
 </script>
-{% if edit_form.errors %}
-<script>
-   setTimeout(function() {
-       $("strong").fadeOut(3000);
-   }, 2000);
+{% endif %}
+{% if edit_form.subs_category.id %}
+<script type="text/javascript">
+   sub_category_value = '{{edit_form.subs_category.id}}'
 </script>
 {% endif %}
 <script>
    $(document).ready(function() {
-       $("#id_catgory").change(function() {
+      $("#product_quantity_id").blur(function() {
+           var val = $("#product_quantity_id").val();
+           if (val > 0) {
+               $("#id_in_stock").prop("checked", true)
+   
+           } else {
+               $("#id_in_stock").prop("checked", false)
+           }
+       });
+      categoryChange = function(value) {
            $.ajax({
                url: "{% url 'Vendor:subcategories'%}",
                type: 'POST',
                dataType: 'json',
                data: {
-                   category_id: this.value,
+                   category_id: value,
                    'csrfmiddlewaretoken': '{{ csrf_token }}',
                },
                success: function(e) {
@@ -324,32 +333,74 @@
                        str += "<option value =" + value['id'] + ">" + value['sub_category_name'] + "</option>"
                    });
                    $("#id_subs_category").empty().append(str);
+                   if(sub_category_value){
+                     $("#id_subs_category").val(sub_category_value)
+                     sub_category_value = undefined
+                   }
                }
            });
+       }
+       $("#id_category").on('change',function(){
+         categoryChange($("#id_category").val())
        });
-       
-       // if ($("#id_subs_category").val()) {
-       //     subcategory_id = $("#id_subs_category").val();
-       //     $.ajax({
-       //         url: "{% url 'Vendor:subcategory-tag'%}",
-       //         type: 'POST',
-       //         dataType: 'json',
-       //         data: {
-       //             'subcategory_id': subcategory_id,
-       //             'csrfmiddlewaretoken': '{{ csrf_token }}',
-       //         },
-       //         success: function(e) {
-       //             if (e.data == 'CP') {
-       //                 $("#id_feature").css({
-       //                     'display': 'none'
-       //                 });
-       //             } else {
-       //                 $("#id_feature").removeAttr('style');
-       //                 $("#add_color").remove();
-       //             }
-       //         }
-       //     });
-       // }
+      categoryChange($("#id_category").val())
+      $("#product_quantity_id").blur(function() {
+           var val = $("#product_quantity_id").val();
+           if (val > 0) {
+               $("#id_in_stock").prop("checked", true)
+   
+           } else {
+               $("#id_in_stock").prop("checked", false)
+           }
+       });
+      $("#id_in_stock").on('change',function(){
+          if($(this).is(":checked")) {
+              $("#product_quantity_id").show()
+          }else{
+              $("#product_quantity_id").hide()
+          }
+       })
+      $("#all_payment").on('change',function(){
+          if($(this).is(":checked")) {
+               $("#payment_mode").val(['COD','Online','Paypal'])
+               $("#payment_method_case_on_delivery").prop("checked", true)
+               $("#payment_method_online_payment").prop("checked", true)
+               $("#payment_method_paypal").prop("checked", true)
+          }else{
+               $("#payment_mode").val(undefined)
+               $("#payment_method_case_on_delivery").prop("checked", false)
+               $("#payment_method_online_payment").prop("checked", false)
+               $("#payment_method_paypal").prop("checked", false)
+          }
+       })
+   
+      function all_select(){
+         if($("#payment_method_case_on_delivery").is(":checked") && $("#payment_method_online_payment").is(":checked") && $("#payment_method_paypal").is(":checked")){
+               $("#payment_mode").val(['COD','Online','Paypal'])
+               $("#all_payment").prop("checked", true)
+         }else{
+            $("#payment_mode").val(undefined)
+            var arr = []
+            if($("#payment_method_case_on_delivery").is(":checked"))
+               arr.push('COD')
+            if($("#payment_method_online_payment").is(":checked"))
+               arr.push('Online')
+            if($("#payment_method_paypal").is(":checked"))
+               arr.push('Paypal')
+            $("#payment_mode").val(arr)
+            $("#all_payment").prop("checked", false)
+         }
+       }
+       $("#payment_method_case_on_delivery").on('change',function(){
+            all_select();
+       })
+       $("#payment_method_online_payment").on('change',function(){
+            all_select();
+       })
+       $("#payment_method_paypal").on('change',function(){
+            all_select();
+       })
+      all_select();
        $("#image_upload").on('change', function() {
            var countFiles = $(this)[0].files.length;
            var imgPath = $(this)[0].value;
@@ -358,7 +409,6 @@
    
            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                if (typeof(FileReader) != "undefined") {
-                   //loop for each file selected for uploaded.
                    for (var i = 0; i < countFiles; i++) {
                        var reader = new FileReader();
                        reader.onload = function(e) {

@@ -251,13 +251,6 @@
       </div>
    </div>
 </div>
-{% if add_form.errors %}
-<script>
-   setTimeout(function() {
-       $("strong").fadeOut(3000);
-   }, 2000);
-</script>
-{% endif %}
 {% if add_form.category.value %}
    <script type="text/javascript">
       $("#id_category").val({{add_form.category.value}})
@@ -378,46 +371,11 @@
          sub_cate_selected = undefined
          category_change();
       })
-       
-   
-       
-   
-       // $("#id_subs_category").change(function() {
-       //     subcategory_id = parseInt($("#id_subs_category").val());
-       //     $.ajax({
-       //         url: "{% url 'Vendor:subcategory-tag'%}",
-       //         type: 'POST',
-       //         dataType: 'json',
-       //         data: {
-       //             'subcategory_id': subcategory_id,
-       //             'csrfmiddlewaretoken': '{{ csrf_token }}',
-       //         },
-       //         success: function(e) {
-       //             if (e.data == 'CP') {
-       //                 $("#id_feature").css({
-       //                     'display': 'none'
-       //                 });
-       //                 $("#sub_tag").text(e.data);
-       //                 $(".add_field_button").removeAttr('style');
-       //             } else {
-       //                 $(".input_fields_wrap").empty();
-       //                 $(".add_field_button").css({
-       //                     'display': 'none'
-       //                 });
-       //                 $("#id_feature").removeAttr('style');
-       //                 $("#sub_tag").text(e.data);
-       //             }
-       //         }
-       //     });
-       // });
        removePhoto =function(index){
             alert(index)
         }
-         
-       //  Image preview
        multiple_Image_Array = []
        $("#image").on('change', function() {
-           //Get count of selected files
            var countFiles = $(this)[0].files.length;
            var imgPath = $(this)[0].value;
            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
@@ -451,7 +409,6 @@
            }
        });
        
-       //  add extra field for product colorfield
        var max_fields = 5; //maximum input boxes allowed
        var wrapper = $(".input_fields_wrap"); //Fields wrapper
        var add_button = $(".add_field_button"); //Add button ID
@@ -459,7 +416,6 @@
        $(add_button).click(function(e) { //on add input button click
            e.preventDefault();
            if (x < max_fields) {
-               //max input box allowed
                x++; //text box increment
                $(wrapper).append('<div><hr>\
                               <div class="form-group"> \
