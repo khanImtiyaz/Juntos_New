@@ -25,6 +25,7 @@ from .twillio import send_sms
 from .models import *
 from .forms import *
 from .decorator import *
+from Static_Model.models import *
 
 # Create your views here.
 
@@ -248,7 +249,6 @@ class ProceedCart(View):
 
 class WishList(View):
 	"""docstring for WishList"""
-	
 	def get(self,request):
 		return render(request, 'my_wishlist.html')
 
@@ -293,15 +293,8 @@ class RemoveWishList(View):
 	def get(self,request):
 		return redirect("Juntos:wish-list")
 		
-
-# def faq_list(request):
-#     from static_pages.models import JuntosFAQs
-#     faqs = JuntosFAQs.objects.all()
-#     return render(request, 'faq.html',{"lists":faqs})
-
 class FaqList(View):
 	"""docstring for FaqList"""
-	
 	def get(self,request):
 		faq = JuntosFAQs.objects.all()
 		return render(request, 'faq.html',{"lists":faq})
@@ -311,7 +304,6 @@ class FaqList(View):
 				
 class ConditionsView(View):
 	"""docstring for ConditionsView"""
-	
 	def get(self,request):
 		return render(request, 'conditions.html')
 
@@ -583,46 +575,23 @@ class SubscribeNewsLetter(View):
 	def get(self,request):
 		return HttpResponse(json.dumps({"message":"You have subscribed for news letter", "code":200}), content_type='application/json')
 
-
-# @login_required(login_url="/")
-# def update_profile(request, slug=None):
-#     # print("updteeeeeeeeeeeeeeeeeeeeeeeeeee")
-#     #try:
-#     instance = request.user
-#     # print("afterrrrrrrrrrrrrr",request.method)
-#     if request.method=="POST":
-#         form = ProfileForm(request.POST or None, instance=instance)
-#         print(form)
-#         if form.is_valid():
-#             instance.first_name = request.POST['first_name']
-#             instance.email = request.POST['email']
-#             instance.mobile = request.POST['mobile']
-#             instance.save()
-#             # print("saveeeeeeeeeeee")
-#             context = {"first_name": instance.first_name,"email": instance.email, "mobile": instance.mobile, "slug":slug, }
-#             return render(request, "profile.html", context)
-#         else:
-#             instance.first_name = request.POST['first_name']
-#             instance.email = request.POST['email']
-#             instance.mobile = request.POST['mobile']
-#             context = {"first_name": instance.first_name,"email": instance.email, "mobile": instance.mobile, "slug":slug, "updte":form }
-#             return render(request, 'profile_update.html',context)
-#     else:
-#         context = {"first_name": instance.first_name,"email": instance.email, "mobile": instance.mobile, "slug":slug, }
-#         return render(request, "profile_update.html", context)
-		
-
 class UpdateProfile(View):
 	"""docstring for UpdateProfile"""
-	
 	def get(self,request):
-		return render(request, "profile_update.html", context)
-
+		return render(request, "profile_update.html")
+	def post(self,request):
+		user = request.user
+		params = request.POST
+		form = ProfileForm(request.POST or None)
+		if form.is_valid():
+			user.first_name = params['first_name']
+			user.mobile = params['mobile']
+			user.save()
+		return render(request, 'profile_update.html')
 
 
 @login_required(login_url="/")
 def view_order(request):
-    # print(request.user.id)
     orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, order_cancel_request=False)
     if orders:
         total_price=[]
@@ -645,11 +614,9 @@ def view_order(request):
 class ViewOrder(View):
 	"""docstring for ViewOrder"""
 	def get(self,request):
-		print("GET")
 		orders = OrderItems.objects.filter(order__customer=request.user,order_cancel_request=False)
 		return render(request, 'orders.html', {'orders':orders})
 	def post(self,request):
-		print("POST")
 		return render(request, 'orders.html')
 
 class CheckOTP(View):
@@ -1160,10 +1127,10 @@ class AddWhishlist(View):
 				try:
 					Cart.objects.get(product=product).delete()
 				except Exception as e:
-					return redirect("customer:wish_list")
+					return redirect("Juntos:wish-list")
 			else:
 				messages.error(request, "Product does not exists !")
-				return redirect("customer:views_cart")
+				return redirect("Juntos:views-cart")
 		else:
 			messages.info(request, "Please login before access wishlist !")
 			return redirect("Juntos:views-cart")

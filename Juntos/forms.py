@@ -80,5 +80,7 @@ class ShippingForm(forms.ModelForm):
         model = ShippingAddress
         fields = "__all__"
 
-
+class ProfileForm(forms.Form):
+    first_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",error_messages = {"invalid":"Please Enter Valid Name.","required":"Please Enter Name."})
+    mobile=forms.RegexField(regex=r'^\+?1?\d{9,18}$',error_messages = {"invalid":"Please Enter Valid Mobile Number.","required":"Please Enter Mobile Number."})
     
