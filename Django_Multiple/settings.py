@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 'social.apps.django_app.default',
     'templated_email',
-    # 'social_django',
+    'social_django',
     'cloudinary',
     'nested_admin',
     'nested_inline',
@@ -63,6 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'Django_Multiple.urls'
@@ -78,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
                 'Juntos.context_processors.categoriesData',
                 'Juntos.context_processors.about',
                 'Juntos.context_processors.products', 
@@ -121,37 +124,37 @@ DATABASES = {
 }
 
 AUTH_USER_MODEL = 'Juntos.MyUser'
-# SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
-# SOCIAL_AUTH_PIPELINE = (
-#     'social.pipeline.social_auth.social_details',
-#     'social.pipeline.social_auth.social_uid',
-#     'social.pipeline.social_auth.auth_allowed',
-#     'social.pipeline.social_auth.social_user',
-#     'social.pipeline.user.get_username',
-#     'social.pipeline.social_auth.associate_by_email',
-#     'social.pipeline.user.create_user',
-#     'social.pipeline.social_auth.associate_user',
-#     'social.pipeline.social_auth.load_extra_data',
-#     'social.pipeline.user.user_details',
-#     'Peru.customer.customer_social.customer_social'
-# )
-# SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
-# SOCIAL_AUTH_URL_NAMESPACE     = 'social'
-# SOCIAL_AUTH_FACEBOOK_KEY     = '1388477681224546'  # App ID
-# SOCIAL_AUTH_FACEBOOK_SECRET = '8ebfd05c376d3108fbae7163c366daf1'  # App Secret
-# SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook')
-# SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True
-# SOCIAL_AUTH_FACEBOOK_SCOPE         = ['email']
-# SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id,email,first_name,last_name',}
-# LOGIN_URL = 'login'
-# LOGOUT_URL = 'logout'
-# LOGIN_REDIRECT_URL = '/'
-# AUTHENTICATION_BACKENDS = (
-#     'social.backends.facebook.FacebookOAuth2',
-#     'social.backends.email.EmailAuth',
-#     # 'django.contrib.auth.backends.ModelBackend',
-# )
-
+SOCIAL_AUTH_USER_MODEL = AUTH_USER_MODEL
+SOCIAL_AUTH_PIPELINE = (
+    'social.pipeline.social_auth.social_details',
+    'social.pipeline.social_auth.social_uid',
+    'social.pipeline.social_auth.auth_allowed',
+    'social.pipeline.social_auth.social_user',
+    'social.pipeline.user.get_username',
+    'social.pipeline.social_auth.associate_by_email',
+    'social.pipeline.user.create_user',
+    'social.pipeline.social_auth.associate_user',
+    'social.pipeline.social_auth.load_extra_data',
+    'social.pipeline.user.user_details',
+    'Juntos.social.social'
+)
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_FACEBOOK_KEY = '1388477681224546'
+SOCIAL_AUTH_FACEBOOK_SECRET = '8ebfd05c376d3108fbae7163c366daf1'
+SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook')
+SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True
+SOCIAL_AUTH_FACEBOOK_SCOPE  = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id,email,first_name,last_name',}
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = '/'
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

@@ -298,49 +298,26 @@ class FaqList(View):
 	def get(self,request):
 		faq = JuntosFAQs.objects.all()
 		return render(request, 'faq.html',{"lists":faq})
-
-# def conditionsView(request):
-#     return render(request, 'conditions.html')
-				
+			
 class ConditionsView(View):
 	"""docstring for ConditionsView"""
 	def get(self,request):
 		return render(request, 'conditions.html')
 
-# def terms_list(request):
-#     from static_pages.models import JuntosTermCondition
-#     JuntosTermConditions = JuntosTermCondition.objects.all()
-#     return render(request, 'terms.html',{"lists":JuntosTermConditions})
-
-
 class TermsList(View):
 	"""docstring for TermsList"""
-	
 	def get(self,request):
 		JuntosTermConditions = JuntosTermCondition.objects.all()
 		return render(request, 'terms.html',{"lists":JuntosTermConditions})
 
-		
-# def carrer_list(request):
-#     from static_pages.models import JuntosCareers
-#     JuntosCareer = JuntosCareers.objects.all()
-#     return render(request, 'carrer.html',{"lists":JuntosCareer})
-
 class CarrerList(View):
 	"""docstring for ClassName"""
-	
 	def get(self,request):
 		JuntosCareer = JuntosCareers.objects.all()
 		return render(request, 'carrer.html',{"lists":JuntosCareer})
 
-# def contact_list(request):
-#     from static_pages.models import JuntosContactUs
-#     JuntosContact = JuntosContactUs.objects.all()
-#     return render(request, 'contact_us.html',{"lists":JuntosContact})
-
 class ContactList(View):
 	"""docstring for ClassName"""
-	
 	def get(self,request):
 		JuntosContact = JuntosContactUs.objects.all()
 		return render(request, 'contact_us.html',{"lists":JuntosContact})
@@ -453,12 +430,6 @@ class LoginView(View):
 				return redirect('Juntos:home')
 		else:
 			return render(request,"index.html", {'forms':form})
-
-
-# @login_required(login_url="/")
-# def logout_view(request):
-#     logout(request)
-#     return redirect("Peru:home")
 
 class LogoutView(View):
 	"""docstring for LogoutView"""
