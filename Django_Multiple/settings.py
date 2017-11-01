@@ -35,15 +35,12 @@ INSTALLED_APPS = [
     'material.theme.yellow',
     'material',
     'material.admin',
-    # 'jet.dashboard',
-    # 'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'social.apps.django_app.default',
     'templated_email',
     'social_django',
     'cloudinary',
@@ -140,8 +137,8 @@ SOCIAL_AUTH_PIPELINE = (
 )
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-SOCIAL_AUTH_FACEBOOK_KEY = '1388477681224546'
-SOCIAL_AUTH_FACEBOOK_SECRET = '8ebfd05c376d3108fbae7163c366daf1'
+SOCIAL_AUTH_FACEBOOK_KEY = '124276874915287' #'1388477681224546' 
+SOCIAL_AUTH_FACEBOOK_SECRET = '1173fd503fb0bfa6ac39964bfd75d10b' #'8ebfd05c376d3108fbae7163c366daf1'
 SOCIAL_AUTH_ENABLED_BACKENDS = ('facebook')
 SOCIAL_AUTH_FORCE_EMAIL_VALIDATION = True
 SOCIAL_AUTH_FACEBOOK_SCOPE  = ['email']
