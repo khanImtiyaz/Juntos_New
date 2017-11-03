@@ -13,11 +13,7 @@ def categoriesData(request):
 def about(request):
     content = JuntosAboutus.objects.first()
     return {"abouts":content}
-
-def products(request):
-    product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
-    return {"all_product_list":product}
-
+    
 def starRating(request):
     return {"star_rating":[1,2,3,4,5]}
 

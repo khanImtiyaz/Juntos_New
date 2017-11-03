@@ -79,7 +79,9 @@ from Static_Model.models import *
 #         return response_data
 
 def home(request):
-    return render(request,'index.html')
+	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
+	offers = Offer.objects.all()
+	return render(request,'index.html',{"all_product_list":product,"offers":offers})
 
 # def product_detail(request, slug=None):
 #     # try:
@@ -397,10 +399,11 @@ class LoginView(View):
 		form = UserLoginForm(params, None)
 		if form.is_valid():
 			email = form.cleaned_data["email"]
-			print(email)
 			password = form.cleaned_data["password"]
-			print(password)
 			user = authenticate(username=email, password=password)
+			if user and user.is_superuser:
+				login(request,user)
+				return redirect('/Juntosadmin')
 			if user and user.mobile_verified and user.confirmation_code=="Confirmed":
 				login(request, user)
 				if request.POST.get('card_data'):

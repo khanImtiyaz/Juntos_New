@@ -25,10 +25,10 @@ def tax(value,quantity):
 	return quantity*(value + ((value*18)/100))
 
 
-# @register.filter
-# def thriceArray(value):
-#     result = [value[i:i+3] for i in xrange(0, len(value), 3)]
-#     return result[1:]
+@register.filter
+def thriceArray(value):
+    result = [value[i:i+3] for i in range(0, len(value), 3)]
+    return result[1:]
 
 
 # @register.filter

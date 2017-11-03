@@ -1,0 +1,55 @@
+{% load staticfiles %}
+{% load natural_time %}
+<div class="hotdeal-sidebar" id="slider2">
+   <div class="row">
+      <div class="col-md-12" data-wow-delay="0.2s">
+         <h2>Special Offers</h2>
+         <div class="carousel slide" data-ride="carousel" id="quote-carousel1">
+            <div class="carousel-inner text-center">
+               {% if offers.count > 0 %}
+               <div class="item active">
+                  {% for special in offers %}
+                  {% if forloop.counter < 4 %}
+                  <div class="row">
+                     <div class="col-sm-4 col-xs-4">
+                        <div class="prod-image">
+                           <img src="{{special.product.image.0}}" alt="" />
+                        </div>
+                     </div>
+                     <div class="col-sm-8 col-xs-8 bor-bot">
+                        <h3>{{special.offer_title}}</h3>
+                        <p class="dan-brown">{{special.offer_details}}</p>
+                        <div class="pr-pro">$ {{special.offer_price |floatformat:2}}</div>
+                        <div class="text-center"><a href="{% url 'Juntos:product-detail' special.product.slug %}" class="btn btn-cart" > BUY NOW</a></div>
+                     </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+               </div>
+               {% endif %}
+               {% for items in offers|thriceArray %}
+               <div class="item">
+                  {% for item in items %}
+                  <div class="row">
+                     <div class="col-sm-4 col-xs-4">
+                        <div class="prod-image">
+                           <img src="{{item.product.image.0}}" alt=""/>
+                        </div>
+                     </div>
+                     <div class="col-sm-8 col-xs-8 bor-bot">
+                        <h3>{{item.offer_title}}</h3>
+                        <p class="dan-brown">{{item.offer_details}}</p>
+                        <div class="pr-pro">${{item.offer_price |floatformat:2}}</div>
+                        <div class="text-center"><a href="{% url 'Juntos:product-detail' item.product.slug %}" class="btn btn-cart" > BUY NOW</a></div>
+                     </div>
+                  </div>
+                  {% endfor %}
+               </div>
+               {% endfor %}
+            </div>
+            <a data-slide="prev" href="#quote-carousel1" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+            <a data-slide="next" href="#quote-carousel1" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+         </div>
+      </div>
+   </div>
+</div>

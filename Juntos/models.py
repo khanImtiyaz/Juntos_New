@@ -307,17 +307,12 @@ class CustomerOrder(models.Model):
     created_at = models.DateTimeField(auto_now=True)
 
 class Offer(models.Model):
-    vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="offer_vendor")
-    sub_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name="offer_sub_category")
-    product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="offer_product")
-    offer_title   = models.CharField(('offer Title'), max_length=50, blank=True)
-    offer_details = models.CharField(('offer Details'), max_length=200, blank=True)
-    offer_start_date_time = models.DateTimeField()
-    offer_end_date_time   = models.DateTimeField()
-    original_price = models.IntegerField()
+    product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="OfferProduct")
+    offer_title   = models.CharField(('Title'), max_length=50, blank=True)
+    offer_details = models.CharField(('Details'), max_length=200, blank=True)
+    offer_start_date_time = models.DateField(("Start Date"))
+    offer_end_date_time   = models.DateField(("End Date"))
     offer_price = models.IntegerField(help_text="Offer price should not more then original price of product.")
-    offer_image = models.ImageField(null=True, blank=True, max_length=5000, help_text="Please keep Offer image different to product image.")
-    offer_quantity = models.IntegerField()
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
 

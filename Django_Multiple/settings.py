@@ -32,7 +32,7 @@ JET_SIDE_MENU_COMPACT = True
 # Application definition
 
 INSTALLED_APPS = [
-    'material.theme.yellow',
+    'material.theme.blue',
     'material',
     'material.admin',
     'django.contrib.admin',
@@ -49,10 +49,11 @@ INSTALLED_APPS = [
     'ckeditor',
     'Juntos',
     'Vendor',
-    'Static_Model'
+    'Static_Model',
+    'Log',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,6 +62,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
+    # 'Django_Multiple.middleware.LoggingMiddleware'
+
 ]
 
 ROOT_URLCONF = 'Django_Multiple.urls'
@@ -80,7 +83,6 @@ TEMPLATES = [
                 'social_django.context_processors.login_redirect',
                 'Juntos.context_processors.categoriesData',
                 'Juntos.context_processors.about',
-                'Juntos.context_processors.products', 
                 'Juntos.context_processors.starRating',
                 'Juntos.context_processors.cart',
                 'Juntos.context_processors.userShippingDetail',

@@ -1280,7 +1280,7 @@ width: 100%;
 
 .carousel-inner.cont-slider.cont-slider .item{display: table-cell;vertical-align: middle;}
 .carousel-inner.cont-slider.cont-slider .item img{height: auto;width: 100%;padding: 0;}
-.hotdeal-sidebar#slider2{height: 520px;}
+.hotdeal-sidebar#slider2{max-height: 520px;}
 
 
 /*=========== 5May 2017 finish=========*/

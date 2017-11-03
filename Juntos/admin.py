@@ -104,3 +104,10 @@ class CategoryModelAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Category, CategoryModelAdmin)
+class OfferAdmin(admin.ModelAdmin):
+	list_display = ["product", "offer_title","offer_details", "offer_start_date_time","offer_end_date_time", "offer_price"]
+
+	class Meta:
+		model = Offer
+
+admin.site.register(Offer,OfferAdmin)
