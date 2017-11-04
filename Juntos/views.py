@@ -81,7 +81,8 @@ from Static_Model.models import *
 def home(request):
 	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
 	offers = Offer.objects.all()
-	return render(request,'index.html',{"all_product_list":product,"offers":offers})
+	hotItems = OrderItems.objects.all().distinct('product')
+	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems})
 
 # def product_detail(request, slug=None):
 #     # try:
