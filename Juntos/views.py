@@ -253,47 +253,64 @@ class ProceedCart(View):
 class WishList(View):
 	"""docstring for WishList"""
 	def get(self,request):
-		return render(request, 'my_wishlist.html')
+		if request.user.is_authenticated():
+			user = request.user
+			wishlist = Wishlist.objects.filter(user=user)
+			return render(request, 'my_wishlist.html',{"lists":wishlist})
+		else:
+			return render(request, 'my_wishlist.html')
 
 # @login_required(login_url="/")
-# def add_whishlist(request , product_id):
-#     if request.user.is_customer:
-#         product_obj = Products_Management.objects.filter(id=product_id)
-#         if product_obj.exists():
-#             product = product_obj.first()
-#             Wishlist.objects.create(user=request.user, product=product)
-#             try:
-#                 Cart.objects.get(product=product).delete()
-#             except Exception as e:
-#                 print (e)
-#             # Cart.objects.get(product=product).delete()
-#             return redirect("customer:wish_list")
-#         else:
-#             messages.error(request, "Product does not exists !")
-#             return redirect("customer:views_cart")
-#     else:
-#         messages.info(request, "Please login before access wishlist !")
-#         return redirect("customer:views_cart")
+def add_whishlist(request , product_id):
+    if request.user.is_customer:
+        product_obj = Products_Management.objects.filter(id=product_id)
+        if product_obj.exists():
+            product = product_obj.first()
+            Wishlist.objects.create(user=request.user, product=product)
+            try:
+                Cart.objects.get(product=product).delete()
+            except Exception as e:
+                print (e)
+            # Cart.objects.get(product=product).delete()
+            return redirect("customer:wish_list")
+        else:
+            messages.error(request, "Product does not exists !")
+            return redirect("customer:views_cart")
+    else:
+        messages.info(request, "Please login before access wishlist !")
+        return redirect("customer:views_cart")
 
 
 class AddWishList(View):
 	"""docstring for AddWishList"""
-	
-	def get(self,request):
-		return redirect("Juntos:views-cart")
+	def get(self,request,pk=None):
+		if request.user.is_customer:
+			try:
+				product = ProductsManagement.objects.get(id=pk)
+				Wishlist.objects.create(user=request.user, product=product_obj)
+				try:
+					Cart.objects.get(product=product_obj).delete()
+					return redirect("Juntos:wish-list")
+				except Exception as e:
+					print (e)
+					return redirect("Juntos:wish-list")
+			except Exception as e:
+				print("Exception as e",e)
+				messages.error(request, "Product does not exists !")
+				return redirect("Juntos:views_cart")
+		else:
+			messages.info(request, "Please login before access wishlist !")
+			return redirect("Juntos:views_cart")
 
 
-# @login_required(login_url="/")
-# def remove_whishlist(request, pk = None):
-#     whishlist_del = Wishlist.objects.filter(product_id = pk)
-#     whishlist_del.delete()
-#     messages.success(request, "Item deleted in your whislist successfully")
-#     return redirect("Juntos:wish-list")
+    
 
 class RemoveWishList(View):
 	"""docstring for RemoveWishList"""
-	
-	def get(self,request):
+	def get(self,request,pk=None):
+		wishlistObj = Wishlist.objects.filter(id=pk)
+		wishlistObj.delete()
+		messages.success(request, "Item deleted in your whislist successfully")
 		return redirect("Juntos:wish-list")
 		
 class FaqList(View):
@@ -1093,19 +1110,20 @@ class RemoveFromCart(View):
 
 class AddWhishlist(View):
 	"""docstring for AddWhishlist"""
-	def get(self,request):
+	def get(self,request,pk=None):
 		if request.user.is_customer:
-			product_obj = Products_Management.objects.filter(id=product_id)
-			if product_obj.exists():
-				product = product_obj.first()
+			try:
+				product = ProductsManagement.objects.get(id=pk)
 				Wishlist.objects.create(user=request.user, product=product)
 				try:
 					Cart.objects.get(product=product).delete()
+					return redirect("Juntos:wish-list")
 				except Exception as e:
 					return redirect("Juntos:wish-list")
-			else:
+			except Exception as e:
+				print("Exception in AddWhishlist",e)
 				messages.error(request, "Product does not exists !")
-				return redirect("Juntos:views-cart")
+				return redirect("Juntos:views-cart")				
 		else:
 			messages.info(request, "Please login before access wishlist !")
 			return redirect("Juntos:views-cart")

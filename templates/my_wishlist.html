@@ -9,6 +9,7 @@
          </div>
          {% if user.is_customer %}
          <div class="table-responsive">
+         {% if lists %}
             <table class="table table-hover table-bordered">
                <thead>
                   <tr>
@@ -23,20 +24,27 @@
                   <tr>
                      <td>
                         <figure class="cart_figure">
-                           <img src="{{product.product.image.name}}" alt="" />
+                           <img src="{{product.product.image.0}}" alt="" />
                         </figure>
                      </td>
-                     <td style="width:55%;">
+                     <td style="width:50%;">
                         <p>{{product.product.title | safe}} {{product.product.description | safe}}</p>
                      </td>
-                     <td>$ <strong id="price{{product.product.id}}" class="{{product.product.selling_price}}"> {{product.product.selling_price |floatformat:2}}
-                        </strong>
+                     <td style="width:10%;">
+                     {% if product.product.selling_price %}
+                     <strong id="price{{product.product.id}}" class="{{product.product.selling_price}}">$ {{product.product.selling_price |floatformat:2}}</strong>
+                     {% else %}
+                     <strong id="price{{product.product.id}}" class="{{product.product.selling_price}}">$ {{product.product.price |floatformat:2}}</strong>
+                     {% endif %}
                      </td>
-                     <td><button class="btn btn-red2"><i class="fa fa-trash"></i><a href="{% url 'customer:remove_whishlist' product.product.id %}" onclick="openConfirm();">Remove </a></button></td>
+                     <td><button class="btn btn-red2"><i class="fa fa-trash"></i><a style="padding-left:5px;color: white" href="{% url 'Juntos:remove-wishlist' product.id %}" onclick="openConfirm();">Remove </a></button></td>
                   </tr>
                   {% endfor %}
                </tbody>
             </table>
+         {% else %}
+         <div>No Wish List Product is available now.</div>
+         {% endif %}
          </div>
          {% else%}
          <div class="col-md-5 alert alert-warning alert-dismissable ">
@@ -45,8 +53,8 @@
          </div>
          {% endif %}
          <div class="next-pre-cart-btn">
-            <a class="pull-left btn btn-green leftm" style="margin:10px;" href="{% url 'Juntos:home' %}"><i class="fa fa-angle-double-left"></i>&nbsp; Continue Shopping</a>
-            <button class=" btn btn-primary leftm" style="margin:10px;" onclick="window.history.back();"><i class="fa fa-angle-double-left"></i>&nbsp; Back</button>
+            <button class=" btn btn-primary" style="margin:10px;" onclick="window.history.back();"><i class="fa fa-angle-double-left"></i>&nbsp; Back</button>
+            <a class="btn btn-green" style="margin:10px;" href="{% url 'Juntos:home' %}"> Continue Shopping&nbsp;<i class="fa fa-angle-double-right"></i></a>
          </div>
       </div>
    </div>
