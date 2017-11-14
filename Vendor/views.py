@@ -403,10 +403,10 @@ class AddProduct(View):
 			form = NewProductAddForm(params or None,instance=product)
 		else:
 			form = NewProductAddForm(params or None)
-		print("form valis",form.is_valid())
-		print("Error",form.errors)
 		if form.is_valid():
 			product = form.save()
+			product.is_active = True
+			product.save()
 			if "image" in files:
 				for img in files.getlist('image'):
 					upresult = upload(img)

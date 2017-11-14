@@ -179,7 +179,7 @@ class ProductsManagement(models.Model):
     product_width = models.FloatField('Product Width', blank=False)
     payment_mode = ArrayField(models.CharField('Payment Mode', max_length=50, blank=False))
     expire_products = models.IntegerField('Expired Products', blank=True, default=15, null=True)
-    is_active = models.BooleanField("Active Product",default=True,blank=True)
+    is_active = models.BooleanField("Active Product",blank=True,default=True)
     services = models.TextField('Services', blank=False,default='')
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)

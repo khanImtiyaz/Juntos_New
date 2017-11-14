@@ -187,10 +187,13 @@ USE_L10N = True
 USE_TZ = True
 
 CLOUDINARY = {
-    'cloud_name': 'djzssjqyt',
-    'api_key': '453587846132438',
-    'api_secret': 'o9-YhG4lnDAHCmasDMEENLuVXbM',
+    'cloud_name': 'imtiyaz',
+    'api_key': '881311727223736',
+    'api_secret': '_9BMYEdz3XJ8QNS327r30MM6ISQ',
+    'secure':False,
+    'max_length': 200,
 }
+
 STATIC_URL  = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 STATICFILES_DIRS = [
