@@ -287,7 +287,7 @@ class AddWishList(View):
 		if request.user.is_customer:
 			try:
 				cartObj = Cart.objects.get(id=pk)
-				product = ProductsManagement.objects.get(id=cartObj.product)
+				product = ProductsManagement.objects.get(id=cartObj.product_id)
 				Wishlist.objects.create(user=request.user, product=product)
 				try:
 					cartObj.delete()
@@ -1113,7 +1113,7 @@ class AddWhishlist(View):
 		if request.user.is_customer:
 			try:
 				cartObj = Cart.objects.get(id=pk)
-				product = ProductsManagement.objects.get(id=cartObj.product)
+				product = ProductsManagement.objects.get(id=cartObj.product_id)
 				Wishlist.objects.create(user=request.user, product=product)
 				try:
 					cartObj.delete()
