@@ -20,6 +20,7 @@ from .models import *
 from .choices import *
 
 # Register your models here.
+admin.site.register(MyUser)
 
 class BannerForm(forms.ModelForm):
 	description = forms.CharField(widget=CKEditorWidget())
