@@ -8,7 +8,7 @@ class UserRegistration(forms.ModelForm):
     first_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",error_messages = {"invalid":"Please Enter Valid Name.","required":"Please Enter Full Name."})
     email = forms.EmailField(required = True, error_messages = {"required":"Please Enter A Email."})
     mobile=forms.RegexField(regex=r'^\+?1?\d{9,18}$',error_messages = {"invalid":"Please Enter Valid Mobile Number.","required":"Please Enter Mobile Number."})
-    password=forms.RegexField(regex=r'(?=^.{6,}$)(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^A-Za-z0-9]).*',required=True,strip=False,error_messages = {"invalid":"Minimum of 8 character and a maximum of 16. Must have at least three of following:uppercase letter, lowercase letter, number(0-9)and/or special character/symbol. Password is case-sensitive","required":"Please Enter Password."})
+    password=forms.RegexField(regex=r'(?=^.{6,}$)|(?=.*[0-9])|(?=.*[A-Z])|(?=.*[a-z])|(?=.*[^A-Za-z0-9]).*',required=True,strip=False,error_messages = {"invalid":"*Mínimo de 8 caracteres y un máximo de 16. Debe de tener al menos 3 de los siguientes: letra mayúscula, letra minúscula, numero(0-9)y/o caracter especial/símbolo. Contraseña es sensible a mayúsculas y minúsculas.","required":"Please Enter Password."})
     confirm_password=forms.CharField(required=True,strip=False,error_messages = {"required":"Please Enter Confirm Password"})
 
     def clean_password(self):
