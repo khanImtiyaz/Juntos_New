@@ -21,6 +21,7 @@ from Juntos import views
 urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^nested_admin/', include('nested_admin.urls')),
     url(r'^oauth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^Juntosadmin/logout/', views.LogoutView.as_view()),
     url(r'^Juntosadmin/', admin.site.urls),

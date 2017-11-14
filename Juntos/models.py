@@ -204,8 +204,8 @@ from .signals import *
 class Notifications(models.Model):
     vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="nofify_vendor")
     ntype = models.CharField(('Notification Type'), max_length=200, blank=True, choices=NTYPE)
-    content  = models.CharField(('Notification content'), max_length=200, blank=True)
-    is_read  = models.BooleanField(('Is read ?'), default=False)
+    content = models.CharField(('Notification content'), max_length=200, blank=True)
+    is_read = models.BooleanField(('Is read ?'), default=False)
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
 
@@ -225,7 +225,7 @@ class Cart(models.Model):
 
 
 class Wishlist(models.Model):
-    user =  models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='whislist')
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='whislist')
     product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="whislist_product")
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -236,8 +236,8 @@ class CustomerReview(models.Model):
     product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="product_review")
     content = models.CharField(('Customer Reviews'), blank=True, max_length=100)
     rating = models.IntegerField(('Rating value'), blank=True, default=0)
-    user     = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="customer_reviews")
-    updated    = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="customer_reviews")
+    updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
     class Meta:
         verbose_name_plural = 'Customer Reviews'
@@ -245,35 +245,35 @@ class CustomerReview(models.Model):
 class BillingAddress(models.Model):
   """docstring for BillingAddress"""
   user = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,related_name="billing_address")
-  billing_first_name =  models.CharField(('Billing First Name'),max_length=50,blank=False)
-  billing_last_name  =  models.CharField(('Billing Last Name'),max_length=50,blank=False)
-  billing_phone      =  models.CharField(('Billing Phone'),max_length=15,null=False)
-  billing_company    =  models.CharField(('Billing Company'),max_length=50,blank=False)
-  billing_country    = models.CharField(('Billing Country'),max_length=50, blank=False)
-  billing_country_abbreviation  = models.CharField(('Billing Country Abbreviation'),max_length=20, blank=False)
-  billing_state      =  models.CharField(('Billing State'),max_length=50,blank=False)
-  billing_city       =  models.CharField(('Billing City'),max_length=50,blank=False)
-  billing_zip        =  models.CharField(('Billing Zip'),max_length=50,blank=False)
-  billing_address    =  models.CharField(('Billing Address'),max_length=500,blank=False)
-  billing_email      =  models.CharField(('Billing Email'),max_length=50,blank=False)
-  mode_of_transport  =  models.CharField(('Mode of Transport'),max_length=50,blank=False)
+  billing_first_name = models.CharField(('Billing First Name'),max_length=50,blank=False)
+  billing_last_name = models.CharField(('Billing Last Name'),max_length=50,blank=False)
+  billing_phone = models.CharField(('Billing Phone'),max_length=15,null=False)
+  billing_company = models.CharField(('Billing Company'),max_length=50,blank=False)
+  billing_country = models.CharField(('Billing Country'),max_length=50, blank=False)
+  billing_country_abbreviation = models.CharField(('Billing Country Abbreviation'),max_length=20, blank=False)
+  billing_state = models.CharField(('Billing State'),max_length=50,blank=False)
+  billing_city = models.CharField(('Billing City'),max_length=50,blank=False)
+  billing_zip = models.CharField(('Billing Zip'),max_length=50,blank=False)
+  billing_address = models.CharField(('Billing Address'),max_length=500,blank=False)
+  billing_email = models.CharField(('Billing Email'),max_length=50,blank=False)
+  mode_of_transport = models.CharField(('Mode of Transport'),max_length=50,blank=False)
   created_at = models.DateTimeField(('created_at'), auto_now = True)
   updated_at = models.DateTimeField(('updated_at'), auto_now = True)
 
 class ShippingAddress(models.Model):
   user = models.ForeignKey(MyUser, on_delete=models.CASCADE, null=True,related_name="shiping_address")
-  shipping_first_name =  models.CharField(('Shipping First Name'),max_length=50,blank=False)
-  shipping_last_name  =  models.CharField(('Shipping Last Name'),max_length=50,blank=False)
-  shipping_phone      =  models.CharField(('Shipping Phone'),max_length=15,null=False, blank=False)
-  shipping_company    =  models.CharField(('Shipping Company'),max_length=50,blank=False)
-  shipping_country    = models.CharField(('Shipping Country'),max_length=50, blank=False)
-  shipping_country_abbreviation  = models.CharField(('Shipping Country Abbreviation'),max_length=20, blank=False)
-  shipping_state      =  models.CharField(('Shipping State'),max_length=50,blank=False)
-  shipping_city       =  models.CharField(('Shipping City'),max_length=50,blank=False)
-  shipping_zip        =  models.CharField(('Shipping Zip'),max_length=50,blank=False)
-  shipping_address    =  models.CharField(('Shipping Address'),max_length=500,blank=False)
-  shipping_email      =  models.CharField(('Shipping Email'),max_length=50,blank=False)
-  mode_of_transport  =  models.CharField(('Mode of Transport'),max_length=50,blank=False)
+  shipping_first_name = models.CharField(('Shipping First Name'),max_length=50,blank=False)
+  shipping_last_name = models.CharField(('Shipping Last Name'),max_length=50,blank=False)
+  shipping_phone = models.CharField(('Shipping Phone'),max_length=15,null=False, blank=False)
+  shipping_company = models.CharField(('Shipping Company'),max_length=50,blank=False)
+  shipping_country = models.CharField(('Shipping Country'),max_length=50, blank=False)
+  shipping_country_abbreviation = models.CharField(('Shipping Country Abbreviation'),max_length=20, blank=False)
+  shipping_state = models.CharField(('Shipping State'),max_length=50,blank=False)
+  shipping_city = models.CharField(('Shipping City'),max_length=50,blank=False)
+  shipping_zip = models.CharField(('Shipping Zip'),max_length=50,blank=False)
+  shipping_address = models.CharField(('Shipping Address'),max_length=500,blank=False)
+  shipping_email = models.CharField(('Shipping Email'),max_length=50,blank=False)
+  mode_of_transport = models.CharField(('Mode of Transport'),max_length=50,blank=False)
   created_at = models.DateTimeField(('created_at'), auto_now = True)
   updated_at = models.DateTimeField(('updated_at'), auto_now = True)
 
@@ -308,10 +308,10 @@ class CustomerOrder(models.Model):
 
 class Offer(models.Model):
     product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="OfferProduct")
-    offer_title   = models.CharField(('Title'), max_length=50, blank=True)
+    offer_title = models.CharField(('Title'), max_length=50, blank=True)
     offer_details = models.CharField(('Details'), max_length=200, blank=True)
     offer_start_date_time = models.DateField(("Start Date"))
-    offer_end_date_time   = models.DateField(("End Date"))
+    offer_end_date_time = models.DateField(("End Date"))
     offer_price = models.IntegerField(help_text="Offer price should not more then original price of product.")
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -334,6 +334,65 @@ class OrderItems(models.Model):
     delivery_date = models.DateField(('Delivery Date'), null=True, blank=True)
     delivery_status = models.CharField(('Order Item Delivery Status'), max_length=20, blank=True, default="Pending")
     order_cancel_request = models.BooleanField(('Order Cancel Request'), default=False)
-    updated    = models.DateTimeField(auto_now=True)
+    updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
 
+
+class Services(models.Model):
+  """docstring for ClassName"""
+  service_type = models.CharField(('Services'), max_length=100, unique=True, blank=True)
+   
+  def __str__(self):
+    return self.service_type
+
+  class Meta:
+    verbose_name_plural = 'Type of Services'
+      
+
+class Advertisement(models.Model):
+  name = models.CharField(('Advertiser Name'), max_length=50, null=True, blank=True)
+  email = models.CharField(('Advertiser Email'), max_length=80, blank=False)
+  mobile = models.CharField(('Advertiser Mobile'),max_length=15,blank=True,unique=False)
+  subs_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, related_name="sub_advertisements")
+  title = models.CharField(('Title'), max_length=200)
+  description = models.TextField(('Advertisement Description'), blank=True)
+  type_of_services = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
+  recommended = models.BooleanField(('Mark as recommended'), default=False)
+  location = models.CharField(('Location'), max_length=100, blank=True, null=True)
+  price = models.CharField(('Price'), max_length=50, blank=True, null=True)
+  image = models.ImageField(('Advertisement Image'), null=False, blank=False, max_length=5000)
+  new = models.BooleanField(('Mark as new'), default=True)
+  slug = AutoSlugField(populate_from='subs_category',unique=True, max_length=100)
+  updated = models.DateTimeField(auto_now=True)
+  created_at = models.DateTimeField(auto_now=True)
+  
+  def __str__(self):
+    return self.title
+
+  class Meta:
+    verbose_name_plural = ("Advertisement")
+
+  def save(self, **kwargs):
+        uid = uuid.uuid4()
+        if not self.slug:
+            slug = slugify(self.title)
+            while True:
+                try:
+                    article = Advertisement.objects.get(slug=slug)
+                    if article == self:
+                        self.slug = slug
+                        break
+                    else:
+                        slug = slug + uid.node
+                except:
+                    self.slug = slug
+                    break
+        super(Advertisement, self).save()
+
+# class AdvertisementImage(models.Model):
+#     image = CloudinaryField("Image")
+#     advertisement_images = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name="advertisement_all_images")
+#     updated = models.DateTimeField(auto_now=True)
+#     created_at = models.DateTimeField(auto_now=True)
+#     class Meta:
+#         verbose_name_plural = 'Manage Advertisement Image'

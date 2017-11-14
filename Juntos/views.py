@@ -29,54 +29,54 @@ from Static_Model.models import *
 
 # Create your views here.
 
-# def landingpage(request):
-#     hot_items = []
-#     hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
-#     for deal in hot_deals:
-#         prod = Products_Management.objects.get(id=deal['product_id'])
-#         hot_items.append({'title':prod.title,"id":prod.id ,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
-#     offers = Offer.objects.all()
-#     if request.GET.get('all',None):
-#         banner = Banner.objects.all()
-#         product_list = Products_Management.objects.all().exclude(expire_products=0)
-#         paginator = Paginator(product_list, 12)
-#         all_category=Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             products = paginator.page(page)
-#         except PageNotAnInteger:
-#             products = paginator.page(1)
-#         except EmptyPage:
-#             products = paginator.page(paginator.num_pages)
-#         context = ({'all_product_list': products, "categorys":all_category, 'banner_list':banner, "hot_items":hot_items, "offers":offers})
-#         response_data = render(request,"index.html",context)
-#         if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
-#             import uuid
-#             token =  uuid.uuid4().hex[:16].upper()
-#             response_data.set_cookie('add_card_token', token)
-#         return response_data
-#     else:
-#         recomended_product = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
-#         banner = Banner.objects.all()
-#         product_list = Products_Management.objects.all().order_by("-created_at").exclude(expire_products=0)
-#         paginator = Paginator(product_list, 8)
-#         all_category=Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             products = paginator.page(page)
-#         except PageNotAnInteger:
-#             products = paginator.page(1)
-#         except EmptyPage:
-#             products = paginator.page(paginator.num_pages)
-#         context = ({'product_list': products, "categorys":all_category, 'banner_list':banner, "recomended_product":recomended_product, "hot_items":hot_items,"offers":offers})
-#         response_data = render(request,"index.html",context)
-#         if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
-#             import uuid
-#             token =  uuid.uuid4().hex[:16].upper()
-#             response_data.set_cookie('add_card_token', token)
-#         return response_data
+def landingpage(request):
+    hot_items = []
+    hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
+    for deal in hot_deals:
+        prod = Products_Management.objects.get(id=deal['product_id'])
+        hot_items.append({'title':prod.title,"id":prod.id ,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
+    offers = Offer.objects.all()
+    if request.GET.get('all',None):
+        banner = Banner.objects.all()
+        product_list = Products_Management.objects.all().exclude(expire_products=0)
+        paginator = Paginator(product_list, 12)
+        all_category=Category.objects.all()
+        index=1
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        context = ({'all_product_list': products, "categorys":all_category, 'banner_list':banner, "hot_items":hot_items, "offers":offers})
+        response_data = render(request,"index.html",context)
+        if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
+            import uuid
+            token =  uuid.uuid4().hex[:16].upper()
+            response_data.set_cookie('add_card_token', token)
+        return response_data
+    else:
+        recomended_product = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
+        banner = Banner.objects.all()
+        product_list = Products_Management.objects.all().order_by("-created_at").exclude(expire_products=0)
+        paginator = Paginator(product_list, 8)
+        all_category=Category.objects.all()
+        index=1
+        page = request.GET.get('page')
+        try:
+            products = paginator.page(page)
+        except PageNotAnInteger:
+            products = paginator.page(1)
+        except EmptyPage:
+            products = paginator.page(paginator.num_pages)
+        context = ({'product_list': products, "categorys":all_category, 'banner_list':banner, "recomended_product":recomended_product, "hot_items":hot_items,"offers":offers})
+        response_data = render(request,"index.html",context)
+        if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
+            import uuid
+            token =  uuid.uuid4().hex[:16].upper()
+            response_data.set_cookie('add_card_token', token)
+        return response_data
 
 def home(request):
 	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
@@ -430,7 +430,7 @@ class LoginView(View):
 				request.session['email'] = user.email
 				return redirect('Juntos:home')
 			else:
-				messages.success(request, "Authentication Failed.Please try again with valid Credentials.")
+				messages.error(request, "Authentication Failed.Please try again with valid Credentials.")
 				return redirect('Juntos:home')
 		else:
 			return render(request,"index.html", {'forms':form})
