@@ -161,7 +161,7 @@ footer ul li a {font-size:14px; color:#534201;}
 /* Indicators list style */
 .article-slide .carousel-indicators li { border: medium none; border-radius: 0; float: left; height: 60px; margin:0 10px 5px 10px!important; margin-left: 0; width: 60px; float:none; border: 1px solid #9f9f9f; background:#fff; text-align:center; overflow:hidden; }
 /* Indicators images style */
-.article-slide .carousel-indicators img { float: left; left: 0; max-height: 60px; max-width: 100%; }
+.article-slide .carousel-indicators img { float: left; left: 0; max-height: 60px;/* max-width: 100%;*/ }
 /* Indicators active image style */
 .article-slide .carousel-indicators li.thm{border:0; width:10px; height:20px; margin:0!important; top:-23px;position:relative;}
 .article-slide .carousel-indicators li.thm {}

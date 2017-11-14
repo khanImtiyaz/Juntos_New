@@ -1124,7 +1124,7 @@ class AddWhishlist(View):
 					return redirect("Juntos:wish-list")
 			except Exception as e:
 				print("Exception in AddWhishlist",e)
-				messages.error(request, "Cart Product does not exists !{}".format(e))
+				messages.error(request, "Cart Product does not exists !")
 				return redirect("Juntos:views-cart")				
 		else:
 			messages.info(request, "Please login before access wishlist !")

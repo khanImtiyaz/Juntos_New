@@ -392,7 +392,7 @@
                                "class": "thumb-image"
                            }).appendTo(image_holder);
                            multiple_Image_Array.push(e.target.result)
-                           $("#product_image").append('<div class="col-sm-2" id="remove_photo_'+multiple_Image_Array.length+'" onClick=removePhoto("remove_photo_"'+multiple_Image_Array.length+');><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right"></i><img src="'+e.target.result+'"%}" style="height:40px;width: 100%"></div></div>')
+                           $("#product_image").append('<div class="col-sm-2" id="remove_photo_'+multiple_Image_Array.length+'" onClick=removePhoto("remove_photo_"'+multiple_Image_Array.length+');><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right"></i><img src="'+e.target.result+'"%}" style="width: 100%"></div></div>')
                                                   }
                        image_holder.show();
                        reader.readAsDataURL($(this)[0].files[i]);

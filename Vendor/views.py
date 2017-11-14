@@ -403,6 +403,8 @@ class AddProduct(View):
 			form = NewProductAddForm(params or None,instance=product)
 		else:
 			form = NewProductAddForm(params or None)
+		print("form valis",form.is_valid())
+		print("Error",form.errors)
 		if form.is_valid():
 			product = form.save()
 			if "image" in files:
