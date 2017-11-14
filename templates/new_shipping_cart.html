@@ -44,7 +44,7 @@
                                  </form>
                                  {% endif %}
                                  {% if user.is_customer %}
-                                 <a href="{% url 'Juntos:add-whishlist' product.product.id %}"><i style="color: red;" class="fa fa-heart text-primary"></i> Move to Wishlist</a>
+                                 <a href="{% url 'Juntos:add-whishlist' product.id %}"><i style="color: red;" class="fa fa-heart text-primary"></i> Move to Wishlist</a>
                                  {% endif %}
                               </div>
                            </div>
