@@ -287,9 +287,9 @@ class AddWishList(View):
 		if request.user.is_customer:
 			try:
 				product = ProductsManagement.objects.get(id=pk)
-				Wishlist.objects.create(user=request.user, product=product_obj)
+				Wishlist.objects.create(user=request.user, product=product)
 				try:
-					Cart.objects.get(product=product_obj).delete()
+					Cart.objects.get(product=product).delete()
 					return redirect("Juntos:wish-list")
 				except Exception as e:
 					print (e)
@@ -301,9 +301,6 @@ class AddWishList(View):
 		else:
 			messages.info(request, "Please login before access wishlist !")
 			return redirect("Juntos:views_cart")
-
-
-    
 
 class RemoveWishList(View):
 	"""docstring for RemoveWishList"""
