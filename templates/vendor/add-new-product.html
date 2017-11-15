@@ -238,7 +238,7 @@
                      <span id="sub_tag" style="display:none;"></span>
                      <div class="form-group edit-sec-btn">
                         <div class="col-md-6" style="margin-top: 10px !important">
-                           <button class="btn btn-custom pull-right add_field_button" type="button"  style="float: left !important;">Add color ➕</button>
+                           <button class="btn btn-custom pull-right add_field_button" id='add-color-button' type="button"  style="float: left !important;">Add color <i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                         <div class="col-md-6" style="margin-top: 10px !important">
                            <input type="submit" class="btn btn-success pull-right" value="✅ Submit" id="submit_form">
@@ -411,7 +411,7 @@
        
        var max_fields = 5; //maximum input boxes allowed
        var wrapper = $(".input_fields_wrap"); //Fields wrapper
-       var add_button = $(".add_field_button"); //Add button ID
+       var add_button = $("#add-color-button"); //Add button ID
        var x = 1; //initlal text box count
        $(add_button).click(function(e) { //on add input button click
            e.preventDefault();
