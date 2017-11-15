@@ -258,12 +258,12 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 		else:
 			return True
 	
-	def save_model(self, request, obj, form, change):
-		if obj.image:
-			if "googleusercontent.com" not in str(obj.image) and "res.cloudinary.com" not in str(
-					obj.image) and "fbcdn.net" not in str(obj.image):
-				upresult = upload(obj.image)
-				obj.image = upresult['url']
-		obj.save()
+	# def save_model(self, request, obj, form, change):
+	# 	if obj.image:
+	# 		if "googleusercontent.com" not in str(obj.image) and "res.cloudinary.com" not in str(
+	# 				obj.image) and "fbcdn.net" not in str(obj.image):
+	# 			upresult = upload(obj.image)
+	# 			obj.image = upresult['url']
+	# 	obj.save()
 		
 admin.site.register(ProductsManagement, ProductModelAdmin)
