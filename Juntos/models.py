@@ -167,7 +167,7 @@ class ProductsManagement(models.Model):
     selling_price = models.FloatField('Selling Price', blank=True,null=True)
     product_quantity = models.IntegerField('Available Quantity',default=0)
     product_rating = models.IntegerField('Rating', default=0,blank=True,null=True)
-    image = ArrayField(models.ImageField('image'),null=True,blank=False)
+    image = ArrayField(models.URLField('image'),null=True,blank=False)
     product_tag = models.CharField('Tag', max_length=300, blank=True)
     recommended = models.BooleanField('Mark as Recommended', default=False)
     slug = AutoSlugField(populate_from='subs_category', unique_with='title', unique=True, max_length=100)
