@@ -199,6 +199,20 @@ class ProductsManagement(models.Model):
       d2  = datetime.now().date()
       return ((d2-dat).days)
 
+class ProductColor(models.Model):
+    color   = ColorField(default='#FF0000')
+    product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="productColor")
+    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+
+class ProductImage(models.Model):
+    product_images = CloudinaryField("Image")
+    product_colr   = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="product_color_images")
+    updated    = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural = 'Manage Product Image'
+
 from .signals import * 
 
 class Notifications(models.Model):

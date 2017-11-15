@@ -413,6 +413,22 @@ class AddProduct(View):
 					image_Array.append(upresult['url'])
 				product.image = image_Array
 				product.save()
+			if request.POST.get('total_color',None):
+				totalColor = int(request.POST.get('total_color',None))
+				responseTotalColors = int(request.POST.get('response_total_color',0))
+				print("responseTotalColors",responseTotalColors)
+				print("totalColor",totalColor)
+				if totalColor != responseTotalColors:
+					totalColor = totalColor - 1
+					while totalColor >= 0:
+						color = ProductColor.objects.create(color=params['product_colors-{}-color'.format(totalColor)],
+						product = product)
+						for x in range(0, len(request.FILES)):
+							img = request.FILES.get('product_colors-{0}-product_color_images-{1}-product_images'.format(str(totalColor),str(x)), None)
+							if img:
+								uploaedimg = upload(img)
+								ProductImage.objects.create(product_images=uploaedimg['url'],product_colr=color)
+					totalColor = totalColor-1
 			messages.success(request, 'Product added successfully')
 			return redirect("Vendor:product-list", 1)
 		else:

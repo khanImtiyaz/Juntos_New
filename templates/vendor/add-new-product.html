@@ -272,6 +272,7 @@
 {% endif %}
 <script>
    $(document).ready(function() {
+         // Category Select Logic
          function category_change(){
             $.ajax({
                url: "{% url 'Vendor:subcategories'%}",
@@ -298,6 +299,8 @@
          if($("#id_category").val()){
             category_change();
          }
+
+         // Payment Moethod Select Logic
          if(payment_mode_value){
             if(payment_mode_value.indexOf('COD')!=-1)
                $("#payment_method_case_on_delivery").prop("checked", true)
@@ -371,6 +374,8 @@
          sub_cate_selected = undefined
          category_change();
       })
+
+      // Multiple Photo Add Logic
        removePhoto =function(index){
             alert(index)
         }
@@ -409,31 +414,35 @@
            }
        });
        
+       // Add Color Logic
        var max_fields = 5; //maximum input boxes allowed
        var wrapper = $(".input_fields_wrap"); //Fields wrapper
        var add_button = $("#add-color-button"); //Add button ID
        var x = 1; //initlal text box count
        $(add_button).click(function(e) { //on add input button click
            e.preventDefault();
-           if (x < max_fields) {
+           if (x <= max_fields) {
                x++; //text box increment
-               $(wrapper).append('<div><hr>\
-                              <div class="form-group"> \
-                                  <label class="control-label col-sm-3">Product Color</label> \
-                                  <div class="col-sm-9"> \
-                                    <input id="id_product_colors-' + (x - 2) + '-color" class="colorfield_field"\
-                                        name="product_colors-' + (x - 2) + '-color" value="#FF0000" type="color"> \
-                                  <div class="form-group">\
-                                  <label class="control-label col-sm-3">Product Color Image</label>\
-                                    <a href="#" class="add_color_image btn btn-success btn-sm" >Add Image ➕</a>\
-                                       <ol class="col-sm-9 product_images" >\
-                                    </ol>\
-                                 </div>\
-                              </div></div>\
-                               <a href="#" class="remove_color_field btn btn-danger btn-sm">Remove Color ❌</a>\
-                               </div>'); //add input box
+               $(wrapper).append('<div class="color-box">\
+                     <div class="form-group">\
+                        <label class="control-label col-sm-12" style="color:#daac0a;padding: 5px 0px;">Product Color</label>\
+                        <div class="row">\
+                           <div class="col-sm-5">\
+                              <label class="control-label col-sm-6" style="color:#daac0a">Product Color Image</label>\
+                              <input id="id_product_colors-' + (x - 2) + '-color" class="colorfield_field" name="product_colors-' + (x - 2) + '-color" value="#FF0000" type="color">\
+                           </div>\
+                           <div class="col-sm-7">\
+                              <a href="#" class="add_color_image btn btn-success btn-sm col-sm-4">Add Image <i class="fa fa-plus" aria-hidden="true" style="color:white"></i></a>\
+                              <ol class="col-sm-8 product_images" ></ol>\
+                           </div>\
+                        </div>\
+                     </div>\
+                     <a href="#" class="remove_color_field btn btn-danger btn-sm" style="float:right">Remove <i class="fa fa-times" aria-hidden="true"></i></a>\
+                  </div>'); //add input box
            } else {
-               $(".add_field_button").css({
+               alert("You can't add more than 5 Colors")
+               return
+               $("#add-color-button").css({
                    'display': 'none'
                });
            }
@@ -457,7 +466,7 @@
                $(this).parent().find('.product_images').append('<div><li>\
                               <input type="file" name="product_colors-' + (x - 2) + '-product_color_images-' + (y - 2) + '-product_images" \
                                 required="">\
-                            </li> <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Remove ❌</a></div>'); //add input box
+                            </li> <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Remove <i class="fa fa-times" aria-hidden="true"></i></a></div>'); //add input box
            }
            $("#id_total_color_images").val(y - 1);
        });
