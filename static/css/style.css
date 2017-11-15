@@ -601,7 +601,7 @@ width: 45px;}
 .y-mid-sec .nav-side-menu .brand {background-color: #ffffff;color: #c9223e;font-size: 18px;}
 .y-mid-sec .nav-side-menu .menu-content > li{color:#775e02;font-size:14px;}
 .prodct-anchor{border-radius:10px;background:#fff;border:1px solid #f0e6d8;box-shadow: 1px 2px 2px 2px #f0e6d8;min-height: 250px;}
-.product-panel1{display: table;/*height: 272px;*/width: 100%;padding: 10px;}
+.product-panel1{display: table;height: 250px;width: 100%;padding: 10px;}
 .product-panel1 span {display: table-cell;vertical-align: middle;height: 180px;}
 .product-panel1 img {display: block;margin: 0 auto;max-height: 205px;max-width: 100%;}
 .pro-price{display:table;width:100%;min-height: 30px;}
