@@ -144,3 +144,126 @@ class AdvertisementAdmin(nested_admin.NestedModelAdmin):
                 obj.image = upresult['url']
         obj.save()
 admin.site.register(Advertisement, AdvertisementAdmin)
+
+class Product_ImageInline(nested_admin.NestedStackedInline):
+	model = ProductImage
+	fields = ['product_images', 'product_color']
+	extra = 1
+
+
+class Product_colorInline(nested_admin.NestedStackedInline):
+	model = ProductColor
+	fields = ['color', 'product']
+	list_editable = ["color", ]
+	extra = 1
+	inlines = [Product_ImageInline]
+
+
+# from django.conf.urls.defaults import *
+class Payment_methodInline(nested_admin.NestedStackedInline):
+	services = forms.CharField(widget=CKEditorWidget())
+	model = PaymentMethod
+	fields = ['case_on_delivery', 'online_payment', 'paypal', 'product', 'services']
+	extra = 1
+	can_delete = False
+
+class ProductManagementForm(forms.ModelForm):
+	# feature = forms.CharField(widget=CKEditorWidget())
+	description = forms.CharField(widget=CKEditorWidget())
+	
+	# feature     = forms.CharField(widget=CKEditorWidget())
+	class Meta:
+		model = ProductsManagement
+		fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price",
+		          "in_stock", "product_quantity", "image", "recommended"]
+	
+	def __init__(self, *args, **kwargs):
+		super(ProductManagementForm, self).__init__(*args, **kwargs)
+		self.fields['vendor'].queryset = MyUser.objects.filter(is_vendor=True, is_active=True)
+
+
+class ProductModelAdmin(nested_admin.NestedModelAdmin):
+	list_display = ["category", "vendor", "subs_category", "title", "product_images", "payment_mode","price", "expire_products"]
+	fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price","in_stock", "product_quantity", "image", "recommended"]
+	list_display_links = ["category"]
+	list_filter = ["updated", "description"]
+	search_fields = ["title", "description"]
+	# inlines = [Payment_methodInline, Product_colorInline]
+	# form = ProductManagementForm
+
+	def price(self,obj):
+		return obj.selling_price if obj.selling_price else obj.price
+	
+	def subcategory_feeds(self, request):
+		from django.core import serializers
+		if request.POST.get('category_id', None):
+			category = request.POST['category_id']
+			data = Sub_Category.objects.filter(category_id=category)
+			dictionaries = [obj.as_dict() for obj in data]
+			datas = json.dumps({"data": dictionaries})
+			return HttpResponse(datas, content_type='application/json')
+	
+	def subcategory_color(self, request):
+		from django.core import serializers
+		if request.POST.get('subcategory_id', None):
+			subcategory = request.POST['subcategory_id']
+			data = Sub_Category.objects.get(id=subcategory)
+			# dictionaries = [ obj.as_dict() for obj in data ]
+			datas = json.dumps({"data": data.sub_category_tag})
+			return HttpResponse(datas, content_type='application/json')
+	
+	def get_urls(self):
+		from django.conf.urls import url
+		urls = super(ProductModelAdmin, self).get_urls()
+		my_urls = [
+			url(r'subcategory_feeds', self.admin_site.admin_view(self.subcategory_feeds), name='subcategories', ),
+			url(r'subcategory_color', self.admin_site.admin_view(self.subcategory_color), name='subcategory_color', ),
+		]
+		return my_urls + urls
+	
+	def product_images(self, obj):
+		return mark_safe("<img src={0} style='width:35px;height:35px;'>".format(obj.image[0]))
+	
+	def cod_payment_avaibale(self, obj):
+		if obj.payment_method:
+			return obj.payment_method.case_on_delivery
+		else:
+			return "--empty--"
+	
+	def online_payment_avaibale(self, obj):
+		if obj.payment_method:
+			return obj.payment_method.online_payment
+		else:
+			return "--empty--"
+	
+	def get_form(self, request, obj=None, **kwargs):
+		form = super(ProductModelAdmin, self).get_form(request, **kwargs)
+		return form
+	
+	def has_add_permission(self, request, obj=None):
+		if request.user.is_subadmin:
+			return False
+		else:
+			return True
+	
+	def has_delete_permission(self, request, obj=None):
+		if request.user.is_subadmin:
+			return False
+		else:
+			return True
+	
+	def has_change_permission(self, request, obj=None):
+		if request.user.is_subadmin:
+			return False
+		else:
+			return True
+	
+	def save_model(self, request, obj, form, change):
+		if obj.image:
+			if "googleusercontent.com" not in str(obj.image) and "res.cloudinary.com" not in str(
+					obj.image) and "fbcdn.net" not in str(obj.image):
+				upresult = upload(obj.image)
+				obj.image = upresult['url']
+		obj.save()
+		
+admin.site.register(ProductsManagement, ProductModelAdmin)

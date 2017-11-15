@@ -157,18 +157,18 @@ class SubCategory(models.Model):
 
 class ProductsManagement(models.Model):
     vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="vendor_product")
-    product_sku = models.CharField("Product ID", max_length=50, blank=True)
+    product_sku = models.CharField("ID", max_length=50, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="cat_product")
     subs_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, related_name="sub_cat_product")
-    title = models.CharField('Product Title', max_length=200)
-    description = models.TextField('Product Description', blank=True)
-    feature = models.TextField('Product Features', blank=True, null=True, default="Not a feature product")
-    price = models.FloatField('Product Orignal Price', blank=False)
-    selling_price = models.FloatField('Product Selling Price', blank=True,null=True)
-    product_quantity = models.IntegerField('Product Available Quantity',default=0)
-    product_rating = models.IntegerField('Product Rating', default=0,blank=True,null=True)
-    image = ArrayField(models.ImageField('Product image'),null=True,blank=False)
-    product_tag = models.CharField('Product Tag', max_length=300, blank=True)
+    title = models.CharField('Title', max_length=200)
+    description = models.TextField('Description', blank=True)
+    feature = models.TextField('Features', blank=True, null=True, default="Not a feature product")
+    price = models.FloatField('Price', blank=False)
+    selling_price = models.FloatField('Selling Price', blank=True,null=True)
+    product_quantity = models.IntegerField('Available Quantity',default=0)
+    product_rating = models.IntegerField('Rating', default=0,blank=True,null=True)
+    image = ArrayField(models.ImageField('image'),null=True,blank=False)
+    product_tag = models.CharField('Tag', max_length=300, blank=True)
     recommended = models.BooleanField('Mark as Recommended', default=False)
     slug = AutoSlugField(populate_from='subs_category', unique_with='title', unique=True, max_length=100)
     in_stock = models.BooleanField('Available', default=True)
@@ -410,3 +410,13 @@ class Advertisement(models.Model):
 #     created_at = models.DateTimeField(auto_now=True)
 #     class Meta:
 #         verbose_name_plural = 'Manage Advertisement Image'
+
+class PaymentMethod(models.Model):
+    case_on_delivery = models.BooleanField(('COD payment option'),default=False)
+    online_payment   = models.BooleanField(('Online payment(cerdit card/ debit card/ visa card) option'),default=False)
+    paypal   = models.BooleanField(('Paypal payment option'), default=False)
+    services = models.TextField(('Delivery services'), blank=False, null=False)
+    product  = models.OneToOneField(ProductsManagement, on_delete=models.CASCADE, related_name="payment_method", primary_key=True)
+    updated  = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+
