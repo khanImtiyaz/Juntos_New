@@ -218,7 +218,6 @@
                         <div class="form-group" style="display:none;">
                            <input type="text" class="form-control" name="payment_mode" id='payment_mode'>
                         </div>
-                        </div>
                         <div class="form-group">
                            <label class="control-label col-sm-2">Servicios ☀️</label>
                            <div class="col-sm-10">
@@ -238,7 +237,7 @@
                      <span id="sub_tag" style="display:none;"></span>
                      <div class="form-group edit-sec-btn">
                         <div class="col-md-6" style="margin-top: 10px !important">
-                           <button class="btn btn-custom pull-right add_field_button" id='add-color-button' type="button"  style="float: left !important;">Add color <i class="fa fa-plus" aria-hidden="true"></i></button>
+                           <button class="btn btn-custom pull-right add_field_button" type="button"  style="float: left !important;">Add color <i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                         <div class="col-md-6" style="margin-top: 10px !important">
                            <input type="submit" class="btn btn-success pull-right" value="✅ Submit" id="submit_form">
@@ -415,30 +414,28 @@
        });
        
        // Add Color Logic
-       var max_fields = 5; //maximum input boxes allowed
-       var wrapper = $(".input_fields_wrap"); //Fields wrapper
-       var add_button = $("#add-color-button"); //Add button ID
-       var x = 1; //initlal text box count
-       $(add_button).click(function(e) { //on add input button click
+       var x = 0; //initlal text box count
+       $(".add_field_button").click(function(e) { //on add input button click
            e.preventDefault();
-           if (x <= max_fields) {
-               x++; //text box increment
-               $(wrapper).append('<div class="color-box">\
+           if (x < 5) {
+               x++;
+               $(".input_fields_wrap").append('<div class="color-box">\
                      <div class="form-group">\
-                        <label class="control-label col-sm-12" style="color:#daac0a;padding: 5px 0px;">Product Color</label>\
+                        <label class="control-label col-sm-12" style="color:#daac0a;">Product Color</label>\
                         <div class="row">\
                            <div class="col-sm-5">\
                               <label class="control-label col-sm-6" style="color:#daac0a">Product Color Image</label>\
-                              <input id="id_product_colors-' + (x - 2) + '-color" class="colorfield_field" name="product_colors-' + (x - 2) + '-color" value="#FF0000" type="color">\
+                              <input id="id_product_colors-'+(x)+'-color" class="colorfield_field" name="product-colors-'+(x)+'-color" value="#FFFFFF" type="color">\
                            </div>\
                            <div class="col-sm-7">\
                               <a href="#" class="add_color_image btn btn-success btn-sm col-sm-4">Add Image <i class="fa fa-plus" aria-hidden="true" style="color:white"></i></a>\
-                              <ol class="col-sm-8 product_images" ></ol>\
+                              <ol class="col-sm-8 product_images"></ol>\
                            </div>\
                         </div>\
                      </div>\
                      <a href="#" class="remove_color_field btn btn-danger btn-sm" style="float:right">Remove <i class="fa fa-times" aria-hidden="true"></i></a>\
-                  </div>'); //add input box
+                  </div>');
+            $("#id_total_color").val(x);
            } else {
                alert("You can't add more than 5 Colors")
                return
@@ -446,9 +443,10 @@
                    'display': 'none'
                });
            }
-           $("#id_total_color").val(x - 1);
        });
-       $(wrapper).on("click", ".remove_color_field", function(e) { //user click on remove text
+
+
+       $(".input_fields_wrap").on("click", ".remove_color_field", function(e) { //user click on remove text
                e.preventDefault();
                $(this).parent('div').remove();
                x--;
@@ -457,25 +455,32 @@
                });
                $("#id_total_color").val(x - 1);
            })
-       var max_fields_img = 17; //maximum input boxes allowed
-       var y = 1; //initlal text box count
-       $(wrapper).on("click", ".add_color_image", function(e) { //on add input button click
+
+
+       var y = 0;
+       $(".input_fields_wrap").on("click", ".add_color_image", function(e) { 
            e.preventDefault();
-           if (y < max_fields_img) { //max input box allowed
-               y++; //text box increment
+           if (y < 3) { 
+               y++;
                $(this).parent().find('.product_images').append('<div><li>\
-                              <input type="file" name="product_colors-' + (x - 2) + '-product_color_images-' + (y - 2) + '-product_images" \
+                              <input type="file" name="product-colors-'+(x)+'-product-color-images-'+ (y)+'-product-images" \
                                 required="">\
-                            </li> <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Remove <i class="fa fa-times" aria-hidden="true"></i></a></div>'); //add input box
+                            </li> <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Remove <i class="fa fa-times" aria-hidden="true"></i></a></div>');
+           }else{
+            alert("You can add more than three image for a Product")
            }
-           $("#id_total_color_images").val(y - 1);
+           $("#id_total_color_images").val(y);
        });
-       $(wrapper).on("click", ".remove_color_field1", function(e) { //user click on remove text
+
+
+       $(".input_fields_wrap").on("click", ".remove_color_field1", function(e) { //user click on remove text
            e.preventDefault();
            $(this).parent('div').remove();
            y--;
            $("#id_total_color_images").val(y - 1);
        });
+
+
        $('#product_form').submit(function(e) {
            if ($("#sub_tag").text() == "CP") {
                color_counter = $("#id_total_color").val();

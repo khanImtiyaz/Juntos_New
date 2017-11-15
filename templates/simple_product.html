@@ -81,6 +81,26 @@
                   <div class="product-sold">
                      <p>Available stock<span class="r-color" id='stock'>{{details.product_quantity}}</span></p>
                   </div>
+                {% if details.productColor.all %}
+                 <div class="color-block varity-common">
+                    <p>Available Color</p>
+                    <ul class="product-picker">
+                       {% for color in details.productColor.all %}
+                       <li class="radio">
+                          <input type="radio" name="colors" value="{{color.id}}" id="{{color.id}}-option" class="color_radion" onclick="return get_images(this, {{color.id}})">
+                          <label for="{{color.id}}-option">&nbsp;</label>
+                          <div class="check" style="background-color:{{color.color}};">&nbsp;</div>
+                       </li>
+                       <!-- <li class="changecolor" style="background-color:{{color.color}};"></li>
+                       </a> -->
+                       {% endfor %}
+                    </ul>
+                    <span style="font-size: 12px;color: #fff;padding: 3px 8px;border-radius: 9px;background: #000;display: none;" id="checker">Please select Color & Size.</span>
+                 </div>
+                 {% endif %}
+
+
+
                   {% if details.in_stock %}
                   <div class="product-varity cus_varity_prod">
                      <div class="row">

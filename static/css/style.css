@@ -920,7 +920,7 @@ header .search-bar .input-group{max-width:300px; margin:0 auto;}
 .file-preview-input-title {
     margin-left:2px;
 }
-.product_images div{background-color: #f2f1f1; padding: 0.5em 2em;}
+.product_images div{background-color: #f2f1f1; padding: 5px;margin-bottom: 5px;}
 #erorr_message{color:#ee5460;}
 
 #first_name, #legal_name{text-transform:capitalize;}

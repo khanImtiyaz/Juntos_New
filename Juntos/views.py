@@ -123,13 +123,18 @@ class ProductDetail(View):
 		return render(request, 'product.html')
 		
 # def product_image_view(request, color):
-#     return render(request, "partial-product_image_view.html")
+#     images = Product_Image.objects.filter(product_colr_id=color)
+#     return render(request, "partial-product_image_view.html",{"images":images})
 
 class ProductImageView(View):
 	"""docstring for ProductImageView"""
 	
-	def get(self, request):
-		return render(request, "partial-product_image_view.html")
+	def get(self, request,color=None):
+		images = ProductImage.objects.filter(product_color_id=color).values('product_images')
+		imagesArray = []
+		for img in images:
+			imagesArray.append(img['product_images'])
+		return render(request, "partial-product_image_view.html",{"images":imagesArray})
 
 # def search_product(request):
 #     return render(request,"index.html",{})
@@ -843,13 +848,8 @@ class CheckAvailability(View):
 		except:
 			return HttpResponse(json.dumps({"message": "Product not found","code":404}), content_type='application/json')
 
-# def product_image_view(request, color):
-#     images = Product_Image.objects.filter(product_colr_id=color)
-#     return render(request, "partial-product_image_view.html",{"images":images})
-class ProductImageView(View):
-	"""docstring for ProductImageView"""
-	def get(self,request):
-		return render(request, "partial-product_image_view.html")
+
+
 
 	
 # def helpfull_review(request):

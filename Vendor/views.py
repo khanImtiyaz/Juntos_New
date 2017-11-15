@@ -292,102 +292,102 @@ class OrderDelivered(View):
 		order.save()
 		return redirect("Vendor:orders-history", "Pending")
 
-# def add_product(request):
+def add_product(request):
 
-#     if request.method == "POST":
-#         category = Category.objects.all()
-#         form = NewProductAddForm(request.POST, None)
-#         if form.is_valid():
-#             params = request.POST
-#             if product:
-#                 product.vendor = request.user;
-#                 product.title=params['title']
-#                 product.description = params['description']
-#                 product.price = float(params['price'])
-#                 product.selling_price = params['selling_price']
-#                 product.category_id=params['category']
-#                 product.subs_category_id = params['subs_category']
-#                 product.product_quantity = params['product_quantity']
-#                 product.insured_amount = params['insured_amount']
-#                 product.product_weight = params['product_weight']
-#                 product.product_height = params['product_height']
-#                 product.product_depth = params['product_depth']
-#                 product.product_width = params['product_width']
-#                 # product.save()
-#             else:
-#                 product = Products_Management(
-#                     vendor = request.user,
-#                     title=params['title'],
-#                     description = params['description'],
-#                     price = float(params['price']),
-#                     selling_price = float(params['selling_price']),
-#                     category_id=params['category'],
-#                     subs_category_id = params['subs_category'],
-#                     product_quantity = params['product_quantity'],
-#                     insured_amount = float(params['insured_amount']) if params['insured_amount'] else None ,
-#                     product_weight = float(params['product_weight']) if params['product_weight'] else None,
-#                     product_height = float(params['product_height']) if params['product_height'] else None,
-#                     product_depth =  float(params['product_depth']) if params['product_depth'] else None,
-#                     product_width =  float(params['product_width']) if params['product_width'] else None
-#                 )
+    if request.method == "POST":
+        category = Category.objects.all()
+        form = NewProductAddForm(request.POST, None)
+        if form.is_valid():
+            params = request.POST
+            if product:
+                product.vendor = request.user;
+                product.title=params['title']
+                product.description = params['description']
+                product.price = float(params['price'])
+                product.selling_price = params['selling_price']
+                product.category_id=params['category']
+                product.subs_category_id = params['subs_category']
+                product.product_quantity = params['product_quantity']
+                product.insured_amount = params['insured_amount']
+                product.product_weight = params['product_weight']
+                product.product_height = params['product_height']
+                product.product_depth = params['product_depth']
+                product.product_width = params['product_width']
+                # product.save()
+            else:
+                product = Products_Management(
+                    vendor = request.user,
+                    title=params['title'],
+                    description = params['description'],
+                    price = float(params['price']),
+                    selling_price = float(params['selling_price']),
+                    category_id=params['category'],
+                    subs_category_id = params['subs_category'],
+                    product_quantity = params['product_quantity'],
+                    insured_amount = float(params['insured_amount']) if params['insured_amount'] else None ,
+                    product_weight = float(params['product_weight']) if params['product_weight'] else None,
+                    product_height = float(params['product_height']) if params['product_height'] else None,
+                    product_depth =  float(params['product_depth']) if params['product_depth'] else None,
+                    product_width =  float(params['product_width']) if params['product_width'] else None
+                )
 
-#             if request.POST.get('in_stock') == 'on':
-#                 product.in_stock = True
-#             else:
-#                  product.in_stock = False
-#             if not request.POST.get('feature'):
-#                 product.feature = request.POST.get('feature')
+            if request.POST.get('in_stock') == 'on':
+                product.in_stock = True
+            else:
+                 product.in_stock = False
+            if not request.POST.get('feature'):
+                product.feature = request.POST.get('feature')
 
-#             if request.FILES.get('image',None):
-#                 upresult = upload(request.FILES['image'])
-#                 product.image = upresult['url']
-#             product.save()
+            if request.FILES.get('image',None):
+                upresult = upload(request.FILES['image'])
+                product.image = upresult['url']
+            product.save()
            
-#             # ###   Payment Method
-#             payment_pay = Payment_method(product=product)
-#             if request.POST.get('payment_method_case_on_delivery', None):
-#                 payment_pay.case_on_delivery = True
-#             if request.POST.get('payment_method_online_payment', None):
-#                 payment_pay.online_payment = True
-#             if request.POST.get('payment_method_paypal', None):
-#                 payment_pay.paypal = True
-#             if request.POST.get('services', None):
-#                 payment_pay.services = request.POST.get('services')
-#             payment_pay.save()
+            # ###   Payment Method
+            payment_pay = Payment_method(product=product)
+            if request.POST.get('payment_method_case_on_delivery', None):
+                payment_pay.case_on_delivery = True
+            if request.POST.get('payment_method_online_payment', None):
+                payment_pay.online_payment = True
+            if request.POST.get('payment_method_paypal', None):
+                payment_pay.paypal = True
+            if request.POST.get('services', None):
+                payment_pay.services = request.POST.get('services')
+            payment_pay.save()
             
-#             # # Product color management
-#             if request.POST.get('total_color',None):
-#                 total_colors = int(request.POST.get('total_color',None))
-#                 response_total_colors = int(request.POST.get('response_total_color',0))
-#                 print("total_colors",response_total_colors)
-#                 print("total_colors",total_colors)
-#                 if total_colors != response_total_colors:
-#                     total_colors = total_colors - 1
-#                     while total_colors >= 0:
-#                         color = Product_color.objects.create(color=params['product_colors-{}-color'.format(total_colors)],
-#                                                              product = product)
-#                         for x in range(0, len(request.FILES)):
-#                             img = request.FILES.get('product_colors-{0}-product_color_images-{1}-product_images'.format(str(total_colors),str(x)), None)
-#                             if img:
-#                                 uploaedimg = upload(img)
-#                                 Product_Image.objects.create(product_images=uploaedimg['url'],product_colr=color)
-#                         total_colors = total_colors-1
-#                 else:
-#                     pass
-#             pusher_client = pusher.Pusher(app_id='296636',
-#             							  key='8d36327fa3019f8c74ac',
-#             							  secret='7c352f5a8fe248126f0e',
-#             							  cluster='ap2',
-#             							  ssl=True
-#             							)
-#             pusher_client.trigger('juntos_peru', 'click change load', {'message': product.title,'image':product.image.name,'slug':product.slug})
-#             messages.success(request, 'Product added successfully.')
-#             return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
-#         else:
-#             return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
-#     else:
-#         category = Category.objects.all()
-#         return render(request, 'vendor/add-new-product.html',{"categories":category})
+            # # Product color management
+            if request.POST.get('total_color',None):
+                total_colors = int(request.POST.get('total_color',None))
+                response_total_colors = int(request.POST.get('response_total_color',0))
+                print("total_colors",response_total_colors)
+                print("total_colors",total_colors)
+                if total_colors != response_total_colors:
+                    total_colors = total_colors - 1
+                    while total_colors >= 0:
+                        color = Product_color.objects.create(color=params['product_colors-{}-color'.format(total_colors)],
+                                                             product = product)
+                        for x in range(0, len(request.FILES)):
+                            img = request.FILES.get('product_colors-{0}-product_color_images-{1}-product_images'.format(str(total_colors),str(x)), None)
+                            if img:
+                                uploaedimg = upload(img)
+                                Product_Image.objects.create(product_images=uploaedimg['url'],product_colr=color)
+                        total_colors = total_colors-1
+                else:
+                    pass
+            pusher_client = pusher.Pusher(app_id='296636',
+            							  key='8d36327fa3019f8c74ac',
+            							  secret='7c352f5a8fe248126f0e',
+            							  cluster='ap2',
+            							  ssl=True
+            							)
+            pusher_client.trigger('juntos_peru', 'click change load', {'message': product.title,'image':product.image.name,'slug':product.slug})
+            messages.success(request, 'Product added successfully.')
+            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
+        else:
+            return render(request, 'vendor/add-new-product.html', {"categories":category, "add_form":form})
+    else:
+        category = Category.objects.all()
+        return render(request, 'vendor/add-new-product.html',{"categories":category})
 
 class AddProduct(View):
 	"""docstring for AddProduct"""
@@ -396,6 +396,7 @@ class AddProduct(View):
 	def post(self,request):
 		image_Array = []
 		params = request.POST
+		print("Parameters",params)
 		files = request.FILES
 		params['vendor'] = request.user.id
 		if 'product_id' in params:
@@ -413,22 +414,24 @@ class AddProduct(View):
 					image_Array.append(upresult['url'])
 				product.image = image_Array
 				product.save()
+			print("Request Total Color",request.POST.get('total_color',None))
 			if request.POST.get('total_color',None):
 				totalColor = int(request.POST.get('total_color',None))
 				responseTotalColors = int(request.POST.get('response_total_color',0))
 				print("responseTotalColors",responseTotalColors)
 				print("totalColor",totalColor)
 				if totalColor != responseTotalColors:
-					totalColor = totalColor - 1
-					while totalColor >= 0:
-						color = ProductColor.objects.create(color=params['product_colors-{}-color'.format(totalColor)],
-						product = product)
-						for x in range(0, len(request.FILES)):
-							img = request.FILES.get('product_colors-{0}-product_color_images-{1}-product_images'.format(str(totalColor),str(x)), None)
-							if img:
-								uploaedimg = upload(img)
-								ProductImage.objects.create(product_images=uploaedimg['url'],product_colr=color)
-					totalColor = totalColor-1
+					while totalColor >= 1:
+						print("While Total Color",totalColor)
+						if "product-colors-{}-color".format(totalColor) in params:
+							for x in range(1, len(request.FILES)):
+								if 'product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x) in request.FILES:
+									color = ProductColor.objects.create(color=params['product-colors-{}-color'.format(totalColor)],product = product)
+									img = request.FILES.get('product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x))
+									if img:
+										uploaedimg = upload(img)
+										ProductImage.objects.create(product_images=uploaedimg['url'],product_color=color)
+						totalColor = totalColor-1
 			messages.success(request, 'Product added successfully')
 			return redirect("Vendor:product-list", 1)
 		else:

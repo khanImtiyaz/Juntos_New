@@ -207,7 +207,7 @@ class ProductColor(models.Model):
 
 class ProductImage(models.Model):
     product_images = CloudinaryField("Image")
-    product_colr   = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="product_color_images")
+    product_color   = models.ForeignKey(ProductColor, on_delete=models.CASCADE, related_name="product_color_images")
     updated    = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
     class Meta:
