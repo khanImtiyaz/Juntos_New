@@ -222,7 +222,7 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 		return my_urls + urls
 	
 	def product_images(self, obj):
-		return mark_safe("<img src={0} style='width:35px;height:35px;'>".format(obj.image[0] if obj.image[0] else ''))
+		return mark_safe("<img src={0} style='width:35px;height:35px;'>".format(obj.image[0] if obj.image))
 	
 	def cod_payment_avaibale(self, obj):
 		if obj.payment_method:
