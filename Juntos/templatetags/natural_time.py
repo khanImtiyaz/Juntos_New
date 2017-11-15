@@ -30,6 +30,10 @@ def thriceArray(value):
     result = [value[i:i+3] for i in range(0, len(value), 3)]
     return result[1:]
 
+@register.filter
+def percentageValue(sell,actual):
+    return int(((actual-sell)*100)/actual)
+
 
 # @register.filter
 # def is_digit(value):
