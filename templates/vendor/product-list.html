@@ -14,13 +14,13 @@
    <div class="profile-content">
       <div class="heading_top clearfix">
          {% if active %}
-         <h2 style="text-align: center;color: #daac0a">ACTIVE PRODUCTS LIST</h2>
+         <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS ACTIVOS</h2>
          {% else %}
-         <h2 style="text-align: center;color: #daac0a">INACTIVE PRODUCTS LIST</h2>
+         <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS INACTIVOS</h2>
          {% endif %}
          <div class="product-btn">
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1 %}">Active</a>
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 0 %}">Inactive</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1 %}">Activo</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 0 %}">Inactivo</a>
             <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}" style="border-radius: 50%;color: white"><i class="fa fa-plus" aria-hidden="true"></i></a>
          </div>
       </div>
@@ -40,24 +40,24 @@
                   <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
                   {% endif %}
                   <div style="overflow: hidden;height: 25px;">
-                     <label>Name: </label>
+                     <label>Nombre: </label>
                      <div style="display: inline;"> {{product.title}}</div>
                   </div>
                   <div style="overflow: hidden;height: 25px;">
-                     <label>Category: </label>
+                     <label>Categoría: </label>
                      <div style="display: inline;"> {{product.subs_category.category}}</div>
                   </div>
                   <div style="overflow: hidden;height: 25px;">
-                     <label>Sub Category: </label>
+                     <label>Subcategoría: </label>
                      <div style="display: inline;"> {{product.subs_category}}</div>
                   </div>
                   <div style="overflow: hidden;height: 25px;">
-                     <label>Selling Price: </label>
+                     <label>Precio de venta: </label>
                      <div style="display: inline;"> ${{product.price |floatformat:2}}</div>
                   </div>
                   <div class="row">
                      <div class="col-sm-4" style="vertical-align: middle">
-                        <label>Quantity: </label>
+                        <label>Cantidad: </label>
                      </div>
                      <div class="col-sm-8">
                         <div class="sp-quantity">
@@ -80,9 +80,9 @@
                   <div>
                      <div class="col-sm-5">
                         {% if product.is_active %}
-                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Remove</a>
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Retirar</a>
                         {% else %}
-                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">ReAdd</a>
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Añadir</a>
                         {% endif %}
                      </div>
                      <div class="col-sm-7">

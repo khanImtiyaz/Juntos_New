@@ -7,7 +7,7 @@
    <div class="profile-content">
       <div class="panel">
          <div class="heading_top clearfix">
-            <h2 style="text-align: center;color: #daac0a">MY ORDERS</h2>
+            <h2 style="text-align: center;color: #daac0a">MIS ORDENES</h2>
          </div>
          <div>
             {% if orders %}
@@ -25,26 +25,26 @@
                      </figure>
                   </div>
                   <div>
-                     <label>Product Name: </label>
+                     <label>Nombre del producto: </label>
                      <div style="display: inline-block;">{{order.product.title}}</div>
                   </div>
                   <div>
-                     <label>Quant.: </label>
+                     <label>Cantidad.: </label>
                      <div style="display: inline-block;">{{order.quantity}}
                      </div>
                   </div>
                   <div>
-                     <label>Total Price: </label>
+                     <label>Precio total: </label>
                      <div style="display: inline-block;">{% if order.product.selling_price %}${{order.product.selling_price|tax:order.quantity|floatformat:2}}{% else %}${{order.product.price|tax:order.quantity|floatformat:2}}
                         {% endif %}
                      </div>
                   </div>
                   <div>
-                     <label>Order dt.: </label>
+                     <label>Orden dt.: </label>
                      <div style="display: inline-block;">{{order.created_at|date:"D, d M Y"}}</div>
                   </div>
                   <div>
-                     <label>Delivery Status: </label>
+                     <label>Estado de entrega: </label>
                      <div style="display: inline-block;">{{order.delivery_status}}
                      </div>
                   </div>
@@ -53,7 +53,7 @@
                         {% if order.order.delivery_status %}
                            <div style="height: 35px"></div>
                         {% else %}
-                        <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancel Order</a>
+                        <a class="btn btn-red-custom"  href="{% url 'Juntos:cancel-order-and-refund' order.id %}" >Cancelar Orden</a>
                         {% endif %}
                      </div>
                   </div>

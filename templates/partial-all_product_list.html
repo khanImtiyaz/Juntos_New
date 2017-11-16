@@ -1,6 +1,6 @@
 {% load natural_time %}
 <div class="recomen-panel" style="color: red;">
-  <h2>All Products</h2>
+  <h2>Todos Los Productos</h2>
   <div class="row">
     {% for product in all_product_list %}
     <div class="col-md-4 col-lg-4 pro-main">
@@ -16,9 +16,9 @@
         <h3>{{product.title | truncatechars:28}}</h3>
         <div class="pro-price">
         {% if product.selling_price %}
-          <div class="tbl-cell d1p1">$ {{product.selling_price |floatformat:2}}<span>$ {{product.price |floatformat:2}}</span></div>
+          <div class="tbl-cell d1p1">${{product.selling_price |floatformat:2}}<span>${{product.price |floatformat:2}}</span></div>
         {% else %}
-        <div class="tbl-cell d1p1">$ {{product.price |floatformat:2}}</div>
+        <div class="tbl-cell d1p1">${{product.price |floatformat:2}}</div>
         {% endif %}
           <div class="tbl-cell d1p2">
             {% if not product.subs_category.sub_category_tag == "CP" %}

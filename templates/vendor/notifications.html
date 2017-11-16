@@ -13,10 +13,10 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h2 style="text-align: center;color: #daac0a">NOTIFICATIONS</h2>
+         <h2 style="text-align: center;color: #daac0a">NOTIFICACIONES</h2>
          <div class="product-btn">
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:notifications' 1%}">Read</a>
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:notifications' 0%}">Unread</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:notifications' 1%}">Leer</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:notifications' 0%}">No leído</a>
          </div>
       </div>
       {% if notifications %}
@@ -47,7 +47,7 @@
       {% endfor %}
       {% else %}
       <div class="pagination-in text-center">
-         <strong class="text-center">Sorry, you have no unread notification yet.</strong>
+         <strong class="text-center">Lo sentimos, todavía no tienes notificaciones sin leer.</strong>
       </div>
       {% endif %}
    </div>

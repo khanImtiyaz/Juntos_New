@@ -14,10 +14,10 @@
    {% endif %}
    <div class="profile-content">
       <div class="heading_top clearfix">
-         <h2 style="text-align: center;color: #daac0a">Orders Received</h2>
+         <h2 style="text-align: center;color: #daac0a">Ordenes Recibidas</h2>
          <div class="product-btn">
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:orders-history' 'Pending'%}">Pending</a>
-            <a class="btn btn-custom pull-left" href="{% url 'Vendor:orders-history' 'Delivered' %}">Delivered</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:orders-history' 'Pending'%}">Pendiente</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:orders-history' 'Delivered' %}">Entregado</a>
             <h4 style="float: right">Total:{{orders.count | safe}}</h4>
          </div>
       </div>
@@ -37,7 +37,7 @@
                {% endif %}
                <div style="width: 100%">#{{order.order_number|truncatechars:12}}</div>
                <div>
-                  <label>Total Price: </label>
+                  <label>Precio total: </label>
                   <div style="display: inline-block;">{% if order.product.selling_price %}
                      ${{order.product.selling_price|tax:order.quantity|floatformat:2}}
                      {% else %}
@@ -46,21 +46,21 @@
                   </div>
                </div>
                <div>
-                  <label>Cust. Name: </label>
+                  <label>Cust. Nombre: </label>
                   <div style="display: inline-block;">{{order.order.customer.first_name}}</div>
                </div>
                <div>
-                  <label>Order dt.: </label>
+                  <label>Orden dt.: </label>
                   <div style="display: inline-block;">{{order.created_at|date:"D, d M Y"}}</div>
                </div>
                <div>
                   <div class="col-sm-6" style="padding: 0px 10px !important">
                      {% if order.delivery_status == "Pending" %}
-                        <a class="remove-notify-btn" href="{% url 'Vendor:order-delivered' order.id %}"> Delivered</a>
+                        <a class="remove-notify-btn" href="{% url 'Vendor:order-delivered' order.id %}"> Entregado</a>
                      {% endif %}
                   </div>
                   <div class="col-sm-6" style="padding: 0px 10px !important">
-                     <a class="view-order-btn" href="{% url 'Vendor:order-details' order.id %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                     <a class="view-order-btn" href="{% url 'Vendor:order-details' order.id %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> Ver</a>
                   </div>
                </div>
             </div>
@@ -96,7 +96,7 @@
          </ul>
          {% endif %}
          {% else %}
-         <strong>Sorry, you have no order yet or you Delivered all of your orders on time.</strong>
+         <strong>Lo sentimos, todavía no ha recibido un pedido o ha entregado todos sus pedidos a tiempo.</strong>
          {% endif %}
       </div>
    </div>

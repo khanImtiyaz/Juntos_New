@@ -78,7 +78,7 @@
                               <div class="row" id='product_image' name='product_image' style="margin-top: 10px">
                               </div>
                               <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
-                              <span class="file-preview-input-title" style="margin-top: 10px">Add Product Image</span>
+                              <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
                               <input type="file" name="image" id="image" multiple>
                               {% if add_form.errors.image %}
                               <strong style="color:red">{{ add_form.errors.image|escape }}</strong>
@@ -88,7 +88,7 @@
                         <div class="form-group">
                            <label class="control-label col-sm-3" >Aseguranza</label>
                            <div class="col-sm-9">
-                              <input type="text" class="form-control" name="insured_amount"  placeholder="Enter Insured Amount" maxlength="16" id="insured_amount" value="{{add_form.insured_amount.value}}">
+                              <input type="text" class="form-control" name="insured_amount"  placeholder="Ingrese cantidad asegurada" maxlength="16" id="insured_amount" value="{{add_form.insured_amount.value}}">
                               {% if add_form.errors.insured_amount %}
                               <strong style="color:red">{{ add_form.errors.insured_amount|escape }}</strong>
                               {% endif %}
@@ -99,7 +99,7 @@
                               <label class="control-label">Peso</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_weight"  placeholder="Enter Product Weight" maxlength="16" id="product_weight" value="{{add_form.product_weight.value}}">
+                                    <input type="text" class="form-control" name="product_weight"  placeholder="Ingrese el peso del producto" maxlength="16" id="product_weight" value="{{add_form.product_weight.value}}">
                                     {% if add_form.errors.product_weight %}
                                     <strong style="color:red">{{ add_form.errors.product_weight|escape }}</strong>
                                     {% endif %}
@@ -110,7 +110,7 @@
                               <label class="control-label">Altura</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_height"  placeholder="Enter Product height" maxlength="50" value="{{add_form.product_height.value}}">
+                                    <input type="text" class="form-control" name="product_height"  placeholder="Ingrese la altura del producto" maxlength="50" value="{{add_form.product_height.value}}">
                                     {% if add_form.errors.product_height %}
                                     <strong style="color:red">{{ add_form.errors.product_height|escape }}</strong>
                                     {% endif %}
@@ -121,7 +121,7 @@
                               <label class="control-label">Fondo</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_depth" id="state"  placeholder="Enter Product Depth" maxlength="50" value="{{add_form.product_depth.value}}">
+                                    <input type="text" class="form-control" name="product_depth" id="state"  placeholder="Ingrese la profundidad del producto" maxlength="50" value="{{add_form.product_depth.value}}">
                                     {% if add_form.errors.product_depth %}
                                     <strong style="color:red">{{ add_form.errors.product_depth|escape }}</strong>
                                     {% endif %}
@@ -132,7 +132,7 @@
                               <label class="control-label">Ancho</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_width" id="country"  placeholder="Enter Product Width" maxlength="50" value="{{add_form.product_width.value}}">
+                                    <input type="text" class="form-control" name="product_width" id="country"  placeholder="Ingrese el ancho del producto" maxlength="50" value="{{add_form.product_width.value}}">
                                     {% if add_form.errors.product_width %}
                                     <strong style="color:red">{{ add_form.errors.product_depth|escape }}</strong>
                                     {% endif %}
@@ -180,7 +180,7 @@
                            <div class="row" style="padding: 0px 15px">
                               <div class="col-md-3">
                                  <div class="form-group">
-                                    <label class="control-label col-sm-8">All</label>
+                                    <label class="control-label col-sm-8">Todas</label>
                                     <div class="col-sm-4">
                                        <input  name="all" type="checkbox" id='all_payment'>
                                     </div>
@@ -188,7 +188,7 @@
                               </div>
                               <div class="col-md-3">
                                  <div class="form-group">
-                                    <label class="control-label col-sm-8">Cash on Delivery</label>
+                                    <label class="control-label col-sm-8">Contra reembolso</label>
                                     <div class="col-sm-4">
                                        <input  name="payment_method_case_on_delivery" id='payment_method_case_on_delivery' type="checkbox">
                                     </div>
@@ -196,7 +196,7 @@
                               </div>
                               <div class="col-md-3">
                                  <div class="form-group">
-                                    <label class="control-label col-sm-8">Online Payment</label>
+                                    <label class="control-label col-sm-8">Pago en línea</label>
                                     <div class="col-sm-4">
                                        <input  name="payment_method_online_payment" id='payment_method_online_payment'  type="checkbox">
                                     </div>
@@ -237,10 +237,10 @@
                      <span id="sub_tag" style="display:none;"></span>
                      <div class="form-group edit-sec-btn">
                         <div class="col-md-6" style="margin-top: 10px !important">
-                           <button class="btn btn-custom pull-right add_field_button" type="button"  style="float: left !important;">Add color <i class="fa fa-plus" aria-hidden="true"></i></button>
+                           <button class="btn btn-custom pull-right add_field_button" type="button"  style="float: left !important;">Añadir color <i class="fa fa-plus" aria-hidden="true"></i></button>
                         </div>
                         <div class="col-md-6" style="margin-top: 10px !important">
-                           <input type="submit" class="btn btn-success pull-right" value="✅ Submit" id="submit_form">
+                           <input type="submit" class="btn btn-success pull-right" value="✅ Enviar" id="submit_form">
                         </div>
                      </div>
                   </form>
@@ -421,19 +421,19 @@
                x++;
                $(".input_fields_wrap").append('<div class="color-box">\
                      <div class="form-group">\
-                        <label class="control-label col-sm-12" style="color:#daac0a;">Product Color</label>\
+                        <label class="control-label col-sm-12" style="color:#daac0a;">Color del producto</label>\
                         <div class="row">\
                            <div class="col-sm-5">\
-                              <label class="control-label col-sm-6" style="color:#daac0a">Product Color Image</label>\
+                              <label class="control-label col-sm-6" style="color:#daac0a">Imagen de color del producto</label>\
                               <input id="id_product_colors-'+(x)+'-color" class="colorfield_field" name="product-colors-'+(x)+'-color" value="#FFFFFF" type="color">\
                            </div>\
                            <div class="col-sm-7">\
-                              <a href="#" class="add_color_image btn btn-success btn-sm col-sm-4">Add Image <i class="fa fa-plus" aria-hidden="true" style="color:white"></i></a>\
+                              <a href="#" class="add_color_image btn btn-success btn-sm col-sm-4">Añadir imagen <i class="fa fa-plus" aria-hidden="true" style="color:white"></i></a>\
                               <ol class="col-sm-8 product_images"></ol>\
                            </div>\
                         </div>\
                      </div>\
-                     <a href="#" class="remove_color_field btn btn-danger btn-sm" style="float:right">Remove <i class="fa fa-times" aria-hidden="true"></i></a>\
+                     <a href="#" class="remove_color_field btn btn-danger btn-sm" style="float:right">Retirar <i class="fa fa-times" aria-hidden="true"></i></a>\
                   </div>');
             $("#id_total_color").val(x);
            } else {
@@ -465,7 +465,7 @@
                $(this).parent().find('.product_images').append('<div><li>\
                               <input type="file" name="product-colors-'+(x)+'-product-color-images-'+ (y)+'-product-images" \
                                 required="">\
-                            </li> <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Remove <i class="fa fa-times" aria-hidden="true"></i></a></div>');
+                            </li> <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Retirar <i class="fa fa-times" aria-hidden="true"></i></a></div>');
            }else{
             alert("You can add more than three image for a Product")
            }
