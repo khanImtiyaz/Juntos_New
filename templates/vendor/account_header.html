@@ -61,8 +61,8 @@
                            </li>
                            <li>
                               <span class="user-active">
-                              {% if user.avatar.name %}
-                              <img src="{{user.avatar.name}}" class="img-responsive" alt="" style="display: initial;" /> {% else %}
+                              {% if user.avatar %}
+                              <img src="{{user.avatar.url}}" class="img-responsive" alt="" style="display: initial;" /> {% else %}
                               <img src="{% static 'img/dummy.png' %}" class="img-responsive" style="display: initial;"/>
                               {% endif %}
                               Hi <strong>{{user.first_name}}</strong></span>
@@ -92,10 +92,10 @@
                   <div class="col-md-3">
                      <div class="profile-sidebar">
                         <div class="profile-userpic">
-                           {% if not user.avatar.name%}
+                           {% if not user.avatar%}
                            <img src="{% static 'img/dummy.png' %}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
                            {% else %}
-                           <img src="{{user.avatar.name}}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
+                           <img src="{{user.avatar.url}}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
                            {% endif %}
                         </div>
                         <div class="profile-usertitle">

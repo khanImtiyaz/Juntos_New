@@ -111,10 +111,9 @@ class VendorSignupStep1(View):
 		if form.is_valid():
 			form.save()
 			if request.FILES.get('avatar', None):
-				# print(request.FILES)
-				# upresult = upload(request.FILES['avatar'])
-				# user.avatar = upresult
-				# user.is_vendor = True
+				upresult = upload(request.FILES['avatar'])
+				user.avatar = upresult
+				user.is_vendor = True
 				user.is_customer = True
 				user.vendor_step ="Step1"
 				user.save()
