@@ -91,7 +91,7 @@
                      <div class="profile-sidebar">
                         <div class="profile-userpic">
                            {% if not user.avatar%}
-                           <img src="{% static 'img/dummy.png' %}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
+                           <img src="{% static 'img/dummy.png' %}" class="img-responsive" alt="">
                            {% else %}
                            <img src="{{user.avatar.url}}" class="img-responsive" alt="" data-target="#profileImage" data-toggle="modal">
                            {% endif %}
@@ -210,7 +210,7 @@
             <div class="modal-content">
                <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>
                <div class="modal-body">
-                  <img src="{{user.avatar.name}}" style="width:100%;">
+                  <img src="{{user.avatar.url}}" style="width:100%;">
                </div>
             </div>
          </div>

@@ -5,11 +5,11 @@
          {% for img in images %}
          {% if forloop.counter0 == 0 %}
          <div class="item active">
-            <img title="{{id}}" src="{{img}}">
+            <img title="{{id}}" src="{{img}}" data-target="#asdfas" data-toggle="modal">
          </div>
          {% else %}
          <div class="item">
-            <img title="{{id}}" src="{{img}}">
+            <img title="{{id}}" src="{{img}}" data-target="#sadas" data-toggle="modal">
          </div>
          {% endif %}
          {% endfor %}
@@ -24,6 +24,16 @@
             {% endfor %}
             <li class="thm t-right"><span class="right-thumb"><img src="{% static 'img/t-right.png' %}" alt="" /></span></li>
          </ol>
+      </div>
+   </div>
+</div>
+<div id="productImage" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>
+         <div class="modal-body">
+            <img src="{{img}}" style="width:100%;">
+         </div>
       </div>
    </div>
 </div>
