@@ -1366,22 +1366,10 @@ ul.dropdown-menu.hh {
     min-width: 170px;
     left: -20px;
 }
-.carousel-inner>.item>a>img, .carousel-inner>.item>img {
-    line-height: 1;
-    height: 125px;
-  }
-  .carousel-inner {
-    min-height: 100px;
-    height: 125px;
-}
-
+.carousel-inner>.item>a>img, .carousel-inner>.item>img {line-height: 1; height: 125px; }
+.carousel-inner {/*min-height: 100px; height: 125px;*/ }
 .article-slide .carousel-inner>.item > img{height:auto;max-width:100%;}
-.article-slide .carousel-inner > .item{
-max-height: 318px;
-    overflow-y: hidden;
-
-}
-
+.article-slide .carousel-inner > .item{/*max-height: 318px;*/overflow-y: hidden;}
 .login-popup .popup-face-btn .btn{width:auto;}
 .checkbox-text{font-size:1em;}
 .login-popup label.myCheckbox,.forgot-link a{font-size: 0.7em;}
