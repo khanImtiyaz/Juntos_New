@@ -118,25 +118,25 @@ admin.site.register(Services, ServicesAdmin)
 
 
 
-# class Advertisement_ImageInline(nested_admin.NestedStackedInline):
-#     model = AdvertisementImage
-#     fields = ['image']
-#     extra = 1
+class AdvertisementImageInline(nested_admin.NestedStackedInline):
+    model = AdvertisementImage
+    fields = ['image']
+    extra = 1
 
-# class AdvertisementForm(forms.ModelForm):
-#     description = forms.CharField(widget=CKEditorWidget())
+class AdvertisementForm(forms.ModelForm):
+    description = forms.CharField(widget=CKEditorWidget())
     
-#     class Meta:
-#         model = Advertisement
-#         fields = ["email", "subs_category", "type_of_services", "title", "description","name","location","price", "image","mobile","recommended"]
-#     def __init__(self, *args, **kwargs):
-#         super(AdvertisementForm, self).__init__(*args, **kwargs)
-#         self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
+    class Meta:
+        model = Advertisement
+        fields = ["email", "subs_category", "type_of_services", "title", "description","name","location","price", "image","mobile","recommended"]
+    def __init__(self, *args, **kwargs):
+        super(AdvertisementForm, self).__init__(*args, **kwargs)
+        self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
 
 class AdvertisementAdmin(nested_admin.NestedModelAdmin):
     list_display = ["email", "subs_category", "title","name", "location", "price", "description", "image"]
     # form = AdvertisementForm
-    # inlines = [Advertisement_ImageInline]
+    # inlines = [AdvertisementImageInline]
     def save_model(self, request, obj, form, change):
         if obj.image:
             if "googleusercontent.com" not in str(obj.image) and "res.cloudinary.com" not in str(obj.image) and "fbcdn.net" not in str(obj.image):
@@ -145,7 +145,7 @@ class AdvertisementAdmin(nested_admin.NestedModelAdmin):
         obj.save()
 admin.site.register(Advertisement, AdvertisementAdmin)
 
-class Product_ImageInline(nested_admin.NestedStackedInline):
+class ProductImageInline(nested_admin.NestedStackedInline):
 	model = ProductImage
 	fields = ['product_images', 'product_color']
 	extra = 1
@@ -156,7 +156,7 @@ class Product_colorInline(nested_admin.NestedStackedInline):
 	fields = ['color', 'product']
 	list_editable = ["color", ]
 	extra = 1
-	inlines = [Product_ImageInline]
+	inlines = [ProductImageInline]
 
 
 # from django.conf.urls.defaults import *
@@ -267,3 +267,6 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 	# 	obj.save()
 		
 admin.site.register(ProductsManagement, ProductModelAdmin)
+
+
+

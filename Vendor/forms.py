@@ -70,3 +70,25 @@ class ProfileVendorForm(forms.Form):
                 return self.cleaned_data
             else:
                 raise forms.ValidationError({'email':'User with this email not exists.'})
+
+import json
+class ChangePasswordForm(forms.ModelForm):
+    password = forms.CharField(required=True, strip=False, error_messages = {"required":"Please Enter Password"})
+    new_password=forms.RegexField(regex=r'(?=^.{6,30}$)|(?=.*[0-9])|(?=.*[A-Z])|(?=.*[a-z])|(?=.*[^A-Za-z0-9]).*',required=True,strip=False,error_messages = {"invalid":"Minimum of 8 character and a maximum of 16. Must have at least three of following:uppercase letter, lowercase letter, number(0-9)and/or special character/symbol. Password is case-sensitive"})
+    confirm_password=forms.CharField(required=True, strip=False, error_messages = {"required":"Please Enter Confirm Password"})
+
+    def __init__(self, *args, **kwargs):
+         self.user = kwargs.pop('user',None)
+         super(ChangePasswordForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        print('old password',self.cleaned_data.get('password'))
+        if not self.user.check_password(self.cleaned_data.get('password')):
+            raise forms.ValidationError({'password':'Current Password do not match.'})
+        else:
+            if self.cleaned_data.get('confirm_password', None) != self.cleaned_data.get('new_password', None):
+                raise forms.ValidationError({'confirm_password':'New password and confirm password not matches.'})
+
+    class Meta:
+        model = MyUser
+        fields = ['password','new_password','confirm_password']

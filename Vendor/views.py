@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from django.contrib.auth import update_session_auth_hash 
 from django.db.models import Count,Sum
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.conf import settings
@@ -268,13 +269,23 @@ class ChangePassword(View):
 		form = ChangePasswordForm(request.POST, user=request.user)
 		if form.is_valid():
 			user = request.user
-			user.set_password(request.POST.get('new_password', user.password))
-			user.save()
-			update_session_auth_hash(request, form.user)
+			check = user.check_password(request.POST.get('password'))
+			if check:
+				user.set_password(request.POST.get('new_password', user.password))
+				user.save()
+				update_session_auth_hash(request, form.user)
+			else:
+				messages.error(request, "Current Password do not match.")
+				return render(request,'vendor/change_password.html',{"forms":form})
 			messages.success(request, "Password changed successfully.")
-			return redirect("Vendor:vendor_dashboard")
+			return redirect("Vendor:vendor-dashboard")
 		else:
 			return render(request,'vendor/change_password.html',{"forms":form})
+
+	def get(self,request):
+		return render(request,'vendor/change_password.html')
+
+
 	
 class OrderHistory(View):
 	"""docstring for OrderHistory"""

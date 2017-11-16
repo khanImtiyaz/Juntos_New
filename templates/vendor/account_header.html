@@ -12,6 +12,7 @@
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
       <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="{% static 'js/jquery.js' %}"></script>
       <script src="{% static 'js/bootstrap.min.js' %}"></script>
       <script src="{% static 'js/pusher.js'%}"></script>
       <script src="{% static 'js/canvasjs.min.js' %}"></script>
@@ -20,12 +21,17 @@
       <script src="{% static 'js/jquery.validate.min.js' %}"></script>
       <script src="{% static 'js/custom.js' %}"></script>
       <script src="{% static 'js/loader.js'%}"></script>
+      <script src="{% static 'js/jquery.js' %}"></script>
+      <script src="{% static 'theme/theme.js' %}"></script>
+      <script src="{% static  'js/bootstrap.js' %}"></script>
+      <script src="{% static 'js/jquery.validate.min.js' %}"></script>
       <link rel="stylesheet" type="text/css" href="{% static 'js/datetimepicker/jquery.datetimepicker.css' %}"/>
       <script src="{% static 'js/datetimepicker/build/jquery.datetimepicker.full.js' %}"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
       <script src="{% static 'js/bootstrap.min.js' %}"></script>
       <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDurDU6FM4D6yrmVpEF9LqcCmxqcLhG3AU&libraries=places"></script>
       <script src="{% static 'js/jquery.geocomplete.js' %}"> </script>
+
    </head>
    <body>
       <section class="flash-panel">
@@ -55,7 +61,7 @@
                            </li>
                            <li>
                               <span class="user-active">
-                              {% if user.avatar.name%}
+                              {% if user.avatar.name %}
                               <img src="{{user.avatar.name}}" class="img-responsive" alt="" style="display: initial;" /> {% else %}
                               <img src="{% static 'img/dummy.png' %}" class="img-responsive" style="display: initial;"/>
                               {% endif %}
@@ -69,7 +75,7 @@
                                  <li><a href="{% url 'Vendor:vendor-profile-view'%}">My Profile</a></li>
                                  {% endif %}
                                  <li><a href="{% url 'Vendor:change-password' %}">Change Password</a></li>
-                                 <li><a href="{% url 'Vendor:vendor-logout' %}">Log Out</a></li>
+                                 <li><a href="{% url 'Juntos:logout' %}">Log Out</a></li>
                               </ul>
                            </li>
                         </ul>

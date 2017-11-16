@@ -403,13 +403,13 @@ class Advertisement(models.Model):
                     break
         super(Advertisement, self).save()
 
-# class AdvertisementImage(models.Model):
-#     image = CloudinaryField("Image")
-#     advertisement_images = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name="advertisement_all_images")
-#     updated = models.DateTimeField(auto_now=True)
-#     created_at = models.DateTimeField(auto_now=True)
-#     class Meta:
-#         verbose_name_plural = 'Manage Advertisement Image'
+class AdvertisementImage(models.Model):
+    image = CloudinaryField("Image")
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name="advertisement_images")
+    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural = 'Advertisement Image'
 
 class PaymentMethod(models.Model):
     case_on_delivery = models.BooleanField(('COD payment option'),default=False)
