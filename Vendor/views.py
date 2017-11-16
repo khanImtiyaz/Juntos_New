@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from cloudinary.uploader import upload
+from cloudinary.uploader import upload, upload_resource
 import os
 # from django.http import QueryDicta
 import base64
@@ -406,7 +406,6 @@ class AddProduct(View):
 	def post(self,request):
 		image_Array = []
 		params = request.POST
-		print("Parameters",params)
 		files = request.FILES
 		params['vendor'] = request.user.id
 		if 'product_id' in params:
@@ -428,8 +427,6 @@ class AddProduct(View):
 			if request.POST.get('total_color',None):
 				totalColor = int(request.POST.get('total_color',None))
 				responseTotalColors = int(request.POST.get('response_total_color',0))
-				print("responseTotalColors",responseTotalColors)
-				print("totalColor",totalColor)
 				if totalColor != responseTotalColors:
 					while totalColor >= 1:
 						print("While Total Color",totalColor)
@@ -710,6 +707,7 @@ class UpdateProfile(View):
 		user = request.user
 		if user.is_vendor:
 			params = request.POST
+			files = request.FILES
 			form = ProfileVendorForm(request.POST or None)
 			if form.is_valid():
 				user.first_name = params['first_name']
@@ -719,6 +717,10 @@ class UpdateProfile(View):
 				user.pincode = params['pincode']
 				user.account.legal_name = params['legal_name']
 				user.state = params['state']
+				if "image" in files:
+					for img in files.getlist('image'):
+						upresult = upload_resource(img)
+						user.avatar = upresult
 				user.save()
 				bank_detail = user.account
 				bank_detail.business_name = params['business_name']
