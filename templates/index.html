@@ -179,37 +179,37 @@
          <div class="col-md-9 col-lg-9">
 
             {% if recomended_product %}
-            {% include 'partial-recomended_product.html' with recomended_product=recomended_product %}
+            {% include 'partial-recomended-product.html' with recomended_product=recomended_product %}
             <div class="bdr-bottom"></div>
             {% endif %}
-
+            
             {% if all_recommendeds %}
-            {% include 'partial-all_recommended_product.html' with all_recommendeds=all_recommendeds %}
+            {% include 'partial-all-recommended-product.html' with all_recommendeds=all_recommendeds %}
             {% endif %}
 
             {% if product_list %}
-            {% include 'partial-new_product_list.html' with product_list=product_list %}
+            {% include 'partial-new-product-list.html' with product_list=product_list %}
             {% endif%}
 
             {% if all_product_list %}
-            {% include 'partial-all_product_list.html' with all_product_list=all_product_list %}
+            {% include 'partial-all-product-list.html' with all_product_list=all_product_list %}
             {% endif%}
 
             {% if sub_cats %}
-            {% include 'partial-sub_category_product.html' with sub_cats=sub_cats header_name=header_name contacts=contacts %}
+            {% include 'partial-sub-category-product.html' with sub_cats=sub_cats header_name=header_name contacts=contacts %}
             {% endif %}
 
             {% if advertisements %}
             <div class="recomen-panel">
-               <h2><a class="pull-right view-det" href=""></a></h2>
+               <h2><a class="pull-right view-det" href=""></a>Advertisment Section</h2>
                <div class="row">
                   {% for sub in advertisements %}
-                  <div class="col-sm-6 col-lg-6 pro-main">
+                  <div class="col-sm-4 col-lg-4 pro-main">
                      <div class="prodct-anchor pos-rel">
                         <div class="new-prod"><a href="">New</a></div>
-                        <a href="{% url 'Juntos:ad_detail' sub.slug %}">
+                        <a href="{% url 'Juntos:advertisment-detail' sub.slug %}">
                            <div class="product-panel1">
-                              <span><img src="{{sub.image}}" alt=""/></span>
+                              <span><img src="{{sub.advertisement_images.first.image.url}}" alt=""/></span>
                            </div>
                         </a>
                         <h3>{{sub.title}}</h3>

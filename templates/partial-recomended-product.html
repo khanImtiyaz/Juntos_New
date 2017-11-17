@@ -2,21 +2,21 @@
 <div class="recomen-panel new-recomended_product">
    <h2 class="h2">Recommended by our Juntos experts<a class="pull-right view-det" href="{% url 'Juntos:recommended-services' %}">View All</a></h2>
    <div class="xs-row clearfix">
-      {% for adv_obj in recomended_product %}
+      {% for recommend in recomended_product %}
       <div class="col-md-3 col-lg-4 pro-main">
          <div class="prodct-anchor">
-            <a href="{% url 'Juntos:advertisment-detail' adv_obj.slug %}">
+            <a href="{% url 'Juntos:product-detail' recommend.slug %}">
                <div class="product-panel1">
-                  <span><img style="padding: 0;" src="{{adv_obj.advertisement_images.first.image.url}}" alt=""/></span>
+                  <span><img style="padding: 0;" src="{{recommend.image.0}}" alt=""/></span>
                </div>
             </a>
-            <h3>{{adv_obj.title | truncatechars:28}}</h3>
+            <h3>{{recommend.title | truncatechars:28}}</h3>
             <div class="pro-price">
-               <div class="tbl-cell d1p1">{% if adv_obj.price %}
-                  {% if adv_obj.price %}
-                  ${{adv_obj.price|floatformat:2}}
+               <div class="tbl-cell d1p1">{% if recommend.price %}
+                  {% if recommend.price %}
+                  ${{recommend.price|floatformat:2}}
                   {% else %}
-                  {{adv_obj.price}}
+                  {{recommend.price}}
                   {% endif %}
                   {% endif %}
                </div>

@@ -79,11 +79,12 @@ def landingpage(request):
         return response_data
 
 def home(request):
-	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
+	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True))
 	offers = Offer.objects.all()
 	hotItems = OrderItems.objects.all().distinct('product')
 	advertiseProducts = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
-	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"recomended_product":advertiseProducts})
+	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
+	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
 # def product_detail(request, slug=None):
 #     # try:
@@ -1200,23 +1201,22 @@ class AdvertisementDetail(View):
 		sb_ct= SubCategory.objects.filter(sub_category_tag="VP")
 		advertisement = Advertisement.objects.get(slug=slug)
 		# total_review = advertisement.reviews_adv.all()
-		# image_data = AdvertisementImage.objects.filter(advertisement_images=advertisement.id)
 		related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location).exclude(slug=slug)
 		return render(request, 'detail_advertisement.html', {'ads_details':advertisement, 'related_services':related_services,'res_cat':sb_ct})
 
 		
-@login_required(login_url="/")
-def advertisments_review(request):
-    params = request.POST
-    slug = params['slug']
-    adv = Advertisement.objects.get(id=params['advertisement_reviews'])
-    review = Advertisment_Review.objects.create(advertisement_reviews=adv,
-                                             content=params['content'],
-                                             rating_value=params['rating_value'],
-                                             given_by=request.user)
+# @login_required(login_url="/")
+# def advertisments_review(request):
+#     params = request.POST
+#     slug = params['slug']
+#     adv = Advertisement.objects.get(id=params['advertisement_reviews'])
+#     review = Advertisment_Review.objects.create(advertisement_reviews=adv,
+#                                              content=params['content'],
+#                                              rating_value=params['rating_value'],
+#                                              given_by=request.user)
     
-    return redirect("customer:ad_detail", slug)
-    # return redirect("customer:advertisments_review")
+#     return redirect("customer:ad_detail", slug)
+
 class AdvertismentsReview(View):
 	"""docstring for AdvertismentsReview"""
 	def get(self,request):
