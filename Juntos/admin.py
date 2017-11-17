@@ -1,14 +1,15 @@
 from django.contrib import admin
-from django import forms
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.utils.safestring import mark_safe
-from ckeditor.widgets import CKEditorWidget
 from django.contrib.admin import SimpleListFilter
+from django.utils.safestring import mark_safe
 from django.http import HttpResponse
+from django import forms
+from ckeditor.widgets import CKEditorWidget
 from nested_inline.admin import NestedStackedInline, NestedModelAdmin
 import nested_admin
 import cloudinary
+from cloudinary.uploader import upload, upload_resource
 admin.site.unregister(Group)
 import json
 from templated_email import send_templated_mail
@@ -118,31 +119,30 @@ admin.site.register(Services, ServicesAdmin)
 
 
 
-class AdvertisementImageInline(nested_admin.NestedStackedInline):
+class AdvertisementImageInline(admin.TabularInline):
     model = AdvertisementImage
     fields = ['image']
     extra = 1
+
 
 class AdvertisementForm(forms.ModelForm):
     description = forms.CharField(widget=CKEditorWidget())
     
     class Meta:
         model = Advertisement
-        fields = ["email", "subs_category", "type_of_services", "title", "description","name","location","price", "image","mobile","recommended"]
+        fields = ["title","subs_category", "type_of_services","description","price","name","email","mobile","location","recommended"]
+
     def __init__(self, *args, **kwargs):
         super(AdvertisementForm, self).__init__(*args, **kwargs)
         self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
 
+
 class AdvertisementAdmin(nested_admin.NestedModelAdmin):
-    list_display = ["email", "subs_category", "title","name", "location", "price", "description", "image"]
-    # form = AdvertisementForm
-    # inlines = [AdvertisementImageInline]
-    def save_model(self, request, obj, form, change):
-        if obj.image:
-            if "googleusercontent.com" not in str(obj.image) and "res.cloudinary.com" not in str(obj.image) and "fbcdn.net" not in str(obj.image):
-                upresult = upload(obj.image)
-                obj.image = upresult['url']
-        obj.save()
+	list_display = ["name", "email","title","description","price"]
+	inlines = [AdvertisementImageInline]
+	form = AdvertisementForm
+
+
 admin.site.register(Advertisement, AdvertisementAdmin)
 
 class ProductImageInline(nested_admin.NestedStackedInline):

@@ -44,13 +44,13 @@ INSTALLED_APPS = [
     'templated_email',
     'social_django',
     'cloudinary',
-    'nested_admin',
-    'nested_inline',
     'ckeditor',
     'Juntos',
     'Vendor',
     'Static_Model',
     'Log',
+    'nested_admin',
+    'nested_inline',
 ]
 
 MIDDLEWARE_CLASSES = [

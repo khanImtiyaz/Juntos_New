@@ -52,6 +52,10 @@ urlpatterns = [
 	url(r'^order$', views.CODOrder.as_view(), name="cod-order"),
 	url(r'^order-placed$', views.OrderPlaced.as_view(), name='order-placed'),
 	url(r'^cancel-order-refund/(?P<order>[0-9]+)$', views.CancelOrderAndRefund.as_view(), name='cancel-order-and-refund'),
+	url(r'^all-service/$', views.Recommended.as_view(), name="recommended-services"),
+	url(r'^advertisements/(?P<slug>.+)/$', views.AdvertisementDetail.as_view(), name='advertisment-detail'),
+	url(r'^advertisments-review/$', views.AdvertismentsReview.as_view(), name="advertisments-review"),
+
 
 ]
 

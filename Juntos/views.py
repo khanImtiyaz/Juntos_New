@@ -82,7 +82,8 @@ def home(request):
 	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False))
 	offers = Offer.objects.all()
 	hotItems = OrderItems.objects.all().distinct('product')
-	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems})
+	advertiseProducts = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
+	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"recomended_product":advertiseProducts})
 
 # def product_detail(request, slug=None):
 #     # try:
@@ -1143,7 +1144,90 @@ class CancelOrderAndRefund(View):
 		order_obj.save()
 		return redirect("Juntos:view-order")
 
+
+def recommended(request):
+    all_recommendeds = Advertisement.objects.filter(recommended=True)
+    if all_recommendeds.exists():
+        paginator = Paginator(all_recommendeds, 12)
+        all_category=Category.objects.all()
+        index=1
+        page = request.GET.get('page')
+        try:
+            all_recommendeds = paginator.page(page)
+        except PageNotAnInteger:
+            all_recommendeds = paginator.page(1)
+        except EmptyPage:
+            all_recommendeds = paginator.page(paginator.num_pages)
+        return render (request, 'index.html',{"all_recommendeds":all_recommendeds})
+    else:
+        messages.info(request,"no recommended avaialable")
+        return redirect("Peru:home")
+
+class Recommended(View):
+	"""docstring for Recommended"""
+	def get(self,request):
+		all_recommendeds = Advertisement.objects.filter(recommended=True)
+		if all_recommendeds.exists():
+			paginator = Paginator(all_recommendeds, 12)
+			all_category=Category.objects.all()
+			index=1
+			page = request.GET.get('page')
+			try:
+				all_recommendeds = paginator.page(page)
+			except PageNotAnInteger:
+				all_recommendeds = paginator.page(1)
+			except EmptyPage:
+				all_recommendeds = paginator.page(paginator.num_pages)
+				return render (request, 'index.html',{"all_recommendeds":all_recommendeds})
+		else:
+			messages.info(request,"No recommended avaialable")
+			return redirect("Juntos:home")
+
+
+# def advertisement_detail(request, slug=None,tx=None,amt=None):
+#     sb_ct= Sub_Category.objects.filter(sub_category_tag="VP")
+#     advertisement = Advertisement.objects.get(slug=slug)
+#     total_review = advertisement.reviews_adv.all()
+#     image_data = Advertisement_Image.objects.filter(advertisement_images=advertisement.id)
+#     print("image_data",image_data)
+#     related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location).exclude(slug=slug)
+#     return render(request, 'detail_advertisement.html', {'all_image':image_data,'ads_details':advertisement, 'related_services':related_services, 'total_review':total_review, 'res_cat':sb_ct})
+
+
+class AdvertisementDetail(View):
+	"""docstring for AdvertisementDetail"""
+	def get(self,request,slug=None,tx=None,amt=None):
+		sb_ct= SubCategory.objects.filter(sub_category_tag="VP")
+		advertisement = Advertisement.objects.get(slug=slug)
+		# total_review = advertisement.reviews_adv.all()
+		# image_data = AdvertisementImage.objects.filter(advertisement_images=advertisement.id)
+		related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location).exclude(slug=slug)
+		return render(request, 'detail_advertisement.html', {'ads_details':advertisement, 'related_services':related_services,'res_cat':sb_ct})
+
 		
+@login_required(login_url="/")
+def advertisments_review(request):
+    params = request.POST
+    slug = params['slug']
+    adv = Advertisement.objects.get(id=params['advertisement_reviews'])
+    review = Advertisment_Review.objects.create(advertisement_reviews=adv,
+                                             content=params['content'],
+                                             rating_value=params['rating_value'],
+                                             given_by=request.user)
+    
+    return redirect("customer:ad_detail", slug)
+    # return redirect("customer:advertisments_review")
+class AdvertismentsReview(View):
+	"""docstring for AdvertismentsReview"""
+	def get(self,request):
+		params = request.POST
+		slug = params['slug']
+		adv = Advertisement.objects.get(id=params['advertisement_reviews'])
+		review = Advertisment_Review.objects.create(advertisement_reviews=adv,content=params['content'],rating_value=params['rating_value'],given_by=request.user)
+		return redirect("Juntos:advertisment-detail", slug)
+
+	
+				
 	
 						
 														
