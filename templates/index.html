@@ -122,10 +122,10 @@
          <div class="col-md-9 col-lg-9">
 
             {% if advertisements %}
-            <div class="recomen-panel new-recomended_product">
+            <div class="recomen-panel">
                <!-- <h2><a class="pull-right view-det" href=""></a>Advertisment Section</h2> -->
                <h2 class="h2">Advertisment Section<a class="pull-right view-det" href="{% url 'Juntos:recommended-services' %}">View All</a></h2>
-               <div class="xs-row clearfix">
+               <div class="row">
                   {% for sub in advertisements %}
                   <div class="col-sm-4 col-lg-4 pro-main">
                      <div class="prodct-anchor pos-rel">
@@ -148,15 +148,6 @@
             </div>
             {% endif %}
 
-            <!-- {% if recomended_product %}
-            {% include 'partial-recomended-product.html' with recomended_product=recomended_product %}
-            <div class="bdr-bottom"></div>
-            {% endif %}
-
-            {% if all_recommendeds %}
-            {% include 'partial-all-recommended-product.html' with all_recommendeds=all_recommendeds %}
-            {% endif %} -->
-
             {% if product_list %}
             {% include 'partial-new-product-list.html' with product_list=product_list %}
             {% endif%}
@@ -168,11 +159,18 @@
             {% if sub_cats %}
             {% include 'partial-sub-category-product.html' with sub_cats=sub_cats header_name=header_name contacts=contacts %}
             {% endif %}
-
-            
-            
          </div>
       </div>
    </div>
 </section>
 {% endblock %}
+
+
+<!-- {% if recomended_product %}
+            {% include 'partial-recomended-product.html' with recomended_product=recomended_product %}
+            <div class="bdr-bottom"></div>
+            {% endif %}
+
+            {% if all_recommendeds %}
+            {% include 'partial-all-recommended-product.html' with all_recommendeds=all_recommendeds %}
+            {% endif %} -->
