@@ -1111,7 +1111,7 @@ li.wishlist_icn { margin-left: 15px}
 
 /****************02/03/17************************/
 
-#quote-carousel .item img{width:auto; max-width: 210px;}
+#quote-carousel .item img{width:auto; /*max-width: 210px;*/}
 
 .nav-right ul {
     margin: 5px 15px 0px;

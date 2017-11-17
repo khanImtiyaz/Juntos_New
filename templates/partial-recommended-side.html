@@ -1,0 +1,62 @@
+<div  class="hotdeal-sidebar" id="slider2">
+   <div class="row">
+      <div class="col-md-12" data-wow-delay="0.2s">
+         <h2>Recommended</h2>
+         <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+            <div class="carousel-inner text-center">
+               {% for item in recomended_product %}
+               {% if forloop.first %}
+               <div class="item active">
+                  <div class="row">
+                     <div class="col-sm-12 pro-highlight text-center">
+                        <div class="prod-image text-center">
+                           <img src="{{item.image.0}}" alt="" />
+                        </div>
+                        <h3 class="text-center" style="color: #0066c0;margin-top: 5px;">{{item.title}}</h3>
+                        <div class="pr-pro text-center">
+                           {% if item.selling_price %}
+                           ${{item.selling_price |floatformat:2}}
+                           {% else %}
+                           ${{item.price |floatformat:2}}
+                           {% endif %}
+                        </div>
+                        {% if item.sub_cat_tag != "CP" %}
+                        <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                        {% else %}
+                        <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+               {% else %}
+               <div class="item">
+                  <div class="row" style="color: red;">
+                     <div class="col-sm-12 pro-highlight text-center">
+                        <div class="prod-image text-center">
+                           <img src="{{item.image.0}}" alt="" />
+                        </div>
+                        <h3 class="text-center" style="color: #0066c0;margin-top: 5px;">{{item.title}}</h3>
+                           <div class="pr-pro text-center">
+                              {% if item.selling_price %}
+                                 ${{item.selling_price|floatformat:2}}
+                              {% else %}
+                                 ${{item.price|floatformat:2}}
+                              {% endif %}
+                           </div>
+                           {% if item.sub_cat_tag != "CP" %}
+                           <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                           {% else %}
+                           <a href="{% url 'Juntos:product-detail' item.slug %}" class="btn btn-cart" > Producto</a>
+                           {% endif %}
+                     </div>
+                  </div>
+               </div>
+               {% endif %}
+               {% endfor %}
+            </div>
+            <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+            <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+         </div>
+      </div>
+   </div>
+</div>
