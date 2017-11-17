@@ -129,11 +129,11 @@
                   <div class="recommemd-prod">
                      <a href="{% url 'Juntos:product-detail' r.slug %}">
                         <div class="recomd-l-img">
-                           <img src="{{r.image}}">
+                           <img src="{{r.image.0}}">
                         </div>
                      </a>
                      <div class="recomd-r-img">
-                        <h3>{{r.title}}</h3>
+                        <h5 style="color: #0066c0;padding-left: 5px;">{{r.title}}</h5>
                         {% for review in r.total_review %}
                         <div class="star-rank">
                            {% if review.rating_value %}
@@ -147,8 +147,8 @@
                            {% endif %}
                         </div>
                         {% endfor %}
-                        <div class="recom-price">
-                           ${{r.price}}
+                        <div class="recom-price" style="color:#c9223e;padding-left: 5px;">
+                           ${{r.price|floatformat:2}}
                         </div>
                      </div>
                   </div>

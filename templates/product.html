@@ -23,15 +23,20 @@
                      <div class="new-related-pro">
                         <div class="inner-review-prodct">
                            <div class="child-new-rel">
-                              <img alt="" src="{{related_pro.image.name}}">
+                              <img alt="" src="{{related_pro.image.0}}">
                            </div>
                         </div>
                         <div class="prodct-detl">
-                           <h3>{{related_pro}}</h3>
+                           <h3 style="height: 48px;overflow: hidden;">{{related_pro}}</h3>
                            <div class="pro-price text-center clearfix">
+                           {% if related_pro.selling_price %}
                               <span class="red">$ {{related_pro.selling_price |floatformat:2}}</span>
                               <span>$ {{related_pro.price |floatformat:2}}</span>
+                          {% else %}
+                            <span class="red">$ {{related_pro.price |floatformat:2}}</span>
+                          {% endif %}
                            </div>
+                          
                         </div>
                      </div>
                   </a>

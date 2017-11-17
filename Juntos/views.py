@@ -119,10 +119,7 @@ def home(request):
 #                 'loop_count':range(1,6)}
 #     return render(request, 'product.html',context)
 
-class ProductDetail(View):
-	"""docstring for ProductDetail"""
-	def get(self, request):
-		return render(request, 'product.html')
+
 		
 # def product_image_view(request, color):
 #     images = Product_Image.objects.filter(product_colr_id=color)
@@ -221,16 +218,18 @@ class ProceedCart(View):
 		if user.is_authenticated and user.is_customer:
 			total_price = 0.0
 			product_cart = Cart.objects.filter(user=user)
+			recomended_product = ProductsManagement.objects.filter(recommended=True).order_by("-created_at")[:3]
 			if product_cart:
 				total_price = product_cart.aggregate(Sum('price'))['price__sum']
 				total_price = total_price + (total_price * 18)/100
 			else:
 				total_price = None
-			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price})
+			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price,"recomended_product":recomended_product})
 
 	def post(self,request):
 		card_Array = []
 		total_price = 0.0
+		recomended_product = ProductsManagement.objects.filter(recommended=True).order_by("-created_at")[:3]
 		if 'card_data' in request.POST and request.POST['card_data']:
 			for items in ast.literal_eval(request.POST['card_data']):
 				product = ProductsManagement.objects.get(id=items['product_id'])
@@ -244,7 +243,7 @@ class ProceedCart(View):
 				})
 				total_price = total_price + ((product.selling_price if product.selling_price else product.price) * int(items['quantity']))
 			total_price  = total_price + (total_price * 18)/100
-			return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price})
+			return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price,"recomended_product":recomended_product})
 
 
 # @login_required(login_url="/")
@@ -747,7 +746,8 @@ class ProductDetail(View):
 	def get(self,request,slug=None):
 		queryset = ProductsManagement.objects.all()
 		product = get_object_or_404(queryset,slug=slug)
-		return render(request, 'product.html',{"details":product})	
+		relatedProducts = ProductsManagement.objects.filter(subs_category=product.subs_category).exclude(id=product.id)[:5]
+		return render(request, 'product.html',{"details":product,"related_products":relatedProducts})	
 
 
 # def view_cart(request, address=None):
