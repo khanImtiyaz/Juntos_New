@@ -180,7 +180,8 @@
 
             {% if advertisements %}
             <div class="recomen-panel new-recomended_product">
-               <h2><a class="pull-right view-det" href=""></a>Advertisment Section</h2>
+               <!-- <h2><a class="pull-right view-det" href=""></a>Advertisment Section</h2> -->
+               <h2 class="h2">Advertisment Section<a class="pull-right view-det" href="{% url 'Juntos:recommended-services' %}">View All</a></h2>
                <div class="xs-row clearfix">
                   {% for sub in advertisements %}
                   <div class="col-sm-4 col-lg-4 pro-main">
