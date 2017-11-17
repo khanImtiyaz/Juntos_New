@@ -1121,7 +1121,9 @@ li.wishlist_icn { margin-left: 15px}
 
 .carousel-inner>.item>a>img, .carousel-inner>.item>img {
     line-height: 1;
-    height: 430px;
+    /*height: 430px;*/
+    width: 100%;
+    height: auto;
   }
 
  .hovereffect {
