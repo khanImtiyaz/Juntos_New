@@ -178,27 +178,6 @@
          </div>
          <div class="col-md-9 col-lg-9">
 
-            {% if recomended_product %}
-            {% include 'partial-recomended-product.html' with recomended_product=recomended_product %}
-            <div class="bdr-bottom"></div>
-            {% endif %}
-            
-            {% if all_recommendeds %}
-            {% include 'partial-all-recommended-product.html' with all_recommendeds=all_recommendeds %}
-            {% endif %}
-
-            {% if product_list %}
-            {% include 'partial-new-product-list.html' with product_list=product_list %}
-            {% endif%}
-
-            {% if all_product_list %}
-            {% include 'partial-all-product-list.html' with all_product_list=all_product_list %}
-            {% endif%}
-
-            {% if sub_cats %}
-            {% include 'partial-sub-category-product.html' with sub_cats=sub_cats header_name=header_name contacts=contacts %}
-            {% endif %}
-
             {% if advertisements %}
             <div class="recomen-panel">
                <h2><a class="pull-right view-det" href=""></a>Advertisment Section</h2>
@@ -222,6 +201,29 @@
                </div>
             </div>
             {% endif %}
+
+            {% if recomended_product %}
+            {% include 'partial-recomended-product.html' with recomended_product=recomended_product %}
+            <div class="bdr-bottom"></div>
+            {% endif %}
+
+            {% if all_recommendeds %}
+            {% include 'partial-all-recommended-product.html' with all_recommendeds=all_recommendeds %}
+            {% endif %}
+
+            {% if product_list %}
+            {% include 'partial-new-product-list.html' with product_list=product_list %}
+            {% endif%}
+
+            {% if all_product_list %}
+            {% include 'partial-all-product-list.html' with all_product_list=all_product_list %}
+            {% endif%}
+
+            {% if sub_cats %}
+            {% include 'partial-sub-category-product.html' with sub_cats=sub_cats header_name=header_name contacts=contacts %}
+            {% endif %}
+
+            
             
          </div>
       </div>
