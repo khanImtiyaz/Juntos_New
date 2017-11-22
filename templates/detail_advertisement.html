@@ -67,18 +67,14 @@
                         <td>Description</td>
                         <td>{{ads_details.description | truncatechars:500 | safe}}</td>
                      </tr>
+                     {% if ads_details.price %}
                      <tr>
                         <td>Price</td>
                         <td>
-                           {% if ads_details.price %}
-                           {% if ads_details.price %}
-                           $ {{ads_details.price |floatformat:2}}
-                           {% else %}
-                           {{ads_details.price}}
-                           {% endif %}
-                           {% endif %}
+                           ${{ads_details.price |floatformat:2}}
                         </td>
                      </tr>
+                     {% endif %}
                      <tr>
                         <td colspan="2" ><b>Offered by:</b></td>
                      </tr>

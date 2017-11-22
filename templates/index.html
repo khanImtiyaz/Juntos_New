@@ -129,11 +129,12 @@
                   {% for sub in advertisements %}
                   <div class="col-sm-4 col-lg-4 pro-main">
                      <div class="prodct-anchor pos-rel">
-                        <div class="new-prod"><a href="">New</a></div>
+                        
                         <a href="{% url 'Juntos:advertisment-detail' sub.slug %}">
                            <div class="product-panel1">
                               <span><img src="{{sub.advertisement_images.first.image.url}}" alt=""/></span>
-                           </div>
+                              <span class="green-sticker"> New </span>
+                            </div>
                         </a>
                         <h3>{{sub.title}}</h3>
                         <div class="Description">

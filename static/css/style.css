@@ -27,11 +27,11 @@ border-radius: 4px; -webkit-box-shadow: none;  box-shadow: none;  -webkit-transi
 .stuff_link:hover{color: #ffffff;text-decoration:none;}
 .red-sticker{
 	position: absolute;
-    right: 0;
-    top: 0;
+    right: -5px;
+    top: -20px;
     display: block !important;
-    width: 32px;
-    height: 32px !important;
+    width: 40px;
+    height: 40px !important;
     padding-top: 5px;
     font-size: 12px;
     line-height: 12px;
@@ -49,6 +49,32 @@ border-radius: 4px; -webkit-box-shadow: none;  box-shadow: none;  -webkit-transi
     background-image: -ms-linear-gradient(to bottom,#cb0400,#a50200);
     background-image: -o-linear-gradient(to bottom,#cb0400,#a50200);
     background-image: linear-gradient(to bottom,#cb0400,#a50200);
+}
+
+.green-sticker{
+	position: absolute;
+    right: -15px;
+    top: -10px;
+    display: block !important;
+    width: 40px;
+    height: 40px !important;
+    padding-top: 14px;
+    font-size: 12px;
+    line-height: 12px;
+    text-align: center;
+    float: left;
+    color: #fff;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    background-color: #2E86C1;
+    background-image: -webkit-gradient(linear,left top,left bottom,from(#2E86C1),to(#2E86C1));
+    background-image: -webkit-linear-gradient(to bottom,#2E86C1,#2E86C1);
+    background-image: -moz-linear-gradient(to bottom,#2E86C1,#2E86C1);
+    background-image: -ms-linear-gradient(to bottom,#2E86C1,#2E86C1);
+    background-image: -o-linear-gradient(to bottom,#2E86C1,#2E86C1);
+    background-image: linear-gradient(to bottom,#2E86C1,#2E86C1);
 }
 
 .mid-section {padding:30px 0 0;}
@@ -1090,7 +1116,7 @@ body{
   }
 }
 
-.Description {padding: 7px 20px;}
+.Description {padding: 7px 20px;height: 50px;overflow: hidden;}
 .pos-rel{position: relative;}
 .new-prod{background-color: #775e02;font-style: italic;padding: 0px 30px;position: absolute;right: 0;top: 0;}
 .new-prod a{color: #fff;}
