@@ -30,10 +30,10 @@
                            <h3 style="height: 48px;overflow: hidden;">{{related_pro}}</h3>
                            <div class="pro-price text-center clearfix">
                            {% if related_pro.selling_price %}
-                              <span class="red">$ {{related_pro.selling_price |floatformat:2}}</span>
-                              <span>$ {{related_pro.price |floatformat:2}}</span>
+                              <span class="red">${{related_pro.selling_price |floatformat:2}}</span>
+                              <span>${{related_pro.price |floatformat:2}}</span>
                           {% else %}
-                            <span class="red">$ {{related_pro.price |floatformat:2}}</span>
+                            <span class="red">${{related_pro.price |floatformat:2}}</span>
                           {% endif %}
                            </div>
                           

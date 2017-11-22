@@ -32,7 +32,7 @@ JET_SIDE_MENU_COMPACT = True
 # Application definition
 
 INSTALLED_APPS = [
-    'material.theme.blue',
+    'material.theme.yellow',
     'material',
     'material.admin',
     'django.contrib.admin',
@@ -98,13 +98,6 @@ TEMPLATED_EMAIL_TEMPLATE_DIR = 'templated_email/' #use '' for top level template
 TEMPLATED_EMAIL_FILE_EXTENSION = 'email'
 
 ALLOWED_HOSTS = ['*']
-EMAIL_HOST    = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'imtiyaz.ahemad@mobiloittegroup.com'
-EMAIL_HOST_PASSWORD = '@3864khan'
-EMAIL_PORT          = 587
-EMAIL_USE_TLS       = True
-DEFAULT_FROM_EMAIL  = 'webmaster@healthondemand.com'
-EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 
