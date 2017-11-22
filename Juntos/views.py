@@ -895,8 +895,8 @@ class AddToCart(View):
 			try:
 				product_card = Cart.objects.get(product=product_obj, user=user)
 				product_card.quantity = params['quantity']
-				product_card.product_size = params.get('size',None)
-				product_card.product_color = params.get('color',None)
+				product_card.product_size = params.get('size',product_card.product_size)
+				product_card.product_color = params.get('color',product_card.product_color)
 				product_card.price = price_on_cart
 				product_card.save()
 			except Exception as e:

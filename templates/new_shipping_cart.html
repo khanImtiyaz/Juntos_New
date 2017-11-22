@@ -116,7 +116,7 @@
                   </div>
                   <div id="demo" class="collapse">
                      <div class="form-group">
-                        <input type="text" class="form-control" placeholder="PIN Code" pattern="[0-9]{6}" maxlength=6"">
+                        <input type="text" class="form-control" placeholder="Enter PIN/ZIP Code" pattern="[0-9]{6}" maxlength=6"">
                      </div>
                      <button type="submit" class="btn btn-default" style="background: #3498DB;color:white">Get Estimate</button>
                   </div>
@@ -165,6 +165,11 @@
 <script type="text/javascript">
    $('.sel').on('change',function() {
        quant_Array = $(this).val().split('_');
+       {% if user.is_customer %}
+          updateCart(quant_Array)
+       {% else %}
+          updatelocalStorageCart(quant_Array)
+       {% endif %}
        previous_amount = parseFloat($("#product_"+quant_Array[1]).text())
        $("#product_"+quant_Array[1]).text((quant_Array[0]*$("#producthid"+quant_Array[1]).val()).toFixed(2))
        new_amount = parseFloat($("#product_"+quant_Array[1]).text())
@@ -175,7 +180,56 @@
        $('#grand_payment').text(difference_amount.toFixed(2))
        $('#proceed_payment').text(difference_amount.toFixed(2))
    });
+
+
+   function updatelocalStorageCart(quant_Array){
+      var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+       Object.keys(oldItems).forEach(function(key) {
+           if (oldItems[key]['product_id'] == quant_Array[1]) {
+               oldItems[key]['quantity'] = quant_Array[0];
+           }
+       });
+       localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+       Lobibox.notify('info', {
+          position: 'top right',
+          size: 'mini',
+          sound: false,
+          title: 'Peru Juntos',
+          msg: 'Product Quantity Update'
+        });
+   }
    
+
+   function updateCart(quantity){
+      $.ajax({
+        type: 'POST',
+        url: "{% url 'Juntos:add-cart' %}",
+        dataType: 'json',
+        data: {
+          'product_id': quantity[1],
+          'quantity': quantity[0],
+          'csrfmiddlewaretoken': '{{ csrf_token }}',
+        },
+        success: function() {
+            Lobibox.notify('info', {
+              position: 'top right',
+              size: 'mini',
+              sound: false,
+              title: 'Peru Juntos',
+              msg: 'Product Quantity Update'
+            });
+        },
+        error : function(){
+          Lobibox.notify('error', {
+              position: 'top right',
+              size: 'mini',
+              sound: false,
+              title: 'Peru Juntos',
+              msg: 'Product Quantity Update'
+            });
+          }
+      });
+   }
    function add_cart_details_simple_shipp(data, product) {
        $.ajax({
            type: 'POST',
