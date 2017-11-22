@@ -27,8 +27,8 @@ border-radius: 4px; -webkit-box-shadow: none;  box-shadow: none;  -webkit-transi
 .stuff_link:hover{color: #ffffff;text-decoration:none;}
 .red-sticker{
 	position: absolute;
-    right: -5px;
-    top: -20px;
+    right: 0;
+    top: -10px;
     display: block !important;
     width: 40px;
     height: 40px !important;
