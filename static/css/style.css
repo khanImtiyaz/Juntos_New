@@ -213,7 +213,7 @@ footer ul li a {font-size:14px; color:#534201;}
 /* Indicators list style */
 .article-slide .carousel-indicators li { border: medium none; border-radius: 0; float: left; height: 60px; margin:0 10px 5px 10px!important; margin-left: 0; width: 60px; float:none; border: 1px solid #9f9f9f; background:#fff; text-align:center; overflow:hidden; }
 /* Indicators images style */
-.article-slide .carousel-indicators img { float: left; left: 0; max-height: 60px;/* max-width: 100%;*/ }
+.article-slide .carousel-indicators img { float: left; left: 0; max-height: 58px;/* max-width: 100%;*/ }
 /* Indicators active image style */
 .article-slide .carousel-indicators li.thm{border:0; width:10px; height:20px; margin:0!important; top:-23px;position:relative;}
 .article-slide .carousel-indicators li.thm {}
@@ -628,7 +628,7 @@ figure.icon-12:hover img{transform:skewX(-5deg); -webkit-transform:skewX(-5deg);
 .col-md-15 {width: 20%;    float: left; margin-bottom:25px;}
 .row.custom-row{margin-left:-25px; margin-right:-25px;}
 .new-prodct-heading{font-size: 24px;margin: 0px;padding: 0px;color: #775e02;font-weight: 400;}
-.recomen-panel {margin: 0 -15px;}
+/* .recomen-panel {margin: 0 -15px;} */
 .m-t-lr-15{margin: 0 -15px;}
 
 

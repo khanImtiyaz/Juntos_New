@@ -132,7 +132,7 @@
             <div class="col-md-4 pro-main">
                <div class="product-panel">
                   <a href="{% url 'Juntos:advertisment-detail' related_pro.slug %}">
-                  <span><img alt="" src="{{related_pro.image.name}}" style="width: 100%;min-height: 200px;"></span>
+                  <span><img alt="" src="{{related_pro.advertisement_images.first.image.url}}" style="width: 100%;min-height: 200px;"></span>
                   </a>
                   <h3>{{related_pro}}</h3>
                   <div style="margin: 10px; text-align: center;">{{related_pro.description | safe | truncatechars:100}}</div>
