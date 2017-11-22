@@ -87,7 +87,8 @@ TEMPLATES = [
                 'Juntos.context_processors.cart',
                 'Juntos.context_processors.userShippingDetail',
                 'Juntos.context_processors.unreadCount',
-                'Juntos.context_processors.bannerList'
+                'Juntos.context_processors.bannerList',
+                'Juntos.context_processors.newsSection'
             ],
         },
     },

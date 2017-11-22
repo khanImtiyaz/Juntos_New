@@ -107,6 +107,18 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
   class Meta:
     verbose_name_plural = ("Users")
 
+
+class News(models.Model):
+  """docstring for News"""
+  title = models.CharField(('Title'),max_length=100,blank=False)
+  updated = models.DateTimeField(auto_now=True)
+  created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
+
+  class Meta:
+      verbose_name = ("News")
+      verbose_name_plural = ("News")
+
+
 class Banner(models.Model):
     title = models.CharField(('Banner Tag'),max_length=100, blank=True,null=True)
     description = models.CharField(('Banner Description'), max_length=500, blank=True,null=True)

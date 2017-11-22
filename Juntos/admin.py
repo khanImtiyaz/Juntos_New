@@ -269,4 +269,11 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 admin.site.register(ProductsManagement, ProductModelAdmin)
 
 
+class NewsModelAdmin(admin.ModelAdmin):
+	list_display = ["title", "created_at"]
+
+	class Meta:
+		model = News
+
+admin.site.register(News, NewsModelAdmin)
 
