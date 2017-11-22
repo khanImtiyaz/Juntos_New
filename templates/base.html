@@ -31,12 +31,14 @@
       <section class="flash-panel">
          <div class="container">
             <a  href="" style="color: red;">
-               <p class="text-center">
+               <div class="text-center">
                   <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();" direction="left" >
                     {% for new in news%}  
-                        {{new.title}}  
-                    {% endfor %}</marquee>
-               </p>
+                    {{new.title}}
+                    <span style="margin-right: 30%;"></span>
+                    {% endfor %}
+                    </marquee>
+                </div>
             </a>
          </div>
       </section>
