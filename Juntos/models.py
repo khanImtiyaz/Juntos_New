@@ -25,7 +25,8 @@ import string
 from .choices import *
 from .twillio import *
 
-
+class TaxPercentage(models.Model):
+    tax =  models.IntegerField(('Tax Percentage'))
 
 class MyUserManager(BaseUserManager):
    def create_user(self, username=None, email=None, password=None):

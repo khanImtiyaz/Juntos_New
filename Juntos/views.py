@@ -221,10 +221,12 @@ class ProceedCart(View):
 			recomended_product = ProductsManagement.objects.filter(recommended=True).order_by("-created_at")[:3]
 			if product_cart:
 				total_price = product_cart.aggregate(Sum('price'))['price__sum']
-				total_price = total_price + (total_price * 18)/100
+				taxvalue = TaxPercentage.objects.first()
+				grand_total = total_price + (total_price * int(taxvalue.tax))/100
 			else:
 				total_price = None
-			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price,"recomended_product":recomended_product})
+				grand_total = 00.00
+			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price,"grand_total":grand_total,"recomended_product":recomended_product})
 
 	def post(self,request):
 		card_Array = []

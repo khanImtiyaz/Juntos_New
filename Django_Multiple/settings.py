@@ -88,7 +88,8 @@ TEMPLATES = [
                 'Juntos.context_processors.userShippingDetail',
                 'Juntos.context_processors.unreadCount',
                 'Juntos.context_processors.bannerList',
-                'Juntos.context_processors.newsSection'
+                'Juntos.context_processors.newsSection',
+                'Juntos.context_processors.taxValue'
             ],
         },
     },

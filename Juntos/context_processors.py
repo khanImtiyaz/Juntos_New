@@ -4,6 +4,9 @@ import datetime
 from Static_Model.models import *
 from .models import *
 
+def taxValue(value):
+    return {"tax":TaxPercentage.objects.first()}
+
 def newsSection(value):
     return {"news":News.objects.all()}
 

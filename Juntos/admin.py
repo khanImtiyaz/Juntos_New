@@ -119,6 +119,10 @@ admin.site.register(Services, ServicesAdmin)
 
 
 
+admin.site.register(TaxPercentage)
+
+
+
 class AdvertisementImageInline(admin.TabularInline):
     model = AdvertisementImage
     fields = ['image']
