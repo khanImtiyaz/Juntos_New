@@ -127,28 +127,39 @@
                <div class="row">
                   <div class="col-sm-6">
                      <div class="form-group">
-                        <label class="control-label col-sm-4 required">Expected Date</label>
+                        <label class="control-label col-sm-4">Pickup Date</label>
                         <div class="col-sm-8">
-                           <input type="text" name="shippment_date" id="shippment_date" placeholder="Expected Delivery Date" class="form-control">
+                           <input type="text" name="pickup_date" id="pickup_date" placeholder="Pickup Date" class="form-control" value="{{form.pickup_date.value}}">
+                           {% if form.errors.pickup_date %}
+                              <strong style="color:red">{{ form.errors.pickup_date | escape }}</strong>
+                           {% endif %}
                         </div>
+                        
                      </div>
                   </div>
                   <div class="col-sm-6">
                      <div class="form-group">
-                        <label class="control-label col-sm-4">Pickup Date</label>
+                        <label class="control-label col-sm-4 required">Expected Date</label>
                         <div class="col-sm-8">
-                           <input type="text" name="pickup_date" id="pickup_date" placeholder="Pickup Date" class="form-control">
+                           <input type="text" name="shippment_date" id="shippment_date" placeholder="Expected Delivery Date" class="form-control" value="{{form.shippment_date.value}}">
+                           {% if form.errors.shippment_date %}
+                              <strong style="color:red">{{ form.errors.shippment_date | escape }}</strong>
+                           {% endif %}
                         </div>
+                        
                      </div>
                   </div>
-                  </div>
-                  <div class="row">
+               </div>
+               <div class="row">
                   <div class="col-sm-6">
                      <div class="form-group">
                         <label class="control-label col-sm-4">Ready by Time</label>
                         <div class="col-sm-8">
-                           <input type="text" name="ready_by_time" id="datetimepicker1" placeholder="Ready by Time" class="form-control">
-                           <span>Time format HH:MM Exm:-06:00</span>
+                           <input type="text" name="ready_by_time" id="datetimepicker1" placeholder="Ready by Time" class="form-control" value="{{form.ready_by_time.value}}">
+                           <span>Format HH:MM eg:-06:00</span>
+                           {% if form.errors.ready_by_time %}
+                              <strong style="color:red">{{ form.errors.ready_by_time | escape }}</strong>
+                           {% endif %}
                         </div>
                      </div>
                   </div>
@@ -156,14 +167,18 @@
                      <div class="form-group">
                         <label class="control-label col-sm-4">Close Time</label>
                         <div class="col-sm-8">
-                           <input type="text" name="close_time" id="datetimepicker" placeholder="Close Time" class="form-control">
-                           <span>Time format HH:MM Exm:-07:00</span>
+                           <input type="text" name="close_time" id="datetimepicker" placeholder="Close Time" class="form-control" value="{{form.close_time.value}}">
+                           <span>Format HH:MM eg:-07:00</span>
+                           {% if form.errors.close_time %}
+                              <strong style="color:red">{{ form.errors.close_time | escape }}</strong>
+                           {% endif %}
                         </div>
+                        
                      </div>
                   </div>
                </div>
                <div class="text-right">
-                  <input name="order_id" type="hidden" value="{{order_id}}" >
+                  <input name="order_id" type="hidden" value="{{orders.id}}" >
                   <input type="submit" value="Create Invoice" class="btn btn-custom" />
                </div>
             </form>
@@ -186,8 +201,7 @@
        $("#myBtn").click(function(){
            $("#myModal").modal();
        });
-   
-         $('[data-toggle="tooltip"]').tooltip();
+      $('[data-toggle="tooltip"]').tooltip();
    });
 </script>
 {% endblock %}

@@ -325,7 +325,7 @@ class CustomerOrder(models.Model):
     expected_delivery_time = models.IntegerField(('Expected Delivery Time In Day'),default=8,blank=True,null=True)
     base_price = models.FloatField(('Total Base Price'),blank=False)
     shipping_charge = models.FloatField(('Shipping Charges'),blank=False)
-    shipping_percent = models.FloatField(('Shipping Percent'),default=5.0,blank=True,null=True)
+    shipping_percent = models.FloatField(('Shipping Percent'),default=00.00,blank=True,null=True)
     tax_charges = models.FloatField(('Tax Charges'),blank=False)
     tax_percent = models.FloatField(('tax Percent'),default=18.0,blank=True,null=True)
     discount = models.FloatField(('Discount'),default=0.0,blank=True,null=True)
@@ -431,4 +431,24 @@ class PaymentMethod(models.Model):
     product  = models.OneToOneField(ProductsManagement, on_delete=models.CASCADE, related_name="payment_method", primary_key=True)
     updated  = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
+
+
+class CustomerOrderInvoice(models.Model):
+    invoice_number = models.CharField(('Invoice Number'), max_length=100, blank=True)
+    item_order_id = models.ForeignKey(OrderItems, on_delete=models.CASCADE, related_name='itemOrderInvoice')
+    shipping_charge = models.FloatField(('Shipping charge'), blank=True, null=True)
+    shippment_date  = models.DateField(('Shippment Date'), null=True, blank=True)
+    billing_info = models.TextField(('Billing Information'), blank=True)
+    shipping_info = models.TextField(('Shipping Information'), blank=True)
+    ready_by_time = models.CharField(('Ready by Time'), max_length=10, blank=True)
+    close_time    = models.CharField(('Close Time'), max_length=10, blank=True)
+    pickup_date  = models.DateField(('Pickup Date'), null=True, blank=True)
+    payment_method = models.CharField(('Payment Method'), max_length=100, blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+    def save(self, **kwargs):
+          uid = uuid.uuid4()
+          if not self.invoice_number:
+             self.invoice_number = uid.node
+          super(CustomerOrderInvoice, self).save()
 

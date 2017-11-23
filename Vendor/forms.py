@@ -92,3 +92,13 @@ class ChangePasswordForm(forms.ModelForm):
     class Meta:
         model = MyUser
         fields = ['password','new_password','confirm_password']
+
+
+class CreateInvoiceForm(forms.Form):
+    shippment_date = forms.DateField(required=True,error_messages = {"required":"Please enter Expected Date for Delivery"})
+    pickup_date = forms.DateField(required=True,error_messages = {"required":"Please enter Pick up Date"})
+    ready_by_time = forms.CharField(required=True,error_messages = {"required":"Please enter ready by time"})
+    close_time = forms.CharField(required=True,error_messages = {"required":"Please enter Close Time"})
+
+    
+

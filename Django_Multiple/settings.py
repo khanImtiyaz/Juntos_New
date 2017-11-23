@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'Juntos',
     'Vendor',
+    'dhl_shipping',
     'Static_Model',
     'Log',
     'nested_admin',

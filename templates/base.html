@@ -250,7 +250,8 @@
                         </script>
                         {% endif %}
                         <div class="form-group">
-                           <input id="first_name" name="first_name" placeholder="Nombre completo" type="text" value="{{form.first_name.value}}" class="form-control " maxlength="30" onkeypress="return onlyAlphabets(event,this);"> {% if form.errors.first_name %}
+                           <input id="first_name" name="first_name" placeholder="Nombre completo" type="text" value="{{form.first_name.value}}" class="form-control " maxlength="30" onkeypress="return onlyAlphabets(event,this);"> 
+                           {% if form.errors.first_name %}
                            <strong style="color:red">{{ form.errors.first_name | escape }}</strong> {% endif %}
                         </div>
                         <div class="form-group">

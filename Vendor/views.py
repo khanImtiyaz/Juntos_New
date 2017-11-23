@@ -16,7 +16,7 @@ from Juntos.models import *
 from itertools import groupby
 import operator
 from .forms import *
-
+from .utils import *
 # def vendor_signup(request):
 #     form = VendorRegistrationForm1()
 #     if request.method == 'POST':
@@ -848,49 +848,79 @@ class VendorViewOrder(View):
 		return render(request, 'vendor/view-order.html')		
 
 
-@login_required(login_url="vendor:bevendor")
-def invoice_order(request):
-    user = request.user
-    if request.user.is_vendor:
-        if request.method == "POST":
-            invoice_exist = CustomerOrderInvoice.objects.filter(item_order_id__id=request.POST['order_id'])
-            if not invoice_exist.exists():
-                order_id = request.POST['order_id']
-                order_data = CustomerOrder_items.objects.get(id=order_id)
-                invoice = CustomerOrderInvoice(item_order_id=order_data)
-                invoice.shippment_date = datetime.strptime(request.POST['shippment_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
-                invoice.pickup_date = datetime.strptime(request.POST['pickup_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
-                invoice.ready_by_time = request.POST['ready_by_time']
-                invoice.close_time = request.POST['close_time']
-                invoice.shipping_charge = order_data.price*18/100
-                invoice.billing_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
-                invoice.shipping_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
-                invoice.payment_method = order_data.order_id.order_payment_type
-                invoice.save()
-                vendor_dhl = request.user
-                # print(invoice.id)
-                order_details = invoice_data(invoice.id, order_id, request)
-                dhl_service(order_details, vendor_dhl, invoice)
-                ##  Create order_details Hash
-                messages.info(request, "Invoice # {1} for order # {0} has generated.".format(order_data.order_id.order_number, invoice.invoice_number))
-                return render(request, "vendor/order-invoice.html",order_details)
-            else:
-                messages.info(request, "Invoice for the same order already exits.")
-                return redirect("vendor:order_details",request.POST['order_id'] )
-        else:
-            return redirect('vendor:vendor_dashboard')
-    else:
-        messages.error(request, "You are not authorize to access this page.")
-        return redirect('vendor:bevendor')
+# @login_required(login_url="vendor:bevendor")
+# def invoice_order(request):
+#     user = request.user
+#     if request.user.is_vendor:
+#         if request.method == "POST":
+#             invoice_exist = CustomerOrderInvoice.objects.filter(item_order_id__id=request.POST['order_id'])
+#             if not invoice_exist.exists():
+#                 order_id = request.POST['order_id']
+#                 order_data = CustomerOrder_items.objects.get(id=order_id)
+#                 invoice = CustomerOrderInvoice(item_order_id=order_data)
+#                 invoice.shippment_date = datetime.strptime(request.POST['shippment_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
+#                 invoice.pickup_date = datetime.strptime(request.POST['pickup_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
+#                 invoice.ready_by_time = request.POST['ready_by_time']
+#                 invoice.close_time = request.POST['close_time']
+#                 invoice.shipping_charge = order_data.price*18/100
+#                 invoice.billing_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
+#                 invoice.shipping_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
+#                 invoice.payment_method = order_data.order_id.order_payment_type
+#                 invoice.save()
+#                 vendor_dhl = request.user
+#                 # print(invoice.id)
+#                 order_details = invoice_data(invoice.id, order_id, request)
+#                 dhl_service(order_details, vendor_dhl, invoice)
+#                 ##  Create order_details Hash
+#                 messages.info(request, "Invoice # {1} for order # {0} has generated.".format(order_data.order_id.order_number, invoice.invoice_number))
+#                 return render(request, "vendor/order-invoice.html",order_details)
+#             else:
+#                 messages.info(request, "Invoice for the same order already exits.")
+#                 return redirect("vendor:order_details",request.POST['order_id'] )
+#         else:
+#             return redirect('vendor:vendor_dashboard')
+#     else:
+#         messages.error(request, "You are not authorize to access this page.")
+#         return redirect('vendor:bevendor')
 
-			
 class InvoiceOrder(View):
 	"""docstring for InvoiceOrder"""
 	def get(self,request):
+		print("GET----------------------")
 		return redirect("vendor:order-details",request.POST['order_id'] )
 
 	def post(self,request):
-		return redirect('Vendor:vendor-dashboard')
+		print("POST----------------------")
+		if request.user.is_vendor:
+			try:
+				invoice_exist = CustomerOrderInvoice.objects.get(item_order_id_id=int(request.POST['order_id']))
+				messages.info(request, "Invoice for the same order already exits.")
+				return redirect("Vendor:order-details",request.POST['order_id'] )
+			except Exception as e:
+				print("Exception",e)
+				form = CreateInvoiceForm(request.POST or None)
+				if form.is_valid():
+					order_data = OrderItems.objects.get(id=request.POST['order_id'])
+					invoice = CustomerOrderInvoice(item_order_id=order_data)
+					invoice.shippment_date = datetime.strptime(request.POST['shippment_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
+					invoice.pickup_date = datetime.strptime(request.POST['pickup_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
+					invoice.ready_by_time = request.POST['ready_by_time']
+					invoice.close_time = request.POST['close_time']
+					invoice.shipping_charge = order_data.shipping_charge
+					invoice.billing_info = order_data.order.shipping_address.id
+					invoice.shipping_info = order_data.order.shipping_address.id
+					invoice.payment_method = order_data.order.order_payment_type
+					invoice.save()
+					vendor_dhl = request.user
+					dhl_service(order_data, vendor_dhl, invoice)
+					messages.info(request, "Invoice # {1} for order # {0} has generated.".format(order_data.order.order_number, invoice.invoice_number))
+					return render(request, "vendor/order-invoice.html",{"order_data":order_data,"invoice":invoice,'current_date':datetime.now()})
+				else:
+					orders = OrderItems.objects.get(id=request.POST['order_id'])
+					address = orders.order.customer.shiping_address.all().latest('created_at')
+					return render(request, 'vendor/order-details.html',{"orders":orders,"address":address,"form":form})
+		else:
+			return redirect('Juntos:home')
 
 
 										

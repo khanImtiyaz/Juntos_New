@@ -29,54 +29,54 @@ from Static_Model.models import *
 
 # Create your views here.
 
-def landingpage(request):
-    hot_items = []
-    hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
-    for deal in hot_deals:
-        prod = Products_Management.objects.get(id=deal['product_id'])
-        hot_items.append({'title':prod.title,"id":prod.id ,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
-    offers = Offer.objects.all()
-    if request.GET.get('all',None):
-        banner = Banner.objects.all()
-        product_list = Products_Management.objects.all().exclude(expire_products=0)
-        paginator = Paginator(product_list, 12)
-        all_category=Category.objects.all()
-        index=1
-        page = request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context = ({'all_product_list': products, "categorys":all_category, 'banner_list':banner, "hot_items":hot_items, "offers":offers})
-        response_data = render(request,"index.html",context)
-        if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
-            import uuid
-            token =  uuid.uuid4().hex[:16].upper()
-            response_data.set_cookie('add_card_token', token)
-        return response_data
-    else:
-        recomended_product = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
-        banner = Banner.objects.all()
-        product_list = Products_Management.objects.all().order_by("-created_at").exclude(expire_products=0)
-        paginator = Paginator(product_list, 8)
-        all_category=Category.objects.all()
-        index=1
-        page = request.GET.get('page')
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        context = ({'product_list': products, "categorys":all_category, 'banner_list':banner, "recomended_product":recomended_product, "hot_items":hot_items,"offers":offers})
-        response_data = render(request,"index.html",context)
-        if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
-            import uuid
-            token =  uuid.uuid4().hex[:16].upper()
-            response_data.set_cookie('add_card_token', token)
-        return response_data
+# def landingpage(request):
+#     hot_items = []
+#     hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
+#     for deal in hot_deals:
+#         prod = Products_Management.objects.get(id=deal['product_id'])
+#         hot_items.append({'title':prod.title,"id":prod.id ,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
+#     offers = Offer.objects.all()
+#     if request.GET.get('all',None):
+#         banner = Banner.objects.all()
+#         product_list = Products_Management.objects.all().exclude(expire_products=0)
+#         paginator = Paginator(product_list, 12)
+#         all_category=Category.objects.all()
+#         index=1
+#         page = request.GET.get('page')
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context = ({'all_product_list': products, "categorys":all_category, 'banner_list':banner, "hot_items":hot_items, "offers":offers})
+#         response_data = render(request,"index.html",context)
+#         if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
+#             import uuid
+#             token =  uuid.uuid4().hex[:16].upper()
+#             response_data.set_cookie('add_card_token', token)
+#         return response_data
+#     else:
+#         recomended_product = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
+#         banner = Banner.objects.all()
+#         product_list = Products_Management.objects.all().order_by("-created_at").exclude(expire_products=0)
+#         paginator = Paginator(product_list, 8)
+#         all_category=Category.objects.all()
+#         index=1
+#         page = request.GET.get('page')
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         context = ({'product_list': products, "categorys":all_category, 'banner_list':banner, "recomended_product":recomended_product, "hot_items":hot_items,"offers":offers})
+#         response_data = render(request,"index.html",context)
+#         if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
+#             import uuid
+#             token =  uuid.uuid4().hex[:16].upper()
+#             response_data.set_cookie('add_card_token', token)
+#         return response_data
 
 def home(request):
 	product = ProductsManagement.objects.all().exclude(Q(expire_products=0) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True))
@@ -237,6 +237,7 @@ class ProceedCart(View):
 			else:
 				total_price = 00.00
 				grand_total = 00.00
+				total_message = ""
 			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price,"grand_total":grand_total,"total_message":total_message,"recomended_product":recomended_product})
 
 	def post(self,request):
@@ -1019,19 +1020,34 @@ class OrderPayment(View):
 
 def create_order(user, shiping_address):
 	cart = Cart.objects.filter(user=user)
-	base_price = cart.aggregate(Sum('price'))['price__sum']
-	shipping_charge = (base_price*5)/100
-	tax_charges = (base_price*18)/100
-	total_price = base_price+shipping_charge+tax_charges
-	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type='COD',delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_charge=shipping_charge,tax_charges=tax_charges,total=total_price)
-	order_items(cart,order)
+	base_price = 00.00
+	for c in cart:
+		base_price = base_price + (c.quantity*c.price)
+	tax_percent = TaxPercentage.objects.first().tax
+	tax_charges = (base_price*tax_percent)/100
+	if shiping_address.mode_of_transport=="GPS":
+		shipping_percent = 0
+		shipping_charge = 5
+	else:
+		shipping_percent = 5
+		shipping_charge = (base_price*5)/100
 
-def order_items(cart,order):
+	total_price = base_price+shipping_charge+tax_charges
+	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type='COD',delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
+	order_items(cart,order,shiping_address)
+
+def order_items(cart,order,address):
 	for obj in cart:
-		shipping_charge = (obj.price*5)/100
-		tax_charges = (obj.price*18)/100
-		total_price = obj.price+shipping_charge+tax_charges
-		OrderItems.objects.create(order=order,product=obj.product,product_color=obj.product_color,product_size=obj.product_size,quantity=obj.quantity,base_price=obj.price,shipping_charge=shipping_charge,tax_charges=tax_charges,total=total_price)
+		if address.mode_of_transport=="GPS":
+			shipping_percent = 0
+			shipping_charge = 5
+		else:
+			shipping_percent = 5
+			shipping_charge = (obj.price*obj.quantity*5)/100
+		tax_percent = TaxPercentage.objects.first().tax
+		tax_charges = (obj.price*obj.quantity*tax_percent)/100
+		total_price = (obj.price*obj.quantity)+shipping_charge+tax_charges
+		OrderItems.objects.create(order=order,product=obj.product,product_color=obj.product_color,product_size=obj.product_size,quantity=obj.quantity,base_price=obj.price*obj.quantity,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
 		obj.product.product_quantity = obj.product.product_quantity - obj.quantity
 		obj.product.save()
 		obj.delete()
