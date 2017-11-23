@@ -29,14 +29,25 @@ def cart(request):
 		if cartObj:
 			has_COD = cartObj.filter(product__payment_mode__contains=['COD'])
 			cart_sum = cartObj.aggregate(Sum('price'))
+			sub_total = float(cart_sum['price__sum'])
 			total_amount = float(cart_sum['price__sum'])+  float((cart_sum['price__sum']*int(tax.tax))/100)
-			# shipping_amount = total_amount + ((total_amount*5)/100)
-			shipping_amount = total_amount
-			
-			return {"total_amount":total_amount,"shipping_amount":shipping_amount,"cart_obj":cartObj,"delivery_date":delivery_date,"has_COD":True if len(cartObj) is len(has_COD) else False}
-		return {"total_amount":"","shipping_amount":"","cart_obj":cartObj,"delivery_date":"","has_COD":""}
+			address = ShippingAddress.objects.filter(user=request.user)
+			if address:
+				address = address.latest('created_at')
+				if address.mode_of_transport=="DHL":
+					total_message = "exclusive shipping charge"
+					shipping_amount = total_amount
+					pass
+				else:
+					shipping_amount = total_amount + int(5)
+					total_message = "inclusive all"
+			else:
+				shipping_amount = total_amount
+				total_message = "exclusive shipping charge"
+			return {"sub_total":sub_total,"total_amount":total_amount,"total_message":total_message,"shipping_amount":shipping_amount,"cart_obj":cartObj,"delivery_date":delivery_date,"has_COD":True if len(cartObj) is len(has_COD) else False}
+		return {"total_amount":00.00,"shipping_amount":00.00,"cart_obj":cartObj,"delivery_date":"","has_COD":""}
 	else:
-		return {"total_amount":{},"shipping_amount":{},"cart_obj":{},"delivery_date":{},"has_COD":{}}
+		return {"total_amount":00.00,"shipping_amount":00.00,"cart_obj":{},"delivery_date":{},"has_COD":{}}
 
 def userShippingDetail(request):
 	if request.user.is_authenticated() and request.user.is_customer:

@@ -222,11 +222,22 @@ class ProceedCart(View):
 			if product_cart:
 				total_price = product_cart.aggregate(Sum('price'))['price__sum']
 				taxvalue = TaxPercentage.objects.first()
+				address = ShippingAddress.objects.filter(user=request.user)
 				grand_total = total_price + (total_price * int(taxvalue.tax))/100
+				if address:
+					address = address.latest('created_at')
+					if address.mode_of_transport=="DHL":
+						total_message = "exclusive shipping charge"
+						pass
+					else:
+						grand_total = grand_total + int(5)
+						total_message = "inclusive all"
+				else:
+					total_message = "exclusive shipping charge"
 			else:
-				total_price = None
+				total_price = 00.00
 				grand_total = 00.00
-			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price,"grand_total":grand_total,"recomended_product":recomended_product})
+			return render(request,'new_shipping_cart.html',{"all_cart":product_cart,"total_price":total_price,"grand_total":grand_total,"total_message":total_message,"recomended_product":recomended_product})
 
 	def post(self,request):
 		card_Array = []
@@ -244,8 +255,9 @@ class ProceedCart(View):
 					"price": (product.selling_price if product.selling_price else product.price) * int(items['quantity'])
 				})
 				total_price = total_price + ((product.selling_price if product.selling_price else product.price) * int(items['quantity']))
-			total_price  = total_price + (total_price * 18)/100
-			return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price,"recomended_product":recomended_product})
+			grand_total  = total_price + (total_price * 18)/100
+			total_message = "exclusive shipping charge"
+			return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price,"grand_total":grand_total,"total_message":total_message,"recomended_product":recomended_product})
 
 
 # @login_required(login_url="/")

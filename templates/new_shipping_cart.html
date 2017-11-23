@@ -88,8 +88,16 @@
                               <div class="text-right">
                                  Tax: <span>{{tax.tax}}%</span>
                               </div>
+                              {% if address %}
+                                {% ifequal address.mode_of_transport "DHL" %}
+                                {% else %}
+                                <div class="text-right">
+                                   Shipping Charge: <span>$5</span>
+                                </div>
+                                {% endifequal %}
+                              {% endif %}
                               <div class="text-right">
-                                 Grandtotal ({{all_cart|length}} Items) :<span>$</span><span id='grand_payment'>{{grand_total |floatformat:2}}</span>
+                                 Grandtotal<small>({{total_message}})</small> :<span>$</span><span id='grand_payment'>{{grand_total |floatformat:2}}</span>
                               </div>
                            </div>
                         </td>
@@ -105,28 +113,57 @@
             </div>
             <div class="subtotal-price">
                <h2>Subtotal({{all_cart|length}} items):<span>$</span><span id='proceed_payment'>{{total_price |floatformat:2}}</span></h2>
-               <h2 id='grand_total'>Grandtotal:<span>$</span><span id='proceed_payment'>{{grand_total |floatformat:2}}</span></h2>
+               <h2 id='grand_total'>Grandtotal<small>({{total_message}})</small>:<span>$</span><span id='proceed_payment'>{{grand_total |floatformat:2}}</span></h2>
                <div class="subtotal-row">
                   <div class="proceed-checkout">
-                     <a href="javascript:void(0)" class="btn btn-blue" onclick="return Proceed(this);" >Proceed to Payment</a>
+                     <a href="javascript:void(0)" class="btn btn-blue" onclick="return Proceed(this);" >
+                     {% if user.id %}
+                        {% if address %}
+                          Proceed to Payment
+                          {% else %}
+                          Add Shipping Details
+                          {% endif %}
+                     {% else %}
+                     Login to Proceed
+                     {% endif %}
+                     </a>
                   </div>
                </div>
-               <div class="estimate-shipping">
+               <div class="estimate-shipping" style="border-bottom: solid 1px #ccc">
                   <div class="estimate-s" data-toggle="collapse" data-target="#demo">Estimate your Shipping Charge<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: black;font-size: 20px;"></i>
                   </div>
-                  <div id="demo" class="collapse">
-                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Enter PIN/ZIP Code" pattern="[0-9]{6}" maxlength=6"">
-                     </div>
-                     <button type="submit" class="btn btn-default" style="background: #3498DB;color:white">Get Estimate</button>
+                  {% if user.id %}
+                    {% if address %}
+                     <div id="demo" class="collapse" style="text-align: center">
+                       <div class="form-group">
+                          {% ifequal address.mode_of_transport "DHL" %}
+                            <input type="text" class="form-control" placeholder="Enter PIN/ZIP Code" pattern="[0-9]{6}" maxlength=6"">
+                          {% else %}
+                            <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected GPS Transport as mode of Shipping,therefore shipping charge is $5.</div>
+                          {% endifequal %}
+                      </div>
+                      {% ifequal address.mode_of_transport "DHL" %}
+                       <button type="submit" class="btn btn-default" style="background: #3498DB;color:white">Get Estimate</button>
+                       {% endifequal %}
+                    </div>
+                    {% else %}
+                    <div id="demo" class="collapse" style="text-align: center">
+                       <button type="submit" class="btn btn-default" style="background: #3498DB;color:white" onclick="return Proceed(this);">Add Shipping Detail</button>
+                    </div>
+                    {% endif %}
+                  {% else %}
+                   <div id="demo" class="collapse" style="text-align: center">
+                     <button type="submit" class="btn btn-default" style="background: #3498DB;color:white" onclick="return Proceed(this);">Login to Estimate</button>
                   </div>
+                  {% endif %}
+                 
                </div>
                <div class="estimate-shipping">
                 <div class="estimate-s" data-toggle="collapse" data-target="#tax">Estimate your tax<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: black;font-size: 20px;"></i>
                 </div>
-                <div id="tax" class="collapse">
+                <div id="tax" class="collapse" style="text-align: center">
                    <div class="form-group">Tax: <span style="float: none">{{tax.tax}}%</span></div>
-                   <button type="button" class="btn btn-default" style="background: #3498DB;color:white" id='estimateTax'>Calculate</button>
+                   <button type="button" class="btn btn-default" style="background: #3498DB;color:white" id='estimateTax'>Estimate Tax</button>
                 </div>
              </div>
             </div>

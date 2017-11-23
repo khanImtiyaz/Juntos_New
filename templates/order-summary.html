@@ -81,8 +81,8 @@
                                   <thead>
                                      <th class="text-center">Item Details</th>
                                      <th class="text-center">Quantity</th>
-                                     <th class="text-center">Sub-Total</th>
-                                     <th class="text-center">Expected Delivery Date</th>
+                                     <th class="text-center">Sub Total</th>
+                                     <th class="text-center">Delivery Date</th>
                                   </thead>
                                   <tbody>
                                      {% for item in cart_obj %}
@@ -113,7 +113,7 @@
                                   </tbody>
                                </table>
                             </div>
-                            <div class="text-center">You have Pay :<span><strong>${{shipping_amount |floatformat:2}}</strong></span></div>
+                            <div class="text-center">You have to Pay<small>({{total_message}})</small> :<span><strong>${{shipping_amount |floatformat:2}}</strong></span></div>
                             <div class='form-row pay_btn_option'>
                                <div class="row">
                                   <div class='col-md-6 col-md-offset-3'>

@@ -1783,7 +1783,7 @@ h1{
 .right-suborder span{display: inline-block;width: calc(100% - 25px);}
 .right-shopping {background: #fff;border: 1px solid #ccc;border-radius: 4px;}
 .subtotal-price {background: #eee;padding: 10px 10px 0px 10px;}
-.subtotal-price h2{margin: 0;font-size: 18px;padding: 10px 10px;text-align: center;}
+.subtotal-price h2{margin: 0;font-size: 18px;padding: 10px 5px;text-align: center;}
 .subtotal-price h2 span{color: #ff0000;}
 .subtotal-row .checkbox .checkbox label input[type="checkbox"]{display: block;}
 .proceed-checkout{text-align: center;padding: 20px 0px;}
