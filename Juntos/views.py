@@ -942,7 +942,6 @@ class AddShipping(View):
 			return render(request, 'new_shipping_cart.html')
 
 	def get(self,request):
-		print("Inside Shipping")
 		shipping = ShippingAddress.objects.filter(user=request.user)
 		if request.user.is_authenticated() and request.user.is_customer and shipping:
 			return redirect("Juntos:customer-order-summary")
@@ -950,10 +949,31 @@ class AddShipping(View):
 			return render(request, 'shipping_billing.html')
 
 
+class AddAnotherShipping(View):
+	"""docstring for AddShipping"""
+	def post(self,request):
+		if request.user.is_authenticated() and request.user.is_customer:
+			b_form = BillingForm(request.POST or None)
+			s_form = ShippingForm(request.POST or None)
+			if b_form.is_valid() and s_form.is_valid():
+				b_form.save()
+				s_form.save()
+				messages.success(request, "Shipping address saved successfully")
+				return redirect('Juntos:customer-order-summary')
+			else:
+				return render(request, 'shipping_billing.html',{"s_form":s_form,"b_form":b_form})
+		else:
+			messages.info(request, "Before you place your order! Please Sign In First.")
+			return render(request, 'new_shipping_cart.html')
+
+	def get(self,request):
+		return render(request, 'shipping_billing.html')
+
+
+
 class CustomerOrderSummary(View):
 	"""docstring for CustomerOrderSummary"""
 	def get(self,request):
-		print("Inside Order Summary")
 		if request.user.is_customer:
 			return render(request, "order-summary.html")
 		else:

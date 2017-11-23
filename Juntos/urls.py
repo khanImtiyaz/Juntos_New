@@ -42,6 +42,7 @@ urlpatterns = [
 	url(r'^add-cart$', views.AddToCart.as_view(), name='add-cart'),
 	# url(r'^add_cart/(?P<pk>[0-9]+)$', add_to_cart, name='add_cart'),
 	url(r'^add-shipping$', views.AddShipping.as_view(), name='add-shipping'),
+	url(r'^add-another-shipping$', views.AddAnotherShipping.as_view(), name='add-another-shipping'),
 	url(r'^rating$', views.Rating.as_view(), name='rating'),
 	url(r'^change-cart-quantity$', views.IncreaseCartQuantity.as_view(), name='increase-cart'),
 	url(r'^removecart/(?P<pk>[0-9]+)$', views.RemoveFromCart.as_view(), name='remove-from-cart'),

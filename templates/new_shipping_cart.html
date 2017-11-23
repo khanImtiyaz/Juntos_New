@@ -3,7 +3,7 @@
 {% load natural_time %}
 {% block content %}
 <script type="text/javascript">
-    $('#newSection').hide()
+   $('#newSection').hide()
 </script>
 {% if all_cart %}
 <section class="shopping-cart-wrapper">
@@ -89,12 +89,12 @@
                                  Tax: <span>{{tax.tax}}%</span>
                               </div>
                               {% if address %}
-                                {% ifequal address.mode_of_transport "DHL" %}
-                                {% else %}
-                                <div class="text-right">
-                                   Shipping Charge: <span>$5</span>
-                                </div>
-                                {% endifequal %}
+                              {% ifequal address.mode_of_transport "DHL" %}
+                              {% else %}
+                              <div class="text-right">
+                                 Shipping Charge: <span>$5</span>
+                              </div>
+                              {% endifequal %}
                               {% endif %}
                               <div class="text-right">
                                  Grandtotal<small>({{total_message}})</small> :<span>$</span><span id='grand_payment'>{{grand_total |floatformat:2}}</span>
@@ -113,16 +113,16 @@
             </div>
             <div class="subtotal-price">
                <h2>Subtotal({{all_cart|length}} items):<span>$</span><span id='proceed_payment'>{{total_price |floatformat:2}}</span></h2>
-               <h2 id='grand_total'>Grandtotal<small>({{total_message}})</small>:<span>$</span><span id='proceed_payment'>{{grand_total |floatformat:2}}</span></h2>
+               <h2 id='grand_total'>Grandtotal<small>({{total_message}})</small>:<span>$</span><span id='grand_payment_total'>{{grand_total |floatformat:2}}</span></h2>
                <div class="subtotal-row">
                   <div class="proceed-checkout">
                      <a href="javascript:void(0)" class="btn btn-blue" onclick="return Proceed(this);" >
                      {% if user.id %}
-                        {% if address %}
-                          Proceed to Payment
-                          {% else %}
-                          Add Shipping Details
-                          {% endif %}
+                     {% if address %}
+                     Proceed to Payment
+                     {% else %}
+                     Add Shipping Details
+                     {% endif %}
                      {% else %}
                      Login to Proceed
                      {% endif %}
@@ -133,39 +133,38 @@
                   <div class="estimate-s" data-toggle="collapse" data-target="#demo">Estimate your Shipping Charge<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: black;font-size: 20px;"></i>
                   </div>
                   {% if user.id %}
-                    {% if address %}
-                     <div id="demo" class="collapse" style="text-align: center">
-                       <div class="form-group">
-                          {% ifequal address.mode_of_transport "DHL" %}
-                            <input type="text" class="form-control" placeholder="Enter PIN/ZIP Code" pattern="[0-9]{6}" maxlength=6"">
-                          {% else %}
-                            <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected GPS Transport as mode of Shipping,therefore shipping charge is $5.</div>
-                          {% endifequal %}
-                      </div>
-                      {% ifequal address.mode_of_transport "DHL" %}
-                       <button type="submit" class="btn btn-default" style="background: #3498DB;color:white">Get Estimate</button>
-                       {% endifequal %}
-                    </div>
-                    {% else %}
-                    <div id="demo" class="collapse" style="text-align: center">
-                       <button type="submit" class="btn btn-default" style="background: #3498DB;color:white" onclick="return Proceed(this);">Add Shipping Detail</button>
-                    </div>
-                    {% endif %}
+                  {% if address %}
+                  <div id="demo" class="collapse" style="text-align: center">
+                     <div class="form-group">
+                        {% ifequal address.mode_of_transport "DHL" %}
+                        <input type="text" class="form-control" placeholder="Enter PIN/ZIP Code" pattern="[0-9]{6}" maxlength=6"">
+                        {% else %}
+                        <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected GPS Transport as mode of Shipping,therefore shipping charge is $5.</div>
+                        {% endifequal %}
+                     </div>
+                     {% ifequal address.mode_of_transport "DHL" %}
+                     <button type="submit" class="btn btn-default" style="background: #3498DB;color:white">Get Estimate</button>
+                     {% endifequal %}
+                  </div>
                   {% else %}
-                   <div id="demo" class="collapse" style="text-align: center">
+                  <div id="demo" class="collapse" style="text-align: center">
+                     <button type="submit" class="btn btn-default" style="background: #3498DB;color:white" onclick="return Proceed(this);">Add Shipping Detail</button>
+                  </div>
+                  {% endif %}
+                  {% else %}
+                  <div id="demo" class="collapse" style="text-align: center">
                      <button type="submit" class="btn btn-default" style="background: #3498DB;color:white" onclick="return Proceed(this);">Login to Estimate</button>
                   </div>
                   {% endif %}
-                 
                </div>
                <div class="estimate-shipping">
-                <div class="estimate-s" data-toggle="collapse" data-target="#tax">Estimate your tax<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: black;font-size: 20px;"></i>
-                </div>
-                <div id="tax" class="collapse" style="text-align: center">
-                   <div class="form-group">Tax: <span style="float: none">{{tax.tax}}%</span></div>
-                   <button type="button" class="btn btn-default" style="background: #3498DB;color:white" id='estimateTax'>Estimate Tax</button>
-                </div>
-             </div>
+                  <div class="estimate-s" data-toggle="collapse" data-target="#tax">Estimate your tax<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: black;font-size: 20px;"></i>
+                  </div>
+                  <div id="tax" class="collapse" style="text-align: center">
+                     <div class="form-group">Tax: <span style="float: none">{{tax.tax}}%</span></div>
+                     <button type="button" class="btn btn-default" style="background: #3498DB;color:white" id='estimateTax'>Estimate Tax</button>
+                  </div>
+               </div>
             </div>
          </div>
          <div class="right-bottom-sec xs-new-lr-15">
@@ -208,115 +207,118 @@
    </div>
 </section>
 <script type="text/javascript">
-    $("#grand_total").hide()
-    $('#estimateTax').on('click',function(){
-        $("#grand_total").show()
-    })
-
-   $('.sel').on('change',function() {
-       quant_Array = $(this).val().split('_');
-       {% if user.is_customer %}
-          updateCart(quant_Array)
-       {% else %}
-          updatelocalStorageCart(quant_Array)
-       {% endif %}
-       previous_amount = parseFloat($("#product_"+quant_Array[1]).text())
-       $("#product_"+quant_Array[1]).text((quant_Array[0]*$("#producthid"+quant_Array[1]).val()).toFixed(2))
-       new_amount = parseFloat($("#product_"+quant_Array[1]).text())
-       if(previous_amount>new_amount)
-            difference_amount = $('#grand_payment').text()-(previous_amount-new_amount)-((previous_amount-new_amount)*18)/100
-        else
-            difference_amount = parseFloat($('#grand_payment').text())+parseFloat(new_amount - previous_amount)+parseFloat(((new_amount - previous_amount)*18)/100)
-       $('#grand_payment').text(difference_amount.toFixed(2))
-       $('#proceed_payment').text(difference_amount.toFixed(2))
-   });
-
-
-   function updatelocalStorageCart(quant_Array){
-      var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
-       Object.keys(oldItems).forEach(function(key) {
-           if (oldItems[key]['product_id'] == quant_Array[1]) {
-               oldItems[key]['quantity'] = quant_Array[0];
-           }
-       });
-       localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
-       Lobibox.notify('info', {
-          position: 'top right',
-          size: 'mini',
-          sound: false,
-          title: 'Peru Juntos',
-          msg: 'Product Quantity Update'
-        });
-   }
+   $("#grand_total").hide()
+   $('#estimateTax').on('click',function(){
+       $("#grand_total").show()
+   })
    
-
-   function updateCart(quantity){
-      $.ajax({
-        type: 'POST',
-        url: "{% url 'Juntos:add-cart' %}",
-        dataType: 'json',
-        data: {
-          'product_id': quantity[1],
-          'quantity': quantity[0],
-          'csrfmiddlewaretoken': '{{ csrf_token }}',
-        },
-        success: function() {
-            Lobibox.notify('info', {
-              position: 'top right',
-              size: 'mini',
-              sound: false,
-              title: 'Peru Juntos',
-              msg: 'Product Quantity Update'
-            });
-        },
-        error : function(){
-          Lobibox.notify('error', {
-              position: 'top right',
-              size: 'mini',
-              sound: false,
-              title: 'Peru Juntos',
-              msg: 'Product Quantity Update'
-            });
+   $('.sel').on('change',function() {
+      quant_Array = $(this).val().split('_');
+      {% if user.is_customer %}
+         updateCart(quant_Array)
+      {% else %}
+         updatelocalStorageCart(quant_Array)
+      {% endif %}
+      previous_amount = parseFloat($("#product_"+quant_Array[1]).text())
+      $("#product_"+quant_Array[1]).text((quant_Array[0]*$("#producthid"+quant_Array[1]).val()).toFixed(2))
+      new_amount = parseFloat($("#product_"+quant_Array[1]).text())
+      if(previous_amount>new_amount){
+         difference_amount = $('#grand_payment').text()-(previous_amount-new_amount)-((previous_amount-new_amount)*18)/100
+         subtotal_difference_amount = $('#proceed_payment').text()-(previous_amount-new_amount)
+       }else{
+           difference_amount = parseFloat($('#grand_payment').text())+parseFloat(new_amount - previous_amount)+parseFloat(((new_amount - previous_amount)*18)/100)
+           subtotal_difference_amount = parseFloat($('#proceed_payment').text())+(new_amount-previous_amount)
+       }
+      $('#grand_payment').text(difference_amount.toFixed(2))
+      $('#proceed_payment').text(subtotal_difference_amount.toFixed(2))
+   });
+   
+   
+   function updatelocalStorageCart(quant_Array){
+     var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+      Object.keys(oldItems).forEach(function(key) {
+          if (oldItems[key]['product_id'] == quant_Array[1]) {
+              oldItems[key]['quantity'] = quant_Array[0];
           }
       });
+      localStorage.setItem($.cookie("add_card_token"), JSON.stringify(oldItems));
+      Lobibox.notify('info', {
+         position: 'top right',
+         size: 'mini',
+         sound: false,
+         title: 'Peru Juntos',
+         msg: 'Product Quantity Update'
+       });
+   }
+   
+   
+   function updateCart(quantity){
+     $.ajax({
+       type: 'POST',
+       url: "{% url 'Juntos:add-cart' %}",
+       dataType: 'json',
+       data: {
+         'product_id': quantity[1],
+         'quantity': quantity[0],
+         'csrfmiddlewaretoken': '{{ csrf_token }}',
+       },
+       success: function() {
+           Lobibox.notify('info', {
+             position: 'top right',
+             size: 'mini',
+             sound: false,
+             title: 'Peru Juntos',
+             msg: 'Product Quantity Update'
+           });
+       },
+       error : function(){
+         Lobibox.notify('error', {
+             position: 'top right',
+             size: 'mini',
+             sound: false,
+             title: 'Peru Juntos',
+             msg: 'Product Quantity Update'
+           });
+         }
+     });
    }
    function add_cart_details_simple_shipp(data, product) {
-       $.ajax({
-           type: 'POST',
-           url: "{% url 'Juntos:increase-cart' %}",
-           dataType: 'json',
-           data: {
-               'product_id': product,
-               'quantity': data,
-               'csrfmiddlewaretoken': '{{ csrf_token }}',
-           },
-           success: function(e) {
-               if (e.exists) {
-                   Lobibox.notify('info', {
-                       position: 'top right',
-                       size: 'mini',
-                       sound: false,
-                       msg: 'Cart updated',
-                       title: 'Peru Juntos',
-                   });
-               }
-               $('#initial_card').text(e.cart_count);
-           },
-       });
+      $.ajax({
+          type: 'POST',
+          url: "{% url 'Juntos:increase-cart' %}",
+          dataType: 'json',
+          data: {
+              'product_id': product,
+              'quantity': data,
+              'csrfmiddlewaretoken': '{{ csrf_token }}',
+          },
+          success: function(e) {
+              if (e.exists) {
+                  Lobibox.notify('info', {
+                      position: 'top right',
+                      size: 'mini',
+                      sound: false,
+                      msg: 'Cart updated',
+                      title: 'Peru Juntos',
+                  });
+              }
+              $('#initial_card').text(e.cart_count);
+          },
+      });
    }
-
+   
    function removeCartItem(id){
-       card_product_id = []
-       var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
-       Object.keys(oldItems).forEach(function(key) {
-           if(oldItems[key]['product_id']!=id)
-               card_product_id.push(oldItems[key]);
-       });
-       localStorage.setItem($.cookie("add_card_token"), JSON.stringify(card_product_id));
-       $("#card_data").val(JSON.stringify(card_product_id));
-       setTimeout(function(){
-           $('#form_delete').submit()
-       },1000)
+      card_product_id = []
+      var oldItems = JSON.parse(localStorage.getItem($.cookie("add_card_token"))) || [];
+      Object.keys(oldItems).forEach(function(key) {
+          if(oldItems[key]['product_id']!=id)
+              card_product_id.push(oldItems[key]);
+      });
+      localStorage.setItem($.cookie("add_card_token"), JSON.stringify(card_product_id));
+      $("#card_data").val(JSON.stringify(card_product_id));
+      setTimeout(function(){
+          $('#form_delete').submit()
+      },1000)
    }
 </script>
 {% else %}
