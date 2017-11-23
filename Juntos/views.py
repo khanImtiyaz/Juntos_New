@@ -930,6 +930,7 @@ class AddShipping(View):
 			return render(request, 'new_shipping_cart.html')
 
 	def get(self,request):
+		print("Inside Shipping")
 		shipping = ShippingAddress.objects.filter(user=request.user)
 		if request.user.is_authenticated() and request.user.is_customer and shipping:
 			return redirect("Juntos:customer-order-summary")
@@ -940,6 +941,7 @@ class AddShipping(View):
 class CustomerOrderSummary(View):
 	"""docstring for CustomerOrderSummary"""
 	def get(self,request):
+		print("Inside Order Summary")
 		if request.user.is_customer:
 			return render(request, "order-summary.html")
 		else:

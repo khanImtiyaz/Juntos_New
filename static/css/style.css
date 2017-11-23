@@ -310,7 +310,7 @@ i.y-color{color:#daac0a;}
 .cart_section{padding:4% 0; min-height: calc(100vh - 463px);}
 .btn-danger .fa{color:#fff;}
 .cart_figure{display:block; width:100%; text-align:center;}
-.cart_figure img{width:100%; height:100px;}
+.cart_figure img{width:100%;}
 .next-pre-cart-btn { display: table; margin-bottom: 20px; width: 100%; }
 .btn.btn-custom{background:#DAAC0A; color:#fff;}
 .btn.btn-custom:hover, .btn.btn-custom:focus{background:#ca9c00; color:#fff; text-decoration:none;}

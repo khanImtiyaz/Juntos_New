@@ -86,10 +86,10 @@
                         <td colspan="4">
                            <div class="subtotal-row">
                               <div class="text-right">
-                                 Tax: <span>18%</span>
+                                 Tax: <span>{{tax.tax}}%</span>
                               </div>
                               <div class="text-right">
-                                 Grandtotal ({{all_cart|length}} Items) :<span>$</span><span id='grand_payment'>{{total_price |floatformat:2}}</span>
+                                 Grandtotal ({{all_cart|length}} Items) :<span>$</span><span id='grand_payment'>{{grand_total |floatformat:2}}</span>
                               </div>
                            </div>
                         </td>
@@ -104,7 +104,6 @@
             <div class="right-suborder">
             </div>
             <div class="subtotal-price">
-               
                <h2>Subtotal({{all_cart|length}} items):<span>$</span><span id='proceed_payment'>{{total_price |floatformat:2}}</span></h2>
                <h2 id='grand_total'>Grandtotal:<span>$</span><span id='proceed_payment'>{{grand_total |floatformat:2}}</span></h2>
                <div class="subtotal-row">
