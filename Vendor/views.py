@@ -778,8 +778,14 @@ class OrderDetails(View):
 	"""docstring for OrderDetails"""
 	def get(self,request,order_id=None):
 		orders = OrderItems.objects.get(id=order_id)
+		try:
+			invoice_exist = CustomerOrderInvoice.objects.get(item_order_id_id=order_id)
+			invoice = False
+		except Exception as e:
+			print("Exception as e",e)
+			invoice = True
 		address = orders.order.customer.shiping_address.all().latest('created_at')
-		return render(request, 'vendor/order-details.html',{"orders":orders,"address":address})
+		return render(request, 'vendor/order-details.html',{"orders":orders,"address":address,"invoice":invoice})
 
 
 class RemoveNotification(View):

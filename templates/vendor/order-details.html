@@ -83,6 +83,7 @@
                   </tr>
                </tbody>
             </table>
+            {% if invoice %}
             <form action="{% url 'Vendor:invoice-order' %}" class="form-horizontal form_custom_edit" id="invoice_form_id"  method="POST">
                {% csrf_token %}
                <div class="row">
@@ -143,6 +144,9 @@
                   <input type="submit" value="Create Invoice" class="btn btn-custom" />
                </div>
             </form>
+            {% else %}
+            <div style="text-align: center;color: #337ab7">Thanks, Invoice already created</div>
+            {% endif %}
             <script src="{% static 'js/jquery-ui.js'%}"></script>
             <link rel="stylesheet" href="{% static 'css/jquery-ui.css'%}">
          </div>
