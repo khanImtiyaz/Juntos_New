@@ -1351,8 +1351,6 @@ class OrderCancel(View):
 	    transaction = CustomerTransactionDetails.objects.filter(customer=customer).latest('created_at')
 	    return render(request, "order-canceled.html")
 
-
-	
 class PaypalOrderPlaced(View):
 	"""docstring for PaypalOrderPlaced"""
 	def get(self,request):

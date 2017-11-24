@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<section class="cart_section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 toppad" >
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Order Payment Failed</h3>
+          </div>
+          <div class="panel-body">
+            <div class="empty_cart text-center">
+              <figure class="cart_fig"><img src="{% static 'img/order_failedpng' %} " alt="Empty Cart" /></figure>
+              <h2>Your payment has failed.</h2>
+              <p>No Order Placed !</p>
+              <a href="{% url 'Juntos:home' %}" class="btn btn-custom btn-lg">Go Shopping</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+    history.pushState(null, null, document.URL);
+		window.addEventListener('popstate', function () {
+		history.pushState(null, null, document.URL);
+});
+</script>
+{% endblock %}

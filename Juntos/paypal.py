@@ -28,9 +28,9 @@ def payment(recipient_email, dollars, customer):
         "receiverList":{"receiver":[{ "amount":"", "email":""}]  # The payment Receiver's email address
     },
         # Where the Sender is redirected to after approving a successful payment
-        "returnUrl":"http://localhost:8000/paypal-order-placed/",
+        "returnUrl":"http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:2000/paypal-order-placed/",
         # Where the Sender is redirected to upon a canceled payment
-        "cancelUrl":"http://localhost:8000/order-cancel/",
+        "cancelUrl":"http://ec2-52-74-218-145.ap-southeast-1.compute.amazonaws.com:2000/order-cancel/",
         "requestEnvelope":{
         "errorLanguage":"en_US",
         "detailLevel":"ReturnAll"
