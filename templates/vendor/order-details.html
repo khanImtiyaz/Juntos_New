@@ -28,17 +28,9 @@
                     <td><strong>Product Name :</strong></td>
                     <td>{{orders.product.title}}</td>
                  </tr>
-                 <tr>
-                    <td><strong>Quantity :</strong></td>
-                    <td>{{orders.quantity}}</td>
-                 </tr>
                   <tr>
                      <td><strong>Total Price :</strong></td>
-                     {% if orders.product.selling_price %}
-                     <td>${{orders.product.selling_price|tax:orders.quantity|floatformat:2}}</td>
-                     {% else %}
-                     <td> ${{orders.product.price|tax:orders.quantity|floatformat:2}}</td>
-                     {% endif %}
+                     <td>{{orders.quantity}} X ${{orders.base_price|floatformat:2}} + ${{orders.tax_charges|floatformat:2}}(Tax) + ${{orders.shipping_charge|floatformat:2}}(Shipping Charge) = ${{orders.total}}</td>
                   </tr>
                   <tr>
                      <td><strong>Order Status :</strong></td>
