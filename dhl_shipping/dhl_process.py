@@ -4,7 +4,10 @@ import multiprocessing
 
 import dhl_shipping
 import dhl_shipping.config
-import urllib as urllib2
+import urllib
+import urllib.request
+import xmltodict, json
+
 # from urllib.request import urlopen
 
 class DhlProcess:
@@ -54,8 +57,10 @@ class DhlProcess:
     @staticmethod
     def call_dhl_quote_api(xml_formated_data_string, return_dict):
         url = dhl_shipping.config.dhl_api_url
-        url_request = urllib2.Request(url, xml_formated_data_string)
-        url_response = urllib2.urlopen(url_request)
+        f = urllib.parse.urlencode(xmltodict.parse(xml_formated_data_string))
+        f = f.encode('utf-8')
+        url_request = urllib.request.Request(url, f)
+        url_response = urllib.request.urlopen(url_request)
         url_response_data = url_response.read()  # getting as XML String from DHL Response
         return_dict['return_dhl_api_response'] = url_response_data
 
@@ -84,8 +89,10 @@ class DhlProcess:
     @staticmethod
     def call_dhl_shipment_api(xml_formated_data_string, return_dict):
         url = dhl_shipping.config.dhl_api_url
-        url_request = urllib2.Request(url, xml_formated_data_string)
-        url_response = urllib2.urlopen(url_request)
+        f = urllib.parse.urlencode(xmltodict.parse(xml_formated_data_string))
+        f = f.encode('utf-8')
+        url_request = urllib.request.Request(url, f)
+        url_response = urllib.request.urlopen(url_request)
         url_response_data = url_response.read()  # getting as XML String from DHL Response
         return_dict['return_dhl_api_response'] = url_response_data
 
@@ -115,7 +122,9 @@ class DhlProcess:
     @staticmethod
     def call_dhl_pickup_api(xml_formated_data_string, return_dict):
         url = dhl_shipping.config.dhl_api_url
-        url_request = urllib2.Request(url, xml_formated_data_string)
-        url_response = urllib2.urlopen(url_request)
+        f = urllib.parse.urlencode(xmltodict.parse(xml_formated_data_string))
+        f = f.encode('utf-8')
+        url_request = urllib.request.Request(url, f)
+        url_response = urllib.request.urlopen(url_request)
         url_response_data = url_response.read()  # getting as XML String from DHL Response
         return_dict['return_dhl_api_response'] = url_response_data

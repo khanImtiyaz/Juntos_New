@@ -2,6 +2,7 @@ from django.db.models import Sum, Avg, Count, Q
 from datetime import datetime, timedelta
 import datetime
 from Static_Model.models import *
+from Django_Multiple.utils import *
 from .models import *
 
 def taxValue(value):
@@ -35,6 +36,9 @@ def cart(request):
 			if address:
 				address = address.latest('created_at')
 				if address.mode_of_transport=="DHL":
+					for item in cartObj:
+						# dhl_service_rates(item,address)
+						total_amount = total_amount + 00.00
 					total_message = "exclusive shipping charge"
 					shipping_amount = total_amount
 					pass

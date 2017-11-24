@@ -20,7 +20,6 @@ class Quote:
         return_status = True
         return_message = ''
         return_dict = dict()
-
         # get the prepared XML data as string - this portion also check if xml wel formated  -  ie user sending correct data 
         xml_formated_data = self.quote_xml(dict_param)
         if xml_formated_data['status']:
@@ -52,7 +51,8 @@ class Quote:
                     }
                 )
                 return return_dict
-        except:
+        except Exception as e:
+            print("Exception as e",e)
             return_status = False
             return_message = dhl_shipping.config.message_dhl_url_down
             return_dict.update(
@@ -64,10 +64,12 @@ class Quote:
         else:
             # format the data to dictionary and return
             dict_response = xmltodict.parse(url_response_data)
-
+            print(dict_response)
             # check if error returned by dhl
             common_obj = dhl_shipping.common.Common()
+            print(common_obj)
             error_found = common_obj.in_dictionary_all('ConditionData', dict_response)
+            print("Error Found",error_found)
             if error_found != False:
                 # some error by dhl
                 return_status = False
@@ -107,6 +109,7 @@ class Quote:
                     'message': return_message,
                 }
             )
+        print(return_dict)
         return return_dict
 
     def quote_xml(self, dict_param):
@@ -145,7 +148,6 @@ class Quote:
             xml_str += '<City>' + addresses['from_city'] + '</City>'
             xml_str += '</From>'
             # From Address ENDS
-
             # BkgDetails
             try:
                 if 'quote_for_date' in optional_data.keys():
@@ -163,7 +165,6 @@ class Quote:
             xml_str += '<ReadyTimeGMTOffset>+01:00</ReadyTimeGMTOffset>'
             xml_str += '<DimensionUnit>' + units['dimension_unit'] + '</DimensionUnit>'
             xml_str += '<WeightUnit>' + units['weight_unit'] + '</WeightUnit>'
-
             xml_str += '<Pieces>'
             piece_id = 1
             for piece in pieces:
@@ -186,7 +187,7 @@ class Quote:
             #xml_str += '<LocalProductCode>P</LocalProductCode>'  # taken away as for GB to other countries it will not work - confirmed with dhl
             xml_str += '</QtdShp>'
 
-            xml_str += '<InsuredValue>' + optional_data['insured_value'] + '</InsuredValue>'
+            xml_str += '<InsuredValue>' + str(optional_data['insured_value']) + '</InsuredValue>'
             xml_str += '<InsuredCurrency>' + optional_data['insured_currency'] + '</InsuredCurrency>'
             xml_str += '</BkgDetails>'
             # BkgDetails ENDS
@@ -206,7 +207,6 @@ class Quote:
 
             xml_str += '</GetQuote>'
             # GetQuote ENDS
-
             xml_str += '</p:DCTRequest>'
 
             return_dict = {
@@ -215,7 +215,8 @@ class Quote:
                 'data': xml_str,
             }
             return return_dict
-        except:
+        except Exception as e:
+            print("Exception as e",e)
             return_dict = {
                 'status': False,
                 'message': dhl_shipping.config.message_request_data_bad_format,

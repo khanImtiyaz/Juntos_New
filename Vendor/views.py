@@ -16,7 +16,7 @@ from Juntos.models import *
 from itertools import groupby
 import operator
 from .forms import *
-from .utils import *
+from Django_Multiple.utils import *
 # def vendor_signup(request):
 #     form = VendorRegistrationForm1()
 #     if request.method == 'POST':
@@ -912,7 +912,7 @@ class InvoiceOrder(View):
 					invoice.payment_method = order_data.order.order_payment_type
 					invoice.save()
 					vendor_dhl = request.user
-					dhl_service(order_data, vendor_dhl, invoice)
+					# dhl_service(order_data, vendor_dhl, invoice)
 					messages.info(request, "Invoice # {1} for order # {0} has generated.".format(order_data.order.order_number, invoice.invoice_number))
 					return render(request, "vendor/order-invoice.html",{"order_data":order_data,"invoice":invoice,'current_date':datetime.now()})
 				else:

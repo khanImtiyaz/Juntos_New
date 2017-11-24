@@ -30,17 +30,16 @@
                  </tr>
                   <tr>
                      <td><strong>Total Price :</strong></td>
-                     <td>{{orders.quantity}} X ${{orders.base_price|floatformat:2}} + ${{orders.tax_charges|floatformat:2}}(Tax) + ${{orders.shipping_charge|floatformat:2}}(Shipping Charge) = ${{orders.total}}</td>
+                     <td>{{orders.quantity}} X ${{orders.base_price|floatformat:2}} + ${{orders.tax_charges|floatformat:2}}(Tax) + ${{orders.shipping_charge|floatformat:2}}(Shipping Charge) = ${{orders.total|floatformat:2}}</td>
                   </tr>
                   <tr>
                      <td><strong>Order Status :</strong></td>
                      <td>{{orders.delivery_status}}</td>
                   </tr>
                   <tr>
-                     <td><strong>Delivery Date :</strong></td>
+                     <td><strong>Expected Delivery Date :</strong></td>
                      <td>{{orders.delivery_date}}</td>
                   </tr>
-                  
                   {% if size %}
                   <tr>
                      <td><strong>Product Size :</strong></td>

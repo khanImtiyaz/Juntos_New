@@ -82,11 +82,11 @@
                         <h5>  Shipping Charge :${{invoice.shipping_charge}}</h5>
                      </div>
                      <div class="ttl-amts">
-                        <h5>  Tax :{{tax.tax}}%</h5>
+                        <h5>  Tax Charge :${{order_data.tax_charges}}</h5>
                      </div>
                      <hr />
                      <div class="ttl-amts">
-                        <h4> <strong>Bill Amount : {{total_price |floatformat:2}} USD</strong> </h4>
+                        <h4> <strong>Bill Amount : {{order_data.total |floatformat:2}} USD</strong> </h4>
                      </div>
                   </div>
                </div>
