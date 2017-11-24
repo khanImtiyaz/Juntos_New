@@ -25,6 +25,7 @@ from .twillio import send_sms
 from .models import *
 from .forms import *
 from .decorator import *
+from .paypal import *
 from Static_Model.models import *
 
 # Create your views here.
@@ -1015,10 +1016,43 @@ def order_payment(request):
 
 class OrderPayment(View):
 	"""docstring for OrderPayment"""
+
 	def get(self,request):
+		user = request.user
 		return render(request, "payment.html")
 
-def create_order(user, shiping_address):
+	def post(self,request):
+		user = request.user
+		shipping_address = user.shiping_address.latest('created_at')
+		if shipping_address:
+			cartObj = Cart.objects.filter(user=user)
+			tax = TaxPercentage.objects.first()
+			user_data = []
+			admin_commission = 0
+			for cart in cartObj:
+				if not any(vendor.get('email') == cart.product.vendor.email for vendor in user_data):
+					total_pay = cartObj.filter(product__vendor__email=cart.product.vendor.email).aggregate(Sum('price'))['price__sum']
+					taxPrice = (total_pay*(tax.tax))/100
+					total_payment = taxPrice + total_pay
+					if shipping_address.mode_of_transport=="DHL":
+						pass
+					else:
+						total_payment = total_payment + int(5)
+					price = total_payment - cart.price*5/100
+					user_data.append({"email":cart.product.vendor.email, "amount": float(price)})
+				admin_commission +=  cart.price*5/100
+			response_url =  payment(user_data, admin_commission, user)
+			if 'ack' in response_url and response_url['ack']=="Success":
+				return redirect(response_url['url'])
+			else:
+				messages.error(request, response_url['error'][0]['message'])
+				return render(request, "payment.html",{"errorId":response_url['error'][0]['errorId']})
+		else:
+			messages.error(request, "Please select your order shiping address")
+			return redirect("Juntos:add-shipping")
+        
+
+def create_order(user, payment_type, shiping_address):
 	cart = Cart.objects.filter(user=user)
 	base_price = 00.00
 	for c in cart:
@@ -1033,7 +1067,7 @@ def create_order(user, shiping_address):
 		shipping_charge = (base_price*5)/100
 
 	total_price = base_price+shipping_charge+tax_charges
-	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type='COD',delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
+	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type=payment_type,delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
 	order_items(cart,order,shiping_address)
 
 def order_items(cart,order,address):
@@ -1069,7 +1103,7 @@ class CODOrder(View):
 		if request.user.is_customer:
 			address = ShippingAddress.objects.filter(user=request.user).latest('created_at')
 			if address:
-				create_order(request.user,address)
+				create_order(request.user,"COD",address)
 				return redirect("Juntos:order-placed")
 		else:
 			messages.error(request, "You are not authenticated to access this page.")
@@ -1198,23 +1232,23 @@ class CancelOrderAndRefund(View):
 		return redirect("Juntos:view-order")
 
 
-def recommended(request):
-    all_recommendeds = Advertisement.objects.filter(recommended=True)
-    if all_recommendeds.exists():
-        paginator = Paginator(all_recommendeds, 12)
-        all_category=Category.objects.all()
-        index=1
-        page = request.GET.get('page')
-        try:
-            all_recommendeds = paginator.page(page)
-        except PageNotAnInteger:
-            all_recommendeds = paginator.page(1)
-        except EmptyPage:
-            all_recommendeds = paginator.page(paginator.num_pages)
-        return render (request, 'index.html',{"all_recommendeds":all_recommendeds})
-    else:
-        messages.info(request,"no recommended avaialable")
-        return redirect("Peru:home")
+# def recommended(request):
+#     all_recommendeds = Advertisement.objects.filter(recommended=True)
+#     if all_recommendeds.exists():
+#         paginator = Paginator(all_recommendeds, 12)
+#         all_category=Category.objects.all()
+#         index=1
+#         page = request.GET.get('page')
+#         try:
+#             all_recommendeds = paginator.page(page)
+#         except PageNotAnInteger:
+#             all_recommendeds = paginator.page(1)
+#         except EmptyPage:
+#             all_recommendeds = paginator.page(paginator.num_pages)
+#         return render (request, 'index.html',{"all_recommendeds":all_recommendeds})
+#     else:
+#         messages.info(request,"no recommended avaialable")
+#         return redirect("Peru:home")
 
 class Recommended(View):
 	"""docstring for Recommended"""
@@ -1279,7 +1313,95 @@ class AdvertismentsReview(View):
 		return redirect("Juntos:advertisment-detail", slug)
 
 	
-				
+# @login_required(login_url="/")
+# def paypal_order_placed(request):
+#     customer = request.user
+#     transaction = CustomerTransactionDetails.objects.filter(customer=customer).last()
+#     payment_details =  ast.literal_eval(paypal_payment_details(transaction.pay_key).decode("utf-8"))
+#     # print(payment_details)
+#     if payment_details['status'] == 'COMPLETED':
+#         shiping_address = customer.shiping_address.filter(selected=True).last()  ##  find shiping address
+#         order = create_order_and_order_item_record(customer, "Paypal", shiping_address)
+#         for detail in payment_details['paymentInfoList']['paymentInfo']:
+#             transaction.order_id = order
+#             transaction.customer=customer
+#             transaction.payment_status = payment_details['status']
+#             transaction.sender_email=payment_details['sender']['email']
+#             transaction.sender_account_id=payment_details['sender']['accountId']
+#             transaction.tranaction_status = detail['senderTransactionStatus']
+#             transaction.tranaction_id = detail['senderTransactionId']
+#             # transaction.payment_refunded_ammount = detail['refundedAmount']
+#             transaction.reciever_account_id = detail['receiver']['accountId']
+#             transaction.reciever_email = detail['receiver']['email']
+#             transaction.reciever_amount = detail['receiver']['amount']
+#             transaction.save()
+#         messages.success(request, "Your order placed successfully.")
+#         return redirect('customer:order_placed')
+#     else:
+#         messages.error(request, "Payment Failed, Unable to placed your order!")
+#         return redirect('customer:order_cancel')
+
+
+
+class OrderCancel(View):
+	"""docstring for ClassName"""
+	def get(self,request):
+	    Cart.objects.filter(user=request.user).delete()
+	    customer = request.user
+	    transaction = CustomerTransactionDetails.objects.filter(customer=customer).latest('created_at')
+	    return render(request, "order-canceled.html")
+
+
 	
-						
+class PaypalOrderPlaced(View):
+	"""docstring for PaypalOrderPlaced"""
+	def get(self,request):
+		customer = request.user
+		transaction = CustomerTransactionDetails.objects.filter(customer=customer).latest('created_at')
+		payment_details =  ast.literal_eval(paypal_payment_details(transaction.pay_key).decode("utf-8"))
+		if payment_details['status'] == 'COMPLETED':
+		    shiping_address = customer.shiping_address.latest('created_at')  ##  find shiping address
+		    order = create_order(customer, "Paypal", shiping_address)
+		    for detail in payment_details['paymentInfoList']['paymentInfo']:
+		        transaction.order_id = order
+		        transaction.customer=customer
+		        transaction.payment_status = payment_details['status']
+		        transaction.sender_email=payment_details['sender']['email']
+		        transaction.sender_account_id=payment_details['sender']['accountId']
+		        transaction.tranaction_status = detail['senderTransactionStatus']
+		        transaction.tranaction_id = detail['senderTransactionId']
+		        transaction.reciever_account_id = detail['receiver']['accountId']
+		        transaction.reciever_email = detail['receiver']['email']
+		        transaction.reciever_amount = detail['receiver']['amount']
+		        transaction.save()
+		    messages.success(request, "Your order placed successfully.")
+		    return redirect('Juntos:order-placed')
+		else:
+		    messages.error(request, "Payment Failed, Unable to placed your order!")
+		    return redirect('Juntos:order-cancel')
+	def post(self,request):
+		customer = request.user
+		transaction = CustomerTransactionDetails.objects.filter(customer=customer).latest('created_at')
+		payment_details =  ast.literal_eval(paypal_payment_details(transaction.pay_key).decode("utf-8"))
+		if payment_details['status'] == 'COMPLETED':
+			shiping_address = customer.shiping_address.latest('created_at')  ##  find shiping address
+			order = create_order(customer, "Paypal", shiping_address)
+			for detail in payment_details['paymentInfoList']['paymentInfo']:
+			    transaction.order_id = order
+			    transaction.customer=customer
+			    transaction.payment_status = payment_details['status']
+			    transaction.sender_email=payment_details['sender']['email']
+			    transaction.sender_account_id=payment_details['sender']['accountId']
+			    transaction.tranaction_status = detail['senderTransactionStatus']
+			    transaction.tranaction_id = detail['senderTransactionId']
+			    transaction.reciever_account_id = detail['receiver']['accountId']
+			    transaction.reciever_email = detail['receiver']['email']
+			    transaction.reciever_amount = detail['receiver']['amount']
+			    transaction.save()
+			messages.success(request, "Your order placed successfully.")
+			return redirect('Juntos:order-placed')
+		else:
+			messages.error(request, "Payment Failed, Unable to placed your order!")
+			return redirect('Juntos:order-cancel')
+										
 														

@@ -452,3 +452,20 @@ class CustomerOrderInvoice(models.Model):
              self.invoice_number = uid.node
           super(CustomerOrderInvoice, self).save()
 
+
+class CustomerTransactionDetails(models.Model):
+    customer = models.ForeignKey(MyUser, related_name="transaction")
+    order_id = models.ForeignKey(CustomerOrder, related_name="transaction", null=True)
+    pay_key = models.CharField(('Order Pay Key'), max_length=100, blank=True)
+    payment_status = models.CharField(('Order Payment Status'), max_length=100, blank=True)
+    tranaction_status = models.CharField(('Transaction Status'), max_length=50, blank=True)
+    tranaction_id = models.CharField(('Transaction ID'), max_length=50, blank=True)
+    payment_refunded = models.BooleanField(('Is payment refunded ?'), default=False)
+    payment_refunded_ammount = models.CharField(('Payment refunded ammount'), blank=True, max_length=100)
+    sender_email =  models.CharField(('Payment sender email'), blank=True, max_length=100)
+    sender_account_id =  models.CharField(('Payment sender paypal account id'), blank=True, max_length=100)
+    reciever_account_id = models.CharField(('Receiver/Vendor paypal account ID'), max_length=100, blank=True)
+    reciever_email = models.CharField(('Receiver/Vendor paypal account email'), max_length=100, blank=True)
+    reciever_amount = models.FloatField(('Receiver/Vendor paypal account email'), blank=True, default=0.0)
+    updated = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)

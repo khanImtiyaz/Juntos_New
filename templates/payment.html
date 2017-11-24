@@ -93,20 +93,20 @@
 </script>
 <script type="text/javascript">
    function close_window(){
-   	setTimeout(function(){
-   		window.location.assign("{% url 'Juntos:home'%}");
-   	},1000);
+      setTimeout(function(){
+         window.location.assign("{% url 'Juntos:home'%}");
+      },1000);
    }
-   	function valid_credit_card() {
-   		var inputtxt = document.getElementById('mobile_id');
-   		console.log(inputtxt);
-   		var cardno = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
-   		if (inputtxt.value.match(cardno)) {
-   			return true;
-   		} else {
-   			alert("Not a valid Visa credit card number!");
-   			return false;
-   		}
-   	}
+      function valid_credit_card() {
+         var inputtxt = document.getElementById('mobile_id');
+         console.log(inputtxt);
+         var cardno = /^(?:4[0-9]{12}(?:[0-9]{3})?)$/;
+         if (inputtxt.value.match(cardno)) {
+            return true;
+         } else {
+            alert("Not a valid Visa credit card number!");
+            return false;
+         }
+      }
 </script>
 {% endblock %}

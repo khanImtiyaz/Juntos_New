@@ -56,7 +56,7 @@ urlpatterns = [
 	url(r'^all-service/$', views.Recommended.as_view(), name="recommended-services"),
 	url(r'^advertisements/(?P<slug>.+)/$', views.AdvertisementDetail.as_view(), name='advertisment-detail'),
 	url(r'^advertisments-review/$', views.AdvertismentsReview.as_view(), name="advertisments-review"),
-
-
+	url(r'^paypal-order-placed/$', views.PaypalOrderPlaced.as_view(), name='paypal-order-placed'),
+	url(r'^order-cancel/$', views.OrderCancel.as_view(), name='order-cancel'),
 ]
 
