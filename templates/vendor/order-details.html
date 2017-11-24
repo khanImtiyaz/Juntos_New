@@ -25,6 +25,14 @@
                      <td>{{orders.created_at|date:"D, d M Y"}}</td>
                   </tr>
                   <tr>
+                    <td><strong>Product Name :</strong></td>
+                    <td>{{orders.product.title}}</td>
+                 </tr>
+                 <tr>
+                    <td><strong>Quantity :</strong></td>
+                    <td>{{orders.quantity}}</td>
+                 </tr>
+                  <tr>
                      <td><strong>Total Price :</strong></td>
                      {% if orders.product.selling_price %}
                      <td>${{orders.product.selling_price|tax:orders.quantity|floatformat:2}}</td>
@@ -40,10 +48,7 @@
                      <td><strong>Delivery Date :</strong></td>
                      <td>{{orders.delivery_date}}</td>
                   </tr>
-                  <tr>
-                     <td><strong>Product Name :</strong></td>
-                     <td>{{orders.product.title}}</td>
-                  </tr>
+                  
                   {% if size %}
                   <tr>
                      <td><strong>Product Size :</strong></td>
@@ -56,61 +61,26 @@
                      <td><span style="background-color:{{color}}; border-radius:10px;">&nbsp;&nbsp;&nbsp;&nbsp;</span></td>
                   </tr>
                   {% endif %}
-                  <tr>
-                     <td><strong>Quantity :</strong></td>
-                     <td>{{orders.quantity}}</td>
-                  </tr>
+                  
                   <tr>
                      <td><strong>Insured Amount :</strong></td>
                      <td>{{orders.product.insured_amount|floatformat:2}}</td>
                   </tr>
                   <tr>
                      <td><strong>Product Weight :</strong></td>
-                     <td>{{orders.product.product_weight|floatformat:2}}</td>
+                     <td>{{orders.product.product_weight|floatformat:2}}(approx)</td>
                   </tr>
                   <tr>
-                     <td><strong>Product height :</strong></td>
-                     <td>{{orders.product.product_height|floatformat:2}}</td>
+                     <td><strong>Product Dimension :</strong></td>
+                     <td>{{orders.product.product_height|floatformat:2}} X {{orders.product.product_depth|floatformat:2}} X {{orders.product.product_width|floatformat:2}} (h X d X w)</td>
                   </tr>
                   <tr>
-                     <td><strong>Product Depth :</strong></td>
-                     <td>{{orders.product.product_depth|floatformat:2}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>Product Width :</strong></td>
-                     <td>{{orders.product.product_width|floatformat:2}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>Customer Email :</strong></td>
-                     <td>{{orders.order.customer.email}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>Customer's Mobile :</strong></td>
-                     <td>{{orders.order.customer.mobile}}</td>
+                     <td><strong>Customer's Email & Mobile :</strong></td>
+                     <td>{{orders.order.customer.email}}, {{orders.order.customer.mobile}}</td>
                   </tr>
                   <tr>
                      <td><strong>Address :</strong></td>
-                     <td>{{address.shipping_address}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>City :</strong></td>
-                     <td>{{address.shipping_city}}.</td>
-                  </tr>
-                  <tr>
-                     <td><strong>State :</strong></td>
-                     <td>{{address.shipping_state}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>Postcode :</strong></td>
-                     <td>{{address.shipping_zip}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>Country :</strong></td>
-                     <td>{{address.shipping_country}}</td>
-                  </tr>
-                  <tr>
-                     <td><strong>Country Abbreviation :</strong></td>
-                     <td>{{address.shipping_country_abbreviation}}</td>
+                     <td>{{address.shipping_address}} {{address.shipping_city}} {{address.shipping_state}}, {{address.shipping_zip}} {{address.shipping_country}} {{address.shipping_country_abbreviation}}</td>
                   </tr>
                   <tr>
                      <td><strong>Payment Type :</strong></td>
