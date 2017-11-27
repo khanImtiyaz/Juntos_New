@@ -418,7 +418,9 @@ class AddProduct(View):
 			product.is_active = True
 			product.save()
 			if "image" in files:
+				print("Image")
 				for img in files.getlist('image'):
+					print("Images",img)
 					upresult = upload(img)
 					image_Array.append(upresult['url'])
 				product.image = image_Array
@@ -442,10 +444,7 @@ class AddProduct(View):
 			messages.success(request, 'Product added successfully')
 			return redirect("Vendor:product-list", 1)
 		else:
-			for img in files.getlist('image'):
-				h=img.path				
-				image_Array.append(h)
-			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
+			return render(request, 'vendor/add-new-product.html',{"add_form":form})
 
 class ProductList(View):
 	"""docstring for ProductList"""
