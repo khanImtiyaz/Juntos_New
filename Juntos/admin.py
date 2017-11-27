@@ -281,3 +281,67 @@ class NewsModelAdmin(admin.ModelAdmin):
 
 admin.site.register(News, NewsModelAdmin)
 
+
+
+class CustomerFilter(SimpleListFilter):
+	title = ('Customer')
+	parameter_name = 'customer'
+	
+	def lookups(self, request, model_admin):
+		list_tuple = []
+		for client in MyUser.objects.filter(is_customer=True):
+			list_tuple.append((client.id, client.email))
+		return list_tuple
+	
+	def queryset(self, request, queryset):
+		if self.value():
+			return queryset.filter(customer__id=self.value())
+		else:
+			return queryset
+
+
+
+class CustomerOrderAdmin(admin.ModelAdmin):
+	list_display = ['shipping_address','customer','order_payment_type','order_items','order_number','delivery_date','delivery_status','expected_delivery','total','order_date_and_time']
+	search_fields = ['order_number', 'customer__email', 'delivery_date']
+	list_filter = [CustomerFilter, 'delivery_status']
+	list_per_page = 15
+	
+	def get_search_results(self, request, queryset, search_term):
+		from django.contrib import messages
+		queryset, use_distinct = super(CustomerOrderAdmin, self).get_search_results(request, queryset, search_term)
+		if not queryset.count():
+			messages.info(request, 'No order data found !')
+		return queryset, use_distinct
+	
+	def has_add_permission(self, request, obj=None):
+		if request.user.is_subadmin:
+			return False
+		else:
+			return True
+	
+	def has_delete_permission(self, request, obj=None):
+		if request.user.is_subadmin:
+			return False
+		else:
+			return True
+	
+	def order_date_and_time(self, obj):
+		return obj.created_at
+	
+	def expected_delivery(self, obj):
+		return str(obj.expected_delivery_time) + str(" days")
+	
+	def order_items(self, obj):
+		obj.order_items.all()
+		return
+	
+	def order_items(self, obj):
+		items_list = "<select><option value=''>List Order Items</option>"
+		for sub in obj.order_items.all():
+			items_list = items_list + "<option value='{0}'>{1}</option>".format(sub.id, sub.product.title)
+		items_list = items_list + "</select>"
+		
+		return mark_safe(items_list)
+
+admin.site.register(CustomerOrder,CustomerOrderAdmin)

@@ -333,6 +333,9 @@ class CustomerOrder(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+      verbose_name_plural = 'Customer Orders'
+
 class Offer(models.Model):
     product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="OfferProduct")
     offer_title = models.CharField(('Title'), max_length=50, blank=True)
