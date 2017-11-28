@@ -32,14 +32,14 @@
          {% include 'vendor/partial-dashboard.html' with sell_hash=sell_hash %}
          {% else %}
          <div class="sals_heading">
-            <h4>Total Sales: <strong>$ {{total_sell|floatformat:2}}</strong></h4>
+            <h4>Total Sales: <strong>${{total_sell|floatformat:2}}</strong></h4>
             <hr>
             <div id="columnchart_material" style="width: auto; height: 400px;"></div>
             <script type='text/javascript'>
                google.charts.load('current', {'packages':['bar']});
                   google.charts.setOnLoadCallback(drawChart);
                   function drawChart() {
-                    var data = google.visualization.arrayToDataTable({{sell_hash | safe }});
+                    var data = google.visualization.arrayToDataTable({{sell_hash|safe }});
                     var options = {
                       chart: {
                         title: 'Selling Performance',
@@ -61,7 +61,7 @@
             </script>
          </div>
          <div class="cust_count" style="text-align: center">
-            <h4>Total no of Orders:<strong>{{orders.count}}</strong></h4>
+            <h4>Total number of Orders:<strong>{{orders.count}}</strong></h4>
          </div>
       </div>
       {% endif %}

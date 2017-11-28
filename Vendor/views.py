@@ -215,12 +215,27 @@ class VendorDashboard(View):
 			return redirect('Juntos:home')
 		else:
 			orders = OrderItems.objects.filter(product__vendor=vendor).order_by('-created_at')
-			total_sell = orders.aggregate(Sum('product__selling_price'))['product__selling_price__sum'] if orders.aggregate(Sum('product__selling_price'))['product__selling_price__sum'] else  0.0
+			total_sell = orders.aggregate(Sum('total'))['total__sum'] if orders.aggregate(Sum('total'))['total__sum'] else  00.00
 			products = ProductsManagement.objects.filter(vendor=vendor)
+			orderHash = []
 			typeArray = [['Year', 'Sales', 'Expenses', 'Profit']]
+			orders = orders.filter(created_at__month=datetime.today().month)
 			for product in products:
 				if product.order.exists():
-					pass
+					print("exists")
+					orderList = product.order.filter(created_at__month=datetime.today().month)
+					for order in orderList:
+						if not any( orderl.get('id') == order.product.id for orderl in orderHash):
+							sales = orderList.filter(product_id=order.product.id).aggregate(Sum('base_price'))['base_price__sum']
+							total_original_price = orderList.filter(product_id=order.product.id).count() * order.product.price
+							total_expenses_price = product.price*product.product_quantity
+							orderHash.append({"title":order.product.title, "sales":sales,"profit":sales-total_original_price,"expenses":sales-total_expenses_price})
+				else:
+					orderHash.append({"title":product.title, "sales":00.00,"profit":00.00,"expenses":product.price*product.product_quantity})
+			if orderHash:
+				for record in orderHash:
+					typeArray.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
+
 			return render(request, 'vendor/dashboard.html',{'orders':orders,"total_sell":total_sell,"sell_hash": typeArray,})
 	
 
