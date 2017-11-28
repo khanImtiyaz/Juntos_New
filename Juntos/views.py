@@ -80,11 +80,11 @@ from Static_Model.models import *
 #         return response_data
 
 def home(request):
-	product = ProductsManagement.objects.all().exclude(Q(expiry_date__lt=datetime.now()) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True))
+	product = ProductsManagement.objects.all().exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True))
 	offers = Offer.objects.all()
 	hotItems = OrderItems.objects.all().distinct('product')
 	advertiseProducts = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
-	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date=datetime.now()) | Q(product_quantity=0) | Q(is_active=False))
+	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
 	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
 # def product_detail(request, slug=None):
