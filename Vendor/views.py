@@ -7,10 +7,12 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from cloudinary.uploader import upload, upload_resource
 import os
 # from django.http import QueryDicta
 import base64
+from base64 import b64encode
 import json
 from Juntos.models import *
 from itertools import groupby
@@ -218,9 +220,7 @@ class VendorDashboard(View):
 			typeArray = [['Year', 'Sales', 'Expenses', 'Profit']]
 			for product in products:
 				if product.order.exists():
-					print("sasas")
-	                
-
+					pass
 			return render(request, 'vendor/dashboard.html',{'orders':orders,"total_sell":total_sell,"sell_hash": typeArray,})
 	
 
@@ -412,26 +412,23 @@ class AddProduct(View):
 			product = ProductsManagement.objects.get(id=request.POST['product_id'])
 			form = NewProductAddForm(params or None,instance=product)
 		else:
-			form = NewProductAddForm(params or None)
+			form = NewProductAddForm(params or None ,files or None)
 		if form.is_valid():
 			product = form.save()
+			product.expiryDate()
 			product.is_active = True
 			product.save()
 			if "image" in files:
-				print("Image")
 				for img in files.getlist('image'):
-					print("Images",img)
 					upresult = upload(img)
 					image_Array.append(upresult['url'])
 				product.image = image_Array
 				product.save()
-			print("Request Total Color",request.POST.get('total_color',None))
 			if request.POST.get('total_color',None):
 				totalColor = int(request.POST.get('total_color',None))
 				responseTotalColors = int(request.POST.get('response_total_color',0))
 				if totalColor != responseTotalColors:
 					while totalColor >= 1:
-						print("While Total Color",totalColor)
 						if "product-colors-{}-color".format(totalColor) in params:
 							for x in range(1, len(request.FILES)):
 								if 'product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x) in request.FILES:
@@ -444,13 +441,21 @@ class AddProduct(View):
 			messages.success(request, 'Product added successfully')
 			return redirect("Vendor:product-list", 1)
 		else:
-			return render(request, 'vendor/add-new-product.html',{"add_form":form})
+			image_Array = []
+			mime = None
+			if "image" in files:
+				for img in files.getlist('image'):
+					data = img.read()
+					encoded = b64encode(data)
+					mime = img.content_type + ";" if img.content_type else ";"
+					image_Array.append("data:%sbase64,%s" % (mime, str(encoded,'utf-8')))
+			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
 
 class ProductList(View):
 	"""docstring for ProductList"""
 	def get(self,request,active=None):
 		user  = request.user
-		product = ProductsManagement.objects.filter(vendor=user,is_active=active).order_by('category','-created_at')
+		product = ProductsManagement.objects.filter(vendor=user,is_active=active).exclude(expiry_date__lt=datetime.now()).order_by('category','-created_at')
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
@@ -461,6 +466,22 @@ class ProductList(View):
 			data = paginator.page(paginator.num_pages)
 		return render(request, 'vendor/product-list.html', {'product_lists':data,'active':True if active=='1' else False})
 
+
+class ExpiredProductList(View):
+	"""docstring for ExpiredProductList"""
+	def get(self,request):
+		user  = request.user
+		product = ProductsManagement.objects.filter(Q(expiry_date__lt=datetime.now())| Q(expiry_date__isnull=True),vendor=user).order_by('category','-created_at')
+		paginator = Paginator(product, 100)
+		page = request.GET.get('page')
+		try:
+			data = paginator.page(page)
+		except PageNotAnInteger:
+			data = paginator.page(1)
+		except EmptyPage:
+			data = paginator.page(paginator.num_pages)
+		return render(request, 'vendor/product-list.html', {'product_lists':data,'active':False,"expired":True})
+		
 
 class RemoveProduct(View):
 	"""docstring for RemoveProduct"""
@@ -481,6 +502,18 @@ def quantityChange(request):
 	product.save()
 	return HttpResponse({"status":200})
 
+class UpdateExpiryDate(View):
+	"""docstring for UpdateExpiryDate"""
+	def get(self,request,pk=None):
+		user = request.user
+		try:
+			product = ProductsManagement.objects.get(id=pk,vendor=user)
+			product.expiryDate()
+			return redirect("Vendor:product-list", 0)
+		except Exception as e:
+			print("Exception",e)
+			messages.error(request, "Product may not exists or wrong url typed !")
+			return redirect("Vendor:vendor-dashboard")
 		
 
 class Notification(View):
@@ -757,7 +790,6 @@ class UpdateProfile(View):
 class UpdateProduct(View):
 	"""docstring for UpdateProduct"""
 	def get(self,request,slug=None):
-		queryset = ProductsManagement.objects.all()
 		user = request.user
 		try:
 			product = ProductsManagement.objects.get(vendor=user,slug=slug)

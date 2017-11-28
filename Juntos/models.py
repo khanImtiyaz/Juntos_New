@@ -13,7 +13,7 @@ from django.contrib.postgres.fields import ArrayField
 from multiselectfield import MultiSelectField
 from templated_email import send_templated_mail
 from random import randrange
-from datetime import datetime
+from datetime import datetime, timedelta
 from cloudinary.models import CloudinaryField
 from autoslug import AutoSlugField
 from colorfield.fields import ColorField
@@ -180,7 +180,7 @@ class ProductsManagement(models.Model):
     selling_price = models.FloatField('Selling Price', blank=True,null=True)
     product_quantity = models.IntegerField('Available Quantity',default=0)
     product_rating = models.IntegerField('Rating', default=0,blank=True,null=True)
-    image = ArrayField(models.URLField('image'),null=True,blank=False)
+    image = ArrayField(models.ImageField('image'),null=True,blank=False)
     product_tag = models.CharField('Tag', max_length=300, blank=True)
     recommended = models.BooleanField('Mark as Recommended', default=False)
     slug = AutoSlugField(populate_from='subs_category', unique_with='title', unique=True, max_length=100)
@@ -191,7 +191,7 @@ class ProductsManagement(models.Model):
     product_depth = models.FloatField('Product depth', blank=False)
     product_width = models.FloatField('Product Width', blank=False)
     payment_mode = ArrayField(models.CharField('Payment Mode', max_length=50, blank=False))
-    expire_products = models.IntegerField('Expired Products', blank=True, default=15, null=True)
+    expiry_date = models.DateField('Expiry Date',blank=True,null=True)
     is_active = models.BooleanField("Active Product",blank=True,default=True)
     services = models.TextField('Services', blank=False,default='')
     updated = models.DateTimeField(auto_now=True)
@@ -206,11 +206,9 @@ class ProductsManagement(models.Model):
     class Meta:
       verbose_name_plural = ("Products")
 
-    def date_check(self):
-      d1  = self.created_at
-      dat = d1.date()
-      d2  = datetime.now().date()
-      return ((d2-dat).days)
+    def expiryDate(self):
+      self.expiry_date = datetime.now().date()+timedelta(days=15)
+      self.save()
 
 class ProductColor(models.Model):
     color   = ColorField(default='#FF0000')

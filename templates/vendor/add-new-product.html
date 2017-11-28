@@ -14,11 +14,6 @@
                   <form id="product_add_form" name="form_add_product" class="form-horizontal form_custom_edit"  method="post" action="{% url 'Vendor:add-product' %}" enctype="multipart/form-data">
                      {% csrf_token %}
                      <fieldset>
-                     {% if image %}
-                     {% for i in image %}
-                     <img src="{{i}}">
-                     {% endfor %}
-                     {% endif %}
                         <div class="form-group">
                            <label class="control-label col-sm-3">Nombre ☀️</label>
                            <div class="col-sm-9">
@@ -75,11 +70,23 @@
                            <label class="control-label col-sm-3">Subir foto ☀️</label>
                            <div class="col-sm-9 file-preview-input">
                               <div id="image_preview"><img src="{% static 'img/no-image.jpg'%}"></div>
+                              {% if image %}
                               <div class="row" id='product_image' name='product_image' style="margin-top: 10px">
+                              {% for img in image %}
+                                 <div class="col-sm-2" id="remove_photo_"{{img.count}}>
+                                    <div>
+                                       <i class="fa fa-times" aria-hidden="true" style="color:black;float:right"></i>
+                                       <img src="{{img}}" style="width: 100%">
+                                    </div>
+                                 </div>
+                              {% endfor %}
                               </div>
+                              {% else %}
+                              <div class="row" id='product_image' name='product_image' style="margin-top: 10px"></div>
+                              {% endif %}
                               <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
                               <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
-                              <input type="file" name="image" id="image" multiple>
+                              <input type="file" name="image" id="image" accept="png/jpg/jpeg" multiple>
                               {% if add_form.errors.image %}
                               <strong style="color:red">{{ add_form.errors.image|escape }}</strong>
                               {% endif %}
@@ -269,9 +276,11 @@
          payment_mode_value = undefined
    </script>
 {% endif %}
+
 <script>
    $(document).ready(function() {
          // Category Select Logic
+            
          function category_change(){
             $.ajax({
                url: "{% url 'Vendor:subcategories'%}",

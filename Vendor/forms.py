@@ -47,7 +47,8 @@ class NewProductAddForm(forms.ModelForm):
 
     class Meta:
         model = ProductsManagement
-        exclude = ('image',)
+        exclude = ('image','expiry_date')
+
 
 class ProfileVendorForm(forms.Form):
     legal_name =forms.CharField(required = True,widget=forms.TextInput, error_messages = {"required":"Please Enter legal name."})

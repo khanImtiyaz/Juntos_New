@@ -16,11 +16,16 @@
          {% if active %}
          <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS ACTIVOS</h2>
          {% else %}
-         <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS INACTIVOS</h2>
+            {% if expired %}
+            <h2 style="text-align: center;color: #daac0a">LIST OF EXPIRED PRODUCT</h2>
+            {% else %}
+            <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS INACTIVOS</h2>
+            {% endif %}
          {% endif %}
          <div class="product-btn">
             <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1 %}">Activo</a>
             <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 0 %}">Inactivo</a>
+            <a class="btn btn-custom pull-left" href="{% url 'Vendor:expired-products' %}">Expired Products</a>
             <a class="btn btn-custom pull-right" href="{% url 'Vendor:add-product' %}" style="border-radius: 50%;color: white"><i class="fa fa-plus" aria-hidden="true"></i></a>
          </div>
       </div>
@@ -77,18 +82,30 @@
                      <label>Status: </label>
                      <div style="display: inline;">{% if product.product_quantity %} Available {% else %} Out of stock{% endif %}</div>
                   </div>
-                  <div>
-                     <div class="col-sm-5">
-                        {% if product.is_active %}
-                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Retirar</a>
-                        {% else %}
-                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Añadir</a>
-                        {% endif %}
-                     </div>
-                     <div class="col-sm-7">
-                        <a class="view-order-btn" href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
-                     </div>
+                  <div style="overflow: hidden;height: 25px;">
+                     <label>Expiry Date: </label>
+                     <div style="display: inline;">{{product.expiry_date}}</div>
                   </div>
+                  {% if expired %}
+                     <div>
+                        <div class="col-sm-12" style="text-align: center;">
+                           <a class="view-order-btn" href="{% url 'Vendor:update-expiry-date' product.id %}" class="btn btn-custom btn-xs">Update Product</a>
+                        </div>
+                     </div>
+                  {% else %}
+                     <div>
+                        <div class="col-sm-5">
+                           {% if product.is_active %}
+                              <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Retirar</a>
+                           {% else %}
+                              <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Añadir</a>
+                           {% endif %}
+                        </div>
+                        <div class="col-sm-7">
+                           <a class="view-order-btn" href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
+                        </div>
+                     </div>
+                  {% endif %}
                </div>
             </div>
             {% endfor %}
@@ -128,7 +145,11 @@
             </ul>
             {% endif %}
             {% else %}
-            <strong>Sorry, you have not added any Product yet.Please Add.</strong>
+               {% if expired %}
+                  <strong>Hurrr....!There is no Expired Product right now.</strong>
+               {% else %}
+                  <strong>Sorry, you have not added any Product yet.Please Add.</strong>
+               {% endif %}
             {% endif %}
          </ul>
       </div>
