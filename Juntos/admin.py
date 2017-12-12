@@ -194,7 +194,6 @@ class ProductManagementForm(forms.ModelForm):
 class ProductModelAdmin(nested_admin.NestedModelAdmin):
 	list_display = ["title", "vendor", "category",  "subs_category", "product_images", "payment_mode","price", "expiry_date"]
 	fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price","in_stock", "product_quantity", "image", "recommended"]
-	list_display_links = ["category"]
 	list_filter = ["updated", "description"]
 	search_fields = ["title", "description"]
 	# inlines = [Payment_methodInline, Product_colorInline]
