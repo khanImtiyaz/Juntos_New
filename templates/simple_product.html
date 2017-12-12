@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load natural_time %}
 <section class="mid-section">
    <div class="container">
       <div class="product-block-l">
@@ -91,11 +92,40 @@
                            <label for="{{color.id}}-option">&nbsp;</label>
                            <div class="check" style="background-color:{{color.color}};">&nbsp;</div>
                         </li>
-                        <!-- <li class="changecolor" style="background-color:{{color.color}};"></li>
-                           </a> -->
                         {% endfor %}
                      </ul>
                      <span style="font-size: 12px;color: #fff;padding: 3px 8px;border-radius: 9px;background: #000;display: none;" id="checker">Please select Color & Size.</span>
+                  </div>
+                  {% endif %}
+                  {% if details.subs_category.sub_category_tag == "CP" %}
+                  <div class="row">
+                     <div class="col-sm-12">
+                        <div class="size-block varity-common">
+                           <p class="control-label" style="margin-bottom: 0px !important">Select Size</p>
+                           {% if details.subs_category.sub_category_flage == "SHOES" %}
+                           <ul class="product-picker" style="display: inline;">
+                              {% for size in details.subs_category.subcategory_shoes_size %}
+                              <li class="radio" style="border:none;">
+                                 <input type="radio" id="{{size}}-option" name="sizes" value="{{size}}">
+                                 <label for="{{size}}-option"></label>
+                                 <div class="check">{{size}}</div>
+                              </li>
+                              {% endfor %}
+                           </ul>
+                           {% else %}
+                           <a href="javascript:void(0);" data-toggle="modal" data-target="#size_chart" class="btn btn-info btn-xs">Size Chart</a>
+                           <ul class="product-picker">
+                              {% for cloth in details.subs_category.get_subcategory_size_display|convertToList %}
+                              <li class="radio" style="border:none;">
+                                 <input type="radio" id="{{cloth}}-option" name="sizes" value="{{forloop.counter}}">
+                                 <label for="{{cloth}}-option"></label>
+                                 <div class="check">{{cloth}}</div>
+                              </li>
+                              {% endfor %}
+                           </ul>
+                           {% endif %}
+                        </div>
+                     </div>
                   </div>
                   {% endif %}
                   {% if details.in_stock %}

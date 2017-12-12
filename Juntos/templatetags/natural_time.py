@@ -34,6 +34,11 @@ def thriceArray(value):
 def percentageValue(sell,actual):
     return int(((actual-sell)*100)/actual)
 
+@register.filter
+def convertToList(value):
+
+	return value.split(",")
+
 
 # @register.filter
 # def is_digit(value):
