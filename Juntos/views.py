@@ -80,8 +80,9 @@ from Static_Model.models import *
 #         return response_data
 
 def home(request):
+	current_date = datetime.now()
 	product = ProductsManagement.objects.all().exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
-	offers = Offer.objects.all()
+	offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
 	hotItems = OrderItems.objects.all().distinct('product')
 	advertiseProducts = Advertisement.objects.all().order_by("-created_at")[:4]
 	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
