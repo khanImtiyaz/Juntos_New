@@ -40,6 +40,7 @@
       <div class="item {% if forloop.first %} active{% endif %}">
          <img src="{{banner.image.url}}" alt="Juntos" style="height: 500px">
          <div class="carousel-caption">
+         {% if banner.status %}
             <div class="off_banner">
                <h2>{{banner.title}}</h2>
                <div class="off-round">
@@ -47,6 +48,7 @@
                </div>
                <strong class="off-text "></strong>
             </div>
+         {% endif %}
          </div>
       </div>
       {% endfor %} 

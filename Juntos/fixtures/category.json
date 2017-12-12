@@ -1,5 +1,11 @@
 [
   {
+    "model": "Juntos.TaxPercentage",
+    "pk": 1,
+    "fields": {
+      "tax": 18
+    }
+  },{
     "model": "Juntos.Category",
     "pk": 1,
     "fields": {

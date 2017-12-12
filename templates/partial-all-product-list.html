@@ -8,7 +8,6 @@
         <a href="{% url 'Juntos:product-detail' product.slug %}">
           <div class="product-panel1">
             <span><img src="{{product.image.0}}" alt=""/></span>
-            
             {% if product.selling_price %}
             <span class="red-sticker">{{product.selling_price | percentageValue:product.price}}% off</span>
             {% endif %}
