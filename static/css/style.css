@@ -931,7 +931,7 @@ header .search-bar .input-group{max-width:300px; margin:0 auto;}
 .stock-btn-block {margin-top: 10px;text-align: left;}
 .cod-btn-block{margin-top: 10px;text-align: left;}
 .q-btn{margin:0 3px 0 0;}
-#carousel-example-generic .carousel-inner > .item{overflow:hidden; height:122px;}
+#carousel-example-generic .carousel-inner > .item{overflow:hidden; /*height:122px;*/}
 #carousel-example-generic .carousel-inner > .item > img{left: -55px;min-width: 560px;position: relative;}
 /*.mid-section .container {width: calc(100% - 5%);}*/
 .mid-section .container {width: calc(100%);}
