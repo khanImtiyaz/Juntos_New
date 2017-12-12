@@ -134,7 +134,7 @@ class Banner(models.Model):
 
 class Category(models.Model):
     category_name = models.CharField('Category Name',max_length=120)
-    priority = models.IntegerField(blank=True,null=True,default=1)
+    priority = models.IntegerField(blank=True,null=True,default=10)
     icon = CloudinaryField(('Category icon'),"Image",null=True,blank=True)
     updated_at = models.DateTimeField(auto_now=True,null=True,blank=True)
     created_at = models.DateTimeField(auto_now=True,null=True,blank=True)
@@ -150,7 +150,7 @@ class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="sub_category")
     sub_category_tag = models.CharField(('Tag'),max_length=120,default='SP',blank=True,null=True,choices=TAG)
     sub_category_name = models.CharField(('Name'),max_length=120)
-    priority = models.IntegerField(('Priority'),blank=True,null=True,default=1)
+    priority = models.IntegerField(('Priority'),blank=True,null=True,default=10)
     subcategory_size = MultiSelectField(('Size'),choices=SIZE, max_length=50, default="", null=True, blank=True)
     subcategory_shoes_size = MultiSelectField(('Shoes Size'),choices=SHOES_SIZE, max_length=50, default="", null=True, blank=True)
     sub_category_flage = models.CharField(('Flag'),max_length=10,blank=True, choices=FLAGE, null=True, help_text="Is Cloth or Shoes ?")
