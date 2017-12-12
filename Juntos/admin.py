@@ -60,9 +60,14 @@ class SubCategoryInlines(admin.TabularInline):
 	form = SubCategoryForm
 	extra = 0
 
+	class Media:
+		js = (
+			'js/subCategory.js',
+		)
+
 
 class CategoryModelAdmin(admin.ModelAdmin):
-	list_display = ["category_name", "get_subcategory"]
+	list_display = ["category_name","priority"]
 	list_display_links = ["category_name"]
 	list_filter = ['category_name']
 	inlines = [SubCategoryInlines]
@@ -136,9 +141,9 @@ class AdvertisementForm(forms.ModelForm):
         model = Advertisement
         fields = ["title","subs_category", "type_of_services","description","price","name","email","mobile","location","recommended"]
 
-    def __init__(self, *args, **kwargs):
-        super(AdvertisementForm, self).__init__(*args, **kwargs)
-        self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
+    # def __init__(self, *args, **kwargs):
+    #     super(AdvertisementForm, self).__init__(*args, **kwargs)
+    #     self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
 
 
 class AdvertisementAdmin(nested_admin.NestedModelAdmin):

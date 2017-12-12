@@ -133,9 +133,9 @@ class Banner(models.Model):
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=120)
+    category_name = models.CharField('Category Name',max_length=120)
     priority = models.IntegerField(blank=True,null=True,default=1)
-    icon = CloudinaryField(('Category icon'),"Image")
+    icon = CloudinaryField(('Category icon'),"Image",null=True,blank=True)
     updated_at = models.DateTimeField(auto_now=True,null=True,blank=True)
     created_at = models.DateTimeField(auto_now=True,null=True,blank=True)
 
@@ -148,7 +148,7 @@ class Category(models.Model):
 
 class SubCategory(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="sub_category")
-    sub_category_tag = models.CharField(('Tag'),max_length=120, choices=TAG,default='CP',blank=True,null=True)
+    sub_category_tag = models.CharField(('Tag'),max_length=120,default='SP',blank=True,null=True,choices=TAG)
     sub_category_name = models.CharField(('Name'),max_length=120)
     priority = models.IntegerField(('Priority'),blank=True,null=True,default=1)
     subcategory_size = MultiSelectField(('Size'),choices=SIZE, max_length=50, default="", null=True, blank=True)
