@@ -835,10 +835,10 @@ class ViewCart(View):
 	def post(self,request):
 		user = request.user
 		if user.is_authenticated and user.is_customer:
-			total_price = 0.0
+			total_price = 00.00
 			product_cart = Cart.objects.filter(user=user)
 			total_price = product_cart.aggregate(Sum('price'))['price__sum']
-			total_price = total_price + (total_price * 18)/100
+			total_price = total_price + (float(total_price) * 18)/100
 			return render(request,'new_view_cart.html',{"all_cart":product_cart,"total_price":total_price})
 		else:
 			card_Array = []

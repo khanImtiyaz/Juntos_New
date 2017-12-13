@@ -27,11 +27,21 @@
                         <td class="th-img"><img src="{{product.product.image.0}}"></td>
                         <td class="th-details">
                            <div class="cart-detl-s">
-                              <h3>{{product.product.title}}</h3>
+                              <h3>{{product.product.title}}<small style="color: black"> by {{product.product.vendor.account.business_name}}</small></h3>
                               {% if product.product.in_stock %}
-                              <p>In Stock</p>
+                              <p style="margin-bottom: 5px !important">In Stock</p>
                               {% else %}
-                              <p>Out of Stock</p>
+                              <p style="margin-bottom: 5px !important">Out of Stock</p>
+                              {% endif %}
+                              {% if product.product_color %}
+                              <small> class="black-text">
+                                 Product Color: {{product.product_color}}
+                              </small>
+                              {% endif %}
+                              {% if product.product_size %}
+                              <small class="black-text">
+                                 Product Size: {{product.product_size}}
+                              </small>
                               {% endif %}
                               <div class="black-text">
                                  {{product.product.description |truncatechars:200 |safe}}

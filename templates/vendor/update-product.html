@@ -97,7 +97,7 @@
                         <div class="form-group">
                            <label class="control-label col-sm-3">Monto Asegurado</label>
                            <div class="col-sm-9">
-                              <input type="text" class="form-control" name="insured_amount" value="{{edit_form.insured_amount}}" placeholder="Enter Insured Amount" maxlength="16" id="mobile_id" onkeypress="return isNumber(event);"> {% if edit_form.errors.insured_amount %}
+                              <input type="text" class="form-control" name="insured_amount" value="{{edit_form.insured_amount|floatformat:2}}" placeholder="Enter Insured Amount" maxlength="16" id="mobile_id" onkeypress="return isNumber(event);"> {% if edit_form.errors.insured_amount %}
                               <strong style="color:red">{{ edit_form.errors.insured_amount | escape }}</strong> {% endif %}
                            </div>
                         </div>
