@@ -196,6 +196,7 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 	fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price","in_stock", "product_quantity", "image", "recommended"]
 	list_filter = ["updated", "description"]
 	search_fields = ["title", "description"]
+	readonly_fields = ['image']
 	# inlines = [Payment_methodInline, Product_colorInline]
 	# form = ProductManagementForm
 

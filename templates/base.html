@@ -33,12 +33,12 @@
             <a  href="" style="color: red;">
                <div class="text-center">
                   <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();" direction="left" >
-                    {% for new in news%}  
-                    {{new.title}}
-                    <span style="margin-right: 30%;"></span>
-                    {% endfor %}
-                    </marquee>
-                </div>
+                     {% for new in news%}  
+                     {{new.title}}
+                     <span style="margin-right: 30%;"></span>
+                     {% endfor %}
+                  </marquee>
+               </div>
             </a>
          </div>
       </section>
@@ -144,7 +144,7 @@
                      <ul>
                         <li><a href="{% url 'Juntos:faq' %}">Preguntas comunes</a></li>
                         <li><a href="{% url 'Juntos:conditions' %}">Términos y Condiciones </a></li>
-                        <li><a href="{% url 'Juntos:carrer' %}">Carreras</a></li>                     
+                        <li><a href="{% url 'Juntos:carrer' %}">Carreras</a></li>
                         <li><a href="#contactUsmodal" data-toggle="modal" data-target="#contactUsmodal">Contactenos por e-mail</a></li>
                         <li><a href="{% url 'Juntos:contact' %}">Contáctenos</a></li>
                      </ul>
@@ -166,7 +166,7 @@
          <div class="cppy-ryt">
             <div class="container">
                <div class="clearfix">
-                  <p class="text-center">Todos los derechos reservados. ©Juntos Peru 2016</p>
+                  <p class="text-center">Todos los derechos reservados. ©Juntos Peru 2017</p>
                </div>
             </div>
          </div>
@@ -181,21 +181,21 @@
                      <h3>Iniciar</h3>
                      <form id="login_customer_id" class="form-horizontal popup-container error" method="POST" action="{% url 'Juntos:login' %}?next={{request.path}}">
                         {% csrf_token %} 
-                           {% if forms.errors %}
-                              <script type="text/javascript">
-                                 $("#login").modal('show');
-                              </script>
-                           {% endif %}
+                        {% if forms.errors %}
+                        <script type="text/javascript">
+                           $("#login").modal('show');
+                        </script>
+                        {% endif %}
                         <div class="form-group">
                            <input type="email" id="email" name="email" placeholder="Correo electrónico" value="{{form.email.value}}" class="form-control" maxlength="80"> 
-                              {% if forms.errors.email %}
-                                 <strong style="color:red">{{ forms.errors.email | escape }}</strong> 
-                              {% endif %}
+                           {% if forms.errors.email %}
+                           <strong style="color:red">{{ forms.errors.email | escape }}</strong> 
+                           {% endif %}
                         </div>
                         <div class="form-group">
                            <input type="password" id="password" name="password" value="{{form.password.value}}" placeholder="Contraseña" class="form-control" maxlength="25"> 
                            {% if forms.errors.password %}
-                              <strong style="color:red">{{ forms.errors.password | escape }}</strong> 
+                           <strong style="color:red">{{ forms.errors.password | escape }}</strong> 
                            {% endif %}
                         </div>
                         <div class="form-group clearfix">
@@ -419,13 +419,13 @@
             encrypted: true
          });
          
-         var channel = pusher.subscribe('juntos_peru');
-         channel.bind('click change load', function(data) {
-            var notify = new Notification("Juntos Peru", {
-               body: data.message,
-               icon: "{% static 'img/logo2.png' %}",
-            });
-         });
+         // var channel = pusher.subscribe('juntos_peru');
+         // channel.bind('click change load', function(data) {
+         //    var notify = new Notification("Juntos Peru", {
+         //       body: data.message,
+         //       icon: "{% static 'img/logo2.png' %}",
+         //    });
+         // });
       </script>
       {% if user.is_customer %}
       <script>
@@ -512,10 +512,10 @@
          }
           
       </script>
-      <!--================================================ SUBSCRIBE FOR EMAIL =================================-->
       <script type="text/javascript">
          $("#subscribe").click(function() {
              var email = $("#usr_email").val();
+             alert(email)
              var pattern = /^[a-z0-9_\.\-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/;
              if (email != "") {
                  if (!pattern.test(email)) {
@@ -565,6 +565,5 @@
              }
          });
       </script>
-      <!--================================================ SUBSCRIBE FOR EMAIL FINISH=================================-->
    </body>
 </html>
