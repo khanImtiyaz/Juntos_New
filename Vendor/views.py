@@ -470,8 +470,9 @@ class ProductList(View):
 	"""docstring for ProductList"""
 	def get(self,request,active=None):
 		user  = request.user
-		product = ProductsManagement.objects.filter(vendor=user,is_active=active).exclude(expiry_date__lt=datetime.now()).order_by('category','-subs_category','-created_at')
-		print(product)
+		product = ProductsManagement.objects.filter(vendor=user,is_active=active).exclude(expiry_date__lt=datetime.now()).order_by('category','subs_category')
+		for p in product:
+			print("---------------------",p.category," ",p.subs_category)
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
@@ -487,7 +488,9 @@ class ExpiredProductList(View):
 	"""docstring for ExpiredProductList"""
 	def get(self,request):
 		user  = request.user
-		product = ProductsManagement.objects.filter(Q(expiry_date__lt=datetime.now())| Q(expiry_date__isnull=True),vendor=user).order_by('category','-created_at')
+		product = ProductsManagement.objects.filter(Q(expiry_date__lt=datetime.now())| Q(expiry_date__isnull=True),vendor=user).order_by('category','subs_category')
+		for p in product:
+			print("---------------------",p.category," ",p.subs_category)
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:

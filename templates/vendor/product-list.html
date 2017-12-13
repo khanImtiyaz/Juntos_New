@@ -37,8 +37,8 @@
          {% regroup product_obj.list by subs_category as subproducts %}
          <div id='{{product_obj.grouper.id}}' style="padding: 0 20px;">
             {% for sub_product_obj in subproducts %}
-            <h4 class="heading_info" id='active_{{sub_product_obj.grouper.id}}'>{{sub_product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
-            <div class="row" id='{{sub_product_obj.grouper.id}}'>
+            <h4 class="heading_info" id='active_{{sub_product_obj.grouper.id}}_sub'>{{sub_product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
+            <div class="row" id='{{sub_product_obj.grouper.id}}_sub'>
                {% for product in sub_product_obj.list %}
                <div class="col-sm-4">
                   <div class="order-list clearfix">
@@ -115,9 +115,9 @@
                {% endfor %}
             </div>
             <script type="text/javascript">
-               $("#{{sub_product_obj.grouper.id}}").hide()
-                $("#active_{{sub_product_obj.grouper.id}}").on("click",function(){
-                  $("#{{sub_product_obj.grouper.id}}").toggle();
+               $("#{{sub_product_obj.grouper.id}}_sub").hide()
+                $("#active_{{sub_product_obj.grouper.id}}_sub").on("click",function(){
+                  $("#{{sub_product_obj.grouper.id}}_sub").toggle();
                 })
             </script>
             {% endfor %}
