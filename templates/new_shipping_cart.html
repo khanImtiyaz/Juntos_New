@@ -35,11 +35,11 @@
                               {% endif %}
                               {% if product.product_color %}
                               <small class="black-text">
-                                 Product Color: {{product.product_color}}
+                                 Product Color: {{product.product.productColor.all}}
                               </small>
                               {% endif %}
                               {% if product.product_size %}
-                              <small class="black-text">
+                              <small class="black-text" style="display: table-row-group;">
                                  Product Size: {{product.product_size}}
                               </small>
                               {% endif %}
