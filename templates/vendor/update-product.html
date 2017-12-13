@@ -50,14 +50,14 @@
                         <div class="form-group">
                            <label class="control-label col-sm-3">Precio del producto($)</label>
                            <div class="col-sm-9">
-                              <input type="text" class="form-control" name="price" id="price_id" value="{{edit_form.price}}" /> {% if edit_form.errors.price %}
+                              <input type="text" class="form-control" name="price" id="price_id" value="{{edit_form.price|floatformat:2}}" /> {% if edit_form.errors.price %}
                               <strong style="color:red">{{ edit_form.errors.price | escape }}</strong> {% endif %}
                            </div>
                         </div>
                         <div class="form-group">
                            <label class="control-label col-sm-3">Precio de venta($)</label>
                            <div class="col-sm-9">
-                              <input type="text" class="form-control" name="selling_price" id="sell_price_id" value="{{edit_form.selling_price}}" /> 
+                              <input type="text" class="form-control" name="selling_price" id="sell_price_id" value="{{edit_form.selling_price|floatformat:2}}" /> 
                               {% if edit_form.errors.selling_price %}
                               <strong style="color:red">{{ edit_form.errors.selling_price | escape }}</strong> 
                               {% endif %}
