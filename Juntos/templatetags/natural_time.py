@@ -38,6 +38,12 @@ def percentageValue(sell,actual):
 def convertToList(value):
 
 	return value.split(",")
+	
+@register.filter
+def colorCode(value):
+	color = ProductColor.objects.get(id=value)
+	return color.color
+
 
 
 # @register.filter
