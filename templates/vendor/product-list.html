@@ -16,11 +16,11 @@
          {% if active %}
          <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS ACTIVOS</h2>
          {% else %}
-            {% if expired %}
-            <h2 style="text-align: center;color: #daac0a">LIST OF EXPIRED PRODUCT</h2>
-            {% else %}
-            <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS INACTIVOS</h2>
-            {% endif %}
+         {% if expired %}
+         <h2 style="text-align: center;color: #daac0a">LIST OF EXPIRED PRODUCT</h2>
+         {% else %}
+         <h2 style="text-align: center;color: #daac0a">LISTA DE PRODUCTOS INACTIVOS</h2>
+         {% endif %}
          {% endif %}
          <div class="product-btn">
             <a class="btn btn-custom pull-left" href="{% url 'Vendor:product-list' 1 %}">Activo</a>
@@ -34,80 +34,92 @@
          {% regroup product_lists by category as products %}
          {% for product_obj in products %}
          <h4 class="heading_info" id='active_{{product_obj.grouper.id}}'>{{product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
-         <div class="row" id='{{product_obj.grouper.id}}'>
-            {% for product in product_obj.list %}
-            <div class="col-sm-4">
-               <div class="order-list clearfix">
-                  <div style="display:inline">#{{product.id}}</div>
-                  {% if product.is_active %}
-                  <div style="display:inline;float: right;"><i class="fa fa-check-circle" aria-hidden="true" style="color:#daac0a"></i></div>
-                  {% else %}
-                  <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
-                  {% endif %}
-                  <div style="overflow: hidden;height: 25px;">
-                     <label>Nombre: </label>
-                     <div style="display: inline;"> {{product.title}}</div>
-                  </div>
-                  <div style="overflow: hidden;height: 25px;">
-                     <label>Categoría: </label>
-                     <div style="display: inline;"> {{product.subs_category.category}}</div>
-                  </div>
-                  <div style="overflow: hidden;height: 25px;">
-                     <label>Subcategoría: </label>
-                     <div style="display: inline;"> {{product.subs_category}}</div>
-                  </div>
-                  <div style="overflow: hidden;height: 25px;">
-                     <label>Precio de venta: </label>
-                     <div style="display: inline;"> ${{product.price |floatformat:2}}</div>
-                  </div>
-                  <div class="row">
-                     <div class="col-sm-4" style="vertical-align: middle">
-                        <label>Cantidad: </label>
+         {% regroup product_obj.list by subs_category as subproducts %}
+         <div id='{{product_obj.grouper.id}}' style="padding: 0 20px;">
+            {% for sub_product_obj in subproducts %}
+            <h4 class="heading_info" id='active_{{sub_product_obj.grouper.id}}'>{{sub_product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
+            <div class="row" id='{{sub_product_obj.grouper.id}}'>
+               {% for product in sub_product_obj.list %}
+               <div class="col-sm-4">
+                  <div class="order-list clearfix">
+                     <div style="display:inline">#{{product.id}}</div>
+                     {% if product.is_active %}
+                     <div style="display:inline;float: right;"><i class="fa fa-check-circle" aria-hidden="true" style="color:#daac0a"></i></div>
+                     {% else %}
+                     <div style="display:inline;float: right;"><i class="fa fa-times-circle" aria-hidden="true" style="color:red"></i></div>
+                     {% endif %}
+                     <div style="overflow: hidden;height: 25px;">
+                        <label>Nombre: </label>
+                        <div style="display: inline;"> {{product.title}}</div>
                      </div>
-                     <div class="col-sm-8">
-                        <div class="sp-quantity">
-                           <div class="sp-plus fff">
-                              <button class="ddd" onclick="decrease('{{product.id}}-quantityValue')">-</button>
-                           </div>
-                           <div class="sp-input">
-                              <input type="text" value="{{product.product_quantity}}" class="quntity-input" id="{{product.id}}-quantityValue">
-                           </div>
-                           <div class="sp-minus fff">
-                              <button id="btnSubmit" class="ddd" onclick="increase('{{product.id}}-quantityValue')">+</button>
+                     <div style="overflow: hidden;height: 25px;">
+                        <label>Categoría: </label>
+                        <div style="display: inline;"> {{product.subs_category.category}}</div>
+                     </div>
+                     <div style="overflow: hidden;height: 25px;">
+                        <label>Subcategoría: </label>
+                        <div style="display: inline;"> {{product.subs_category}}</div>
+                     </div>
+                     <div style="overflow: hidden;height: 25px;">
+                        <label>Precio de venta: </label>
+                        <div style="display: inline;"> ${{product.price |floatformat:2}}</div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-4" style="vertical-align: middle">
+                           <label>Cantidad: </label>
+                        </div>
+                        <div class="col-sm-8">
+                           <div class="sp-quantity">
+                              <div class="sp-plus fff">
+                                 <button class="ddd" onclick="decrease('{{product.id}}-quantityValue')">-</button>
+                              </div>
+                              <div class="sp-input">
+                                 <input type="text" value="{{product.product_quantity}}" class="quntity-input" id="{{product.id}}-quantityValue">
+                              </div>
+                              <div class="sp-minus fff">
+                                 <button id="btnSubmit" class="ddd" onclick="increase('{{product.id}}-quantityValue')">+</button>
+                              </div>
                            </div>
                         </div>
                      </div>
-                  </div>
-                  <div style="overflow: hidden;height: 25px;">
-                     <label>Status: </label>
-                     <div style="display: inline;">{% if product.product_quantity %} Available {% else %} Out of stock{% endif %}</div>
-                  </div>
-                  <div style="overflow: hidden;height: 25px;">
-                     <label>Expiry Date: </label>
-                     <div style="display: inline;">{{product.expiry_date}}</div>
-                  </div>
-                  {% if expired %}
+                     <div style="overflow: hidden;height: 25px;">
+                        <label>Status: </label>
+                        <div style="display: inline;">{% if product.product_quantity %} Available {% else %} Out of stock{% endif %}</div>
+                     </div>
+                     <div style="overflow: hidden;height: 25px;">
+                        <label>Expiry Date: </label>
+                        <div style="display: inline;">{{product.expiry_date}}</div>
+                     </div>
+                     {% if expired %}
                      <div>
                         <div class="col-sm-12" style="text-align: center;">
                            <a class="view-order-btn" href="{% url 'Vendor:update-expiry-date' product.id %}" class="btn btn-custom btn-xs">Update Product</a>
                         </div>
                      </div>
-                  {% else %}
+                     {% else %}
                      <div>
                         <div class="col-sm-5">
                            {% if product.is_active %}
-                              <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Retirar</a>
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Retirar</a>
                            {% else %}
-                              <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Añadir</a>
+                           <a class="remove-notify-btn" href="{% url 'Vendor:remove-product' product.id %}">Añadir</a>
                            {% endif %}
                         </div>
                         <div class="col-sm-7">
                            <a class="view-order-btn" href="{% url 'Vendor:update-product' product.slug %}" class="btn btn-custom btn-xs"><i class="glyphicon glyphicon-eye-open"></i> View</a>
                         </div>
                      </div>
-                  {% endif %}
+                     {% endif %}
+                  </div>
                </div>
+               {% endfor %}
             </div>
+            <script type="text/javascript">
+               $("#{{sub_product_obj.grouper.id}}").hide()
+                $("#active_{{sub_product_obj.grouper.id}}").on("click",function(){
+                  $("#{{sub_product_obj.grouper.id}}").toggle();
+                })
+            </script>
             {% endfor %}
          </div>
          <script type="text/javascript">
@@ -145,11 +157,11 @@
             </ul>
             {% endif %}
             {% else %}
-               {% if expired %}
-                  <strong>Hurrr....!There is no Expired Product right now.</strong>
-               {% else %}
-                  <strong>Sorry, you have not added any Product yet.Please Add.</strong>
-               {% endif %}
+            {% if expired %}
+            <strong>Hurrr....!There is no Expired Product right now.</strong>
+            {% else %}
+            <strong>Sorry, you have not added any Product yet.Please Add.</strong>
+            {% endif %}
             {% endif %}
          </ul>
       </div>
@@ -163,17 +175,17 @@
       product = field.split('-')
       $("#"+field).val(parseInt($("#"+field).val())+1)
       quantity($("#"+field).val(),product[0])
-  }
-  var decrease = function(field){
+   }
+   var decrease = function(field){
       product = field.split('-')
       if(parseInt($("#"+field).val())==1)
          return
       $("#"+field).val(parseInt($("#"+field).val())-1)
       quantity($("#"+field).val(),product[0])
-
-  }
-
-  var quantity = function(quant,id){
+   
+   }
+   
+   var quantity = function(quant,id){
    $.ajax({
       type: 'POST',
       url: "{% url 'Vendor:quantity-change' %}",
@@ -186,6 +198,6 @@
       success: function(e) {
       },
       });
-  }
+   }
 </script>
 {% endblock%}

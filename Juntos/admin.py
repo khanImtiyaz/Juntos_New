@@ -154,13 +154,13 @@ class AdvertisementAdmin(nested_admin.NestedModelAdmin):
 
 admin.site.register(Advertisement, AdvertisementAdmin)
 
-class ProductImageInline(nested_admin.NestedStackedInline):
+class ProductImageInline(admin.TabularInline):
 	model = ProductImage
 	fields = ['product_images', 'product_color']
 	extra = 1
 
 
-class Product_colorInline(nested_admin.NestedStackedInline):
+class Product_colorInline(admin.TabularInline):
 	model = ProductColor
 	fields = ['color', 'product']
 	list_editable = ["color", ]
@@ -197,7 +197,7 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 	list_filter = ["updated", "description"]
 	search_fields = ["title", "description"]
 	readonly_fields = ['image']
-	# inlines = [Payment_methodInline, Product_colorInline]
+	# inlines = [Product_colorInline]
 	# form = ProductManagementForm
 
 	def price(self,obj):
