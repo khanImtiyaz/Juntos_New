@@ -35,8 +35,7 @@
                               {% endif %}
                               {% if product.product_color %}
                               <small class="black-text">
-                                 Product Color: {{product.product_color|colorCode}}
-                                 <div style="height: 40px;width: 40px;border-radius: 50%;background:{{product.product_color|colorCode}}"></div>
+                                 Product Color: <div style="height: 20px;width: 20px;border-radius: 50%;display: inline-block;background:{{product.product_color|colorCode}}"></div>
                               </small>
                               {% endif %}
                               {% if product.product_size %}
