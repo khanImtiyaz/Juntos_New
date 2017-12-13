@@ -32,11 +32,9 @@
       <div style="margin-top: 20px">
          {% if product_lists %}
          {% regroup product_lists by category as products %}
-         {{products}}
          {% for product_obj in products %}
          <h4 class="heading_info" id='active_{{product_obj.grouper.id}}'>{{product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>
          {% regroup product_obj.list by subs_category as subproducts %}
-         {{subproducts}}
          <div id='{{product_obj.grouper.id}}' style="padding: 0 20px;">
             {% for sub_product_obj in subproducts %}
             <h4 class="heading_info" id='active_{{sub_product_obj.grouper.id}}'>{{sub_product_obj.grouper}}<i class="fa fa-angle-right" aria-hidden="true" style="float: right;color: #daac0a;font-size: 24px;"></i></h4>

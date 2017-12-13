@@ -471,6 +471,7 @@ class ProductList(View):
 	def get(self,request,active=None):
 		user  = request.user
 		product = ProductsManagement.objects.filter(vendor=user,is_active=active).exclude(expiry_date__lt=datetime.now()).order_by('category','-subs_category','-created_at')
+		print(product)
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
