@@ -84,12 +84,12 @@
                   </div>
                   {% if details.productColor.all %}
                   <div class="color-block varity-common">
-                     <p>Available Color</p>
+                     <p style="margin-bottom: 0px !important">Available Color</p>
                      <ul class="product-picker">
                         {% for color in details.productColor.all %}
                         <li class="radio">
                            <input type="radio" name="colors" value="{{color.id}}" id="{{color.id}}-option" class="color_radion" onclick="return get_images(this, {{color.id}})">
-                           <label for="{{color.id}}-option">&nbsp;</label>
+                           <label for="{{color.id}}-option" style="margin-bottom: 0px !important">&nbsp;</label>
                            <div class="check" style="background-color:{{color.color}};">&nbsp;</div>
                         </li>
                         {% endfor %}
