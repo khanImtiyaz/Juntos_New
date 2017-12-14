@@ -88,6 +88,69 @@ def home(request):
 	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
 	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
+
+class Index(View):
+	"""docstring for Index"""
+	def get(self, request, slug=None):
+		queryset = SubCategory.objects.all()
+		print("Slug",slug)
+		if slug:
+			sub_category = get_object_or_404(queryset,slug=slug)
+			sub_cat = ProductsManagement.objects.filter(subs_category__slug=slug)
+			print("------------------",sub_cat)
+			if sub_cat:
+				return render(request, 'index.html', {'sub_cats':sub_cat})
+			else:
+				messages.info(request,"No product availabe for this category !")
+				return redirect("Juntos:home")
+		else:
+			return redirect("Juntos:home")
+
+
+# @register.filter
+# def index(request, slug=None):
+#     if slug:
+#         sub_cat = Sub_Category.objects.filter(slug=slug).first()
+#         if sub_cat:
+#             # print("if")
+#             try:
+#                 advertisement = sub_cat.sub_advertisments.all()
+#             except Exception as e:
+#                 print("Error----",e)
+#                 advertisement = {}
+#         sb_ct = Sub_Category.objects.filter(sub_category_tag="VP")
+#         #paginator = Paginator(user_list, 8)
+#         all_sub = sub_cat.sub_cat_product.values()
+#         paginator = Paginator(all_sub, 12)
+#         banner = Banner.objects.all()
+#         all_category=Category.objects.all()
+#         offers = Offer.objects.all()
+#         hot_items = []
+#         hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
+#         for deal in hot_deals:
+#             prod = Products_Management.objects.get(id=deal['product_id'])
+#             hot_items.append({'title':prod.title,"id":prod.id,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
+#         #print(hot_items)
+#         page = request.GET.get('page')
+#         try:
+#             contacts = paginator.page(page)
+#         except PageNotAnInteger:
+#             # If page is not an integer, deliver first page.
+#             contacts = paginator.page(1)
+#         except EmptyPage:
+#             # If page is out of range (e.g. 9999), deliver last page of results.
+#             contacts = paginator.page(paginator.num_pages)
+#         # or advertisement.exists()
+#         if all_sub.exists()  or sb_ct.exists():
+#             return render(request, 'index.html', {'sub_cats':all_sub, "hot_items":hot_items ,"offers":offers,"categorys":all_category, 'banner_list':banner,"header_name":sub_cat.sub_category_name,'advertisements':advertisement, 'contacts': contacts,'res_cat':sb_ct})
+#         else:
+#             messages.info(request,"No product availabe for this category !")
+#             return redirect("Peru:home")
+#     else:
+#         return redirect("Peru:home")
+
+
+
 # def product_detail(request, slug=None):
 #     # try:
 #     detail = Products_Management.objects.filter(slug=slug).first()
@@ -156,62 +219,7 @@ class ProductColor(View):
 		return render(request, 'product.html')
 		
 
-# @register.filter
-# def index(request, slug=None):
-#     if slug:
-#         sub_cat = Sub_Category.objects.filter(slug=slug).first()
-#         if sub_cat:
-#             # print("if")
-#             try:
-#                 advertisement = sub_cat.sub_advertisments.all()
-#             except Exception as e:
-#                 print("Error----",e)
-#                 advertisement = {}
-#         sb_ct = Sub_Category.objects.filter(sub_category_tag="VP")
-#         #paginator = Paginator(user_list, 8)
-#         all_sub = sub_cat.sub_cat_product.values()
-#         paginator = Paginator(all_sub, 12)
-#         banner = Banner.objects.all()
-#         all_category=Category.objects.all()
-#         offers = Offer.objects.all()
-#         hot_items = []
-#         hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
-#         for deal in hot_deals:
-#             prod = Products_Management.objects.get(id=deal['product_id'])
-#             hot_items.append({'title':prod.title,"id":prod.id,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
-#         #print(hot_items)
-#         page = request.GET.get('page')
-#         try:
-#             contacts = paginator.page(page)
-#         except PageNotAnInteger:
-#             # If page is not an integer, deliver first page.
-#             contacts = paginator.page(1)
-#         except EmptyPage:
-#             # If page is out of range (e.g. 9999), deliver last page of results.
-#             contacts = paginator.page(paginator.num_pages)
-#         # or advertisement.exists()
-#         if all_sub.exists()  or sb_ct.exists():
-#             return render(request, 'index.html', {'sub_cats':all_sub, "hot_items":hot_items ,"offers":offers,"categorys":all_category, 'banner_list':banner,"header_name":sub_cat.sub_category_name,'advertisements':advertisement, 'contacts': contacts,'res_cat':sb_ct})
-#         else:
-#             messages.info(request,"No product availabe for this category !")
-#             return redirect("Peru:home")
-#     else:
-#         return redirect("Peru:home")
 
-class Index(View):
-	"""docstring for Index"""
-	def get(self, request, slug=None):
-		queryset = SubCategory.objects.all()
-		if slug:
-			sub_category = get_object_or_404(queryset,slug=slug)
-			sub_cat = ProductsManagement.objects.filter(subs_category=sub_category.id)
-			if sub_cat:
-				return render(request, 'index.html', {'sub_cats':sub_cat})
-			else:
-				messages.info(request,"No product availabe for this category !")
-				return redirect("Juntos:home")
-		else:
-			return redirect("Juntos:home")
 
 class ProceedCart(View):
 	"""docstring for ProceedCart"""
