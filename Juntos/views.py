@@ -135,7 +135,7 @@ class ProductImageView(View):
 		imagesArray = []
 		for img in images:
 			imagesArray.append(img['product_images'])
-		return render(request, "partial-product_image_view.html",{"images":imagesArray})
+		return render(request, "partial-product-image-view.html",{"images":imagesArray})
 
 # def search_product(request):
 #     return render(request,"index.html",{})
