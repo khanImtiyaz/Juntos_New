@@ -111,7 +111,7 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
 
 class News(models.Model):
   """docstring for News"""
-  title = models.CharField(('Title'),max_length=100,blank=False)
+  title = models.CharField(('Title'),max_length=500,blank=False)
   updated = models.DateTimeField(auto_now=True)
   created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
 
