@@ -600,7 +600,15 @@
                          },
                      });
                  }
-             }
+             }else {
+            Lobibox.notify('error', {
+                size: 'mini',
+                sound: false,
+                msg: "Please enter email address",
+                title: 'Peru Juntos',
+            });
+            $("#usr_email").focus();
+        }
          });
 
          $("#add_ContactUsEmail").click(function(){
