@@ -13,8 +13,10 @@
    .modal-footer {
    background-color: #f9f9f9;
    }
+   /* override position and transform in 3.3.x */
+   
 </style>
-{% if banner_list.exists %}
+{% if banner_list %}
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
    <div class="search-bar col-md-5 col-sm-12">
       <form class="navbar-form" role="search" action="{%url 'Juntos:search-product'%}" method="POST">
@@ -27,20 +29,12 @@
          </div>
       </form>
    </div>
-   <ol class="carousel-indicators">
-      {% for banner in banner_list %} 
-      {% if forloop.counter0 == 0 %}
-         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-      {% else %}
-      <li data-target="#carousel-example-generic" data-slide-to="{{forloop.counter0}}" ></li>
-      {% endif %} {% endfor %}
-   </ol>
    <div class="carousel-inner">
       {% for banner in banner_list %}
-      <div class="item {% if forloop.first %} active{% endif %}">
+      <div class="item {% if forloop.first %}active{% endif %}">
          <img src="{{banner.image.url}}" alt="Juntos" style="height: 500px">
          <div class="carousel-caption">
-         {% if banner.status %}
+            {% if banner.status %}
             <div class="off_banner">
                <h2>{{banner.title}}</h2>
                <div class="off-round">
@@ -48,11 +42,19 @@
                </div>
                <strong class="off-text "></strong>
             </div>
-         {% endif %}
+            {% endif %}
          </div>
       </div>
       {% endfor %} 
    </div>
+   <ol class="carousel-indicators">
+      {% for banner in banner_list %} 
+      {% if forloop.first %}
+      <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+      {% else %}
+      <li data-target="#carousel-example-generic" data-slide-to="{{forloop.counter0}}" ></li>
+      {% endif %} {% endfor %}
+   </ol>
 </div>
 {% else %}
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -83,96 +85,105 @@
 {% endif %}
 <section class="mid-section y-mid-sec">
    <div class="container">
-      <div class="clearfix m-t-lr-15">
-         <div class="col-md-3 col-lg-3" >
-            <div class="nav-side-menu">
-               <div class="brand">Categorias</div>
-               <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
-               <div class="menu-list">
-                  <ul id="menu-content" class="menu-content collapse out">
-                     {% for category in categories %}
-                     <li data-toggle="collapse" data-target="#{{category | cut:" " }}" class="collapsed">
-                        <i class="fa"><img src="{{category.Image.url}}" class="categoryicon" alt=""/></i> <span>{{category.category_name | safe }}</span>
-                        <ul class="sub-menu collapse" id="{{category | cut:" " }}">
-                           {% if category.sub_category.exists %} 
-                              {% for sub_data in category.sub_category.values %}
-                                 <li>
-                                    <a href="{% url 'Juntos:index' sub_data.slug %}">{{sub_data.sub_category_name}}</a>
-                                 </li>
-                              {% endfor %}
-                           {% endif%}
-                        </ul>
-                     </li>
-                     {% endfor %}
-                  </ul>
-               </div>
-            </div>
-
-            {% if recomended_product %}
-            {% include 'partial-recommended-side.html' with recomended_product=recomended_product %}
-            {% endif %}
-
-            {% if hot_items %}
-            {% include 'hot-items.html' with hot_items=hot_items %}
-            {% endif %}
-
-            {% if offers %}
-            {% include 'partial-offer.html' with offers=offers %}
-            {% endif %}
-            
-         </div>
-         <div class="col-md-9 col-lg-9">
-
-            {% if advertisements %}
-            <div class="recomen-panel">
-               <h2 class="h2">Advertisment Section<a class="pull-right view-det" href="{% url 'Juntos:recommended-services' %}">View All</a></h2>
-               <div class="row">
-                  {% for sub in advertisements %}
-                  <div class="col-sm-4 col-lg-4 pro-main">
-                     <div class="prodct-anchor pos-rel">
-                        
-                        <a href="{% url 'Juntos:advertisment-detail' sub.slug %}">
-                           <div class="product-panel1">
-                              <span><img src="{{sub.advertisement_images.first.image.url}}" alt=""/></span>
-                              <span class="green-sticker"> New </span>
-                            </div>
-                        </a>
-                        <h3>{{sub.title}}</h3>
-                        <div class="Description">
-                           <span>{{sub.description | truncatechars:50 | safe }}</span>
-                        </div>
-                     </div>
-                  </div>
+   <div class="clearfix m-t-lr-15">
+      <div class="col-md-3 col-lg-3" >
+         <div class="nav-side-menu">
+            <div class="brand">Categorias</div>
+            <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+            <div class="menu-list">
+               <ul id="menu-content" class="menu-content collapse out">
+                  {% for category in categories %}
+                  <li data-toggle="collapse" data-target="#{{category | cut:" " }}" class="collapsed">
+                  <i class="fa"><img src="{{category.Image.url}}" class="categoryicon" alt=""/></i> <span>{{category.category_name | safe }}</span>
+                  <ul class="sub-menu collapse" id="{{category | cut:" " }}">
+                  {% if category.sub_category.exists %} 
+                  {% for sub_data in category.sub_category.values %}
+                  <li>
+                     <a href="{% url 'Juntos:index' sub_data.slug %}">{{sub_data.sub_category_name}}</a>
+                  </li>
                   {% endfor %}
-               </div>
-               <div class="bdr-bottom"></div>
-
+                  {% endif%}
+               </ul>
+               </li>
+               {% endfor %}
+               </ul>
             </div>
-            {% endif %}
-
-            {% if product_list %}
-            {% include 'partial-new-product-list.html' with product_list=product_list %}
-            {% endif%}
-
-            {% if all_product_list %}
-            {% include 'partial-all-product-list.html' with all_product_list=all_product_list %}
-            {% endif%}
-
-            {% if sub_cats %}
-            {% include 'partial-sub-category-product.html' with sub_cats=sub_cats%}
-            {% endif %}
          </div>
+         {% if recomended_product %}
+         {% include 'partial-recommended-side.html' with recomended_product=recomended_product %}
+         {% endif %}
+         {% if hot_items %}
+         {% include 'hot-items.html' with hot_items=hot_items %}
+         {% endif %}
+         {% if offers %}
+         {% include 'partial-offer.html' with offers=offers %}
+         {% endif %}
+      </div>
+      <div class="col-md-9 col-lg-9">
+         {% if advertisements %}
+         <div class="recomen-panel">
+            <h2 class="h2">Advertisment Section</h2>
+            <div class="row">
+               <div class="col-md-12 col-md-offset-3" style="margin-left: 0px;padding:0px 0px;">
+                  <div class="carousel slide" id="myCarousel">
+                     <div class="carousel-inner">
+                        {% for sub in advertisements %}
+                        <div class="item {% if forloop.first %}active{% endif %}">
+                           <div class="col-sm-4 col-lg-4 pro-main">
+                              <div class="prodct-anchor pos-rel">
+                                 <a href="{% url 'Juntos:advertisment-detail' sub.slug %}">
+                                    <div class="product-panel1">
+                                       <span><img src="{{sub.advertisement_images.first.image.url}}" alt=""/></span>
+                                       <span class="green-sticker"> New </span>
+                                    </div>
+                                 </a>
+                                 <h3>{{sub.title}}</h3>
+                                 <div class="Description">
+                                    <span>{{sub.description | truncatechars:50 | safe }}</span>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        {% endfor %}
+                     </div>
+                     <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+                     <a class="right carousel-control" href="#myCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="bdr-bottom"></div>
+         {% endif %}
+         {% if product_list %}
+         {% include 'partial-new-product-list.html' with product_list=product_list %}
+         {% endif%}
+         {% if all_product_list %}
+         {% include 'partial-all-product-list.html' with all_product_list=all_product_list %}
+         {% endif%}
+         {% if sub_cats %}
+         {% include 'partial-sub-category-product.html' with sub_cats=sub_cats%}
+         {% endif %}
       </div>
    </div>
 </section>
+<script type="text/javascript">
+   $('#myCarousel').carousel({
+   interval: 10000
+   })
+   
+   $('#myCarousel .item').each(function(){
+   var next = $(this).next();
+   if (!next.length) {
+    next = $(this).siblings(':first');
+   }
+   next.children(':first-child').clone().appendTo($(this));
+   
+   if (next.next().length>0) {
+    next.next().children(':first-child').clone().appendTo($(this));
+   }
+   else {
+   $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+   }
+   });
+</script>
 {% endblock %}
-
-
-<!-- {% if recomended_product %}
-            {% include 'partial-recomended-product.html' with recomended_product=recomended_product %}
-            <div class="bdr-bottom"></div>
-            {% endif %}
-
-            {% if all_recommendeds %}
-            {% include 'partial-all-recommended-product.html' with all_recommendeds=all_recommendeds %}
-            {% endif %} -->
