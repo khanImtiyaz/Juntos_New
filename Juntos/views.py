@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect,csrf_exempt
 from django.contrib import messages
 from django.contrib.auth import views as auth_views
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.mail import send_mail
 from django import template
 from django.db.models import Q
@@ -370,7 +370,7 @@ class ContactList(View):
 	"""docstring for ClassName"""
 	def get(self,request):
 		JuntosContact = JuntosContactUs.objects.all()
-		return render(request, 'contact_us.html',{"lists":JuntosContact})
+		return render(request, 'contact-us.html',{"lists":JuntosContact})
 														
 # def login_view(request):
 #     redirect_to = request.POST.get('next', request.GET.get('next', ''))
@@ -593,10 +593,14 @@ class SendMail(View):
 #             return HttpResponse(json.dumps({"message":"You have already subscribed for news letter", "code":400}), content_type='application/json')
 
 class SubscribeNewsLetter(View):
+	
 	"""docstring for SubscribeNewsLetter"""
-	def get(self,request):
-		return HttpResponse(json.dumps({"message":"You have subscribed for news letter", "code":200}), content_type='application/json')
-
+	def post(self,request):
+		form = SubscribeNewsLetterForm(data=request.POST)
+		if form.is_valid():
+			form.save()
+			return JsonResponse({"message":"You have subscribed for news letter", "status":200})
+		return JsonResponse({"message":"You have already subscribed for this", "status":400})
 class UpdateProfile(View):
 	"""docstring for UpdateProfile"""
 	def get(self,request):
@@ -1410,5 +1414,18 @@ class PaypalOrderPlaced(View):
 		else:
 			messages.error(request, "Payment Failed, Unable to placed your order!")
 			return redirect('Juntos:order-cancel')
-										
+	
+
+class ContactUsEmail(View):
+	"""docstring for ContactUsEmail"""
+	def post(self,request):
+		from django.template import loader
+		print("------------",request.META.get("HTTP_REFERER"))
+		form = JuntosContactUsEmailForm(data=request.POST)
+		if form.is_valid():
+			form.save()
+			return JsonResponse({"status":200,"message":"Your request save will contact you soon."})
+		return JsonResponse({"status":400,"message":"Something went wrong."})
+
+																				
 														

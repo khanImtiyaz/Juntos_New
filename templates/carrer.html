@@ -4,13 +4,12 @@
 <section class="term_section" style="min-height: 500px;">
    <div class="container">
       <p>Working</p>
-      <p>Please Keep Patience this section will come soon</p>
-      {% for contact in lists %}
+      <p>Please Keep Patience this section will coming soon</p>
+      {% for carrer in lists %}
       <div class="heading_top">
-         <h2>Juntos</h2>
-         <p>{{contact.message | safe}}</p>
+         <h2>{{carrer.heading}}</h2>
       </div>
-      <h3>Contact Email:{{contact.contact_user}}</h3>
+      <p>{{carrer.content | safe}}</p>
       {% endfor %}
    </div>
 </section>

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+		
+	<section class="term_section" style="min-height: 500px;">
+		<div class="container">
+		{% for contact in lists %}
+			<div class="heading_top">
+			<h2>Juntos</h2>
+			<p>{{contact.message | safe}}</p>
+				
+			</div>
+			<h3>Contact Email:{{contact.contact_user}}</h3>
+			{% endfor %}
+		</div>		
+	</section>
+  </body>
+</html>
+{% endblock %}

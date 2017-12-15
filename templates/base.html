@@ -145,7 +145,7 @@
                         <li><a href="{% url 'Juntos:conditions' %}">Términos y Condiciones </a></li>
                         <li><a href="{% url 'Juntos:carrer' %}">Carreras</a></li>
                         <li><a href="#contactUsmodal" data-toggle="modal" data-target="#contactUsmodal">Contactenos por e-mail</a></li>
-                        <li><a href="{% url 'Juntos:contact' %}">Contáctenos</a></li>
+                        <!-- <li><a href="{% url 'Juntos:contact' %}">Contáctenos</a></li> -->
                      </ul>
                   </div>
                   <div class="col-lg-4 col-md-4 col-sm-4">
@@ -170,6 +170,54 @@
             </div>
          </div>
       </footer>
+      <div id="contactUsmodal" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+         <div class="modal-dialog modal-md">
+            <div class="modal-content clearfix">
+               <a href="#" data-dismiss="modal">
+               <img src="{% static 'img/cross.png' %}" class="cross"></a>
+               <div class="modal-body login-popup">
+                  <div class="col-sm-10 col-sm-offset-1">
+                     <h3>Contact Us Email</h3>
+                     <form  class="form-horizontal popup-container error">
+                        {% csrf_token %} 
+                        {% if ContactForm.errors %}
+                        <script type="text/javascript">
+                           $("#contactUsmodal").modal('show');
+                        </script>
+                        {% endif %}
+                        <div class="form-group">
+                           <input type="email" id="contactemail" name="contactemail" placeholder="Correo electrónico" value="{{ContactForm.contactemail.value}}" class="form-control" maxlength="80"> 
+                           {% if ContactForm.errors.contactemail %}
+                           <strong style="color:red">{{ ContactForm.errors.contactemail | escape }}</strong> 
+                           {% endif %}
+                        </div>
+                        <div class="form-group">
+                           <input type="text" id="subject" name="subject" value="{{ContactForm.subject.value}}" placeholder="Subject" class="form-control"> 
+                           {% if ContactForm.errors.subject %}
+                           <strong style="color:red">{{ ContactForm.errors.subject | escape }}</strong> 
+                           {% endif %}
+                        </div>
+                        <div class="form-group">
+                           <textarea type="text" id="message" name="message" placeholder="Please Write your Content" value="{{ContactForm.message.value}}" class="form-control"></textarea>
+                           {% if ContactForm.errors.message %}
+                           <strong style="color:red">{{ ContactForm.errors.message | escape }}</strong> 
+                           {% endif %}
+                        </div>
+                        <div class="popup-logn-btn text-center">
+                        <button type="button" class="btn btn-primary" id='add_ContactUsEmail'>Submit</button>
+                        </div>
+                     </form>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+
+
+
+
       <div id="login" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
          <div class="modal-dialog modal-md">
             <div class="modal-content clearfix">
@@ -514,9 +562,8 @@
       <script type="text/javascript">
          $("#subscribe").click(function() {
              var email = $("#usr_email").val();
-             alert(email)
              var pattern = /^[a-z0-9_\.\-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/;
-             if (email != "") {
+             if (email) {
                  if (!pattern.test(email)) {
                      Lobibox.notify('info', {
                          size: 'mini',
@@ -534,7 +581,7 @@
                              'csrfmiddlewaretoken': '{{ csrf_token }}',
                          },
                          success: function(e) {
-                             if (e.code == 200) {
+                             if (e.status == 200) {
                                  Lobibox.notify('info', {
                                      size: 'mini',
                                      sound: false,
@@ -553,15 +600,58 @@
                          },
                      });
                  }
-             } else {
-                 Lobibox.notify('error', {
-                     size: 'mini',
-                     sound: false,
-                     msg: "Please enter email address",
-                     title: 'Peru Juntos',
-                 });
-                 $("#usr_email").focus();
              }
+         });
+
+         $("#add_ContactUsEmail").click(function(){
+             var pattern = /^[a-z0-9_\.\-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/;
+            if($("#contactemail").val()=="" || $("#message").val()==""){
+               Lobibox.notify('error', {
+                  size: 'mini',
+                  sound: false,
+                  msg: "Please Fill the Form",
+                  title: 'Peru Juntos',
+               });
+               return
+            }else if ($("#contactemail").val() && !pattern.test($("#contactemail").val())){
+               Lobibox.notify('error', {
+                  size: 'mini',
+                  sound: false,
+                  msg: "Please enter a valid Email Address",
+                  title: 'Peru Juntos',
+               });
+               return
+            }
+            $.ajax({
+               url: "{% url 'Juntos:contact-us-email' %}",
+               type: 'POST',
+               dataType: 'json',
+               data: {
+                  'subject':$("#subject").val(),
+                  'contactemail':$("#contactemail").val(),
+                  'message':$("#message").val(),
+                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+               },
+               success: function(e) {
+                  if (e.status == 200) {
+                     $("#contactUsmodal").modal("hide")
+                     Lobibox.notify('info', {
+                        size: 'mini',
+                        sound: false,
+                        msg: e.message,
+                        title: 'Peru Juntos',
+                     });
+
+                  }else{
+                     Lobibox.notify('error', {
+                        size: 'mini',
+                        sound: false,
+                        msg: e.message,
+                        title: 'Peru Juntos',
+                     });
+                  }
+               },
+            });
          });
       </script>
    </body>

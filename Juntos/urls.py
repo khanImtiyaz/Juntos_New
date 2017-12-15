@@ -58,5 +58,7 @@ urlpatterns = [
 	url(r'^advertisments-review/$', views.AdvertismentsReview.as_view(), name="advertisments-review"),
 	url(r'^paypal-order-placed/$', views.PaypalOrderPlaced.as_view(), name='paypal-order-placed'),
 	url(r'^order-cancel/$', views.OrderCancel.as_view(), name='order-cancel'),
+	url(r'^contact-us-email/$', views.ContactUsEmail.as_view(), name='contact-us-email'),
+
 ]
 

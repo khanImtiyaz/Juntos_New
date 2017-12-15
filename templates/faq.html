@@ -1,49 +1,47 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-	<section class="term_section">
-		<div class="container">
-			<div class="heading_top">
-				<h2>FAQ</h2>
-			</div>
-            <p>Working on it</p>
-{#			<div id="integration-list">#}
-{#				<ul>#}
-{#					{% for faq in lists %}#}
-{#					<li>#}
-{#						<a class="expand">#}
-{#							<div class="right-arrow">+</div>#}
-{#							<div>#}
-{#								<h4>{{faq.faq_matter}}</h4>#}
-{#							</div>#}
-{#						</a>#}
-{#						<div class="detail">#}
-{#							<div id="sup">#}
-{#								<p>{{faq.content}},<strong>{{faq.asked_user.first_name}}</strong></p>#}
-{#							</div>#}
-{#						</div>#}
-{#					</li>#}
-{#					{% endfor %}#}
-{#				</ul>#}
-{#			</div>#}
-		</div>
-	</section>
-
-	<script>
-		$(function() {
-			$(".expand").on( "click", function() {
-				$(this).next().slideToggle(200);
-				$expand = $(this).find(">:first-child");
-
-				if($expand.text() == "+") {
-					$expand.text("-");
-				} else {
-					$expand.text("+");
-				}
-			});
-		});
-	</script>
-  </body>
+<section class="term_section" style="min-height: 500px;">
+   <div class="container">
+      <div class="heading_top">
+         <h2>FAQ</h2>
+      </div>
+      <p>Working on it</p>
+      <div id="integration-list">
+         <ul>
+            {% for faq in lists %}
+            <li>
+               <a class="expand">
+                  <div class="right-arrow">+</div>
+                  <div>
+                     <h4>{{faq.faq_matter}}</h4>
+                  </div>
+               </a>
+               <div class="detail">
+                  <div id="sup">
+                     <p>{{faq.content}},<strong>{{faq.asked_user.first_name}}</strong></p>
+                  </div>
+               </div>
+            </li>
+            {% endfor %}
+         </ul>
+      </div>
+   </div>
+</section>
+<script>
+   $(function() {
+   	$(".expand").on( "click", function() {
+   		$(this).next().slideToggle(200);
+   		$expand = $(this).find(">:first-child");
+   
+   		if($expand.text() == "+") {
+   			$expand.text("-");
+   		} else {
+   			$expand.text("+");
+   		}
+   	});
+   });
+</script>
+</body>
 </html>
-
- {% endblock %}
+{% endblock %}
