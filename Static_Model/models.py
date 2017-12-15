@@ -37,15 +37,15 @@ class JuntosContactUs(models.Model):
         verbose_name_plural = "List of Contacted Customer"
 
 
-class JuntosContactUsEmail(models.Model):
-    contactemail = models.EmailField(('Email Address'), max_length=50,null=True)
-    subject = models.CharField("Subject",max_length=100,blank=True,null=True)
-    message = models.TextField()
-    updated = models.DateTimeField(auto_now=True)
-    created_at = models.DateTimeField(auto_now=True)
+# class JuntosContactUsEmail(models.Model):
+#     contactemail = models.EmailField(('Email Address'), max_length=50,null=True)
+#     subject = models.CharField("Subject",max_length=100,blank=True,null=True)
+#     message = models.TextField()
+#     updated = models.DateTimeField(auto_now=True)
+#     created_at = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        verbose_name_plural = "Contact Details"
+#     class Meta:
+#         verbose_name_plural = "Contact Details"
 
 
 class JuntosFAQs(models.Model):
