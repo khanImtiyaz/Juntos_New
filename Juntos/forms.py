@@ -87,15 +87,13 @@ class ProfileForm(forms.Form):
 
 
 class JuntosContactUsEmailForm(forms.ModelForm):
-    pass
-    # class Meta:
-    #     model = JuntosContactUsEmail
-    #     fields = "__all__"
+    class Meta:
+        model = JuntosContactUsEmail
+        fields = "__all__"
 
 class SubscribeNewsLetterForm(forms.ModelForm):
-    pass
-    # class Meta:
-    #     model = SubscribeNewsLetter
-    #     fields = "__all__"
+    class Meta:
+        model = SubscribeNewsLetter
+        fields = "__all__"
 
     

@@ -16,8 +16,8 @@ def categoriesData(request):
     return {"categories":category}
 
 def about(request):
-    # content = JuntosAboutus.objects.first()
-    return {"abouts":""}
+    content = JuntosAboutus.objects.first()
+    return {"abouts":content}
     
 def starRating(request):
     return {"star_rating":[1,2,3,4,5]}
