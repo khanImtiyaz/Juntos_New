@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Static_Model', '0003_juntoscontactusemail'),
+        ('Static_Model', '0001_initial'),
     ]
 
     operations = [
