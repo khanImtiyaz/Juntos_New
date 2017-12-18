@@ -34,7 +34,7 @@ class JuntosContactUs(models.Model):
         verbose_name_plural = "List of Contacted Customer"
 
 
-class JuntosContactUsEmail(models.Model):
+class JuntosContactEmail(models.Model):
     contactemail = models.EmailField(('Email Address'), max_length=50,null=True)
     subject = models.CharField("Subject",max_length=100,blank=True,null=True)
     message = models.TextField()

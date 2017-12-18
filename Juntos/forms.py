@@ -88,7 +88,7 @@ class ProfileForm(forms.Form):
 
 class JuntosContactUsEmailForm(forms.ModelForm):
     class Meta:
-        model = JuntosContactUsEmail
+        model = JuntosContactEmail
         fields = "__all__"
 
 class SubscribeNewsLetterForm(forms.ModelForm):
