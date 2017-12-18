@@ -26,7 +26,4 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'Contact Details',
             },
         ),
-        migrations.DeleteModel(
-            name='JuntosContactUsEmail',
-        ),
     ]
