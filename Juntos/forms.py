@@ -3,7 +3,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth import (authenticate, get_user_model, password_validation,)
 from .models import *
-from Static_Model.models import  SubscribeNewsLetter
+from Static_Model.models import  *
 
 class UserRegistration(forms.ModelForm):
     first_name = forms.RegexField(required = True,  regex = "^[A-Za-z\s]{1,}[\.]{0,1}[A-Za-z\s]{0,}$",error_messages = {"invalid":"Please Enter Valid Name.","required":"Please Enter Full Name."})
@@ -93,8 +93,9 @@ class JuntosContactUsEmailForm(forms.ModelForm):
     #     fields = "__all__"
 
 class SubscribeNewsLetterForm(forms.ModelForm):
-    class Meta:
-        model = SubscribeNewsLetter
-        fields = "__all__"
+    pass
+    # class Meta:
+    #     model = SubscribeNewsLetter
+    #     fields = "__all__"
 
     
