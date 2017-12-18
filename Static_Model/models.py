@@ -41,6 +41,8 @@ class JuntosContactEmail(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
 
+
+
     class Meta:
         verbose_name_plural = "Contact Details"
 
@@ -71,5 +73,8 @@ class JuntosAboutus(models.Model):
 
 class SubscribeNewsLetter(models.Model):
     email = models.EmailField(('Email Address'), max_length=50,unique=True)
+
+    def __str__(self):
+        return self.email
     class Meta:
         verbose_name_plural = "Subscribe News Letter"

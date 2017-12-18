@@ -57,4 +57,10 @@ class JuntosContactUsAdmin(admin.ModelAdmin):
     list_display = ["message","contact_user"]
     form = ContactUsForm
 
+class JuntosContactEmailAdmin(admin.ModelAdmin):
+    list_display = ["contactemail","subject","message"]
+admin.site.register(JuntosContactEmail,JuntosContactEmailAdmin)
+
+admin.site.register(SubscribeNewsLetter)
+
 
