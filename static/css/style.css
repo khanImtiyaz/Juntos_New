@@ -917,7 +917,7 @@ a.btn-red-custom-a1{margin-top:0; padding:5px 15px;}
     letter-spacing: 1px;
     display: inline-table;
 }
-.error{ color: red !important; font-weight: inherit;}
+.error{ color: red !important; font-weight: inherit;font-size: 14px;}
 .item img {width:100%; min-height: 30%;}
 .suggest{ color: #919498; font-size: 12px;}
 .errorlist li { list-style: none; color: red; font-size: unset; font-weight: initial;}
@@ -1622,6 +1622,7 @@ form.form-horizontal {
 
 .rating-container .clear-rating {
     padding-right: 5px;
+    display: none;
 }
 
 /**
@@ -1638,11 +1639,21 @@ form.form-horizontal {
 .rating-container .caption {
     margin-left: 5px;
     margin-right: 0;
+    display: none;
 }
 
 .rating-rtl .caption {
     margin-right: 5px;
     margin-left: 0;
+}
+
+.glyphicon.glyphicon-star-empty{
+  color: #daac0a;
+  font-size : 35px
+}
+.glyphicon.glyphicon-star{
+    color: #daac0a;
+    font-size : 35px
 }
 
 /**

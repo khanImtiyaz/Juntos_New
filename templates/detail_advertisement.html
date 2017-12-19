@@ -15,197 +15,199 @@
    }
 </style>
 <div class="container">
-   {% if ads_details %}
-   <div class="col-sm-12 col-xs-12 m-t-20">
-      <div class="product_detail_single">
-         <div class="col-md-7 col-sm-12">
-            {% if ads_details.advertisement_images.all %}
-            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-               <div class="col-lg-12 col-md-12 col-sm-12">
-                  <div class="carousel slide article-slide" id="article-photo-carousel">
-                     <div class="carousel-inner">
-                        {% for banner in ads_details.advertisement_images.all %}
-                        {% if forloop.counter0 == 0 %}
-                        <div class="item active">
-                           <img title="{{id}}" src="{{banner.image.url}}" data-target="#asdfas" data-toggle="modal">
-                        </div>
-                        {% else %}
-                        <div class="item">
-                           <img title="{{id}}" src="{{banner.image.url}}" data-target="#sadas" data-toggle="modal">
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                     </div>
-                     <div class="indicators_thumb">
-                        <ol class="carousel-indicators text-center" id="thumb-click">
-                           <li class="thm t-left"><span class="left-thumb"><img src="{% static 'img/t-left.png' %}" alt="" /></span></li>
-                           {% for banner in ads_details.advertisement_images.all %}
-                           <li class="active" data-slide-to="{{forloop.counter0}}" data-target="#article-photo-carousel">
-                              <img alt="" src="{{banner.image.url}}">
-                           </li>
-                           {% endfor %}
-                           <li class="thm t-right"><span class="right-thumb"><img src="{% static 'img/t-right.png' %}" alt="" /></span></li>
-                        </ol>
-                     </div>
-                  </div>
-               </div>
-            </div>
-            {% endif %}
-         </div>
-         <div class="col-md-5 col-sm-12">
-            <h3 class="pro_heading">{{ads_details.title}}</h3>
-            <div class="table-responsive">
-               <table class="table table-bordered">
-                  <thead>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <td>Location</td>
-                        <td>{{ads_details.location | truncatechars:500 | safe}}</td>
-                     </tr>
-                     <tr>
-                        <td>Description</td>
-                        <td>{{ads_details.description | truncatechars:500 | safe}}</td>
-                     </tr>
-                     {% if ads_details.price %}
-                     <tr>
-                        <td>Price</td>
-                        <td>
-                           ${{ads_details.price |floatformat:2}}
-                        </td>
-                     </tr>
-                     {% endif %}
-                     <tr>
-                        <td colspan="2" ><b>Offered by:</b></td>
-                     </tr>
-                     <tr>
-                        <td>Name</td>
-                        <td>{{ads_details.name | truncatechars:500 | safe}}</td>
-                     </tr>
-                     <tr>
-                        <td>Email</td>
-                        <td>{{ads_details.email | truncatechars:500 | safe}}</td>
-                     </tr>
-                     <tr>
-                        <td>Contact Number</td>
-                        <td>{{ads_details.mobile | truncatechars:500 | safe}}</td>
-                     </tr>
-                  </tbody>
-               </table>
-            </div>
-         </div>
-      </div>
-      <!-- p -->
-      <div class="customer_review">
-         <div class="recomen-panel">
-            <h2>Customer Review</h2>
-         </div>
-         <!-- customer review -->
-         {% for review in total_review %}
-         <div class="review_contain">
-            <div class="star-rank-block">
-               <div class="star-rank">
-                  {% if review.rating_value %}
-                  <input id="input-2-ltr-star-lg" name="rating_value" class="kv-ltr-theme-fa-star rating-loading" dir="ltr" value="{{review.rating_value}}" data-size="sm" readonly/>
-                  <strong>Comment: {{ review.content}}</strong>
-                  {% endif %}
-               </div>
-            </div>
-            {{count}}
-            <div class="customer_name"><strong>By<span class="text-danger">&nbsp;&nbsp;&nbsp;{{review.given_by.first_name}}</span></strong></div>
-         </div>
-         {% endfor %}
-         {% if user.is_authenticated and user.is_customer %}
-         <a href="" data-toggle="modal" data-target="#review_rating" class="btn btn-info">Comment And Rating</a></li>
-         {% endif %}
-      </div>
-      <!-- =====================RELATED SERVICE CAROSAUL====================================== -->
-      {% if related_services|length < 3 %}
-      <div class="post_list">
-         {% if related_services.exists  %}
-         <div class="recomen-panel m-tb-20">
-            <h2>Related Services <a href="" class="pull-right view-det"></a></h2>
-         </div>
-         {% endif %}
-         <div class="row">
-            {% for related_pro in related_services %}
-            <div class="col-md-4 pro-main">
-               <div class="product-panel">
-                  <a href="{% url 'Juntos:advertisment-detail' related_pro.slug %}">
-                  <span><img alt="" src="{{related_pro.advertisement_images.first.image.url}}" style="width: 100%;min-height: 200px;"></span>
-                  </a>
-                  <h3>{{related_pro}}</h3>
-                  <div style="margin: 10px; text-align: center;">{{related_pro.description | safe | truncatechars:100}}</div>
-               </div>
-            </div>
-            {% endfor %}
-         </div>
-      </div>
-      {% else %}
-      <div class="post_list">
-         {% if related_services.exists  %}
-         <div class="recomen-panel m-tb-20">
-            <h2>Related Services <a href="" class="pull-right view-det"></a></h2>
-         </div>
-         <div class="row ">
-            <div class="col-md-12">
-               <div class="carousel slide multi-item-carousel row" id="theCarousel">
+{% if ads_details %}
+<div class="col-sm-12 col-xs-12 m-t-20">
+   <div class="product_detail_single">
+      <div class="col-md-7 col-sm-12">
+         {% if ads_details.advertisement_images.all %}
+         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+               <div class="carousel slide article-slide" id="article-photo-carousel">
                   <div class="carousel-inner">
-                     {% for related_pro in related_services %}
-                     {% if forloop.first %}
+                     {% for banner in ads_details.advertisement_images.all %}
+                     {% if forloop.counter0 == 0 %}
                      <div class="item active">
-                        <div class="col-xs-4">
-                           <a href="{% url 'customer:ad_detail' related_pro.slug %}"><img src="{{related_pro.image.name}}" class="img-responsive"></a>
-                           <h3>{{related_pro}}</h3>
-                           <h3>{{related_pro.description | safe | truncatechars:100}}</h3>
-                        </div>
+                        <img title="{{id}}" src="{{banner.image.url}}" data-target="#asdfas" data-toggle="modal">
                      </div>
                      {% else %}
                      <div class="item">
-                        <div class="col-xs-4">
-                           <a href="{% url 'customer:ad_detail' related_pro.slug %}"><img src="{{related_pro.image.name}}" class="img-responsive"></a>
-                           <h3>{{related_pro}}</h3>
-                           <h3>{{related_pro.description | safe | truncatechars:100}}</h3>
-                        </div>
+                        <img title="{{id}}" src="{{banner.image.url}}" data-target="#sadas" data-toggle="modal">
                      </div>
-                     <!-- add  more items here -->
-                     <!-- Example item start:  -->
                      {% endif %}
                      {% endfor %}
-                     <!--  Example item end -->
                   </div>
-                  <a class="left carousel-control" href="#theCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-                  <a class="right carousel-control" href="#theCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+                  <div class="indicators_thumb">
+                     <ol class="carousel-indicators text-center" id="thumb-click">
+                        <li class="thm t-left"><span class="left-thumb"><img src="{% static 'img/t-left.png' %}" alt="" /></span></li>
+                        {% for banner in ads_details.advertisement_images.all %}
+                        <li class="active" data-slide-to="{{forloop.counter0}}" data-target="#article-photo-carousel">
+                           <img alt="" src="{{banner.image.url}}">
+                        </li>
+                        {% endfor %}
+                        <li class="thm t-right"><span class="right-thumb"><img src="{% static 'img/t-right.png' %}" alt="" /></span></li>
+                     </ol>
+                  </div>
                </div>
             </div>
          </div>
          {% endif %}
       </div>
+      <div class="col-md-5 col-sm-12">
+         <h3 class="pro_heading">{{ads_details.title}}</h3>
+         <div class="table-responsive">
+            <table class="table table-bordered">
+               <thead>
+               </thead>
+               <tbody>
+                  <tr>
+                     <td>Location</td>
+                     <td>{{ads_details.location | truncatechars:500 | safe}}</td>
+                  </tr>
+                  <tr>
+                     <td>Description</td>
+                     <td>{{ads_details.description | truncatechars:500 | safe}}</td>
+                  </tr>
+                  {% if ads_details.price %}
+                  <tr>
+                     <td>Price</td>
+                     <td>
+                        ${{ads_details.price |floatformat:2}}
+                     </td>
+                  </tr>
+                  {% endif %}
+                  <tr>
+                     <td colspan="2" ><b>Offered by:</b></td>
+                  </tr>
+                  <tr>
+                     <td>Name</td>
+                     <td>{{ads_details.name | truncatechars:500 | safe}}</td>
+                  </tr>
+                  <tr>
+                     <td>Email</td>
+                     <td>{{ads_details.email | truncatechars:500 | safe}}</td>
+                  </tr>
+                  <tr>
+                     <td>Contact Number</td>
+                     <td>{{ads_details.mobile | truncatechars:500 | safe}}</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <!-- p -->
+   <div class="customer_review">
+        {% if ads_details.reviews_adv.all %}
+            <div class="recomen-panel">
+               <h2>Customer Review</h2>
+            </div>
+         {% endif %}
+      <!-- customer review -->
+      {% for review in ads_details.reviews_adv.all %}
+      <div class="review_contain">
+         <div class="star-rank-block">
+            <div class="star-rank">
+               {% if review.rating %}
+               <input id="input-2-ltr-star-lg" name="rating_value" class="kv-ltr-theme-fa-star rating-loading" dir="ltr" value="{{review.rating}}" data-size="sm" readonly/>
+               <strong>Comment: {{ review.content}}</strong>
+               {% endif %}
+            </div>
+         </div>
+         {{count}}
+         <div class="customer_name"><strong style="color: #daac0a">By<span>&nbsp;{{review.user.first_name}} on {{review.created_at}}</span></strong></div>
+      </div>
+      {% endfor %}
+      {% if user.is_authenticated and user.is_customer %}
+      <a href="" data-toggle="modal" data-target="#review_rating" class="btn btn-info">Comment And Rating</a></li>
       {% endif %}
    </div>
-   <!-- ============================ End Related carusal end =================================-->
-   <!--========================== Review Rating modal============ -->
-   <div id="review_rating" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-md">
-         <div class="modal-content">
-            <div class="panel panel-success">
-               <div class="panel-heading">Rating</div>
-               <div class="panel-body">
-                  <form method="POST" id="rating_form_id" action="{% url 'Juntos:advertisments-review' %}" >
-                     {% csrf_token %}
-                     <input type="hidden" name="advertisement_reviews" value="{{ads_details.id}}">
-                     <input type="hidden" name="slug" value="{{ads_details.slug}}">
-                     Comment:
-                     <textarea style="width:100%;height:100px; padding:2em;" name="content" placeholder="Type your comment here .." > </textarea>
-                     <br>
-                     Rating Star: <input id="input-2-ltr-star-sm" name="rating_value" class="kv-ltr-theme-fa-star rating-loading" dir="ltr" data-size="sm">
+   <!-- =====================RELATED SERVICE CAROSAUL====================================== -->
+   {% if related_services|length < 3 %}
+   <div class="post_list">
+      {% if related_services.exists  %}
+      <div class="recomen-panel m-tb-20">
+         <h2>Related Services <a href="" class="pull-right view-det"></a></h2>
+      </div>
+      {% endif %}
+      <div class="row">
+         {% for related_pro in related_services %}
+         <div class="col-md-4 pro-main">
+            <div class="product-panel">
+               <a href="{% url 'Juntos:advertisment-detail' related_pro.slug %}">
+               <span><img alt="" src="{{related_pro.advertisement_images.first.image.url}}" style="width: 100%;min-height: 200px;"></span>
+               </a>
+               <h3>{{related_pro}}</h3>
+               <div style="margin: 10px; text-align: center;">{{related_pro.description | safe | truncatechars:100}}</div>
+            </div>
+         </div>
+         {% endfor %}
+      </div>
+   </div>
+   {% else %}
+   <div class="post_list">
+      {% if related_services.exists  %}
+      <div class="recomen-panel m-tb-20">
+         <h2>Related Services <a href="" class="pull-right view-det"></a></h2>
+      </div>
+      <div class="row ">
+         <div class="col-md-12">
+            <div class="carousel slide multi-item-carousel row" id="theCarousel">
+               <div class="carousel-inner">
+                  {% for related_pro in related_services %}
+                  {% if forloop.first %}
+                  <div class="item active">
+                     <div class="col-xs-4">
+                        <a href="{% url 'customer:ad_detail' related_pro.slug %}"><img src="{{related_pro.image.name}}" class="img-responsive"></a>
+                        <h3>{{related_pro}}</h3>
+                        <h3>{{related_pro.description | safe | truncatechars:100}}</h3>
+                     </div>
+                  </div>
+                  {% else %}
+                  <div class="item">
+                     <div class="col-xs-4">
+                        <a href="{% url 'customer:ad_detail' related_pro.slug %}"><img src="{{related_pro.image.name}}" class="img-responsive"></a>
+                        <h3>{{related_pro}}</h3>
+                        <h3>{{related_pro.description | safe | truncatechars:100}}</h3>
+                     </div>
+                  </div>
+                  <!-- add  more items here -->
+                  <!-- Example item start:  -->
+                  {% endif %}
+                  {% endfor %}
+                  <!--  Example item end -->
                </div>
+               <a class="left carousel-control" href="#theCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
+               <a class="right carousel-control" href="#theCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
+            </div>
+         </div>
+      </div>
+      {% endif %}
+   </div>
+   {% endif %}
+</div>
+<!-- ============================ End Related carusal end =================================-->
+<!--========================== Review Rating modal============ -->
+<div id="review_rating" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <div class="panel panel-success" style="border-color: white;margin-bottom: 0">
+            <div class="panel-heading" style="background: #daac0a;color: white;text-align: center;font-size: 20px;border-color:white">Review & Rating</div>
+            <form method="POST" id="rating_form_id" action="{% url 'Juntos:advertisments-review' %}" >
+            <div class="panel-body">
+                  {% csrf_token %}
+                  <input type="hidden" name="advertisement_reviews" value="{{ads_details.id}}">
+                  <input type="hidden" name="slug" value="{{ads_details.slug}}">
+                  <div>Rating Star:</div>
+                  <input id="input-2-ltr-star-sm" name="rating_value" class="kv-ltr-theme-fa-star rating-loading" dir="ltr" data-size="sm">
+                  Comment:
+                  <textarea style="width:100%;height:100px; padding:2em;" name="content" placeholder="Type your comment here .." > </textarea>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" name="submit" value="submit" class="btn btn-success">Submit</button>
-            </form>
+               <button type="button" class="btn btn-default" data-dismiss="modal" style="float: left;">Close</button>
+               <button type="submit" name="submit" value="submit" class="btn btn-success">Submit</button>
             </div>
+         </form>
+         </div>
          </div>
       </div>
    </div>

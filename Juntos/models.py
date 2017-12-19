@@ -267,8 +267,8 @@ class Wishlist(models.Model):
 class CustomerReview(models.Model):
     """ Customer review to be desplay"""
     product = models.ForeignKey(ProductsManagement, on_delete=models.CASCADE, related_name="product_review")
-    content = models.CharField(('Customer Reviews'), blank=True, max_length=100)
-    rating = models.IntegerField(('Rating value'), blank=True, default=0)
+    content = models.CharField(('Customer Reviews'), blank=True, max_length=1000)
+    rating = models.FloatField(('Rating value'), blank=True, default=0)
     user = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="customer_reviews")
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
@@ -338,6 +338,9 @@ class CustomerOrder(models.Model):
     total = models.FloatField(('Total Order Price'),blank=False)
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
+
+    # def __str__(self):
+    #   return self.order_number
 
     class Meta:
       verbose_name_plural = 'Customer Orders'
@@ -478,3 +481,15 @@ class CustomerTransactionDetails(models.Model):
     reciever_amount = models.FloatField(('Receiver/Vendor paypal account email'), blank=True, default=0.0)
     updated = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now=True)
+
+
+class AdvertismentReview(models.Model):
+    """ AdvertismentReview to be desplay"""
+    advertisement_reviews = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name="reviews_adv")
+    content = models.CharField(('Customer Reviews'), blank=True, max_length=100)
+    rating = models.FloatField(('Rating value'), blank=True, default=0)
+    user     = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="reviews_gvn")
+    updated    = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        verbose_name_plural = 'Advertisement Reviews'

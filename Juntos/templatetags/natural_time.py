@@ -44,6 +44,13 @@ def colorCode(value):
 	color = ProductColor.objects.get(id=value)
 	return color.color
 
+@register.filter
+def buyornot(value,user):
+	for obj in value:
+		if obj.order.customer==user:
+			return True
+	return False
+
 
 
 # @register.filter

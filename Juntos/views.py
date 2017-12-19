@@ -895,22 +895,12 @@ class HelpfullReview(View):
 	def get(self,request):
 		return HttpResponse(json.dumps({"status": False}), content_type='application/json')
 
-	
-# @login_required(login_url="/")
-# def customer_review(request):
-#     params = request.POST
-#     slug = params['slug']
-#     review = Customer_Review.objects.create(product_id=params['product'],
-#                                              content=params['content'],
-#                                              rating_value=params['rating_value'],
-#                                              given_by=request.user)
-#     total_review  = Customer_Review.objects.all().count()
-#     return redirect("Peru:product_detail", slug)
-
-class CustomerReview(View):
+class CustomerReviewView(View):
 	"""docstring for CustomerReview"""
 	def post(self,request):
 		params = request.POST
+		review = CustomerReview.objects.create(product_id=params['product'],content=params['content'],rating=params['rating_value'],user=request.user)
+		total_review  = CustomerReview.objects.all().count()
 		return redirect("Juntos:product-detail", params['slug'])
 		
 class AddToCart(View):
@@ -1324,11 +1314,11 @@ class AdvertisementDetail(View):
 
 class AdvertismentsReview(View):
 	"""docstring for AdvertismentsReview"""
-	def get(self,request):
+	def post(self,request):
 		params = request.POST
 		slug = params['slug']
 		adv = Advertisement.objects.get(id=params['advertisement_reviews'])
-		review = Advertisment_Review.objects.create(advertisement_reviews=adv,content=params['content'],rating_value=params['rating_value'],given_by=request.user)
+		review = AdvertismentReview.objects.create(advertisement_reviews=adv,content=params['content'],rating=params['rating_value'],user=request.user)
 		return redirect("Juntos:advertisment-detail", slug)
 
 	
