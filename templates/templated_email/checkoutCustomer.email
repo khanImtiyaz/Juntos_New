@@ -1,0 +1,123 @@
+{% block subject %}Your Order on Juntos{% endblock subject %}
+{% block html %}
+<!DOCTYPE HTML>
+<html>
+   <title>Avanna Email</title>
+   <head>
+   </head>
+   <body style="font-family: Arial, Helvetica, sans-serif;   font-size: 13px;   line-height: 20px;  color:#3e3e3e;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%">
+         <tr>
+            <td>
+               <table cellpadding="0" cellspacing="0" border="0" width="640" style="margin:0 auto; background:#dcd9d0;">
+                  <tr>
+                     <td style="background:#daac0a; text-align:center; padding:10px;"><a href="#"><img src="http://res.cloudinary.com/djzssjqyt/image/upload/v1509366357/lxcebc5t72dxpue6ksm5.png"></a></td>
+                  </tr>
+                  <tr>
+                     <td style="background-image: url(http://res.cloudinary.com/imtiyaz/image/upload/v1487851432/z88xjsriiewwsb6eueqz.png); background-repeat: no-repeat; background-size:cover; width:100%; height:318px; text-align:center;"><span style="color:#ffffff; font-size:18px; font-weight:bold; text-align:center;">Order Placed!</span></td>
+                  </tr>
+                  <tr>
+                     <td style="height:30px;"></td>
+                  </tr>
+                  <tr>
+                     <td style="padding: 0 4em;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                           <tbody>
+                              <tr>
+                                 <td style="font-size:14px; color: #3e3e3e;">
+                                    <h3 style="color:#3e3e3e; font-size:16px; margin:5px 0 10px;">Hi {{order.customer.first_name}},</h3>
+                                    Thank you for placing your orders through Juntos!Your order number is #{{order.order_number}} for any futher assistance
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="height:25px;"></td>
+                              </tr>
+                              <tr>
+                                 <td style="font-size: 14px; color: #3e3e3e;">
+                                    <h3 style="color:#3e3e3e; font-size:16px; margin:0; font-weight:bold;">Order Details</h3>
+                                    {% for obj in cart %}
+                                    <div><strong> Product:</strong> &nbsp;{{obj.product.title}} by {{obj.product.vendor.account.business_name}}, Mobile:{{obj.product.vendor.mobile}}</div>
+                                    <div><strong> Price:</strong> &nbsp;{{obj.price}} </div>
+                                    <div><strong> Quantity:</strong> &nbsp;{{obj.quantity}}</div>
+                                    <div style="margin-top: 10px;border-bottom:solid 0.5px gray; "></div>
+                                    {% endfor %}
+                                    <div style="margin-bottom: 10px;"></div>
+                                    <div><strong> Expected Delivery Date:</strong> &nbsp;{{order.delivery_date}}</div>
+                                    <div style="margin-bottom: 10px;"></div>
+                                    <h3 style="color:#3e3e3e; font-size:16px; margin:0; font-weight:bold;">Shipping Details</h3>
+                                    <div><strong> First Name:</strong> &nbsp;{{order.shipping_address.shipping_first_name}}</div>
+                                    <div><strong> Email:</strong> &nbsp;{{order.shipping_address.shipping_email}}</div>
+                                    <div><strong> Address:</strong> &nbsp;{{order.shipping_address.shipping_address}}</div>
+                                    <div><strong> City:</strong> &nbsp;{{order.shipping_address.shipping_city}}</div>
+                                    <div><strong> State:</strong> &nbsp;{{order.shipping_address.shipping_state}}</div>
+                                    <div><strong> Country:</strong> &nbsp;{{order.shipping_address.shipping_country}}</div>
+                                    <div style="margin-top: 10px"><b>Note:</b> This is not a tax invoice. A tax invoice will be provided directly from Juntos.</div>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="height:15px;"></td>
+                              </tr>
+                              <tr>
+                                 <td style="font-size: 14px; color: #3e3e3e;">
+                                    If you have any questions, please contact us at <a href="#" style="color: #daac0a; text-decoration: none;">query@juntos.com</a>. We’d love to hear from you!
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="height:20px;"></td>
+                              </tr>
+                              <tr>
+                                 <td style="height:20px;">
+                                    <span style="width:100%; display:block;">Be happy, shopping a lot & smile a lot!</span>
+                                    <h3 style="color:#3e3e3e; font-size:13px; margin:0; font-weight:bold;">The Juntos team</h3>
+                                 </td>
+                              </tr>
+                              <tr>
+                                 <td style="height:40px;"></td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align:center; background:#daac0a; padding:10px; color:#fff;">
+                           <tr>
+                              <td>
+                                 <a href="#" style="color:#fff; padding: 0 10px 0 0; font-size:13px; border-right:1px solid #fff; text-decoration:none;">Follow Us</a>
+                                 <a href="#" style="color:#fff; font-size:13px; text-decoration:none; padding: 0  0 0 5px;">Connect</a>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td style="padding:10px; 0 0 0">
+                                 <a href="#" style="display:inline-block; vertical-align:middle; width:12px; height:23px;"><img src="http://res.cloudinary.com/imtiyaz/image/upload/v1487829800/xzkhnyygukhhffuicaap.png"></a>
+                                 <a href="#" style="display:inline-block; vertical-align:middle; width:21px; padding:0 10px; height:21px;"><img src="http://res.cloudinary.com/imtiyaz/image/upload/v1487829738/ggepm8wec8byehxcodvm.png"></a>
+                                 <a href="#" style="display:inline-block; vertical-align:middle; width:21px; height:17px;"><img src="http://res.cloudinary.com/imtiyaz/image/upload/v1487829920/o9rpzb3foew9xaxk4zzc.png"></a>
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="text-align:center; background:#414142; padding:10px; color:#fff;">
+                           <tr>
+                              <td>
+                                 <a href="#" style="color:#fff; padding: 0 10px 0 0; font-size:13px; border-right:1px solid #fff; text-decoration:none;">Unsubscribe</a>
+                                 <a href="#" style="color:#fff; padding: 0 10px 0 5px; font-size:13px; border-right:1px solid #fff; text-decoration:none;">Privacy Policy</a>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td style="padding:10px; 0 0 0; color:#ffffff; font-size:12px;">
+                                 © Copyright Juntos 2017. All Rights Reserved.
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+               </table>
+            </td>
+         </tr>
+      </table>
+   </body>
+</html>
+{% endblock %}

@@ -35,8 +35,8 @@
                               <tr>
                                  <td style="font-size:14px;color:#3e3e3e">
                                     <h3 style="color:#3e3e3e;font-size:16px;margin:0;font-weight:bold">Order Details</h3>
-                                    <div><strong> Customer Name:</strong> &nbsp;{{obj.user.first_name}}</div>
-                                    <div><strong> Customer Phone No:</strong> &nbsp;{{obj.user.mobile}}</div>
+                                    <div><strong> Customer Name:</strong> &nbsp;{{order.customer.first_name}}</div>
+                                    <div><strong> Customer Phone No:</strong> &nbsp;{{obj.customer.mobile}}</div>
                                     <div style="margin-top: 10px;border-bottom: solid 0.5px gray"></div>
                                     {% for obj in cart %}
                                     <div><strong> Product:</strong> &nbsp;{{obj.product.title}} by {{obj.product.vendor.account.business_name}}, Mobile:{{obj.product.vendor.mobile}}</div>

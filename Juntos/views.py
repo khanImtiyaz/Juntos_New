@@ -847,7 +847,7 @@ class ViewCart(View):
 	def post(self,request):
 		user = request.user
 		if user.is_authenticated and user.is_customer:
-			total_price = 00.00
+			total_price = 0
 			product_cart = Cart.objects.filter(user=user)
 			total_price = product_cart.aggregate(Sum('price'))['price__sum']
 			total_price = total_price + (float(total_price) * 18)/100
@@ -995,37 +995,89 @@ class CustomerOrderSummary(View):
 			messages.info(request, "You are not authorize to access this page.")
 			return redirect("Juntos:home")
 
+def create_order(user, payment_type, shiping_address):
+	cart = Cart.objects.filter(user=user)
+	base_price = 00.00
+	for c in cart:
+		base_price = base_price + (c.quantity*c.price)
+	tax_percent = TaxPercentage.objects.first().tax
+	tax_charges = (base_price*tax_percent)/100
+	if shiping_address.mode_of_transport=="GPS":
+		shipping_percent = 0
+		shipping_charge = 5
+	else:
+		shipping_percent = 5
+		shipping_charge = (base_price*5)/100
 
-def order_payment(request):
-    user = request.user
-    if request.method == 'POST':
-        if shipping_address:
-            product_cart = Cart.objects.filter(user=user)
-            user_data = []
-            cart_items = Cart.objects.filter(user=user)
-            admin_commission = 0
-            for cart in cart_items:
-                if not any( vendor.get('email') == cart.product.vendor.email for vendor in user_data):
-                    total_pay = cart_items.filter(product__vendor__email=cart.product.vendor.email).aggregate(Sum('price'))['price__sum']
-                    chek_price = (total_pay*23)/100
-                    total_payment = chek_price + total_pay
-                    price = total_payment - total_payment*5/100
-                    user_data.append({"email":cart.product.vendor.email, "amount": int(price)})
-                else:
-                    pass
-                admin_commission +=  cart.price*5/100
-            respons_url =  payment(user_data, admin_commission, user)
-            if respons_url['ack']=="Success":
-                return redirect(respons_url['url'])
-            else:
-                messages.error(request, respons_url['error'][0]['message'])
-                return render(request, "payment.html",{"errorId":respons_url['error'][0]['errorId']})
-        else:
-            messages.error(request, "Please select your order shiping address")
-            return redirect("customer:add_shipping")
-    else:
-        product_cart = Cart.objects.filter(user=user, product__payment_method__case_on_delivery=True)
-        return render(request, "payment.html",{"card_product":product_cart})
+	total_price = base_price+shipping_charge+tax_charges
+	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type=payment_type,delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
+	send_place_order_customer(order,cart)
+	send_place_order_admin(order,cart)
+	order_items(cart,order,shiping_address)
+
+def order_items(cart,order,address):
+	for obj in cart:
+		if address.mode_of_transport=="GPS":
+			shipping_percent = 0
+			shipping_charge = 5
+		else:
+			shipping_percent = 5
+			shipping_charge = (obj.price*obj.quantity*5)/100
+		tax_percent = TaxPercentage.objects.first().tax
+		tax_charges = (obj.price*obj.quantity*tax_percent)/100
+		total_price = (obj.price*obj.quantity)+shipping_charge+tax_charges
+		OrderItems.objects.create(order=order,product=obj.product,product_color=obj.product_color,product_size=obj.product_size,quantity=obj.quantity,base_price=obj.price*obj.quantity,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
+		obj.product.product_quantity = obj.product.product_quantity - obj.quantity
+		obj.product.save()
+		send_place_order_vendor(obj)
+		obj.delete()
+		# product = ProductsManagement.objects.get(id=obj.product.id)
+		# product.product_quantity = product.product_quantity - obj.quantity
+		# product.save()
+		# Cart.objects.get(id=obj.id).delete()
+		message = "Congrats, A New Order has been received for '"+obj.product.subs_category.sub_category_name+"' types product."
+		notification = Notifications.objects.create(vendor=obj.product.vendor, ntype=1, content=message)
+		notification_data = {}
+		notification_data['content'] = notification.content
+		notification_data['ntype']   = notification.ntype
+		notification_data['vendor']  = notification.vendor.id
+		# send_notification_task.delay(notification_data)
+
+def send_place_order_vendor(cartObj):
+	send_templated_mail(
+		template_name='checkoutVendor',
+		from_email=settings.EMAIL_HOST_USER,
+		auth_user=settings.EMAIL_HOST_USER,
+		auth_password=settings.EMAIL_HOST_PASSWORD,
+		recipient_list=[cartObj.product.vendor.email],
+		# recipient_list=["imtiyaz.ahemad@mobiloittegroup.com"],
+		context={
+			"obj":cartObj
+	})
+
+def send_place_order_customer(orderObj,cartObj):
+	send_templated_mail(
+		template_name='checkoutCustomer',
+		from_email=settings.EMAIL_HOST_USER,
+		auth_user=settings.EMAIL_HOST_USER,
+		auth_password=settings.EMAIL_HOST_PASSWORD,
+		recipient_list=[orderObj.customer.email],
+		# recipient_list=["imtiyaz.ahemad@mobiloittegroup.com"],
+		context={
+			"order":orderObj,
+			"cart":cartObj
+	})
+
+def send_place_order_admin(orderObj,cartObj):
+	send_templated_mail(template_name='checkoutAdmin',
+		from_email=settings.EMAIL_HOST_USER,
+		auth_user=settings.EMAIL_HOST_USER,
+		auth_password=settings.EMAIL_HOST_PASSWORD,
+		recipient_list=["imtiyaz.ahemad@mobiloittegroup.com"],
+		context={
+			"order":orderObj,
+			"cart":cartObj
+	})
 
 class OrderPayment(View):
 	"""docstring for OrderPayment"""
@@ -1063,52 +1115,6 @@ class OrderPayment(View):
 		else:
 			messages.error(request, "Please select your order shiping address")
 			return redirect("Juntos:add-shipping")
-        
-
-def create_order(user, payment_type, shiping_address):
-	cart = Cart.objects.filter(user=user)
-	base_price = 00.00
-	for c in cart:
-		base_price = base_price + (c.quantity*c.price)
-	tax_percent = TaxPercentage.objects.first().tax
-	tax_charges = (base_price*tax_percent)/100
-	if shiping_address.mode_of_transport=="GPS":
-		shipping_percent = 0
-		shipping_charge = 5
-	else:
-		shipping_percent = 5
-		shipping_charge = (base_price*5)/100
-
-	total_price = base_price+shipping_charge+tax_charges
-	order = CustomerOrder.objects.create(shipping_address=shiping_address,customer=user,order_payment_type=payment_type,delivery_date=(datetime.today()+timedelta(days=8)).date(),base_price=base_price,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
-	order_items(cart,order,shiping_address)
-
-def order_items(cart,order,address):
-	for obj in cart:
-		if address.mode_of_transport=="GPS":
-			shipping_percent = 0
-			shipping_charge = 5
-		else:
-			shipping_percent = 5
-			shipping_charge = (obj.price*obj.quantity*5)/100
-		tax_percent = TaxPercentage.objects.first().tax
-		tax_charges = (obj.price*obj.quantity*tax_percent)/100
-		total_price = (obj.price*obj.quantity)+shipping_charge+tax_charges
-		OrderItems.objects.create(order=order,product=obj.product,product_color=obj.product_color,product_size=obj.product_size,quantity=obj.quantity,base_price=obj.price*obj.quantity,shipping_percent=shipping_percent,shipping_charge=shipping_charge,tax_percent=tax_percent,tax_charges=tax_charges,total=total_price)
-		obj.product.product_quantity = obj.product.product_quantity - obj.quantity
-		obj.product.save()
-		obj.delete()
-		# product = ProductsManagement.objects.get(id=obj.product.id)
-		# product.product_quantity = product.product_quantity - obj.quantity
-		# product.save()
-		# Cart.objects.get(id=obj.id).delete()
-		message = "Congrats, A New Order has been received for '"+obj.product.subs_category.sub_category_name+"' types product."
-		notification = Notifications.objects.create(vendor=obj.product.vendor, ntype=1, content=message)
-		notification_data = {}
-		notification_data['content'] = notification.content
-		notification_data['ntype']   = notification.ntype
-		notification_data['vendor']  = notification.vendor.id
-		# send_notification_task.delay(notification_data)
 
 class CODOrder(View):
 	"""docstring for CODOrder"""

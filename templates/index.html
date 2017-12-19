@@ -14,7 +14,6 @@
    background-color: #f9f9f9;
    }
    /* override position and transform in 3.3.x */
-   
 </style>
 {% if banner_list %}
 <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -168,21 +167,19 @@
 </section>
 <script type="text/javascript">
    $('#myCarousel').carousel({
-   interval: 10000
+      interval: 1000
    })
-   
    $('#myCarousel .item').each(function(){
    var next = $(this).next();
    if (!next.length) {
-    next = $(this).siblings(':first');
+      next = $(this).siblings(':first');
    }
    next.children(':first-child').clone().appendTo($(this));
-   
    if (next.next().length>0) {
-    next.next().children(':first-child').clone().appendTo($(this));
+      next.next().children(':first-child').clone().appendTo($(this));
    }
    else {
-   $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+      $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
    }
    });
 </script>

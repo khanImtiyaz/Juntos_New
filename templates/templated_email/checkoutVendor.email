@@ -1,4 +1,4 @@
-{% block subject %}Your have a received an Order{% endblock subject %}
+{% block subject %}Your have a received an Order through Juntos{% endblock subject %}
 {% block html %}
 <!DOCTYPE HTML>
 <html>
@@ -14,7 +14,7 @@
                      <td style="background:#daac0a;text-align:center;padding:10px"><a href="#m_3151858063459980086_"><img src="https://ci3.googleusercontent.com/proxy/-QrbtA8SKjrFj4L6mMaN0NlPiiXsyWE-bbnyYK57_ie5ZHvQPrNuHNi7So3utsGFaJf8djKlnOlxxIRKQpSFa7I1YSDUSqd_glTBUvfyoZJIpwitIV-2SosVC98VF54Ef9wa_5OtAIb5n2U=s0-d-e1-ft#http://res.cloudinary.com/djzssjqyt/image/upload/v1509366357/lxcebc5t72dxpue6ksm5.png" class="CToWUd"></a></td>
                   </tr>
                   <tr>
-                     <td style="background-image:url(https://ci5.googleusercontent.com/proxy/UDY1mM4eG4kBOYpbrH7ionNFv6wc6d6D4-q5FUKRCtz_VM2f-vNKRuxFoEdj7nOru3pGkkmWhxZDOuMU9FV2_YarVTM33VjmzlOQmVU8Y80QS__FoZDVzkVoogC2eTrLw0J08l6BQYiR=s0-d-e1-ft#http://res.cloudinary.com/imtiyaz/image/upload/v1487851432/z88xjsriiewwsb6eueqz.png);background-repeat:no-repeat;background-size:cover;width:100%;height:318px;text-align:center"><span style="color:#ffffff;font-size:18px;font-weight:bold;text-align:center">Great news, you have got a <br>order!</span></td>
+                     <td style="background-image:url(https://ci5.googleusercontent.com/proxy/UDY1mM4eG4kBOYpbrH7ionNFv6wc6d6D4-q5FUKRCtz_VM2f-vNKRuxFoEdj7nOru3pGkkmWhxZDOuMU9FV2_YarVTM33VjmzlOQmVU8Y80QS__FoZDVzkVoogC2eTrLw0J08l6BQYiR=s0-d-e1-ft#http://res.cloudinary.com/imtiyaz/image/upload/v1487851432/z88xjsriiewwsb6eueqz.png);background-repeat:no-repeat;background-size:cover;width:100%;height:318px;text-align:center"><span style="color:#ffffff;font-size:18px;font-weight:bold;text-align:center">Great news, you have got a <br>order through Juntos!</span></td>
                   </tr>
                   <tr>
                      <td style="height:30px"></td>
@@ -25,8 +25,8 @@
                            <tbody>
                               <tr>
                                  <td style="font-size:14px;color:#3e3e3e">
-                                    <h3 style="color:#3e3e3e;font-size:16px;margin:5px 0 10px">Hi Admin,</h3>
-                                    Great news, you have got a order!
+                                    <h3 style="color:#3e3e3e;font-size:16px;margin:5px 0 10px">Hi {{obj.product.vendor.first_name}},</h3>
+                                    Great news, you have got a order through Juntos!
                                  </td>
                               </tr>
                               <tr>
@@ -37,13 +37,7 @@
                                     <h3 style="color:#3e3e3e;font-size:16px;margin:0;font-weight:bold">Order Details</h3>
                                     <div><strong> Customer Name:</strong> &nbsp;{{obj.user.first_name}}</div>
                                     <div><strong> Customer Phone No:</strong> &nbsp;{{obj.user.mobile}}</div>
-                                    <div style="margin-top: 10px;border-bottom: solid 0.5px gray"></div>
-                                    {% for obj in cart %}
-                                    <div><strong> Product:</strong> &nbsp;{{obj.product.title}} by {{obj.product.vendor.account.business_name}}, Mobile:{{obj.product.vendor.mobile}}</div>
-                                    <div><strong> Price:</strong> &nbsp;{{obj.price}} </div>
-                                    <div><strong> Quantity:</strong> &nbsp;{{obj.quantity}}</div>
-                                    <div style="margin-top: 10px;border-bottom:solid 0.5px gray; "></div>
-                                    {% endfor %}
+                                    <div><strong> Product Name:</strong> &nbsp;{{obj.product.title}}</div>
                                  </td>
                               </tr>
                               <tr>

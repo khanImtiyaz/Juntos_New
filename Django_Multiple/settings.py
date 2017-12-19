@@ -63,7 +63,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
-    # 'Django_Multiple.middleware.LoggingMiddleware'
 
 ]
 
@@ -169,6 +168,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_HOST    = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'imtiyaz.ahemad@mobiloittegroup.com'
+EMAIL_HOST_PASSWORD = '@3864khanImtiyaz'
+EMAIL_PORT          = 587
+EMAIL_USE_TLS       = True
+EMAIL_BACKEND       = 'django.core.mail.backends.smtp.EmailBackend'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -197,10 +203,4 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = 'media/'
 MEDIA_URL = 'http://127.0.0.1:8000/media/'
-
-# It is only used for Development Purpose
-# try:
-#     from .local_settings import *
-# except ImportError:
-#     pass
 

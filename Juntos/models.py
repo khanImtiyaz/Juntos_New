@@ -102,7 +102,15 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
   def send_mail_activation(self):
     if self.login_type == 'normal' and self.is_customer==True:
       full_name = self.first_name + self.last_name
-      send_templated_mail(template_name='welcome',from_email=settings.EMAIL_HOST_USER,recipient_list=[self.email],context={'username': full_name,'email': self.email,'code': self.confirmation_code})
+      send_templated_mail(
+        template_name='welcome',
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=[self.email],
+        context={
+          'username': full_name,
+          'email': self.email,
+          'code': self.confirmation_code
+        })
 
 
   class Meta:

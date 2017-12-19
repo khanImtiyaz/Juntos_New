@@ -1,0 +1,2078 @@
+[
+  {
+    "model": "Juntos.taxpercentage",
+    "pk": 1,
+    "fields": {
+      "tax": 18
+    }
+  },
+  {
+    "model": "Juntos.myuser",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$pG94Ka90VLn6$VU6nBLOXcZ0DMc04zjSd5RVV60p1cBhbNhX2FRXXNjA=",
+      "last_login": "2017-12-18T09:43:50.242Z",
+      "email": "admin@testing.com",
+      "first_name": "",
+      "last_name": "",
+      "avatar": null,
+      "mobile": "",
+      "mobile_verified": false,
+      "mobile_verification_code": null,
+      "pincode": null,
+      "city": "",
+      "login_type": "normal",
+      "state": null,
+      "country": null,
+      "is_superuser": true,
+      "is_active": true,
+      "is_customer": false,
+      "is_vendor": false,
+      "vendor_step": null,
+      "is_staff": true,
+      "is_subadmin": false,
+      "created_at": "2017-10-30T12:11:46.049Z",
+      "updated_at": "2017-10-30T12:11:46.049Z",
+      "confirmation_code": "Confirmed",
+      "slug": "myuser",
+      "confirmed_on": "2017-10-30T12:11:46.051Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ]
+    }
+  },
+  {
+    "model": "Juntos.myuser",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$lMubBea90uK5$qOi5xmR9jqMusvroKWnP6Y4YJ2Zc1MxcE/Df9t73pAg=",
+      "last_login": "2017-12-13T07:24:28.071Z",
+      "email": "neha.tulsiyan@mobiloitte.com",
+      "first_name": "Neha Tulsiyan",
+      "last_name": "",
+      "avatar": null,
+      "mobile": "+918800873864",
+      "mobile_verified": true,
+      "mobile_verification_code": "8041",
+      "pincode": "110010",
+      "city": "Udaipur",
+      "login_type": "normal",
+      "state": "Rajasthan",
+      "country": "India",
+      "is_superuser": false,
+      "is_active": true,
+      "is_customer": true,
+      "is_vendor": true,
+      "vendor_step": "Step3",
+      "is_staff": false,
+      "is_subadmin": false,
+      "created_at": "2017-10-30T13:29:16.197Z",
+      "updated_at": "2017-10-30T13:29:16.197Z",
+      "confirmation_code": "Confirmed",
+      "slug": "neha-tulsiyan",
+      "confirmed_on": "2017-10-30T13:29:16.199Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ]
+    }
+  },
+  {
+    "model": "Juntos.myuser",
+    "pk": 4,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$RAFh9drmtPOr$CAgCopNEdkW28YxS17+XZqfu48oqRZ3kZ8TM9+qfxOw=",
+      "last_login": "2017-11-03T11:01:48.463Z",
+      "email": "khan.ahmad.imtiyaz@gmail.com",
+      "first_name": "Imtiyaz Ahemad khan",
+      "last_name": "",
+      "avatar": null,
+      "mobile": "+918800873864",
+      "mobile_verified": true,
+      "mobile_verification_code": "1238",
+      "pincode": null,
+      "city": "",
+      "login_type": "normal",
+      "state": null,
+      "country": null,
+      "is_superuser": false,
+      "is_active": true,
+      "is_customer": true,
+      "is_vendor": false,
+      "vendor_step": null,
+      "is_staff": false,
+      "is_subadmin": false,
+      "created_at": "2017-10-31T05:52:16.218Z",
+      "updated_at": "2017-10-31T05:52:16.218Z",
+      "confirmation_code": "Confirmed",
+      "slug": "imtiyaz-ahemad-khan",
+      "confirmed_on": "2017-10-31T05:52:16.220Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ]
+    }
+  },
+  {
+    "model": "Juntos.myuser",
+    "pk": 8,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$7Dq5lOuwNr3l$j6haLrcTgMNzTMnKb2l2E67QqP8/Ia/kri3ColfIo9g=",
+      "last_login": "2017-11-22T13:52:33.035Z",
+      "email": "imtiyaz.ahemad@mobiloittegroup.com",
+      "first_name": "Imtiyaz Ahemad khan testing",
+      "last_name": "",
+      "avatar": null,
+      "mobile": "+918800873864",
+      "mobile_verified": true,
+      "mobile_verification_code": "7758",
+      "pincode": null,
+      "city": "",
+      "login_type": "normal",
+      "state": null,
+      "country": null,
+      "is_superuser": false,
+      "is_active": true,
+      "is_customer": true,
+      "is_vendor": false,
+      "vendor_step": null,
+      "is_staff": false,
+      "is_subadmin": false,
+      "created_at": "2017-11-14T07:20:06.667Z",
+      "updated_at": "2017-11-14T07:20:06.667Z",
+      "confirmation_code": "Confirmed",
+      "slug": "imtiyaz-ahemad-khan-testing",
+      "confirmed_on": "2017-11-14T07:20:06.670Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ]
+    }
+  },
+  {
+    "model": "Juntos.myuser",
+    "pk": 9,
+    "fields": {
+      "password": "pbkdf2_sha256$30000$G8mhEGxMyZGR$uuPejpxYRw4p5tDsOjHbhu+M5SDTg9DMAxmnQauYWAg=",
+      "last_login": "2017-12-18T10:16:10.879Z",
+      "email": "c.a.1@comcast.net",
+      "first_name": "Cesar",
+      "last_name": "Caso",
+      "avatar": "image/upload/v1513047872/ve3gngnr93hofjf1ntkw.png",
+      "mobile": "14083918487",
+      "mobile_verified": true,
+      "mobile_verification_code": "8029",
+      "pincode": "Lima11",
+      "city": "Lima",
+      "login_type": "facebook",
+      "state": "Lima",
+      "country": "Peru",
+      "is_superuser": false,
+      "is_active": true,
+      "is_customer": true,
+      "is_vendor": true,
+      "vendor_step": "Step3",
+      "is_staff": false,
+      "is_subadmin": false,
+      "created_at": "2017-12-12T03:05:03.680Z",
+      "updated_at": "2017-12-12T03:05:03.680Z",
+      "confirmation_code": "Confirmed",
+      "slug": "cesarcaso",
+      "confirmed_on": "2017-12-12T03:05:03.683Z",
+      "groups": [
+        
+      ],
+      "user_permissions": [
+        
+      ]
+    }
+  },
+  {
+    "model": "Juntos.news",
+    "pk": 1,
+    "fields": {
+      "title": "Fiscal\u00eda abre indagaci\u00f3n preliminar a empresas vinculadas a Kuczynski-Paolo Guerrero: su defensa ape",
+      "updated": "2017-12-14T03:23:06.697Z",
+      "created_at": "2017-11-22T07:50:25.768Z"
+    }
+  },
+  {
+    "model": "Juntos.news",
+    "pk": 2,
+    "fields": {
+      "title": "Fiscal\u00eda abre indagaci\u00f3n preliminar a empresas vinculadas a Kuczynski-Paolo Guerrero: su defensa ape",
+      "updated": "2017-12-14T03:22:57.741Z",
+      "created_at": "2017-11-22T07:50:36.762Z"
+    }
+  },
+  {
+    "model": "Juntos.news",
+    "pk": 3,
+    "fields": {
+      "title": "Fiscal\u00eda abre indagaci\u00f3n preliminar a empresas vinculadas a Kuczynski-Paolo Guerrero: su defensa ape",
+      "updated": "2017-12-14T03:22:48.840Z",
+      "created_at": "2017-11-22T07:50:45.117Z"
+    }
+  },
+  {
+    "model": "Juntos.news",
+    "pk": 4,
+    "fields": {
+      "title": "Fiscal\u00eda abre indagaci\u00f3n preliminar a empresas vinculadas a Kuczynski-Paolo Guerrero: su defensa ape",
+      "updated": "2017-12-14T03:19:39.939Z",
+      "created_at": "2017-11-22T07:50:51.353Z"
+    }
+  },
+  {
+    "model": "Juntos.banner",
+    "pk": 4,
+    "fields": {
+      "title": "Testing",
+      "description": "Done",
+      "status": false,
+      "image": "image/upload/v1513082861/wovax0gjxjon8brbdgzj.jpg",
+      "updated": "2017-12-12T12:48:13.996Z",
+      "created_at": "2017-12-12T12:48:13.996Z"
+    }
+  },
+  {
+    "model": "Juntos.banner",
+    "pk": 5,
+    "fields": {
+      "title": "Testing 1",
+      "description": "Done",
+      "status": false,
+      "image": "image/upload/v1513082881/gbxqh7bemtd3gmxg7c4q.jpg",
+      "updated": "2017-12-12T12:48:33.528Z",
+      "created_at": "2017-12-12T12:48:33.528Z"
+    }
+  },
+  {
+    "model": "Juntos.banner",
+    "pk": 6,
+    "fields": {
+      "title": "Testing Shirt",
+      "description": "Done",
+      "status": false,
+      "image": "image/upload/v1513082900/rcqchb34d0wclj3qzjqp.jpg",
+      "updated": "2017-12-12T12:48:52.331Z",
+      "created_at": "2017-12-12T12:48:52.331Z"
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Articulos de vestir y accesorios",
+      "priority": 1,
+      "Image": "image/upload/v1510905849/xmotfp5qrv35yetlspsi.png",
+      "updated_at": "2017-12-13T08:30:25.450Z",
+      "created_at": "2017-12-13T08:30:25.450Z"
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Articulos para el hogar",
+      "priority": 2,
+      "Image": null,
+      "updated_at": null,
+      "created_at": null
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 3,
+    "fields": {
+      "category_name": "Articulos para bebe",
+      "priority": 3,
+      "Image": null,
+      "updated_at": null,
+      "created_at": null
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 4,
+    "fields": {
+      "category_name": "Entretenimiento",
+      "priority": 4,
+      "Image": null,
+      "updated_at": null,
+      "created_at": null
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 5,
+    "fields": {
+      "category_name": "Arte",
+      "priority": 5,
+      "Image": null,
+      "updated_at": null,
+      "created_at": null
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 6,
+    "fields": {
+      "category_name": "Libros",
+      "priority": 6,
+      "Image": null,
+      "updated_at": null,
+      "created_at": null
+    }
+  },
+  {
+    "model": "Juntos.category",
+    "pk": 7,
+    "fields": {
+      "category_name": "Servicios",
+      "priority": 7,
+      "Image": null,
+      "updated_at": "2017-12-13T05:10:37.842Z",
+      "created_at": "2017-12-13T05:10:37.842Z"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Para ella",
+      "priority": 1,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "para-ella1"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Para el",
+      "priority": 2,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "para-el2"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Joyeria",
+      "priority": 3,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "joyeria3"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 4,
+    "fields": {
+      "category": 1,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Accesorios",
+      "priority": 4,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "accesorios4"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "sub_category_tag": "VP",
+      "sub_category_name": "Articulos deportivos",
+      "priority": 5,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "articulos-deportivos5"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Muebles",
+      "priority": 6,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "muebles6"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 7,
+    "fields": {
+      "category": 2,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Articulos de cocina",
+      "priority": 7,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "articulos-de-cocina7"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 8,
+    "fields": {
+      "category": 2,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Patio y plantas",
+      "priority": 8,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "patio-y-plantas8"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 9,
+    "fields": {
+      "category": 3,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Juego de ropa",
+      "priority": 9,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "juego-de-ropa9"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 10,
+    "fields": {
+      "category": 3,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Juguetes",
+      "priority": 10,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "juguetes10"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 11,
+    "fields": {
+      "category": 3,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Varios",
+      "priority": 11,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "varios11"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 12,
+    "fields": {
+      "category": 4,
+      "sub_category_tag": "CP",
+      "sub_category_name": "M\u00fasica",
+      "priority": 12,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "musica12"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 13,
+    "fields": {
+      "category": 4,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Video",
+      "priority": 13,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "video13"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 14,
+    "fields": {
+      "category": 4,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Juegos electronicos",
+      "priority": 14,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "juegos-electronicos14"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 15,
+    "fields": {
+      "category": 5,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Pintura",
+      "priority": 15,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "pintura15"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 16,
+    "fields": {
+      "category": 5,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Tejidos",
+      "priority": 16,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "tejidos16"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 17,
+    "fields": {
+      "category": 5,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Artesania",
+      "priority": 17,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": "CLOTH",
+      "slug": "artesania17"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 18,
+    "fields": {
+      "category": 6,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Textos escolares",
+      "priority": 18,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "textos-escolares18"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 19,
+    "fields": {
+      "category": 6,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Textos universitarios",
+      "priority": 19,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "textos-universitarios19"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 20,
+    "fields": {
+      "category": 6,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Entretenimiento y curiosidades",
+      "priority": 20,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "6,7,8,9,10,11",
+      "sub_category_flage": "SHOES",
+      "slug": "entretenimiento-y-curiosidades20"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 21,
+    "fields": {
+      "category": 7,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Profesionales",
+      "priority": 21,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": null,
+      "slug": "profesionales21"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 22,
+    "fields": {
+      "category": 7,
+      "sub_category_tag": "CP",
+      "sub_category_name": "General",
+      "priority": 22,
+      "subcategory_size": "1,2,3,4,5",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": null,
+      "slug": "general22"
+    }
+  },
+  {
+    "model": "Juntos.subcategory",
+    "pk": 27,
+    "fields": {
+      "category": 7,
+      "sub_category_tag": "CP",
+      "sub_category_name": "Venta de terrenos",
+      "priority": 23,
+      "subcategory_size": "",
+      "subcategory_shoes_size": "",
+      "sub_category_flage": null,
+      "slug": "venta-de-terrenosnone"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 1,
+    "fields": {
+      "vendor": 3,
+      "product_sku": "",
+      "category": 2,
+      "subs_category": 8,
+      "title": "Sarees",
+      "description": "<p>Testing</p>",
+      "feature": "<p>Testing</p>",
+      "price": 34.0,
+      "selling_price": null,
+      "product_quantity": 4,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/djzssjqyt/image/upload/v1509370247/amjw4zbwpmev1ha3ntd1.jpg\", \"http://res.cloudinary.com/djzssjqyt/image/upload/v1509370248/wsdgckz32age0axdxhro.jpg\", \"http://res.cloudinary.com/djzssjqyt/image/upload/v1509370249/mxtvgdupldysdkiwa9yu.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "sareespatio-y-plantas1",
+      "in_stock": true,
+      "insured_amount": 2.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-11-28",
+      "is_active": true,
+      "services": "<p>Testing</p>",
+      "updated": "2017-11-21T02:56:55.255Z",
+      "created_at": "2017-11-21T02:56:55.255Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 2,
+    "fields": {
+      "vendor": 3,
+      "product_sku": "",
+      "category": 6,
+      "subs_category": 19,
+      "title": "Kurta",
+      "description": "<p>Testing</p>",
+      "feature": "<p>Testing</p>",
+      "price": 450.0,
+      "selling_price": null,
+      "product_quantity": 57,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/djzssjqyt/image/upload/v1509439207/gbbvutu711pjawmlyjue.png\", \"http://res.cloudinary.com/djzssjqyt/image/upload/v1509439208/pmhz1vcven80007fzroo.png\", \"http://res.cloudinary.com/djzssjqyt/image/upload/v1509439209/x0rlfgmgk3ptxtlbtwxu.png\", \"http://res.cloudinary.com/djzssjqyt/image/upload/v1509439209/a994eplpz00y2vrivany.png\"]",
+      "product_tag": "",
+      "recommended": true,
+      "slug": "kurtatextos-universitarios2",
+      "in_stock": true,
+      "insured_amount": 2.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-14",
+      "is_active": true,
+      "services": "<p>Service</p>",
+      "updated": "2017-11-29T09:50:14.786Z",
+      "created_at": "2017-11-29T09:50:14.786Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 4,
+    "fields": {
+      "vendor": 3,
+      "product_sku": "",
+      "category": 6,
+      "subs_category": 19,
+      "title": "Pants",
+      "description": "<p>Service</p>",
+      "feature": "<p>Service</p>",
+      "price": 32.0,
+      "selling_price": null,
+      "product_quantity": 49,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1510661247/ng2lmqzqe41lrijhn6ol.png\", \"http://res.cloudinary.com/imtiyaz/image/upload/v1510661247/nuhlsi9geglrk6xwnuhi.png\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "pantstextos-universitarios4",
+      "in_stock": true,
+      "insured_amount": 22.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-14",
+      "is_active": true,
+      "services": "<p>Testing</p>",
+      "updated": "2017-12-18T10:20:33.862Z",
+      "created_at": "2017-12-18T10:20:33.862Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 5,
+    "fields": {
+      "vendor": 3,
+      "product_sku": "",
+      "category": 2,
+      "subs_category": 7,
+      "title": "JPants",
+      "description": "<p>Testing</p>",
+      "feature": "<p>Testing</p>",
+      "price": 23.0,
+      "selling_price": null,
+      "product_quantity": 5,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1510723679/xtkvqakpfbdzn2swoxva.png\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "jpantsarticulos-de-cocina5",
+      "in_stock": true,
+      "insured_amount": 2.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-11-28",
+      "is_active": true,
+      "services": "<p>Service</p>",
+      "updated": "2017-11-15T05:28:03.313Z",
+      "created_at": "2017-11-15T05:28:03.313Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 7,
+    "fields": {
+      "vendor": 3,
+      "product_sku": "",
+      "category": 2,
+      "subs_category": 7,
+      "title": "Winter",
+      "description": "<p>Testing</p>",
+      "feature": "<p>testing</p>",
+      "price": 34.0,
+      "selling_price": 10.0,
+      "product_quantity": 34,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1510724897/tl5tlegdhlnbvm4vrc8v.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "winterarticulos-de-cocina7",
+      "in_stock": true,
+      "insured_amount": 2.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-11-28",
+      "is_active": true,
+      "services": "<p>Service</p>",
+      "updated": "2017-11-21T02:57:05.171Z",
+      "created_at": "2017-11-21T02:57:05.171Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 8,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 1,
+      "subs_category": 2,
+      "title": "Terno",
+      "description": "<p>Elegante</p>",
+      "feature": "<p>Rodeo</p>",
+      "price": 56.0,
+      "selling_price": 20.0,
+      "product_quantity": 8,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513315034/jj1tharnhue5jj20m07y.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "ternopara-el8",
+      "in_stock": true,
+      "insured_amount": 2.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>Service</p>",
+      "updated": "2017-12-18T10:20:33.837Z",
+      "created_at": "2017-12-18T10:20:33.837Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 12,
+    "fields": {
+      "vendor": 3,
+      "product_sku": "",
+      "category": 3,
+      "subs_category": 10,
+      "title": "432",
+      "description": "<p>123</p>",
+      "feature": "<p>123</p>",
+      "price": 65.0,
+      "selling_price": null,
+      "product_quantity": 12,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1511773991/h8pyddltkl1o6nhbwuoe.png\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "432juguetes12",
+      "in_stock": true,
+      "insured_amount": 223.0,
+      "product_weight": 2.0,
+      "product_height": 2.0,
+      "product_depth": 2.0,
+      "product_width": 2.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-11-28",
+      "is_active": true,
+      "services": "<p>21</p>",
+      "updated": "2017-11-27T09:13:24.057Z",
+      "created_at": "2017-11-27T09:13:24.057Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 15,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 1,
+      "subs_category": 1,
+      "title": "Nuevo",
+      "description": "<p>Bellizima</p>",
+      "feature": "<p>Detalles</p>",
+      "price": 12.0,
+      "selling_price": null,
+      "product_quantity": 5,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513045879/kpg1yljq6vmntyxn5osd.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "nuevopara-ella15",
+      "in_stock": true,
+      "insured_amount": 10.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-29",
+      "is_active": false,
+      "services": "<p>Ninguno</p>",
+      "updated": "2017-12-18T10:20:33.877Z",
+      "created_at": "2017-12-18T10:20:33.877Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 16,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 4,
+      "subs_category": 14,
+      "title": "Consola de juegos",
+      "description": "<p>Divertidisimo</p>",
+      "feature": "<p>PMP2</p>",
+      "price": 50.0,
+      "selling_price": 38.0,
+      "product_quantity": 1,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513315448/dn68xi6yxmbummrtm8si.jpg\"]",
+      "product_tag": "",
+      "recommended": true,
+      "slug": "consola-de-juegosjuegos-electronicos16",
+      "in_stock": true,
+      "insured_amount": 2.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>todos</p>",
+      "updated": "2017-12-18T10:20:33.851Z",
+      "created_at": "2017-12-18T10:20:33.851Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 17,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 1,
+      "subs_category": 1,
+      "title": "Vestido de gala",
+      "description": "<p>bella</p>",
+      "feature": "<p>ninguno</p>",
+      "price": 15.0,
+      "selling_price": 10.0,
+      "product_quantity": 2,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513307505/g5wc9c6akaxkxdv7z9fy.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "vestido-de-galapara-ella17",
+      "in_stock": true,
+      "insured_amount": 10.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>none</p>",
+      "updated": "2017-12-18T10:20:33.889Z",
+      "created_at": "2017-12-18T10:20:33.889Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 18,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 1,
+      "subs_category": 1,
+      "title": "Nuevo vestido",
+      "description": "<p>descrip</p>",
+      "feature": "<p>seda pura</p>",
+      "price": 65.0,
+      "selling_price": null,
+      "product_quantity": 2,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513309645/njawuni9hb6bkh8b2wrd.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "nuevo-vestidopara-ella18",
+      "in_stock": true,
+      "insured_amount": 6.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>none</p>\r\n\r\n<p>&nbsp;</p>",
+      "updated": "2017-12-15T03:48:00.747Z",
+      "created_at": "2017-12-15T03:48:00.747Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 19,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 1,
+      "subs_category": 1,
+      "title": "Este es el vestido",
+      "description": "<p>perfecto</p>",
+      "feature": "<p>mucho bueno</p>",
+      "price": 32.0,
+      "selling_price": null,
+      "product_quantity": 50,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513314261/ar4xshup5jtqvms1uxuz.webp\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "este-es-el-vestidopara-ella19",
+      "in_stock": true,
+      "insured_amount": 14.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>noenw</p>",
+      "updated": "2017-12-15T05:04:57.370Z",
+      "created_at": "2017-12-15T05:04:57.370Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 20,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 6,
+      "subs_category": 19,
+      "title": "Libros",
+      "description": "<p>Libros Universitarios varios</p>",
+      "feature": "<p>Libros sobre electronica</p>",
+      "price": 10.0,
+      "selling_price": null,
+      "product_quantity": 5,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513314577/mx0dvxas4wl1e21pcwhp.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "librostextos-universitarios20",
+      "in_stock": true,
+      "insured_amount": 10.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>Delivery</p>",
+      "updated": "2017-12-15T05:10:13.357Z",
+      "created_at": "2017-12-15T05:10:13.357Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 21,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 6,
+      "subs_category": 19,
+      "title": "Libros2",
+      "description": "<p>Libros en buenas Condiciones</p>",
+      "feature": "<p>Matematica, ciencias, literatura</p>",
+      "price": 4.0,
+      "selling_price": null,
+      "product_quantity": 7,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513314776/ncbgi60ououswgcc1w4p.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "libros2textos-universitarios21",
+      "in_stock": true,
+      "insured_amount": 1.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>Delivery</p>",
+      "updated": "2017-12-18T10:20:33.901Z",
+      "created_at": "2017-12-18T10:20:33.901Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 22,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 1,
+      "subs_category": 2,
+      "title": "Terno a la medida",
+      "description": "<p>A la medida</p>",
+      "feature": "<p>Casimir ingles.</p>",
+      "price": 49.0,
+      "selling_price": 32.0,
+      "product_quantity": 8,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513315173/o2phzkz9qs0utro9igvw.jpg\"]",
+      "product_tag": "",
+      "recommended": true,
+      "slug": "terno-a-la-medidapara-el22",
+      "in_stock": true,
+      "insured_amount": 3.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>Delivery</p>",
+      "updated": "2017-12-15T05:32:37.992Z",
+      "created_at": "2017-12-15T05:32:37.992Z"
+    }
+  },
+  {
+    "model": "Juntos.productsmanagement",
+    "pk": 23,
+    "fields": {
+      "vendor": 9,
+      "product_sku": "",
+      "category": 4,
+      "subs_category": 14,
+      "title": "Consola para juegos electronicos",
+      "description": "<p>Lo ultimo en Juegos</p>",
+      "feature": "<p>Batalla por el mundo</p>",
+      "price": 45.0,
+      "selling_price": 37.99,
+      "product_quantity": 3,
+      "product_rating": null,
+      "image": "[\"http://res.cloudinary.com/imtiyaz/image/upload/v1513315611/rregkr2h3rv7jsw3i8y0.jpg\"]",
+      "product_tag": "",
+      "recommended": false,
+      "slug": "consola-para-juegos-electronicosjuegos-electronicos23",
+      "in_stock": true,
+      "insured_amount": 4.0,
+      "product_weight": 1.0,
+      "product_height": 1.0,
+      "product_depth": 1.0,
+      "product_width": 1.0,
+      "payment_mode": "[\"COD\", \"Online\", \"Paypal\"]",
+      "expiry_date": "2017-12-30",
+      "is_active": true,
+      "services": "<p>Pick up</p>",
+      "updated": "2017-12-15T05:27:27.642Z",
+      "created_at": "2017-12-15T05:27:27.642Z"
+    }
+  },
+  {
+    "model": "Juntos.productcolor",
+    "pk": 3,
+    "fields": {
+      "color": "#a3b1ff",
+      "product": 15,
+      "updated": "2017-12-12T02:31:51.161Z",
+      "created_at": "2017-12-12T02:31:51.161Z"
+    }
+  },
+  {
+    "model": "Juntos.productcolor",
+    "pk": 4,
+    "fields": {
+      "color": "#ff442a",
+      "product": 17,
+      "updated": "2017-12-15T03:12:20.575Z",
+      "created_at": "2017-12-15T03:12:20.575Z"
+    }
+  },
+  {
+    "model": "Juntos.productimage",
+    "pk": 3,
+    "fields": {
+      "product_images": "image/upload/http://res.cloudinary.com/imtiyaz/image/upload/v1513045880/aq9i0inn4dkhnrg4pzyy.jpg",
+      "product_color": 3,
+      "updated": "2017-12-12T02:31:51.837Z",
+      "created_at": "2017-12-12T02:31:51.837Z"
+    }
+  },
+  {
+    "model": "Juntos.productimage",
+    "pk": 4,
+    "fields": {
+      "product_images": "image/upload/http://res.cloudinary.com/imtiyaz/image/upload/v1513307505/nlls90n41qv15fy2kwam.jpg",
+      "product_color": 4,
+      "updated": "2017-12-15T03:12:21.291Z",
+      "created_at": "2017-12-15T03:12:21.291Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 1,
+    "fields": {
+      "vendor": 3,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Patio y plantas' types product.",
+      "is_read": false,
+      "updated": "2017-11-04T06:02:16.062Z",
+      "created_at": "2017-11-04T06:02:16.062Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 2,
+    "fields": {
+      "vendor": 3,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Patio y plantas' types product.",
+      "is_read": true,
+      "updated": "2017-11-28T10:13:36.887Z",
+      "created_at": "2017-11-28T10:13:36.887Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 3,
+    "fields": {
+      "vendor": 3,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Articulos de cocina' types product.",
+      "is_read": true,
+      "updated": "2017-11-28T10:13:35.323Z",
+      "created_at": "2017-11-28T10:13:35.323Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 4,
+    "fields": {
+      "vendor": 3,
+      "ntype": "Order Cancel Request.",
+      "content": "Order cancel request for Order number: #ac99d3d6-2104-4196-a09c-a25755889c60, for product SKU #Patio y plantas received.",
+      "is_read": false,
+      "updated": "2017-11-21T02:56:55.251Z",
+      "created_at": "2017-11-21T02:56:55.252Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 5,
+    "fields": {
+      "vendor": 3,
+      "ntype": "Order Cancel Request.",
+      "content": "Order cancel request for Order number: #9643cd31-64fc-4e47-a829-feebdee858d9, for product SKU #Articulos de cocina received.",
+      "is_read": true,
+      "updated": "2017-11-28T10:13:33.305Z",
+      "created_at": "2017-11-28T10:13:33.305Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 6,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Para \u00e9l' types product.",
+      "is_read": false,
+      "updated": "2017-12-12T05:45:18.983Z",
+      "created_at": "2017-12-12T05:45:18.983Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 7,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Para ella' types product.",
+      "is_read": false,
+      "updated": "2017-12-12T05:45:18.996Z",
+      "created_at": "2017-12-12T05:45:18.996Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 8,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Para el' types product.",
+      "is_read": false,
+      "updated": "2017-12-18T10:20:33.842Z",
+      "created_at": "2017-12-18T10:20:33.842Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 9,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Juegos electronicos' types product.",
+      "is_read": false,
+      "updated": "2017-12-18T10:20:33.855Z",
+      "created_at": "2017-12-18T10:20:33.855Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 10,
+    "fields": {
+      "vendor": 3,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Textos universitarios' types product.",
+      "is_read": false,
+      "updated": "2017-12-18T10:20:33.867Z",
+      "created_at": "2017-12-18T10:20:33.867Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 11,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Para ella' types product.",
+      "is_read": false,
+      "updated": "2017-12-18T10:20:33.882Z",
+      "created_at": "2017-12-18T10:20:33.882Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 12,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Para ella' types product.",
+      "is_read": false,
+      "updated": "2017-12-18T10:20:33.893Z",
+      "created_at": "2017-12-18T10:20:33.894Z"
+    }
+  },
+  {
+    "model": "Juntos.notifications",
+    "pk": 13,
+    "fields": {
+      "vendor": 9,
+      "ntype": "1",
+      "content": "Congrats, A New Order has been received for 'Textos universitarios' types product.",
+      "is_read": false,
+      "updated": "2017-12-18T10:20:33.906Z",
+      "created_at": "2017-12-18T10:20:33.906Z"
+    }
+  },
+  {
+    "model": "Juntos.cart",
+    "pk": 9,
+    "fields": {
+      "user": 8,
+      "product": 5,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 1,
+      "price": 23.0,
+      "active": true,
+      "updated": "2017-11-22T13:53:10.539Z",
+      "created_at": "2017-11-22T13:53:10.539Z"
+    }
+  },
+  {
+    "model": "Juntos.billingaddress",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "billing_first_name": "Imtiyaz",
+      "billing_last_name": "khan",
+      "billing_phone": "8800873864",
+      "billing_company": "Imtiyaz Ahemad",
+      "billing_country": "Afghanistan",
+      "billing_country_abbreviation": "AF",
+      "billing_state": "1",
+      "billing_city": "Delhi",
+      "billing_zip": "110020",
+      "billing_address": "Denver, CO, United States\r\nMumbai Central, Mumbai, Maharashtra, India",
+      "billing_email": "imtiyaz.ahemad@mobiloittegroup.com",
+      "mode_of_transport": "DHL",
+      "created_at": "2017-11-04T06:02:10.463Z",
+      "updated_at": "2017-11-04T06:02:10.463Z"
+    }
+  },
+  {
+    "model": "Juntos.billingaddress",
+    "pk": 2,
+    "fields": {
+      "user": 9,
+      "billing_first_name": "wigle",
+      "billing_last_name": "wigle",
+      "billing_phone": "15103245678",
+      "billing_company": "home",
+      "billing_country": "United States",
+      "billing_country_abbreviation": "US",
+      "billing_state": "239",
+      "billing_city": "igor",
+      "billing_zip": "45678",
+      "billing_address": "123 bonanza dr.",
+      "billing_email": "wigle@gmail.com",
+      "mode_of_transport": "GPS",
+      "created_at": "2017-11-21T02:49:57.030Z",
+      "updated_at": "2017-11-21T02:49:57.030Z"
+    }
+  },
+  {
+    "model": "Juntos.shippingaddress",
+    "pk": 1,
+    "fields": {
+      "user": 3,
+      "shipping_first_name": "Imtiyaz",
+      "shipping_last_name": "khan",
+      "shipping_phone": "8800873864",
+      "shipping_company": "Imtiyaz Ahemad",
+      "shipping_country": "Afghanistan",
+      "shipping_country_abbreviation": "AF",
+      "shipping_state": "1",
+      "shipping_city": "Delhi",
+      "shipping_zip": "110020",
+      "shipping_address": "Denver, CO, United States\r\nMumbai Central, Mumbai, Maharashtra, India",
+      "shipping_email": "imtiyaz.ahemad@mobiloittegroup.com",
+      "mode_of_transport": "DHL",
+      "created_at": "2017-11-04T06:02:10.466Z",
+      "updated_at": "2017-11-04T06:02:10.466Z"
+    }
+  },
+  {
+    "model": "Juntos.shippingaddress",
+    "pk": 2,
+    "fields": {
+      "user": 9,
+      "shipping_first_name": "wigle",
+      "shipping_last_name": "wigle",
+      "shipping_phone": "15103245678",
+      "shipping_company": "home",
+      "shipping_country": "United States",
+      "shipping_country_abbreviation": "US",
+      "shipping_state": "239",
+      "shipping_city": "igor",
+      "shipping_zip": "45678",
+      "shipping_address": "123 bonanza dr.",
+      "shipping_email": "wigle@gmail.com",
+      "mode_of_transport": "GPS",
+      "created_at": "2017-11-21T02:49:57.034Z",
+      "updated_at": "2017-11-21T02:49:57.034Z"
+    }
+  },
+  {
+    "model": "Juntos.customerorder",
+    "pk": 1,
+    "fields": {
+      "shipping_address": 1,
+      "customer": 3,
+      "order_payment_type": "COD",
+      "order_number": "53d00880-9913-4ede-92cc-9927e3255013",
+      "order_date": "2017-11-04T06:02:16.044Z",
+      "delivery_date": "2017-11-12",
+      "pickup_date": "2017-11-04",
+      "delivery_status": false,
+      "expected_delivery_time": 8,
+      "base_price": 136.0,
+      "shipping_charge": 6.8,
+      "shipping_percent": 5.0,
+      "tax_charges": 24.48,
+      "tax_percent": 18.0,
+      "discount": 0.0,
+      "total": 167.28,
+      "updated": "2017-11-04T06:02:16.044Z",
+      "created_at": "2017-11-04T06:02:16.044Z"
+    }
+  },
+  {
+    "model": "Juntos.customerorder",
+    "pk": 2,
+    "fields": {
+      "shipping_address": 2,
+      "customer": 9,
+      "order_payment_type": "COD",
+      "order_number": "e6cadfe7-b4b5-4eb2-a59d-d2fa7c821c2b",
+      "order_date": "2017-11-21T02:52:03.595Z",
+      "delivery_date": "2017-11-29",
+      "pickup_date": "2017-11-21",
+      "delivery_status": false,
+      "expected_delivery_time": 8,
+      "base_price": 44.0,
+      "shipping_charge": 2.2,
+      "shipping_percent": 5.0,
+      "tax_charges": 7.92,
+      "tax_percent": 18.0,
+      "discount": 0.0,
+      "total": 54.12,
+      "updated": "2017-11-21T02:52:03.595Z",
+      "created_at": "2017-11-21T02:52:03.595Z"
+    }
+  },
+  {
+    "model": "Juntos.customerorder",
+    "pk": 3,
+    "fields": {
+      "shipping_address": 2,
+      "customer": 9,
+      "order_payment_type": "COD",
+      "order_number": "3d618d2e-ad2c-493c-8108-98a6ca37e5d7",
+      "order_date": "2017-12-12T05:45:18.966Z",
+      "delivery_date": "2017-12-20",
+      "pickup_date": "2017-12-12",
+      "delivery_status": false,
+      "expected_delivery_time": 8,
+      "base_price": 92.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 16.56,
+      "tax_percent": 18.0,
+      "discount": 0.0,
+      "total": 113.56,
+      "updated": "2017-12-12T05:45:18.966Z",
+      "created_at": "2017-12-12T05:45:18.966Z"
+    }
+  },
+  {
+    "model": "Juntos.customerorder",
+    "pk": 4,
+    "fields": {
+      "shipping_address": 2,
+      "customer": 9,
+      "order_payment_type": "COD",
+      "order_number": "8a171ad1-7b3d-4346-a327-5cbda50953e5",
+      "order_date": "2017-12-18T10:20:33.827Z",
+      "delivery_date": "2017-12-26",
+      "pickup_date": "2017-12-18",
+      "delivery_status": false,
+      "expected_delivery_time": 8,
+      "base_price": 1328.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 239.04,
+      "tax_percent": 18.0,
+      "discount": 0.0,
+      "total": 1572.04,
+      "updated": "2017-12-18T10:20:33.827Z",
+      "created_at": "2017-12-18T10:20:33.827Z"
+    }
+  },
+  {
+    "model": "Juntos.offer",
+    "pk": 2,
+    "fields": {
+      "product": 1,
+      "offer_title": "Happy Sarees",
+      "offer_details": "happy",
+      "offer_start_date_time": "2017-11-04",
+      "offer_end_date_time": "2017-11-17",
+      "offer_price": 239,
+      "updated": "2017-11-03T11:05:40.671Z",
+      "created_at": "2017-11-03T11:05:40.671Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 1,
+    "fields": {
+      "order": 1,
+      "order_number": "616127cc-2257-4da3-add9-3d619ac469e4",
+      "product": 1,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 4,
+      "base_price": 136.0,
+      "shipping_charge": 6.8,
+      "shipping_percent": 5.0,
+      "tax_charges": 24.48,
+      "tax_percent": 18.0,
+      "total": 167.28,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-11-04T06:02:16.053Z",
+      "created_at": "2017-11-04T06:02:16.053Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 2,
+    "fields": {
+      "order": 2,
+      "order_number": "ac99d3d6-2104-4196-a09c-a25755889c60",
+      "product": 1,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 1,
+      "base_price": 34.0,
+      "shipping_charge": 1.7,
+      "shipping_percent": 5.0,
+      "tax_charges": 6.12,
+      "tax_percent": 18.0,
+      "total": 41.82,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": true,
+      "updated": "2017-11-21T02:56:55.257Z",
+      "created_at": "2017-11-21T02:56:55.257Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 3,
+    "fields": {
+      "order": 2,
+      "order_number": "9643cd31-64fc-4e47-a829-feebdee858d9",
+      "product": 7,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 1,
+      "base_price": 10.0,
+      "shipping_charge": 0.5,
+      "shipping_percent": 5.0,
+      "tax_charges": 1.8,
+      "tax_percent": 18.0,
+      "total": 12.3,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": true,
+      "updated": "2017-11-21T02:57:05.173Z",
+      "created_at": "2017-11-21T02:57:05.173Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 4,
+    "fields": {
+      "order": 3,
+      "order_number": "43757393-9367-4f9f-8e38-4cc7a6387a06",
+      "product": 8,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 2,
+      "base_price": 80.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 14.4,
+      "tax_percent": 18.0,
+      "total": 99.4,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-12T05:45:18.972Z",
+      "created_at": "2017-12-12T05:45:18.972Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 5,
+    "fields": {
+      "order": 3,
+      "order_number": "7d918c00-6daa-4ddc-bcb9-9f341b60f3f5",
+      "product": 15,
+      "product_offer": null,
+      "product_color": 3,
+      "product_size": 0,
+      "quantity": 1,
+      "base_price": 12.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 2.16,
+      "tax_percent": 18.0,
+      "total": 19.16,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-12T05:45:18.988Z",
+      "created_at": "2017-12-12T05:45:18.988Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 6,
+    "fields": {
+      "order": 4,
+      "order_number": "96f0043a-c7a8-48c2-8d48-5246128d6f30",
+      "product": 8,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 1,
+      "base_price": 20.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 3.6,
+      "tax_percent": 18.0,
+      "total": 28.6,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-18T10:20:33.832Z",
+      "created_at": "2017-12-18T10:20:33.832Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 7,
+    "fields": {
+      "order": 4,
+      "order_number": "739de76e-cfd0-4679-be8f-7fec7cff674c",
+      "product": 16,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 0,
+      "quantity": 5,
+      "base_price": 1250.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 225.0,
+      "tax_percent": 18.0,
+      "total": 1480.0,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-18T10:20:33.847Z",
+      "created_at": "2017-12-18T10:20:33.847Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 8,
+    "fields": {
+      "order": 4,
+      "order_number": "47963e0c-b4cc-4510-b5e2-24c63164d61f",
+      "product": 4,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 8,
+      "quantity": 1,
+      "base_price": 32.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 5.76,
+      "tax_percent": 18.0,
+      "total": 42.76,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-18T10:20:33.859Z",
+      "created_at": "2017-12-18T10:20:33.859Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 9,
+    "fields": {
+      "order": 4,
+      "order_number": "03b2fea9-fc25-48b5-a64b-8f6fd7435ebd",
+      "product": 15,
+      "product_offer": null,
+      "product_color": 3,
+      "product_size": 0,
+      "quantity": 1,
+      "base_price": 12.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 2.16,
+      "tax_percent": 18.0,
+      "total": 19.16,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-18T10:20:33.872Z",
+      "created_at": "2017-12-18T10:20:33.872Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 10,
+    "fields": {
+      "order": 4,
+      "order_number": "ea94bfc0-f08c-4a47-b890-2bc92a77c45f",
+      "product": 17,
+      "product_offer": null,
+      "product_color": 4,
+      "product_size": 0,
+      "quantity": 1,
+      "base_price": 10.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 1.8,
+      "tax_percent": 18.0,
+      "total": 16.8,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-18T10:20:33.885Z",
+      "created_at": "2017-12-18T10:20:33.885Z"
+    }
+  },
+  {
+    "model": "Juntos.orderitems",
+    "pk": 11,
+    "fields": {
+      "order": 4,
+      "order_number": "c78d069b-22be-48e2-a2e2-3c4868228690",
+      "product": 21,
+      "product_offer": null,
+      "product_color": 0,
+      "product_size": 8,
+      "quantity": 1,
+      "base_price": 4.0,
+      "shipping_charge": 5.0,
+      "shipping_percent": 0.0,
+      "tax_charges": 0.72,
+      "tax_percent": 18.0,
+      "total": 9.72,
+      "delivery_date": null,
+      "delivery_status": "Pending",
+      "order_cancel_request": false,
+      "updated": "2017-12-18T10:20:33.897Z",
+      "created_at": "2017-12-18T10:20:33.897Z"
+    }
+  },
+  {
+    "model": "Juntos.services",
+    "pk": 1,
+    "fields": {
+      "service_type": "General"
+    }
+  },
+  {
+    "model": "Juntos.services",
+    "pk": 2,
+    "fields": {
+      "service_type": "Profesional"
+    }
+  },
+  {
+    "model": "Juntos.services",
+    "pk": 3,
+    "fields": {
+      "service_type": "Venta de Terrenos"
+    }
+  },
+  {
+    "model": "Juntos.advertisement",
+    "pk": 1,
+    "fields": {
+      "name": "Imtiyaz Ahemad khan",
+      "email": "imtiyaz.ahemad@mobiloittegroup.com",
+      "mobile": "+918800873864",
+      "subs_category": 5,
+      "title": "Testing Advertisement",
+      "description": "Testing Testing Testing Testing Testing Testing Testing Testing",
+      "type_of_services": 1,
+      "recommended": true,
+      "location": "Delhi",
+      "price": "",
+      "new": true,
+      "slug": "testing-advertisement",
+      "updated": "2017-11-17T08:05:14.241Z",
+      "created_at": "2017-11-17T08:05:14.241Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisement",
+    "pk": 2,
+    "fields": {
+      "name": "Inno",
+      "email": "Inno@gmail.com",
+      "mobile": "151987654321",
+      "subs_category": 5,
+      "title": "Dentista",
+      "description": "Good location",
+      "type_of_services": 2,
+      "recommended": true,
+      "location": "Lima",
+      "price": "",
+      "new": true,
+      "slug": "dentista",
+      "updated": "2017-12-12T09:04:32.889Z",
+      "created_at": "2017-12-12T09:04:32.889Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisement",
+    "pk": 3,
+    "fields": {
+      "name": "bonito terreno",
+      "email": "terreno@gmail.com",
+      "mobile": "151657654543",
+      "subs_category": 5,
+      "title": "New Adv",
+      "description": "Bonito terreno",
+      "type_of_services": 3,
+      "recommended": true,
+      "location": "Lima",
+      "price": "",
+      "new": true,
+      "slug": "new-adv",
+      "updated": "2017-12-13T04:51:20.136Z",
+      "created_at": "2017-12-13T04:51:20.136Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 1,
+    "fields": {
+      "image": "image/upload/v1510905909/wbov6ntrao3ohrbzthz4.png",
+      "advertisement": 1,
+      "updated": "2017-11-17T08:05:14.960Z",
+      "created_at": "2017-11-17T08:05:14.960Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 2,
+    "fields": {
+      "image": "image/upload/v1510905909/c8ukomcx3gpgjc4ftubw.png",
+      "advertisement": 1,
+      "updated": "2017-11-17T08:05:15.406Z",
+      "created_at": "2017-11-17T08:05:15.406Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 3,
+    "fields": {
+      "image": "image/upload/v1510905910/emi7ll6gxsxcohr6sc68.png",
+      "advertisement": 1,
+      "updated": "2017-11-17T08:05:15.906Z",
+      "created_at": "2017-11-17T08:05:15.906Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 4,
+    "fields": {
+      "image": "image/upload/v1512979731/eglycetbtgeoudtwewbz.jpg",
+      "advertisement": 2,
+      "updated": "2017-12-11T08:09:22.483Z",
+      "created_at": "2017-12-11T08:09:22.483Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 5,
+    "fields": {
+      "image": "image/upload/v1513140650/fcgxbz3rqcu37q0kzrg1.png",
+      "advertisement": 3,
+      "updated": "2017-12-13T04:51:23.229Z",
+      "created_at": "2017-12-13T04:51:23.229Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 6,
+    "fields": {
+      "image": "image/upload/v1513140650/u3yh8x8jjtnqe80tppa4.png",
+      "advertisement": 3,
+      "updated": "2017-12-13T04:51:24.090Z",
+      "created_at": "2017-12-13T04:51:24.090Z"
+    }
+  },
+  {
+    "model": "Juntos.advertisementimage",
+    "pk": 7,
+    "fields": {
+      "image": "image/upload/v1513140651/snzndm3vdor0fthzl8qd.png",
+      "advertisement": 3,
+      "updated": "2017-12-13T04:51:24.834Z",
+      "created_at": "2017-12-13T04:51:24.834Z"
+    }
+  },
+  {
+    "model": "Juntos.customerorderinvoice",
+    "pk": 1,
+    "fields": {
+      "invoice_number": "70525951632568",
+      "item_order_id": 3,
+      "shipping_charge": 0.5,
+      "shippment_date": "2017-11-30",
+      "billing_info": "2",
+      "shipping_info": "2",
+      "ready_by_time": "06:00",
+      "close_time": "07:00",
+      "pickup_date": "2017-11-25",
+      "payment_method": "COD",
+      "updated": "2017-11-24T11:07:38.006Z",
+      "created_at": "2017-11-24T11:07:38.006Z"
+    }
+  },
+  {
+    "model": "Juntos.customertransactiondetails",
+    "pk": 1,
+    "fields": {
+      "customer": 3,
+      "order_id": null,
+      "pay_key": "AP-1FG12049MA088633J",
+      "payment_status": "",
+      "tranaction_status": "",
+      "tranaction_id": "",
+      "payment_refunded": false,
+      "payment_refunded_ammount": "",
+      "sender_email": "",
+      "sender_account_id": "",
+      "reciever_account_id": "",
+      "reciever_email": "",
+      "reciever_amount": 0.0,
+      "updated": "2017-11-24T13:25:10.722Z",
+      "created_at": "2017-11-24T13:25:10.722Z"
+    }
+  },
+  {
+    "model": "Juntos.customertransactiondetails",
+    "pk": 2,
+    "fields": {
+      "customer": 3,
+      "order_id": null,
+      "pay_key": "AP-7B268500UM3267159",
+      "payment_status": "",
+      "tranaction_status": "",
+      "tranaction_id": "",
+      "payment_refunded": false,
+      "payment_refunded_ammount": "",
+      "sender_email": "",
+      "sender_account_id": "",
+      "reciever_account_id": "",
+      "reciever_email": "",
+      "reciever_amount": 0.0,
+      "updated": "2017-11-24T13:31:26.754Z",
+      "created_at": "2017-11-24T13:31:26.754Z"
+    }
+  }
+]
