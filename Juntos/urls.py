@@ -7,7 +7,7 @@ appname = 'Juntos'
 # ******* WEBSITE URL ********
 urlpatterns = [
 	url(r'^$', views.home,  name="home"),
-	url(r'^result$', views.SearchProduct, name='search-product'),
+	url(r'^search-product$', views.SearchProduct.as_view(), name='search-product'),
 	url(r'^product-detail/(?P<slug>.+)$',views.ProductDetail.as_view(), name='product-detail'),
 	url(r'^product-details/(?P<pk>[0-9]+)$', views.ProductColor.as_view(), name='product-color'),
 	url(r'^image-view/(?P<color>[0-9]+)$', views.ProductImageView.as_view() , name="product-image-view"),

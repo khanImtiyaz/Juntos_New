@@ -25,7 +25,14 @@ border-radius: 4px; -webkit-box-shadow: none;  box-shadow: none;  -webkit-transi
 .color-box{border-top: 1px solid #ccc; margin-top: 35px; padding: 10px 0px;} 
 .stuff_link {color: #ffffff;font-weight: 600; margin: -13px 0 0;text-decoration: underline;}
 .stuff_link:hover{color: #ffffff;text-decoration:none;}
-
+.quick-look{
+    background: #daac0a;
+    color: white !important;
+    padding: 10px;
+    margin: 0 20px 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+}
 /*Carousel*/
 .carousel-inner .item.left.active {
    transform: translateX(-33%);
@@ -167,7 +174,7 @@ footer ul li a {font-size:14px; color:#534201;}
 .btn-cart { background: #775e02; margin: 10px 0px 0; padding: 5px 25px; color: #fff; border-radius:50px;}
 .stock-btn-block .btn-red2{font-size: 12px;font-weight: bold;}
 .btn-cart i { background: #ff0000 none repeat scroll 0 0; border: 1px solid #ff0000; font-size: 20px; margin: 0 10px 0 0; padding: 6px 12px 10px; }
-.prod-image {width:100%; text-align:center;}
+.prod-image {width:100%; text-align:center;max-height: 260px; overflow: hidden;} 
 .prod-image img {max-width:100%; display:inline-block;}
 .carousel-inner>.item .row {    margin: 20px -15px;}
 .hotdeal-sidebar .pro-highlight h3{text-align:center;}
