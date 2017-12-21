@@ -139,11 +139,11 @@ class AdvertisementForm(forms.ModelForm):
     
     class Meta:
         model = Advertisement
-        fields = ["title","subs_category", "type_of_services","description","price","name","email","mobile","location","recommended"]
+        fields = ["title", "type_of_services","description","price","name","email","mobile","location","recommended"]
 
-    def __init__(self, *args, **kwargs):
-        super(AdvertisementForm, self).__init__(*args, **kwargs)
-        self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
+    # def __init__(self, *args, **kwargs):
+    #     super(AdvertisementForm, self).__init__(*args, **kwargs)
+    #     self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
 
 
 class AdvertisementAdmin(nested_admin.NestedModelAdmin):

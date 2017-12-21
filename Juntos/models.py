@@ -392,7 +392,7 @@ class Advertisement(models.Model):
   name = models.CharField(('Advertiser Name'), max_length=50, null=True, blank=True)
   email = models.CharField(('Advertiser Email'), max_length=80, blank=False)
   mobile = models.CharField(('Advertiser Mobile'),max_length=15,blank=True,unique=False)
-  subs_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, related_name="sub_advertisements")
+  subs_category = models.ForeignKey(SubCategory, on_delete=models.CASCADE,related_name="sub_advertisements",blank=True,null=True)
   title = models.CharField(('Title'), max_length=200)
   description = models.TextField(('Description'), blank=True)
   type_of_services = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
