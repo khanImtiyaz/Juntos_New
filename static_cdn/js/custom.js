@@ -1128,59 +1128,6 @@ $('#avatar_id').change(function() {
 });
 
 $(document).ready(function() {
-
-    $("#subscribe").click(function() {
-        var email = $("#usr_email").val();
-        var pattern = /^[a-z0-9_\.\-]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/;
-        if (email != "") {
-            if (!pattern.test(email)) {
-                Lobibox.notify('info', {
-                    size: 'mini',
-                    sound: false,
-                    msg: "Please enter valid email address",
-                    title: 'Peru Juntos',
-                });
-            } else {
-                $.ajax({
-                    url: "{% url 'customer:subscribe' %}",
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        'email': email,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    },
-                    success: function(e) {
-                        if (e.code == 200) {
-                            Lobibox.notify('info', {
-                                size: 'mini',
-                                sound: false,
-                                msg: e.message,
-                                title: 'Peru Juntos',
-                            });
-                        } else {
-                            Lobibox.notify('warning', {
-                                size: 'mini',
-                                sound: false,
-                                msg: e.message,
-                                title: 'Peru Juntos',
-                            });
-                        }
-                        $("#usr_email").val('');
-                    },
-                });
-            }
-        } else {
-            Lobibox.notify('error', {
-                size: 'mini',
-                sound: false,
-                msg: "Please enter email address",
-                title: 'Peru Juntos',
-            });
-            $("#usr_email").focus();
-        }
-
-
-    });
 });
 
 // review ratinggg

@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 # JET_DEFAULT_THEME = 'green'
-JET_SIDE_MENU_COMPACT = True
 
 # Application definition
 
@@ -201,6 +200,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_cdn")
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-MEDIA_ROOT = 'media/'
-MEDIA_URL = 'http://127.0.0.1:8000/media/'
+# MEDIA_ROOT = 'media/'
+# MEDIA_URL = 'http://127.0.0.1:8000/media/'
 
