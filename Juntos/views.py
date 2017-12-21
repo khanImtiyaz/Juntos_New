@@ -90,16 +90,15 @@ def home(request):
 
 class SearchProduct(View):
 	"""docstring for SearchProduct"""
-	# "advertisements":advertiseProducts,
 	def post(self,request):
 		params = request.POST
 		current_date = datetime.now()
 		product = ProductsManagement.objects.filter(Q(category__category_name__icontains=params['q']) | Q(subs_category__sub_category_name__icontains=params['q']) | Q(title__icontains=params['q'])).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
 		offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
 		hotItems = OrderItems.objects.filter(product__expiry_date__gt=current_date.date()).distinct('product')
-		# advertiseProducts = Advertisement.objects.all().order_by("-created_at")
+		advertiseProducts = Advertisement.objects.filter(Q(title__icontains=params['q'])).order_by("-created_at")
 		recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
-		return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"recomended_product":recommendedProduct})
+		return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
 class Index(View):
 	"""docstring for Index"""
