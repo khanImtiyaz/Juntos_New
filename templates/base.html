@@ -34,7 +34,8 @@
                <div class="text-center">
                   <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();" direction="left">
                      {% for new in news%}  
-                     <span style="padding: 0 20px;">{{new.title}}.</span>
+                     <!-- <span style="padding: 0 20px;"></span> -->
+                     {{new.title}}.
                      {% endfor %}
                   </marquee>
                </div>
