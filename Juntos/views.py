@@ -30,54 +30,6 @@ from Static_Model.models import *
 
 # Create your views here.
 
-# def landingpage(request):
-#     hot_items = []
-#     hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
-#     for deal in hot_deals:
-#         prod = Products_Management.objects.get(id=deal['product_id'])
-#         hot_items.append({'title':prod.title,"id":prod.id ,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
-#     offers = Offer.objects.all()
-#     if request.GET.get('all',None):
-#         banner = Banner.objects.all()
-#         product_list = Products_Management.objects.all().exclude(expire_products=0)
-#         paginator = Paginator(product_list, 12)
-#         all_category=Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             products = paginator.page(page)
-#         except PageNotAnInteger:
-#             products = paginator.page(1)
-#         except EmptyPage:
-#             products = paginator.page(paginator.num_pages)
-#         context = ({'all_product_list': products, "categorys":all_category, 'banner_list':banner, "hot_items":hot_items, "offers":offers})
-#         response_data = render(request,"index.html",context)
-#         if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
-#             import uuid
-#             token =  uuid.uuid4().hex[:16].upper()
-#             response_data.set_cookie('add_card_token', token)
-#         return response_data
-#     else:
-#         recomended_product = Advertisement.objects.filter(recommended=True).order_by("-created_at")[:4]
-#         banner = Banner.objects.all()
-#         product_list = Products_Management.objects.all().order_by("-created_at").exclude(expire_products=0)
-#         paginator = Paginator(product_list, 8)
-#         all_category=Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             products = paginator.page(page)
-#         except PageNotAnInteger:
-#             products = paginator.page(1)
-#         except EmptyPage:
-#             products = paginator.page(paginator.num_pages)
-#         context = ({'product_list': products, "categorys":all_category, 'banner_list':banner, "recomended_product":recomended_product, "hot_items":hot_items,"offers":offers})
-#         response_data = render(request,"index.html",context)
-#         if not request.COOKIES.get('add_card_token') and not request.user.is_authenticated():
-#             import uuid
-#             token =  uuid.uuid4().hex[:16].upper()
-#             response_data.set_cookie('add_card_token', token)
-#         return response_data
 
 def home(request):
 	current_date = datetime.now()
@@ -118,89 +70,6 @@ class Index(View):
 			return redirect("Juntos:home")
 
 
-# @register.filter
-# def index(request, slug=None):
-#     if slug:
-#         sub_cat = Sub_Category.objects.filter(slug=slug).first()
-#         if sub_cat:
-#             # print("if")
-#             try:
-#                 advertisement = sub_cat.sub_advertisments.all()
-#             except Exception as e:
-#                 print("Error----",e)
-#                 advertisement = {}
-#         sb_ct = Sub_Category.objects.filter(sub_category_tag="VP")
-#         #paginator = Paginator(user_list, 8)
-#         all_sub = sub_cat.sub_cat_product.values()
-#         paginator = Paginator(all_sub, 12)
-#         banner = Banner.objects.all()
-#         all_category=Category.objects.all()
-#         offers = Offer.objects.all()
-#         hot_items = []
-#         hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
-#         for deal in hot_deals:
-#             prod = Products_Management.objects.get(id=deal['product_id'])
-#             hot_items.append({'title':prod.title,"id":prod.id,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
-#         #print(hot_items)
-#         page = request.GET.get('page')
-#         try:
-#             contacts = paginator.page(page)
-#         except PageNotAnInteger:
-#             # If page is not an integer, deliver first page.
-#             contacts = paginator.page(1)
-#         except EmptyPage:
-#             # If page is out of range (e.g. 9999), deliver last page of results.
-#             contacts = paginator.page(paginator.num_pages)
-#         # or advertisement.exists()
-#         if all_sub.exists()  or sb_ct.exists():
-#             return render(request, 'index.html', {'sub_cats':all_sub, "hot_items":hot_items ,"offers":offers,"categorys":all_category, 'banner_list':banner,"header_name":sub_cat.sub_category_name,'advertisements':advertisement, 'contacts': contacts,'res_cat':sb_ct})
-#         else:
-#             messages.info(request,"No product availabe for this category !")
-#             return redirect("Peru:home")
-#     else:
-#         return redirect("Peru:home")
-
-
-
-# def product_detail(request, slug=None):
-#     # try:
-#     detail = Products_Management.objects.filter(slug=slug).first()
-#     product_color = detail.product_colors
-#     product_rating = detail.product_reviews.aggregate(Avg('rating_value'))['rating_value__avg']
-#     if not product_rating:
-#         product_rating = 0
-#     total_review = detail.product_reviews.all()
-#     # print(total_review)
-#     seller = detail.vendor.first_name
-#     if product_color.exists():
-#         if request.GET.get('color',None):
-#             try:
-#                 product_images = product_color.get(id=request.GET.get('color')).product_color_images.values()
-#             except:
-#                 product_images = product_color.last().product_color_images.values()
-#         else:
-#             product_images = product_color.last().product_color_images.values()
-#     else:
-#         product_images = None
-#     related_products = detail.subs_category.sub_cat_product.filter(selling_price__lte=detail.selling_price).exclude(id=detail.id)[:5]
-#     # print(detail.subs_category.sub_category_flage)
-#     context =  {'details':detail,
-#                 'colors':product_color,
-#                 "images":product_images,
-#                 "total_review":total_review,
-#                 "flage": True if detail.subs_category.sub_category_flage=="CLOTH"  else False ,
-#                 "related_products":related_products,
-#                 'seller':seller,
-#                 'rating_comp':int(product_rating),
-#                 'loop_count':range(1,6)}
-#     return render(request, 'product.html',context)
-
-
-		
-# def product_image_view(request, color):
-#     images = Product_Image.objects.filter(product_colr_id=color)
-#     return render(request, "partial-product_image_view.html",{"images":images})
-
 class ProductImageView(View):
 	"""docstring for ProductImageView"""
 	
@@ -211,18 +80,12 @@ class ProductImageView(View):
 			imagesArray.append(img['product_images'])
 		return render(request, "partial-product-image-view.html",{"images":imagesArray})
 
-# def product_color(request, pk=None):
-#     return render(request, 'product.html', {})
-
 class ProductColor(View):
 	"""docstring for ProductColor"""
 	
 	def get(self, request):
 		return render(request, 'product.html')
 		
-
-
-
 class ProceedCart(View):
 	"""docstring for ProceedCart"""
 	def get(self,request):
@@ -273,16 +136,6 @@ class ProceedCart(View):
 			return render(request, 'new_shipping_cart.html', {"all_cart":card_Array,"total_price":total_price,"grand_total":grand_total,"total_message":total_message,"recomended_product":recomended_product})
 
 
-# @login_required(login_url="/")
-# def wish_list(request):
-#     if request.user.is_authenticated():
-#         user = request.user
-#         detail_wishlist = Wishlist.objects.filter(user_id=user)
-#         # messages.success(request, "Wishlist Item Remove Succesfully")
-#         return render(request, 'my_wishlist.html',{"lists":detail_wishlist})
-#     else:
-#         return render(request, 'my_wishlist.html')
-
 class WishList(View):
 	"""docstring for WishList"""
 	def get(self,request):
@@ -292,27 +145,6 @@ class WishList(View):
 			return render(request, 'my_wishlist.html',{"lists":wishlist})
 		else:
 			return render(request, 'my_wishlist.html')
-
-# @login_required(login_url="/")
-def add_whishlist(request , product_id):
-    if request.user.is_customer:
-        product_obj = Products_Management.objects.filter(id=product_id)
-        if product_obj.exists():
-            product = product_obj.first()
-            Wishlist.objects.create(user=request.user, product=product)
-            try:
-                Cart.objects.get(product=product).delete()
-            except Exception as e:
-                print (e)
-            # Cart.objects.get(product=product).delete()
-            return redirect("customer:wish_list")
-        else:
-            messages.error(request, "Product does not exists !")
-            return redirect("customer:views_cart")
-    else:
-        messages.info(request, "Please login before access wishlist !")
-        return redirect("customer:views_cart")
-
 
 class AddWishList(View):
 	"""docstring for AddWishList"""
@@ -374,74 +206,6 @@ class ContactList(View):
 		JuntosContact = JuntosContactUs.objects.all()
 		return render(request, 'contact-us.html',{"lists":JuntosContact})
 														
-# def login_view(request):
-#     redirect_to = request.POST.get('next', request.GET.get('next', ''))
-#     if request.method=='POST':
-#         product   = Products_Management.objects.all()
-#         paginator = Paginator(product, 10)
-
-#         all_category = Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             contacts = paginator.page(page)
-#         except PageNotAnInteger:
-#             contacts = paginator.page(1)
-#         except EmptyPage:
-#             contacts = paginator.page(paginator.num_pages)
-#         form = UserLoginForm(request.POST, None)
-#         if form.is_valid():
-#             email = form.cleaned_data["email"]
-#             password = form.cleaned_data["password"]
-#             try:
-#                 user = Customer.objects.get(email=email)
-#                 user = authenticate(username=user.email, password=password)
-#                 if not user.mobile_verified:
-#                     request.session['email'] = user.email
-#                     return redirect('customer:resend_otp')
-#                 else:
-#                     login(request, user)
-#                 if request.POST.get('card_data'):
-#                     """ Add all cart item in Cart after login"""
-#                     for items in ast.literal_eval(request.POST['card_data']):
-#                         product = Products_Management.objects.get(id=items['product_id'])
-#                         card = Cart.objects.filter(user_id=user.id, product_id=items['product_id'])
-#                         print("Card",card)
-#                         if card.count()==1:
-#                             cart = Cart.objects.get(user_id=user.id, product_id=items['product_id'])
-#                             cart.product_size = int(items['size'])
-#                             cart.product_color = int(items['color'])
-#                             cart.quantity = int(items['quantity'])
-#                             cart.price = product.price * int(items['quantity'])
-#                             cart.save()
-#                         else:
-#                             cart1 = Cart(user_id=user.id, product_id=items['product_id'])
-#                             cart1.product_size = int(items['size'])
-#                             cart1.product_color = int(items['color'])
-#                             cart1.quantity = int(items['quantity'])
-#                             cart1.price = product.price * int(items['quantity'])
-#                             cart1.save()
-#                 total_cart = user.card_user.count()
-#                 messages.success(request, "Login successfully.")
-#                 try:
-#                     remember = request.POST.get('remember_me')
-#                     if remember:
-#                         settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = False
-#                 except MultiValueDictKeyError:
-#                     settings.SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-#                 responss = redirect(redirect_to)
-#                 responss.delete_cookie('add_card_token')
-#                 if redirect_to and is_safe_url(url=redirect_to, host=request.get_host()):
-#                     return redirect(redirect_to)
-#                 else:
-#                     return redirect("Peru:home")
-#             except:
-#                 return redirect('Peru:home')
-#         else:
-#             return render(request,"index.html", {'forms':form,"categorys":all_category, "product_list":contacts})
-#     else:
-#         return redirect('Peru:home')
-
 class LoginView(View):
 	"""docstring for LoginView"""
 	def post(self,request):
@@ -491,56 +255,6 @@ class LogoutView(View):
 		return redirect('Juntos:home')
 
 
-# @csrf_exempt
-# def register_view(request):
-#     user_list = Products_Management.objects.all()
-#     hot_items = []
-#     hot_deals = CustomerOrder_items.objects.values("product_id").annotate(Count("product_id")).order_by("-product_id__count")[:5]
-#     for deal in hot_deals:
-#         prod = Products_Management.objects.get(id=deal['product_id'])
-#         hot_items.append({'title':prod.title,"id":prod.id ,"slug":prod.slug,"selling_price":prod.selling_price,"image":prod.image.name,"sub_cat_tag":prod.subs_category.sub_category_tag})
-#     recomended_product = Products_Management.objects.filter(recommended=True).order_by("-created_at")[:8]
-#     offers = Offer.objects.all()
-#     paginator = Paginator(user_list, 10)
-#     product   = Products_Management.objects.all()
-#     all_category = Category.objects.all()
-#     index = 1
-#     page = request.GET.get('page')
-#     try:
-#         contacts = paginator.page(page)
-#     except PageNotAnInteger:
-#         contacts = paginator.page(1)
-#     except EmptyPage:
-#         contacts = paginator.page(paginator.num_pages)
-#     try:
-#         form = UserRegistration()
-#         if request.method == 'POST':
-#             params = request.POST
-#             form   = UserRegistration(request.POST or None)
-#             if form.is_valid():
-#                 obj  = form.save(commit=False)
-#                 code = id_generator()
-#                 obj.confirmation_code = code
-#                 obj.is_active   = False
-#                 obj.is_customer = True
-#                 obj.is_vendor   = False
-#                 ran = random_with_N_digits()
-#                 obj.mobile_verification_code = ran
-#                 obj.set_password(params['password'])
-#                 obj.save()
-#                 request.session['email'] = obj.email
-#                 messag = "Your JuntosPeru mobile number verification code is : "+str(ran)
-#                 temp   = send_sms(obj.mobile,messag)
-#                 return render(request, 'resend_otp.html',{"categorys":all_category, "product_list":contacts, 'contacts': contacts})
-#             else:
-#                 return render(request, 'index.html', {'form': form,"offers":offers,"hot_items":hot_items,"recomended_product":recomended_product,"categorys":all_category, "product_list":contacts, 'contacts': contacts})
-#         else:
-#             return render(request, 'index.html',{"categorys":all_category, "product_list":contacts, 'contacts': contacts})
-#     except Exception as e:
-#           print("errorsssssssssssssssssss",e)
-#           messages.warning(request, 'Something went wrong !')
-#           return redirect("Peru:home")
-
 class RegisterView(View):
 	"""docstring for RegisterView"""
 	def post(self,request):
@@ -585,15 +299,6 @@ class SendMail(View):
 	def get(self,request):
 		return redirect('Peru:home')
 
-
-# def subscribe4newsletter(request):
-#     if request.method =="POST":
-#         email , created = SubscribedEmail.objects.get_or_create(email=request.POST['email'])
-#         if created:
-#             return HttpResponse(json.dumps({"message":"You have subscribed for news letter", "code":200}), content_type='application/json')
-#         else:
-#             return HttpResponse(json.dumps({"message":"You have already subscribed for news letter", "code":400}), content_type='application/json')
-
 class SubscribeNewsLetter(View):
 	
 	"""docstring for SubscribeNewsLetter"""
@@ -603,6 +308,7 @@ class SubscribeNewsLetter(View):
 			form.save()
 			return JsonResponse({"message":"You have subscribed for news letter", "status":200})
 		return JsonResponse({"message":"You have already subscribed for this", "status":400})
+
 class UpdateProfile(View):
 	"""docstring for UpdateProfile"""
 	def get(self,request):
@@ -695,83 +401,6 @@ class ConfirmationEmail(View):
 		messages.success(request, "Your account confirmed successfully")
 		return redirect("Juntos:home")
 
-
-
-# def add_to_cart(request):
-#     print('dfdfdfdsfdsfdsf--------------------',)
-#     try:
-#         params = request.POST
-#         # a=params['product_id']
-#         # b=params['quantity']
-
-#         # print("priiiiiiiiiiiiii",a)
-#         # print("priiiiiiiiiiiiii",b)
-
-#         user = request.user
-#         exists = None
-#         product_obj   = Products_Management.objects.get(id=params['product_id'])
-#         price_on_cart = (product_obj.selling_price*int(params['quantity']))
-#         print("aaaaaa",price_on_cart)
-#         product_card  = Cart.objects.filter(product=product_obj, user=user)
-#         if product_card.exists():
-#             product_card = product_card.first()
-#             product_card.quantity = params['quantity']
-#             product_card.product_size = params.get('size',None)
-#             product_card.product_color = params.get('color',None)
-#             product_card.price = price_on_cart
-#             product_card.save()
-#             exists = True
-#         else:
-#             card = Cart(user=request.user, active=True, product=product_obj)
-#             card.quantity=params['quantity']
-#             card.product_size=params.get('size',None)
-#             card.product_color=params.get('color',None)
-#             card.price=price_on_cart
-#             card.save()
-#         cart_count = user.card_user.count()
-#         # print("348---cart--3",cart_count)
-#         # return render(request, 'index.html', {"cart_count": cart_count, "code":200,'exists':exists})
-#         return HttpResponse(json.dumps({"cart_count": cart_count, "code":200,'exists':exists}), content_type='application/json')
-#     except Exception as e:
-#         # print("dsfhbdshjfdsexceptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",e)
-#         cart_count = request.user.card_user.count()
-#         return HttpResponse(json.dumps({"cart_count": cart_count, "code":500}), content_type='application/json')
-
-
-
-# @register.filter("truncate_chars")
-# def product_detail(request, slug=None):
-#     # try:
-#     detail = Products_Management.objects.filter(slug=slug).first()
-#     product_color = detail.product_colors
-#     product_rating = detail.product_reviews.aggregate(Avg('rating_value'))['rating_value__avg']
-#     if not product_rating:
-#         product_rating = 0
-#     total_review = detail.product_reviews.all()
-#     # print(total_review)
-#     seller = detail.vendor.first_name
-#     if product_color.exists():
-#         if request.GET.get('color',None):
-#             try:
-#                 product_images = product_color.get(id=request.GET.get('color')).product_color_images.values()
-#             except:
-#                 product_images = product_color.last().product_color_images.values()
-#         else:
-#             product_images = product_color.last().product_color_images.values()
-#     else:
-#         product_images = None
-#     related_products = detail.subs_category.sub_cat_product.filter(selling_price__lte=detail.selling_price).exclude(id=detail.id)[:5]
-#     # print(detail.subs_category.sub_category_flage)
-#     context =  {'details':detail,
-#                 'colors':product_color,
-#                 "images":product_images,
-#                 "total_review":total_review,
-#                 "flage": True if detail.subs_category.sub_category_flage=="CLOTH"  else False ,
-#                 "related_products":related_products,
-#                 'seller':seller,
-#                 'rating_comp':int(product_rating),
-#                 'loop_count':range(1,6)}
-#     return render(request, 'product.html',context)	
 class ProductDetail(View):
 	"""docstring for ProductDetail"""
 	def get(self,request,slug=None):
@@ -780,61 +409,6 @@ class ProductDetail(View):
 		relatedProducts = ProductsManagement.objects.filter(subs_category=product.subs_category).exclude(id=product.id)[:5]
 		return render(request, 'product.html',{"details":product,"related_products":relatedProducts})	
 
-
-# def view_cart(request, address=None):
-#     user = request.user
-#     if user.is_authenticated and user.is_customer:
-#         if address:
-#             shipa = Shipping_Address.objects.filter(user=user)
-#             if shipa.exists():
-#                 shipa.update(selected = False)
-#                 try:
-#                     ship = Shipping_Address.objects.get(id=address)
-#                     ship.selected = True
-#                     ship.save()
-#                 except:
-#                     messages.error(request,"No Address selected !")
-#         product_cart = Cart.objects.filter(user=user)
-#         if product_cart:
-#             product_p = product_cart[0].product
-#             related_category = product_p.category
-#             related_sub_category = product_p.subs_category
-#             related_post = Products_Management.objects.filter(category=related_category,subs_category=related_sub_category).exclude(id=product_cart[0].product.id)[:5]
-#         else:
-#             related_post = []
-
-#         sub_total    = product_cart.aggregate(Sum('price'))['price__sum']
-#         if sub_total:
-#             grand_total = sub_total
-#             total_price = grand_total
-#         else:
-#             grand_total = 0.0
-#             total_price = grand_total
-#         if len(product_cart):
-#             pro_detail = product_cart[len(product_cart)-1]
-#         elif len(product_cart)==0:
-#             pro_detail = {}
-#         return render(request, 'new_view_cart.html', {"all_cart":pro_detail, "sub_total": sub_total, "grand_total": grand_total,"cart_count":len(product_cart),"total_price":total_price,"related_post":related_post})
-#     else:
-#         card_Array = []
-#         total_price = 0.0
-#         if 'card_data' in request.POST and request.POST['card_data']:
-#             for items in ast.literal_eval(request.POST['card_data']):
-#                 product = Products_Management.objects.get(id=int(items['product_id']))
-#                 card_Array.append({
-#                         "product":product,
-#                         "product_size":int(items['size']),
-#                         "product_color": int(items['color']),
-#                         "quantity": int(items['quantity']),
-#                         "price": product.selling_price * int(items['quantity'])
-#                     })
-#                 total_price = total_price + product.selling_price * int(items['quantity'])
-#             related_post_category = card_Array[-1]['product'].category
-#             related_post_sub_category = card_Array[-1]['product'].subs_category
-#             related_post = Products_Management.objects.filter(category=related_post_category,subs_category=related_post_sub_category).exclude(id=card_Array[-1]['product'].id)[:5]
-#             return render(request, 'new_view_cart.html', {"all_cart":card_Array[-1], "sub_total": 0.0, "grand_total": 0.0,"cart_count":len(card_Array),"total_price":total_price,"related_post":related_post,"product":product})
-#         else:
-#             return render(request, 'new_view_cart.html', {"all_cart":[], "sub_total": 0.0, "grand_total": 0.0})
 
 class ViewCart(View):
 	"""docstring for ViewCart"""
@@ -882,9 +456,6 @@ class CheckAvailability(View):
 			return HttpResponse(json.dumps({"message": "Product not found","code":404}), content_type='application/json')
 
 
-
-
-	
 # def helpfull_review(request):
 #     try:
 #         review = Customer_Review.objects.get(id=request.POST['review'])
@@ -1242,25 +813,6 @@ class CancelOrderAndRefund(View):
 		order_obj.save()
 		return redirect("Juntos:view-order")
 
-
-# def recommended(request):
-#     all_recommendeds = Advertisement.objects.filter(recommended=True)
-#     if all_recommendeds.exists():
-#         paginator = Paginator(all_recommendeds, 12)
-#         all_category=Category.objects.all()
-#         index=1
-#         page = request.GET.get('page')
-#         try:
-#             all_recommendeds = paginator.page(page)
-#         except PageNotAnInteger:
-#             all_recommendeds = paginator.page(1)
-#         except EmptyPage:
-#             all_recommendeds = paginator.page(paginator.num_pages)
-#         return render (request, 'index.html',{"all_recommendeds":all_recommendeds})
-#     else:
-#         messages.info(request,"no recommended avaialable")
-#         return redirect("Peru:home")
-
 class Recommended(View):
 	"""docstring for Recommended"""
 	def get(self,request):
@@ -1281,17 +833,6 @@ class Recommended(View):
 			messages.info(request,"No recommended avaialable")
 			return redirect("Juntos:home")
 
-
-# def advertisement_detail(request, slug=None,tx=None,amt=None):
-#     sb_ct= Sub_Category.objects.filter(sub_category_tag="VP")
-#     advertisement = Advertisement.objects.get(slug=slug)
-#     total_review = advertisement.reviews_adv.all()
-#     image_data = Advertisement_Image.objects.filter(advertisement_images=advertisement.id)
-#     print("image_data",image_data)
-#     related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location).exclude(slug=slug)
-#     return render(request, 'detail_advertisement.html', {'all_image':image_data,'ads_details':advertisement, 'related_services':related_services, 'total_review':total_review, 'res_cat':sb_ct})
-
-
 class AdvertisementDetail(View):
 	"""docstring for AdvertisementDetail"""
 	def get(self,request,slug=None,tx=None,amt=None):
@@ -1301,18 +842,6 @@ class AdvertisementDetail(View):
 		related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location).exclude(slug=slug)
 		return render(request, 'detail_advertisement.html', {'ads_details':advertisement, 'related_services':related_services,'res_cat':sb_ct})
 
-		
-# @login_required(login_url="/")
-# def advertisments_review(request):
-#     params = request.POST
-#     slug = params['slug']
-#     adv = Advertisement.objects.get(id=params['advertisement_reviews'])
-#     review = Advertisment_Review.objects.create(advertisement_reviews=adv,
-#                                              content=params['content'],
-#                                              rating_value=params['rating_value'],
-#                                              given_by=request.user)
-    
-#     return redirect("customer:ad_detail", slug)
 
 class AdvertismentsReview(View):
 	"""docstring for AdvertismentsReview"""
@@ -1418,7 +947,6 @@ class ContactUsEmail(View):
 	"""docstring for ContactUsEmail"""
 	def post(self,request):
 		from django.template import loader
-		print("------------",request.META.get("HTTP_REFERER"))
 		form = JuntosContactUsEmailForm(data=request.POST)
 		if form.is_valid():
 			form.save()
