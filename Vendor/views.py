@@ -7,84 +7,32 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from cloudinary.uploader import upload, upload_resource
 import os
-# from django.http import QueryDicta
 import base64
 from base64 import b64encode
 import json
 from Juntos.models import *
 from itertools import groupby
 import operator
-from .forms import *
 from Django_Multiple.utils import *
-# def vendor_signup(request):
-#     form = VendorRegistrationForm1()
-#     if request.method == 'POST':
-#         user = request.user
-#         vendor = MyUser.objects.get(id=user.id)
-#         # print(user)
-#         params = request.POST
-#         # print("------requst data--------",request.POST)
-#         if params['step'] == "validate":
-#             form = VendorRegistrationForm1(params or None, instance=vendor)
-#             if form.is_valid():
-#                 if request.FILES.get('avatar', None):
-#                     upresult = upload(request.FILES['avatar'])   ####  upload images
-#                     # request.session['avatar'] = upresult['url']
-#                     vendor.avatar = upresult['url']
-#                 vendor.is_vendor = True
-#                 vendor.is_customer = True
-#                 vendor.save()
-#                 form = VendorRegistrationForm2()
-#                 # messages.success(request, 'Mobile verification success.')
-#                 return render(request, 'vendor/registration_form2.html', {'vendor': form})
-#             else:
-#                 return render(request, 'vendor/registration_form1.html', {'vendor': form})
+from .forms import *
 
-#         elif params['step'] == 'step2':
-#             try:
-#                 form = VendorRegistrationForm2(params)
-#                 if form.is_valid():
-#                     request.session['business_name'] = params['business_name']
-#                     request.session['legal_name']    = params['legal_name']
-#                     request.session['address1']      = params['address1']
-#                     request.session['address2']      = params['address2']
-#                     messages.success(request, 'Seller business information saved.')
-#                     form = VendorRegistrationForm3()
-#                     return render(request, 'vendor/registration_form3.html', {'vendor': form})
-#                 else:
-#                     return render(request, 'vendor/registration_form2.html', {'vendor': form})
-#             except Exception  as a:
-#                 print("error",a)
-#                 return render(request, 'vendor/registration_form3.html', {'vendor': form})
 
-#         elif params['step'] == 'step3':
-#             form = VendorRegistrationForm3(params)
-#             # print(form)
-#             if form.is_valid():
-#                 bank = Vendor_Account_Details.objects.create(vendor=vendor,
-#                                               bank_name=params['bank_name'],
-#                                               routing_number=params['routing_number'],
-#                                               account_number=params['account_number'],
-#                                               agree_terms_condition=True,
-#                                               address1=request.session['address1'],
-#                                               address2=request.session['address2'],
-#                                               legal_name=request.session['legal_name'],
-#                                               business_name=request.session['business_name'],
-#                                               )
-#                 messages.info(request, 'Signing up success.')
-#                 return redirect('vendor:vendor_dashboard')
-#             else:
-#                 print("step3")
-#                 return render(request, 'vendor/registration_form3.html', {'vendor': form})
-#         else:
-#             print("step1")
-#             return render(request, 'vendor/registration_form1.html', {'vendor': form})
-#     else:
-#         return render(request, 'vendor/registration_form1.html')
+def handler404(request):
+	print("Vendor 404")
+	template = 'index.html'
+	return render(request, template)
 
+def csrf_failure(request, reason=""):
+	return render_to_response('index.html',{'csrf_error': 'CSRF token has expired or not valid!'})
+
+def bad_request(request):
+	response = render_to_response( '400.html', context_instance=RequestContext(request) )
+	response.status_code = 400
+	return response
 
 
 # Create your views here.
@@ -166,48 +114,15 @@ class VendorSignupStep3(View):
 		else:
 			return render(request, 'vendor/registration_form3.html', {'vendor': form})
 
+class BVendor(View):
+	"""docstring for BVendor"""
+	def get(self,request):
+		return redirect('Juntos:home')
 
 
-def vendor_dashboard(request):
-    vendor = request.user
-    if (vendor.is_vendor and vendor.is_active):
-        try:
-            vendor.account
-            account = False
-        except:
-            account = True
-        order_data = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__day=datetime.today().day).order_by('-created_at')
-        total_product = Products_Management.objects.filter(vendor=vendor)
-        order_hash = []
-        record_chart_array = [['Year', 'Sales', 'Expenses', 'Profit']]
-        for product in total_product:
-            if product.order.exists():
-                order_item_list = product.order.filter(created_at__day=datetime.today().day)
-                for order in order_item_list:
-                    if not any( orderl.get('id') == order.product.id for orderl in order_hash):
-                        sales = order_item_list.filter(product_id=order.product.id).aggregate(Sum('price'))['price__sum']
-                        total_original_price = order_item_list.filter(product_id=order.product.id).count() * order.product.price
-                        print(total_original_price)
-                        total_expenses_price = order_item_list.filter(product_id=order.product.id).count() * order.product.selling_price
-                        order_hash.append({"id":order.product.id,"title":order.product.title, "sales":sales,"profit":order.price-total_original_price,"expenses":order.price-total_expenses_price})
-                    else:
-                        pass
-        if order_hash:
-            for record in order_hash:
-                record_chart_array.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
-        else:
-            for product1 in total_product:
-                record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
-        return render(request, 'vendor/dashboard.html',{"total_customer":total_customer ,"ajax":None, "sell_hash": record_chart_array,"total_sell":total_sell, "total_order":total_order, "account": account})
-    elif(vendor.is_vendor):
-        messages.info(request, "You have received confirmation email, Please confirm your email.")
-        return redirect("vendor:bevendor")
-    else:
-        messages.error(request, "You are not authorize to access this page.")
-#         return redirect("Vendor:bevendor")
-		
 class VendorDashboard(View):
 	"""docstring for VendorDashboard"""
+	# @login_required(login_url='Vendor:bevendor')
 	def get(self,request):
 		vendor = request.user
 		if not vendor.is_vendor or not vendor.is_active:
@@ -239,10 +154,6 @@ class VendorDashboard(View):
 			return render(request, 'vendor/dashboard.html',{'orders':orders,"total_sell":total_sell,"sell_hash": typeArray,})
 	
 
-class BVendor(View):
-	"""docstring for BVendor"""
-	def get(self,request):
-		return redirect('Juntos:home')
 
 
 
