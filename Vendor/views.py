@@ -20,21 +20,6 @@ import operator
 from Django_Multiple.utils import *
 from .forms import *
 
-
-def handler404(request):
-	print("Vendor 404")
-	template = 'index.html'
-	return render(request, template)
-
-def csrf_failure(request, reason=""):
-	return render_to_response('index.html',{'csrf_error': 'CSRF token has expired or not valid!'})
-
-def bad_request(request):
-	response = render_to_response( '400.html', context_instance=RequestContext(request) )
-	response.status_code = 400
-	return response
-
-
 # Create your views here.
 class VendorSignup(View):
 	"""docstring for VendorSignup"""

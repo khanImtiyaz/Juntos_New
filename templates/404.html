@@ -40,5 +40,51 @@
             </div>
          </div>
       </header>
+      <div class="error-container">
+         <img src="{% static 'img/404.jpg' %}">
+      </div>
+
+      <footer>
+         <div class="container">
+            <div class="col-sm-12 footer_inner13">
+               <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4">
+                     <h2>SOBRE NOSOTROS</h2>
+                     <div class="head-btm"></div>
+                     <p>Juntos Perú  es una empresa fundada para incentivar la creatividad, ampliar el perfil economico y promover el reconocimiento internacional del trabajador peruano. Nuestra ventana amplia y acogedora brindara la mejor opción para promocionar y distribuir sus productos local, nacional e internacionalmente.</p>
+                  </div>
+                  <div class="col-lg-3 col-md-4 col-md-3 col-md-offset-1 col-lg-offset-1 col-sm-4">
+                     <h2>Enlaces</h2>
+                     <div class="head-btm"></div>
+                     <ul>
+                        <li><a href="{% url 'Juntos:faq' %}">Preguntas comunes</a></li>
+                        <li><a href="{% url 'Juntos:conditions' %}">Términos y Condiciones </a></li>
+                        <li><a href="{% url 'Juntos:carrer' %}">Carreras</a></li>
+                        <li><a href="#contactUsmodal" data-toggle="modal" data-target="#contactUsmodal">Contactenos por e-mail</a></li>
+                        <!-- <li><a href="{% url 'Juntos:contact' %}">Contáctenos</a></li> -->
+                     </ul>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4">
+                     <h2>Subscribete A Nuestro Boletín De Noticias</h2>
+                     <div class="head-btm"></div>
+                     <div class="form-group col-md-8">
+                        <div class="row">
+                           <input type="text" class="form-control footer-srch" id="usr_email" value="" placeholder="Correo electronico" maxlength="80" />
+                           <label class="btm-text">Subscribete ahora</label>
+                        </div>
+                     </div>
+                     <button class="btn btn-footer" id="subscribe">Enviar</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="cppy-ryt">
+            <div class="container">
+               <div class="clearfix">
+                  <p class="text-center">Todos los derechos reservados. ©Juntos Peru 2017</p>
+               </div>
+            </div>
+         </div>
+      </footer>
    </body>
 </html>
