@@ -2,6 +2,7 @@ from django import template
 from django.utils.translation import pgettext, ugettext as _, ungettext
 from django.utils.timezone import is_aware, utc, get_current_timezone
 from django.template import defaultfilters
+from django.db.models import Avg
 from datetime import date, datetime, timedelta
 from Juntos.models import *
 
@@ -50,6 +51,17 @@ def buyornot(value,user):
 		if obj.order.customer==user:
 			return True
 	return False
+
+@register.filter
+def productRating(value):
+	review = CustomerReview.objects.filter(product=value).aggregate(Avg('rating'))
+	return review['rating__avg']
+
+@register.filter
+def ratingCount(value):
+	count = CustomerReview.objects.filter(product=value).count()
+	print("----------count---------",count)
+	return count
 
 
 

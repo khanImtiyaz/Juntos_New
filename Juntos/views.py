@@ -34,11 +34,19 @@ from Static_Model.models import *
 def home(request):
 	current_date = datetime.now()
 	product = ProductsManagement.objects.all().exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
+	paginator = Paginator(product, 15)
+	page = request.GET.get('page')
+	try:
+		products = paginator.page(page)
+	except PageNotAnInteger:
+		products = paginator.page(1)
+	except EmptyPage:
+		products = paginator.page(paginator.num_pages)
 	offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
 	hotItems = OrderItems.objects.filter(product__expiry_date__gt=current_date.date()).distinct('product')
 	advertiseProducts = Advertisement.objects.all().order_by("-created_at")
 	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
-	return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
+	return render(request,'index.html',{"all_product_list":products,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
 class SearchProduct(View):
 	"""docstring for SearchProduct"""
@@ -93,7 +101,7 @@ class ProceedCart(View):
 		if user.is_authenticated and user.is_customer:
 			total_price = 0.0
 			product_cart = Cart.objects.filter(user=user)
-			recomended_product = ProductsManagement.objects.filter(recommended=True).order_by("-created_at")[:3]
+			recomended_product = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))[:3]
 			if product_cart:
 				total_price = product_cart.aggregate(Sum('price'))['price__sum']
 				taxvalue = TaxPercentage.objects.first()
@@ -118,7 +126,7 @@ class ProceedCart(View):
 	def post(self,request):
 		card_Array = []
 		total_price = 0.0
-		recomended_product = ProductsManagement.objects.filter(recommended=True).order_by("-created_at")[:3]
+		recomended_product = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))[:3]
 		if 'card_data' in request.POST and request.POST['card_data']:
 			for items in ast.literal_eval(request.POST['card_data']):
 				product = ProductsManagement.objects.get(id=items['product_id'])
@@ -406,7 +414,7 @@ class ProductDetail(View):
 	def get(self,request,slug=None):
 		queryset = ProductsManagement.objects.all()
 		product = get_object_or_404(queryset,slug=slug)
-		relatedProducts = ProductsManagement.objects.filter(subs_category=product.subs_category).exclude(id=product.id)[:5]
+		relatedProducts = ProductsManagement.objects.filter(subs_category=product.subs_category).exclude(id=product.id).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))[:5]
 		return render(request, 'product.html',{"details":product,"related_products":relatedProducts})	
 
 

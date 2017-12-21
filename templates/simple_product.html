@@ -22,7 +22,7 @@
                         <div class="star-rank-block">
                            <div class="star-rank" style="margin-right:-8px !important">
                               {% for rate in star_rating %} 
-                              {% if rate < details.product_rating %}
+                              {% if rate <= details|productRating %}
                               <i class="fa fa-star y-color"></i> 
                               {% else %}
                               <i class="fa fa-star"></i> 
@@ -30,8 +30,8 @@
                               {% endfor %}
                            </div>
                            <div>
-                              {% if total_review %}
-                              <a href="javascript:void(0);">{{total_review.count}} Customer Reviews</a>
+                              {% if details|ratingCount %}
+                              <a href="javascript:void(0);">{{details|ratingCount}} Customer Reviews</a>
                               {% else %}
                               <a href="javascript:void(0);">No Customer Reviews</a>
                               {% endif %}
