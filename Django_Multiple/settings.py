@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'zoxd%l@)cn6_!+s4)79&*p@!_5*akl-phfbyjyu$6z(%bk4no+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 # JET_DEFAULT_THEME = 'green'
