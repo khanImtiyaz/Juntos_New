@@ -398,7 +398,7 @@ class Advertisement(models.Model):
   type_of_services = models.ForeignKey(Services, on_delete=models.CASCADE, null=True)
   recommended = models.BooleanField(('Mark as recommended'), default=False)
   location = models.CharField(('Advertiser Location'), max_length=100, blank=True, null=True)
-  price = models.CharField(('Price'), max_length=50, blank=True, null=True)
+  price = models.FloatField(('Price'), blank=True, null=True)
   new = models.BooleanField(('Mark as new'), default=True)
   slug = AutoSlugField(populate_from='subs_category',unique=True, max_length=100)
   updated = models.DateTimeField(auto_now=True)
