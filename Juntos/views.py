@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.contrib.auth import (authenticate, get_user_model, login, logout,)
@@ -80,7 +81,6 @@ class Index(View):
 		if slug:
 			sub_category = get_object_or_404(queryset,slug=slug)
 			sub_cat = ProductsManagement.objects.filter(subs_category__slug=slug)
-			print("------------------",sub_cat)
 			if sub_cat:
 				return render(request, 'index.html', {'sub_cats':sub_cat})
 			else:
