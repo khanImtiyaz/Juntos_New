@@ -80,7 +80,8 @@ class Index(View):
 		print("Slug",slug)
 		if slug:
 			sub_category = get_object_or_404(queryset,slug=slug)
-			sub_cat = ProductsManagement.objects.filter(subs_category__slug=slug)
+			sub_cat = ProductsManagement.objects.filter(subs_category__slug=slug).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
+			print("Sub Category",sub_cat)
 			if sub_cat:
 				return render(request, 'index.html', {'sub_cats':sub_cat})
 			else:
