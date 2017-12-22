@@ -63,37 +63,51 @@
                               {% endif %}
                            </div>
                         </div>
-                        {% if edit_form.image.name %}
                         <div class="form-group">
-                           <label class="control-label col-sm-3">Subir foto ☀️</label>
+                           <label class="control-label col-sm-3">Subir foto☀️</label>
                            <div class="col-sm-9 file-preview-input">
                               <div id="image_preview"><img src="{% static 'img/no-image.jpg'%}"></div>
-                              <div class="row" id='multiple_image_show' style="margin-top: 10px">
+                              {% if edit_form.image %}
+                              <div class="row" id='product_image' name='product_image' style="margin-top: 10px">
+                                 {% for img in edit_form.image %}
+                                 <div class="col-sm-2" id="remove_photo_{{forloop.counter}}">
+                                    <div>
+                                       <i class="fa fa-times" aria-hidden="true" style="color:black;float:right"></i>
+                                       <img src="{{img}}" style="width: 100%">
+                                    </div>
+                                 </div>
+                                 <script type="text/javascript">
+                                    $("#remove_photo_{{forloop.counter}}").on("click",function(){
+                                       $.ajax({
+                                          url: "{% url 'Vendor:delete-product-image' %}",
+                                          type: 'POST',
+                                          dataType: 'json',
+                                          data: {
+                                             "img":$('#remove_photo_{{forloop.counter}} img').attr('src'),
+                                             "product":{{edit_form.id}},
+                                              'csrfmiddlewaretoken': '{{ csrf_token }}'
+                                          },
+                                          success: function(e) {
+                                             if(e.status==200){
+                                                $("#remove_photo_{{forloop.counter}}").remove()
+                                             }
+                                          }
+                                      });
+                                    });
+                                 </script>
+                                 {% endfor %}
                               </div>
+                              {% else %}
+                              <div class="row" id='product_image' name='product_image' style="margin-top: 10px"></div>
+                              {% endif %}
                               <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
                               <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
-                              <input type="file" name="image" id="image_upload">
+                              <input type="file" name="image" id="image" accept="png/jpg/jpeg" multiple>
                               {% if add_form.errors.image %}
-                              <strong style="color:red">{{ add_form.errors.image | escape }}</strong>
+                              <strong style="color:red">{{ add_form.errors.image|escape}}</strong>
                               {% endif %}
                            </div>
                         </div>
-                        {% else %}
-                        <div class="form-group">
-                           <label class="control-label col-sm-3">Subir foto ☀️</label>
-                           <div class="col-sm-9 file-preview-input">
-                              <div id="image_preview"><img src="{% static 'img/no-image.jpg'%}"></div>
-                              <div class="row" id='multiple_image_show' style="margin-top: 10px">
-                              </div>
-                              <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
-                              <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
-                              <input type="file" name="image" id="image_upload">
-                              {% if add_form.errors.image %}
-                              <strong style="color:red">{{ add_form.errors.image | escape }}</strong>
-                              {% endif %}
-                           </div>
-                        </div>
-                        {% endif %}
                         <div class="form-group">
                            <label class="control-label col-sm-3">Monto Asegurado</label>
                            <div class="col-sm-9">
@@ -106,7 +120,7 @@
                               <label class="control-label">Peso del Producto</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_weight" value="{{edit_form.product_weight}}" placeholder="Enter Product Weight" maxlength="16" id="mobile_id"> {% if edit_form.errors.product_weight %}
+                                    <input type="text" class="form-control" name="product_weight" value="{{edit_form.product_weight|floatformat:2}}" placeholder="Enter Product Weight" maxlength="16" id="mobile_id"> {% if edit_form.errors.product_weight %}
                                     <strong style="color:red">{{ edit_form.errors.product_weight | escape }}</strong> {% endif %}
                                  </div>
                               </div>
@@ -115,7 +129,7 @@
                               <label class="control-label">Altura del producto</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_height" value="{{edit_form.product_height}}" placeholder="Enter Product height" maxlength="50"> {% if edit_form.errors.product_height %}
+                                    <input type="text" class="form-control" name="product_height" value="{{edit_form.product_height|floatformat:2}}" placeholder="Enter Product height" maxlength="50"> {% if edit_form.errors.product_height %}
                                     <strong style="color:red">{{ edit_form.errors.product_height | escape }}</strong> {% endif %}
                                  </div>
                               </div>
@@ -124,7 +138,7 @@
                               <label class="control-label">Product Depth</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_depth" value="{{edit_form.product_depth}}" id="state" placeholder="Enter Product Depth" maxlength="50"> {% if edit_form.errors.product_depth %}
+                                    <input type="text" class="form-control" name="product_depth" value="{{edit_form.product_depth|floatformat:2}}" id="state" placeholder="Enter Product Depth" maxlength="50"> {% if edit_form.errors.product_depth %}
                                     <strong style="color:red">{{ edit_form.errors.product_depth | escape }}</strong> {% endif %}
                                  </div>
                               </div>
@@ -133,7 +147,7 @@
                               <label class="control-label">Ancho del producto</label>
                               <div class="form-group">
                                  <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_width" value="{{edit_form.product_width}}" id="country" placeholder="Enter Product Width" maxlength="50"> {% if edit_form.errors.product_width %}
+                                    <input type="text" class="form-control" name="product_width" value="{{edit_form.product_width|floatformat:2}}" id="country" placeholder="Enter Product Width" maxlength="50"> {% if edit_form.errors.product_width %}
                                     <strong style="color:red">{{ edit_form.errors.product_width | escape }}</strong> {% endif %}
                                  </div>
                               </div>
@@ -278,7 +292,7 @@
                            </div>
                         </div>
                      </fieldset>
-                     <input type="hidden" name="response_total_color" value="{{total_color}}">
+                     <!-- <input type="hidden" name="response_total_color" value="{{total_color}}"> -->
                      <input type="hidden" name="total_color" id="id_total_color" value="{{total_color}}">
                      <input type="hidden" id="id_total_color_images" value="{{total_image}}">
                      <div class="form-group">
@@ -307,6 +321,15 @@
 <script type="text/javascript">
    sub_category_value = '{{edit_form.subs_category.id}}'
 </script>
+{% endif %}
+{% if edit_form.productColor.all %}
+   <script type="text/javascript">
+      colorCount = '{{edit_form.productColor.count}}'
+   </script>
+{% else %}
+   <script type="text/javascript">
+      colorCount = 0
+   </script>
 {% endif %}
 <script>
    $(document).ready(function() {
@@ -402,12 +425,14 @@
             all_select();
        })
       all_select();
-       $("#image_upload").on('change', function() {
+       multiple_Image_Array = []
+       $("#image").on('change', function() {
            var countFiles = $(this)[0].files.length;
            var imgPath = $(this)[0].value;
            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
            var image_holder = $("#image_preview");
-   
+            $('[id^="remove_photo_business_"]').remove()
+            multiple_Image_Array = []
            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                if (typeof(FileReader) != "undefined") {
                    for (var i = 0; i < countFiles; i++) {
@@ -418,6 +443,8 @@
                                "src": e.target.result,
                                "class": "thumb-image"
                            }).appendTo(image_holder);
+                           multiple_Image_Array.push(e.target.result)
+                           $("#product_image").append('<div class="col-sm-2" id="remove_photo_business_'+(--countFiles)+'"><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right;display:none;"></i><img src="'+e.target.result+'"%}" style="width: 100%;padding-top:20px;"></div></div>')
                        }
                        image_holder.show();
                        reader.readAsDataURL($(this)[0].files[i]);
@@ -433,10 +460,11 @@
                this.value = "";
            }
        });
+   
        var max_fields = 5; //maximum input boxes allowed
        var wrapper = $(".input_fields_wrap"); //Fields wrapper
        var add_button = $(".add_field_button"); //Add button ID
-       var x = 1; //initlal text box count
+       var x = colorCount; //initlal text box count
        $(add_button).click(function(e) { //on add input button click
            e.preventDefault();
            if (x <= max_fields) {
@@ -447,7 +475,7 @@
                      <div class="row">\
                         <div class="col-sm-5">\
                            <label class="control-label col-sm-6" style="color:#daac0a">Imagen de color del producto</label>\
-                           <input id="id_product_colors-' + (x - 2) + '-color" class="colorfield_field" name="product_colors-' + (x - 2) + '-color" value="#FFFFFF" type="color">\
+                           <input id="id_product_colors-' + (x) + '-color" class="colorfield_field" name="product-colors-'+(x)+'-color" value="#FFFFFF" type="color">\
                         </div>\
                         <div class="col-sm-7">\
                            <a href="#" class="add_color_image btn btn-success btn-sm col-sm-4">Añadir Imagen <i class="fa fa-plus" aria-hidden="true" style="color:white"></i></a>\
@@ -464,10 +492,10 @@
                    'display': 'none'
                });
            }
-           $("#id_total_color").val(x - 1);
+           $("#id_total_color").val(x);
        });
    
-       $(wrapper).on("click", ".remove_color_field", function(e) { //user click on remove text
+       $(wrapper).on("click", ".remove_color_field", function(e) { 
               e.preventDefault();
               id = $(this).attr('id') 
               obj = $(this)
@@ -493,7 +521,7 @@
                
            })
        var max_fields_img = 17; //maximum input boxes allowed
-       var y = 1; //initlal text box count
+       var y = 0; //initlal text box count
        $(wrapper).on("click", ".add_color_image", function(e) { //on add input button click
            e.preventDefault();
            if (y < max_fields_img) { //max input box allowed
@@ -501,18 +529,17 @@
                var id = "as" + (y + 1).toString();
                $(this).parent().find('.product_images').append('<div class="col-md-12"> \
                   <div class="col-md-12">\
-                  <input type="file" name="product_colors-'+(x-2)+'-product-color-images-' + (y - 2) + '-product-images" \
+                  <input type="file" name="product-colors-'+(x)+'-product-color-images-'+(y)+'-product-images" \
                       onChange="preview-color-images(this,'+id+');" required=""> </div><div class="col-md-12" id=' + id + '>\
                           <img src="" style="width:40%;">\
                            <a href="#" class="remove_color_field1 btn btn-danger btn-xs">Retirar <i class="fa fa-times" aria-hidden="true"></i></a>\
                   </div>\
                   </div>'); //add input box
            }
-           $("#id_total_color_images").val(y - 1);
+           $("#id_total_color_images").val(y);
        });
    
        $(wrapper).on("click", ".remove_color_field1", function(e) { //user click on remove text
-           alert("delte ")
            e.preventDefault();
            $(this).parent().parent('li').remove();
            y--;
@@ -561,39 +588,39 @@
        });
    });
    function preview_color_images(file, img_id) {
-           //Get count of selected files
-           var countFiles = $(file)[0].files.length;
-           var imgPath = $(file)[0].value;
-           var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-           console.log($(img_id).attr('id'));
-           var image_holder = $('#' + $(img_id).attr('id'));
+     //Get count of selected files
+     var countFiles = $(file)[0].files.length;
+     var imgPath = $(file)[0].value;
+     var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+     console.log($(img_id).attr('id'));
+     var image_holder = $('#' + $(img_id).attr('id'));
    
-           if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-               if (typeof(FileReader) != "undefined") {
-                   for (var i = 0; i < countFiles; i++) {
-                       var reader = new FileReader();
-                       reader.onload = function(e) {
-                           image_holder.find('img').remove();
-                           $("<img />", {
-                               "src": e.target.result,
-                               "class": "thumb-image",
-                               "style": "width:40%",
-                           }).prependTo(image_holder);
-                       }
-                       image_holder.show();
-                       reader.readAsDataURL($(file)[0].files[i]);
-                   }
-               } else {
-                   alert("This browser does not support FileReader.");
-               }
-           } else {
-               Lobibox.alert('error', {
-                   sound: false,
-                   msg: 'Please upload valid image.'
-               });
-               file.value = "";
-           }
-       }
+     if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+         if (typeof(FileReader) != "undefined") {
+             for (var i = 0; i < countFiles; i++) {
+                 var reader = new FileReader();
+                 reader.onload = function(e) {
+                     image_holder.find('img').remove();
+                     $("<img />", {
+                         "src": e.target.result,
+                         "class": "thumb-image",
+                         "style": "width:40%",
+                     }).prependTo(image_holder);
+                 }
+                 image_holder.show();
+                 reader.readAsDataURL($(file)[0].files[i]);
+             }
+         } else {
+             alert("This browser does not support FileReader.");
+         }
+     } else {
+         Lobibox.alert('error', {
+             sound: false,
+             msg: 'Please upload valid image.'
+         });
+         file.value = "";
+     }
+   }
    $("#price_id, #sell_price_id").attr('maxlength', '10');
    $("#price_id, #sell_price_id").on('keypress', function(evt) {
        var charCode = (evt.which) ? evt.which : event.keyCode
@@ -609,7 +636,8 @@
 </script>
 <link rel="stylesheet" href="{% static 'css/lobibox.css' %}" />
 <script src="{% static  'js/lobibox.js' %}"></script>
-{% if messages %} {% for message in messages %}
+{% if messages %} 
+{% for message in messages %}
 <script>
    Lobibox.notify('{{ message.tags }}', {
        size: 'mini',
@@ -620,5 +648,5 @@
    });
 </script>
 {% endfor %}
-</div>
-{% endif %} {% endblock %}
+{% endif %}
+{% endblock %}

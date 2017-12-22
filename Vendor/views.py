@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from cloudinary.uploader import upload, upload_resource
 import os
 import base64
@@ -107,7 +108,6 @@ class BVendor(View):
 
 class VendorDashboard(View):
 	"""docstring for VendorDashboard"""
-	# @login_required(login_url='Vendor:bevendor')
 	def get(self,request):
 		vendor = request.user
 		if not vendor.is_vendor or not vendor.is_active:
@@ -122,7 +122,6 @@ class VendorDashboard(View):
 			orders = orders.filter(created_at__month=datetime.today().month)
 			for product in products:
 				if product.order.exists():
-					print("exists")
 					orderList = product.order.filter(created_at__month=datetime.today().month)
 					for order in orderList:
 						if not any( orderl.get('id') == order.product.id for orderl in orderHash):
@@ -139,39 +138,11 @@ class VendorDashboard(View):
 			return render(request, 'vendor/dashboard.html',{'orders':orders,"total_sell":total_sell,"sell_hash": typeArray,})
 	
 
-
-
-
-
-# def logout_view(request):
-#     logout(request)
-#     return redirect("vendor:bevendor")
-
 class LogoutView(View):
 	"""docstring for LogoutView"""
 	def get(self,request):
 		logout(request)
 		return redirect("Vendor:bevendor")
-
-
-# def change_password(request):
-#     form = ChangePasswordForm(user=request.user)
-#     if request.method == 'POST':
-#         form = ChangePasswordForm(request.POST, user=request.user)
-#         if form.is_valid():
-#             user = request.user
-#             user.set_password(request.POST.get('new_password', user.password))
-#             user.save()
-#             update_session_auth_hash(request, form.user)
-#             # user = authenticate(username=user.email, password=user.password)
-#             # login(request, user)
-#             messages.success(request, "Password changed successfully.")
-#             return redirect("vendor:vendor_dashboard")
-#         else:
-#             return render(request,'vendor/change_password.html',{"forms":form})
-#     else:
-#         return render(request,'vendor/change_password.html',{"forms":form})
-
 
 class ChangePassword(View):
 	"""docstring for ChangePassword"""
@@ -315,6 +286,7 @@ class AddProduct(View):
 	def get(self,request):
 		return render(request, 'vendor/add-new-product.html')
 	def post(self,request):
+		print("POST--------",request.POST)
 		image_Array = []
 		params = request.POST
 		files = request.FILES
@@ -322,6 +294,7 @@ class AddProduct(View):
 		if 'product_id' in params:
 			product = ProductsManagement.objects.get(id=request.POST['product_id'])
 			form = NewProductAddForm(params or None,instance=product)
+			image_Array = product.image
 		else:
 			form = NewProductAddForm(params or None ,files or None)
 		if form.is_valid():
@@ -337,18 +310,19 @@ class AddProduct(View):
 				product.save()
 			if request.POST.get('total_color',None):
 				totalColor = int(request.POST.get('total_color',None))
-				responseTotalColors = int(request.POST.get('response_total_color',0))
-				if totalColor != responseTotalColors:
-					while totalColor >= 1:
-						if "product-colors-{}-color".format(totalColor) in params:
-							for x in range(1, len(request.FILES)):
-								if 'product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x) in request.FILES:
-									color = ProductColor.objects.create(color=params['product-colors-{}-color'.format(totalColor)],product = product)
-									img = request.FILES.get('product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x))
-									if img:
-										uploaedimg = upload(img)
-										ProductImage.objects.create(product_images=uploaedimg['url'],product_color=color)
-						totalColor = totalColor-1
+				while totalColor >= 1:
+					if "product-colors-{}-color".format(totalColor) in params:
+						for x in range(1, len(request.FILES)):
+							print("fdfdsfdsfdsfdsfdsfsfsd")
+							if 'product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x) in request.FILES:
+								color = ProductColor.objects.get_or_create(color=params['product-colors-{}-color'.format(totalColor)],product=product)
+								print("Color",color)
+								img = request.FILES.get('product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x))
+								print(img)
+								if img:
+									uploaedimg = upload(img)
+									ProductImage.objects.get_or_create(product_images=uploaedimg['url'],product_color=color[0])
+					totalColor = totalColor-1
 			messages.success(request, 'Product added successfully')
 			return redirect("Vendor:product-list", 1)
 		else:
@@ -362,13 +336,24 @@ class AddProduct(View):
 					image_Array.append("data:%sbase64,%s" % (mime, str(encoded,'utf-8')))
 			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
 
+
+class UpdateProduct(View):
+	"""docstring for UpdateProduct"""
+	def get(self,request,slug=None):
+		user = request.user
+		try:
+			product = ProductsManagement.objects.get(vendor=user,slug=slug)
+			return render(request, 'vendor/update-product.html',{'edit_form':product})
+		except Exception as e:
+			print("Exception--------",e)
+			messages.error(request, "Product may not exists or wrong url typed !")
+			return redirect("Vendor:vendor-dashboard")
+
 class ProductList(View):
 	"""docstring for ProductList"""
 	def get(self,request,active=None):
 		user  = request.user
 		product = ProductsManagement.objects.filter(vendor=user,is_active=active).exclude(expiry_date__lt=datetime.now()).order_by('category','subs_category')
-		for p in product:
-			print("---------------------",p.category," ",p.subs_category)
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
@@ -385,8 +370,6 @@ class ExpiredProductList(View):
 	def get(self,request):
 		user  = request.user
 		product = ProductsManagement.objects.filter(Q(expiry_date__lt=datetime.now())| Q(expiry_date__isnull=True),vendor=user).order_by('category','subs_category')
-		for p in product:
-			print("---------------------",p.category," ",p.subs_category)
 		paginator = Paginator(product, 100)
 		page = request.GET.get('page')
 		try:
@@ -460,16 +443,7 @@ class DhlPage(View):
 		return render(request, 'vendor/dhl_credential.html')
 
 
-# def uploaded_products(request):
-#     try:
-#         user = request.user
-#         # print("userrrrrrrrrr",user)
-#         previous_products = Products_Management.objects.filter(vendor=user, expire_products=0)
-#         return render(request, 'vendor/uploaded_products.html',{"previous_products":previous_products})
-#     except Exception as e:
-#         print(e,)
-#         return redirect('Peru:home')
-	
+
 class UploadedProducts(View):
 	"""docstring for UploadedProducts"""
 	def get(self,request):
@@ -477,97 +451,6 @@ class UploadedProducts(View):
 		previous_products = Products_Management.objects.filter(vendor=user, expire_products=0)
 		return render(request,'vendor/uploaded_products.html',{"previous_products":previous_products})
 
-
-
-# @login_required(login_url="vendor:bevendor")
-# def selling_chart(request, query):
-#     vendor = request.user
-#     if query =='day':
-#         # print("-------------query------",query)
-#         total_customer = MyUser.objects.filter(is_customer=True, is_active=True, created_at__day=datetime.today().day).count()
-#         order_data     = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__day=datetime.today().day).order_by('-created_at')
-#         total_sell     = order_data.aggregate(Sum('product__selling_price'))['product__selling_price__sum']
-#         total_sell     = total_sell if total_sell else  0.0
-#         total_order    = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__day=datetime.today().day).count()
-#         total_product  = Products_Management.objects.filter(vendor=vendor)
-#         order_hash = []
-#         record_chart_array = [['Year', 'Sales', 'Expenses', 'Profit']]
-#         for product in total_product:
-#             if product.order.exists():
-#                 order_item_list = product.order.filter(created_at__day=datetime.today().day)
-#                 for order in order_item_list:
-#                     if not any( orderl.get('id') == order.product.id for orderl in order_hash):
-#                         sales = order_item_list.filter(product_id=order.product.id).aggregate(Sum('price'))['price__sum']
-#                         total_original_price = order_item_list.filter(product_id=order.product.id).count() * order.product.price
-#                         total_expenses_price = order_item_list.filter(product_id=order.product.id).count() * order.product.selling_price
-#                         order_hash.append({"id":order.product.id,"title":order.product.title, "sales":sales,"profit":order.price-total_original_price,"expenses":order.price-total_expenses_price})
-#                     else:
-#                         pass
-#         if order_hash:
-#             for record in order_hash:
-#                 record_chart_array.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
-#         else:
-#             for product1 in total_product:
-#                 record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
-#         # print(record_chart_array)
-#         return render(request,'vendor/partial-dashboard.html' ,{"sell_hash":record_chart_array ,"ajax":"Day", "total_customer":total_customer,"total_sell":total_sell, "total_order":total_order})
-#     if query=='month':
-#         total_customer = MyUser.objects.filter(is_customer=True, is_active=True, created_at__month=datetime.today().month).count()
-#         order_data     = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__month=datetime.today().month).order_by('-created_at')
-#         total_sell     = order_data.aggregate(Sum('product__selling_price'))['product__selling_price__sum']
-#         total_sell     = total_sell if total_sell else  0.0
-#         total_order    = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__month=datetime.today().month).count()
-#         total_product  = Products_Management.objects.filter(vendor=vendor)
-#         order_hash = []
-#         record_chart_array = [['Year', 'Sales', 'Expenses', 'Profit']]
-#         for product in total_product:
-#             if product.order.exists():
-#                 order_item_list = product.order.filter(created_at__month=datetime.today().month)
-#                 for order in order_item_list:
-#                     if not any( orderl.get('id') == order.product.id for orderl in order_hash):
-#                         sales = order_item_list.filter(product_id=order.product.id).aggregate(Sum('price'))['price__sum']
-#                         total_original_price = order_item_list.filter(product_id=order.product.id).count() * order.product.price
-#                         total_expenses_price = order_item_list.filter(product_id=order.product.id).count() * order.product.selling_price
-#                         order_hash.append({"id":order.product.id,"title":order.product.title, "sales":sales,"profit":order.price-total_original_price,"expenses":order.price-total_expenses_price})
-#                     else:
-#                         pass
-#         if order_hash:
-#             for record in order_hash:
-#                 record_chart_array.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
-#         else:
-#             for product1 in total_product:
-#                 record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
-#         return render(request,'vendor/partial-dashboard.html' ,{"notification_unread_count":unread_count(request.user),"sell_hash": record_chart_array,"ajax":'Month',"total_customer":total_customer,"total_sell":total_sell, "total_order":total_order})
-#     if query=='year':
-#         total_customer = MyUser.objects.filter(is_customer=True, is_active=True, created_at__year=datetime.today().year).count()
-#         order_data     = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__year=datetime.today().year).order_by('-created_at')
-#         total_sell     = order_data.aggregate(Sum('product__selling_price'))['product__selling_price__sum']
-#         total_sell     = total_sell if total_sell else  0.0
-#         total_order    = CustomerOrder_items.objects.filter(product__vendor=request.user, created_at__year=datetime.today().year).count()
-#         total_product  = Products_Management.objects.filter(vendor=vendor)
-#         order_hash = []
-#         record_chart_array = [['Year', 'Sales', 'Expenses', 'Profit']]
-#         for product in total_product:
-#             if product.order.exists():
-#                 order_item_list = product.order.filter(created_at__year=datetime.today().year)
-#                 for order in order_item_list:
-#                     if not any( orderl.get('id') == order.product.id for orderl in order_hash):
-#                         sales = order_item_list.filter(product_id=order.product.id).aggregate(Sum('price'))['price__sum']
-#                         total_original_price = order_item_list.filter(product_id=order.product.id).count() * order.product.price
-#                         total_expenses_price = order_item_list.filter(product_id=order.product.id).count() * order.product.selling_price
-#                         order_hash.append({"id":order.product.id,"title":order.product.title, "sales":sales,"profit":order.price-total_original_price,"expenses":order.price-total_expenses_price})
-#                     else:
-#                         pass
-#         if order_hash:
-#             for record in order_hash:
-#                 record_chart_array.append([str(record['title']),record['sales'],record['expenses'],record['profit']])
-#         else:
-#             for product1 in total_product:
-#                 record_chart_array.append([str(product1.title), 0.0,0.0,0.0])
-#         return render(request,'vendor/partial-dashboard.html' ,{"notification_unread_count":unread_count(request.user),"sell_hash": record_chart_array,"ajax":'Year' ,"total_customer":total_customer,"total_sell":total_sell, "total_order":total_order})
-#     else:
-#         messages.info(request, "Entered query may be wrong !")
-#         return redirect('vendor:vendor_dashboard')
 
 	
 class SellingChart(View):
@@ -599,14 +482,6 @@ class DhlCredentials(View):
 	def get(self,request):
 		return render(request, 'vendor/dhl_credential.html')
 	
-# @login_required
-# def sub_category_list(request):
-#     category = request.POST['category_id']
-#     data = Sub_Category.objects.filter(category_id=category)
-#     dictionaries = [ obj.as_dict() for obj in data ]
-#     datas = json.dumps({"data": dictionaries})
-#     # print("----",datas)
-#     return HttpResponse(datas, content_type='application/json')
 
 class SubCategoryList(View):
 	"""docstring for SubCategoryList"""
@@ -619,13 +494,7 @@ class SubCategoryList(View):
 		return HttpResponse(datas, content_type='application/json')
 
 
-# def GetSubCategoryTag(request):
-#     if request.POST.get('subcategory_id', None):
-#         subcategory = request.POST['subcategory_id']
-#         data = Sub_Category.objects.get(id=subcategory)
-#         # dictionaries = [ obj.as_dict() for obj in data ]
-#         datas = json.dumps({"data": data.sub_category_tag})
-#         return HttpResponse(datas, content_type='application/json')
+
 
 class GetSubCategoryTag(View):
 	"""docstring for GetSubCategoryTag"""
@@ -684,36 +553,6 @@ class UpdateProfile(View):
 			messages.error(request, "You are not authorize to access this page.")
 			return redirect("Vendor:bevendor")
 
-
-
-
-# @login_required(login_url='vendor:bevendor')
-# def update_product(request,slug):
-#     vendor = request.user
-#     try:
-#         categories = Category.objects.all()
-#         sub_cate   = Sub_Category.objects.all()
-#         product    = Products_Management.objects.get(vendor=vendor, slug=slug)
-#         total_image = Product_Image.objects.filter(product_colr__product__slug=slug).count()
-#         total_color = product.product_colors.count()
-#         return render(request, 'vendor/update-product.html',{'edit_form':product,"total_image":total_image,"total_color":total_color,"categories":categories,"sub_cate":sub_cate})
-#     except:
-#         messages.error(request, "Product may not exists or wrong url typed !")
-#         return redirect("vendor:vendor_dashboard")
-
-
-class UpdateProduct(View):
-	"""docstring for UpdateProduct"""
-	def get(self,request,slug=None):
-		user = request.user
-		try:
-			product = ProductsManagement.objects.get(vendor=user,slug=slug)
-			return render(request, 'vendor/update-product.html',{'edit_form':product})
-		except Exception as e:
-			print("Exception",e)
-			messages.error(request, "Product may not exists or wrong url typed !")
-			return redirect("Vendor:vendor-dashboard")
-
 @login_required(login_url="vendor:bevendor")
 def order_details(request, order_id):
     user = request.user
@@ -741,19 +580,6 @@ class RemoveNotification(View):
 		notify.is_read= True
 		notify.save()
 		return redirect("Vendor:notifications", 0)
-
-	
-		
-# def delete_colors(request):
-#     try:
-#         p_c = Product_color.objects.get(id=request.POST['id'])
-#         p_c.delete()
-#         datas = json.dumps({"status":200,"message": "Successfully Deleted"})
-#         return HttpResponse(datas, content_type='application/json')
-#     except Exception as e:
-#         print('Error',e)
-#         datas = json.dumps({"status":500,"message": "Not Deleted Successfully"})
-#         return HttpResponse(datas, content_type='application/json')
 			
 class DeleteColors(View):
 	"""docstring for DeleteColors"""
@@ -768,7 +594,6 @@ class DeleteColors(View):
 
 @login_required(login_url="/")
 def view_order(request):
-    # print(request.user.id)
     orders = CustomerOrder_items.objects.filter(order_id__customer=request.user, order_cancel_request=False)
     if orders:
         total_price=[]
@@ -798,42 +623,6 @@ class VendorViewOrder(View):
 	def post(self,request):
 		print("POST")
 		return render(request, 'vendor/view-order.html')		
-
-
-# @login_required(login_url="vendor:bevendor")
-# def invoice_order(request):
-#     user = request.user
-#     if request.user.is_vendor:
-#         if request.method == "POST":
-#             invoice_exist = CustomerOrderInvoice.objects.filter(item_order_id__id=request.POST['order_id'])
-#             if not invoice_exist.exists():
-#                 order_id = request.POST['order_id']
-#                 order_data = CustomerOrder_items.objects.get(id=order_id)
-#                 invoice = CustomerOrderInvoice(item_order_id=order_data)
-#                 invoice.shippment_date = datetime.strptime(request.POST['shippment_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
-#                 invoice.pickup_date = datetime.strptime(request.POST['pickup_date'],'%m/%d/%Y').strftime('%Y-%m-%d')
-#                 invoice.ready_by_time = request.POST['ready_by_time']
-#                 invoice.close_time = request.POST['close_time']
-#                 invoice.shipping_charge = order_data.price*18/100
-#                 invoice.billing_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
-#                 invoice.shipping_info = shipping_address = order_data.order_id.customer.shiping_address.filter(user=user).last()
-#                 invoice.payment_method = order_data.order_id.order_payment_type
-#                 invoice.save()
-#                 vendor_dhl = request.user
-#                 # print(invoice.id)
-#                 order_details = invoice_data(invoice.id, order_id, request)
-#                 dhl_service(order_details, vendor_dhl, invoice)
-#                 ##  Create order_details Hash
-#                 messages.info(request, "Invoice # {1} for order # {0} has generated.".format(order_data.order_id.order_number, invoice.invoice_number))
-#                 return render(request, "vendor/order-invoice.html",order_details)
-#             else:
-#                 messages.info(request, "Invoice for the same order already exits.")
-#                 return redirect("vendor:order_details",request.POST['order_id'] )
-#         else:
-#             return redirect('vendor:vendor_dashboard')
-#     else:
-#         messages.error(request, "You are not authorize to access this page.")
-#         return redirect('vendor:bevendor')
 
 class InvoiceOrder(View):
 	"""docstring for InvoiceOrder"""
@@ -875,5 +664,14 @@ class InvoiceOrder(View):
 			return redirect('Juntos:home')
 
 
-										
+class DeleteProductImage(View):
+	"""docstring for DeleteProductImage"""
+	def post(self,request):
+		params = request.POST
+		print(params)
+		product = ProductsManagement.objects.get(id=params['product'])
+		product.image.remove(params['img'])
+		product.save()
+		return JsonResponse({"status":200,"image":product.image})
+																		
 																																														
