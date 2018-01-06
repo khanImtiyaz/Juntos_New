@@ -1159,7 +1159,7 @@ body{
   font-size: 18px;
 }
 
-.Description {padding: 7px 20px;height: 50px;overflow: hidden;}
+.Description {padding: 7px 20px;height: 50px;overflow: hidden;text-align: center;}
 .pos-rel{position: relative;}
 .new-prod{background-color: #775e02;font-style: italic;padding: 0px 30px;position: absolute;right: 0;top: 0;}
 .new-prod a{color: #fff;}
