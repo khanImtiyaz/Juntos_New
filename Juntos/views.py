@@ -28,7 +28,6 @@ from .forms import *
 from .decorator import *
 from .paypal import *
 from Static_Model.models import *
-from .dhlprocess import *
 
 # Create your views here.
 
