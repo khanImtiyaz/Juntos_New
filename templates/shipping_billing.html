@@ -303,16 +303,24 @@
                      <div class="col-sm-4" style="padding:12px 0px !important">
                         <div class="form-check">
                            <label class="form-check-label">
-                           <input type="radio" class="form-check-input" name="mode_of_transport" value="GPS" id='gps_radio'>
-                           GPS transporte
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="GPS" id='gps_radio' checked="checked">
+                           GPS Transporte
                            {% if s_form.errors.mode_of_transport %}
                            <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
                            </label>
                         </div>
                         <div class="form-check">
                            <label class="form-check-label">
-                           <input type="radio" class="form-check-input" name="mode_of_transport" value="DHL" id='DHL_radio' checked="checked">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="DHL" id='DHL_radio'>
                            DHL
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="FedEx" id='FedEx_radio'>
+                           FedEx
                            {% if s_form.errors.mode_of_transport %}
                            <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
                            </label>

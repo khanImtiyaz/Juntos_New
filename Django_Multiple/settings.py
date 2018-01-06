@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'Log',
     'nested_admin',
     'nested_inline',
+    'python_dhl'
 ]
 
 MIDDLEWARE_CLASSES = [

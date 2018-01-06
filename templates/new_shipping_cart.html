@@ -99,10 +99,13 @@
                                  Tax: <span>{{tax.tax}}%</span>
                               </div>
                               {% if address %}
-                              {% ifequal address.mode_of_transport "DHL" %}
-                              {% else %}
+                              {% ifequal address.mode_of_transport "GPS" %}
                               <div class="text-right">
                                  Shipping Charge: <span>$5</span>
+                              </div>
+                              {% else %}
+                              <div class="text-right">
+                                 Shipping Charge: <span><small>(depends on Vendor)</small></span>
                               </div>
                               {% endifequal %}
                               {% endif %}
@@ -146,15 +149,12 @@
                   {% if address %}
                   <div id="demo" class="collapse" style="text-align: center">
                      <div class="form-group">
-                        {% ifequal address.mode_of_transport "DHL" %}
-                        <input type="text" class="form-control" placeholder="Enter PIN/ZIP Code" pattern="[0-9]{6}" maxlength=6"">
+                        {% ifequal address.mode_of_transport "GPS" %}
+                          <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected GPS Transport as mode of Shipping,therefore shipping charge is $5.</div>
                         {% else %}
-                        <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected GPS Transport as mode of Shipping,therefore shipping charge is $5.</div>
+                        <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected {{address.mode_of_transport}} as mode of Shipping,therefore shipping charge is depend on Vendor</div>
                         {% endifequal %}
                      </div>
-                     {% ifequal address.mode_of_transport "DHL" %}
-                     <button type="submit" class="btn btn-default" style="background: #3498DB;color:white">Get Estimate</button>
-                     {% endifequal %}
                   </div>
                   {% else %}
                   <div id="demo" class="collapse" style="text-align: center">
@@ -177,6 +177,7 @@
                </div>
             </div>
          </div>
+         {% if recomended_product %}
          <div class="right-bottom-sec xs-new-lr-15">
             <div class="panel panel-primary">
                <div class="panel-heading" style="background: #3498DB;border-color: #3498DB;text-align: center">Recommended For You</div>
@@ -212,6 +213,7 @@
                </div>
             </div>
          </div>
+         {% endif %}
       </div>
    </div>
    </div>

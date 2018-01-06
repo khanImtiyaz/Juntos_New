@@ -162,7 +162,7 @@ def dhl_service_rates(cartItems, to_address):
 		'pieces': quote_pieces,
 		'optional_data': quote_optional_data,
 	}
-	# print(quote_data_to_send)
+	print(quote_data_to_send)
 	# with the prepare data call the function and get the response
 	dict_response = dhl_shipping.quote.get_quote(quote_data_to_send)
 	print("Dict Response",dict_response)

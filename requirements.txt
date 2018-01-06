@@ -1,6 +1,7 @@
 amqp==1.4.9
 anyjson==0.3.3
 asn1crypto==0.22.0
+astroid==1.5.3
 Babel==2.4.0
 billiard==3.3.0.23
 celery==3.1.25
@@ -29,11 +30,15 @@ django-render-block==0.5
 django-social-auth==0.7.28
 django-templated-email==2.2.0
 django-twilio==0.8.0
+fedex==2.4.0
 html5lib==1.0b10
 httplib2==0.10.3
 idna==2.5
+isort==4.2.15
 jet==1.0
 kombu==3.0.37
+lazy-object-proxy==1.3.1
+mccabe==0.6.1
 mock==2.0.0
 ndg-httpsclient==0.4.2
 oauth2==1.9.0.post1
@@ -47,6 +52,7 @@ pusher==1.7.2
 pyasn1==0.3.1
 pycparser==2.18
 PyJWT==1.5.0
+pylint==1.7.4
 pyOpenSSL==17.2.0
 pyotp==2.2.6
 PyPDF2==1.26.0
@@ -71,5 +77,6 @@ Unidecode==0.4.21
 urllib3==1.22
 webencodings==0.5.1
 whitenoise==3.3.0
+wrapt==1.10.11
 xhtml2pdf==0.2b1
 xmltodict==0.11.0
