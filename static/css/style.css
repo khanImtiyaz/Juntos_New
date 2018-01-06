@@ -216,7 +216,7 @@ footer ul li a {font-size:14px; color:#534201;}
 .logo img{margin-top:10px;}
 .pagination-top .pagination{position:relative;}
 /*.pagination-top .pagination::after {background: #5e5e5e none repeat scroll 0 0; content: ""; height: 1px; left: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); width: 82%; z-index: 0; } */
-.pagination-top .pagination li a {border-radius: 50%; color: #c9223e; font-size: 16px; font-weight: 600; height: 46px; line-height: 35px; padding: 0; vertical-align: middle; width: 40px;}
+.pagination-top .pagination li a {border-radius: 50%; color: #c9223e; font-size: 16px; font-weight: 600; height: 46px; line-height: 45px; padding: 0; vertical-align: middle; width: 40px;}
 .pagination-top .pagination li{position:relative; z-index:9;}
 .pagination-top .pagination li a:hover, .pagination-top .pagination li a:focus, .pagination-top .pagination li.active a{background:#c9223e; color:#fff; border:none;}
 .pagination .paginate{background-repeat:no-repeat; background-position:center; background-size:auto;}
