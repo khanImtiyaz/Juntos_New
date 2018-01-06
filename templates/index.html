@@ -124,8 +124,10 @@
             <h2 class="h2">Advertisment Section</h2>
             <div class="row">
                <div class="col-md-12 col-md-offset-3" style="margin-left: 0px;padding:0px 0px;">
+               {% if advertisements.count > 3 %}
                   <div class="carousel slide" id="myCarousel">
                      <div class="carousel-inner">
+               {% endif %}
                         {% for sub in advertisements %}
                         <div class="item {% if forloop.first %}active{% endif %}">
                            <div class="col-sm-4 col-lg-4 pro-main">
@@ -144,10 +146,12 @@
                            </div>
                         </div>
                         {% endfor %}
+               {% if advertisements.count > 3 %}
                      </div>
                      <a class="left carousel-control" href="#myCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
                      <a class="right carousel-control" href="#myCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
                   </div>
+               {% endif %}
                </div>
             </div>
          </div>
@@ -167,20 +171,20 @@
 </section>
 <script type="text/javascript">
    $('#myCarousel').carousel({
-      interval: 5000
+      interval: 10000
    })
    $('#myCarousel .item').each(function(){
-   var next = $(this).next();
-   if (!next.length) {
-      next = $(this).siblings(':first');
-   }
-   next.children(':first-child').clone().appendTo($(this));
-   if (next.next().length>0) {
-      next.next().children(':first-child').clone().appendTo($(this));
-   }
-   else {
-      $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
-   }
+      var next = $(this).next();
+      if (!next.length) {
+         next = $(this).siblings(':first');
+      }
+      next.children(':first-child').clone().appendTo($(this));
+      if (next.next().length>0) {
+         next.next().children(':first-child').clone().appendTo($(this));
+      }
+      else {
+         $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+      }
    });
 </script>
 {% endblock %}
