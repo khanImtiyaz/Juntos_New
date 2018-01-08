@@ -60,7 +60,9 @@
                                <p>Country : {{address.shipping_country}}</p>
                             </div>
                             <div class="col-sm-12 pull-right">
-                               <a href="{% url 'Juntos:add-another-shipping' %}" class="pull-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Change</a>
+                               <a href="{% url 'Juntos:update-shipping' %}" class="pull-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Change</a>
+
+                               <a href="{% url 'Juntos:add-another-shipping' %}" class="pull-right" style="padding-right: 10px"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Add Shipping</a>
                             </div>
                          </div>
                       </div>

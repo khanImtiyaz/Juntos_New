@@ -1,0 +1,386 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load natural_time %}
+{% block content %}
+<section class="cart_section">
+   <div class="container">
+      <div class="heading_top">
+         <h2>Track Details</h2>
+      </div>
+      <div class="next-pre-cart-btn shoping-btn text-right">
+         <a href="{% url 'Juntos:proceed-cart' %}" class="btn btn-lg btn-custom">Return to Shopping Cart</a>
+      </div>
+      <div class="row bs-wizard" style="border-bottom:0;">
+         <div class="col-xs-4 bs-wizard-step complete">
+            <div class="text-center bs-wizard-stepnum">Step 1</div>
+            <div class="progress">
+               <div class="progress-bar"></div>
+            </div>
+            <a href="#" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Shopping Card</div>
+         </div>
+         <div class="col-xs-4 bs-wizard-step active">
+            <div class="text-center bs-wizard-stepnum">Step 2</div>
+            <div class="progress">
+               <div class="progress-bar"></div>
+            </div>
+            <a href="#" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Billing and Shipping</div>
+         </div>
+         <div class="col-xs-4 bs-wizard-step ">
+            <div class="text-center bs-wizard-stepnum">Step 3</div>
+            <div class="progress">
+               <div class="progress-bar"></div>
+            </div>
+            <a href="#" class="bs-wizard-dot"></a>
+            <div class="bs-wizard-info text-center">Payment Method</div>
+         </div>
+         <div class="col-xs-3 bs-wizard-step active">
+         </div>
+      </div>
+   </div>
+</section>
+<section class="info-sec">
+   <form class="form-horizontal" action="{% url 'Juntos:update-shipping' %}" method="POST">
+      {% csrf_token %}
+      <input type="text" class="form-control" name="user" value="{{request.user.id}}" style="display: none">
+      <div class="container">
+         <div class="info-inner-container clearfix">
+            <div class="inner-info">
+               <div class="form-heading ">BILLING INFORMATION</div>
+               <div class="row" style="padding: 0px 15px !important;">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="FIRSTNAME"  class="col-sm-4 control-label padding-top">FIRST NAME<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_first_name" value="{{billing.billing_first_name}}" id="FIRSTNAME" maxlength="25">
+                           {% if b_form.errors.billing_first_name %}
+                           <strong style="color:red">{{ b_form.errors.billing_first_name | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="LASTNAME" class="col-sm-4 control-label  padding-top">LAST NAME<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_last_name" value="{{billing.billing_last_name}}" id="LASTNAME" maxlength="25">
+                           {% if b_form.errors.billing_last_name %}
+                           <strong style="color:red">{{ b_form.errors.billing_last_name | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="Email" class="col-sm-4 control-label padding-top">EMAIL<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input class="form-control" type="email" name="billing_email" value="{{billing.billing_email}}" id="Email" maxlength="80">
+                           {% if b_form.errors.billing_email %}
+                           <strong style="color:red">{{ b_form.errors.billing_email | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="PHONE" class="col-sm-4 control-label  padding-top">PHONE<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="tel" class="form-control" name="billing_phone" value="{{billing.billing_phone}}" id="PHONE" maxlength="15">
+                           {% if b_form.errors.billing_phone %}
+                           <strong style="color:red">{{ b_form.errors.billing_phone | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="ADDRESS" class="col-sm-4 control-label  padding-top">ADDRESS<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <textarea type="text" class="form-control shipping-textarea" name="billing_address" id="ADDRESS" maxlength="80">{{billing.billing_address}}</textarea>
+                           {% if b_form.errors.billing_address %}
+                           <strong style="color:red">{{ b_form.errors.billing_address | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="STATE" class="col-sm-4 control-label  padding-top">STATE<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <select class="form-control" name="billing_state" id="BILL-STATE">
+                              <option value="{{billing.billing_state}}"></option>
+                           </select>
+                           {% if b_form.errors.billing_state %}
+                           <strong style="color:red">{{ b_form.errors.billing_state | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="CITY" class="col-sm-4 control-label  padding-top">CITY<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_city" value="{{billing.billing_city}}" id="CITY" maxlength="50">
+                           {% if b_form.errors.billing_city %}
+                           <strong style="color:red">{{ b_form.errors.billing_city | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="ZIP" class="col-sm-4 control-label  padding-top">ZIP<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_zip" value="{{billing.billing_zip}}" id="ZIP" maxlength="20">
+                           {% if b_form.errors.billing_zip %}
+                           <strong style="color:red">{{ b_form.errors.billing_zip | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6" style="display: none">
+                     <div class="form-group">
+                        <label for="COUNTRY" class="col-sm-4 control-label  padding-top">COUNTRY<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_country" value="{{billing.billing_country}}" id="Bill-COUNTRY">
+                           {% if b_form.errors.billing_country %}
+                           <strong style="color:red">{{ b_form.errors.billing_country | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="COMPANY" class="col-sm-4 control-label  padding-top">COMPANY</label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_company" id="COMPANY" maxlength="50" value="{{billing.billing_company}}">
+                           {% if b_form.errors.billing_company %}
+                           <strong style="color:red">{{ b_form.errors.billing_company | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6" style="display: none">
+                     <div class="form-group">
+                        <label for="ADDRESS" class="col-sm-4 control-label  padding-top">Country Abbreviation<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control" name="billing_country_abbreviation" value="{{billing.billing_country_abbreviation}}" id="BILL-country_abbriviation" maxlength="2">
+                           {% if b_form.errors.billing_country_abbreviation %}
+                           <strong style="color:red">{{ b_form.errors.billing_country_abbreviation | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="inner-info">
+               <div class="form-heading ">SHIPPING INFORMATION<small>(If Shipping address is diffrent from Biling address)</small></div>
+               <div class="form-check" style="padding: 0px 15px !important;">
+                  <label class="margin-bottom">
+                  SAME AS BILLLING INFORMATION &nbsp; &nbsp;
+                  <input type="radio" name='radio' id="billing_checkbox_id" class="form-check-input" /> Yes
+                  <input type="radio" name='radio' id="billing_checkbox_id" class="form-check-input" checked="checked"/> No 
+                  </label>
+               </div>
+               <div class="row" id='Billing'" style="padding: 0px 15px !important;">
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-FIRSTNAME"  class="col-sm-4 control-label padding-top">FIRST NAME<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_first_name" value="{{shipping.shipping_first_name}}" id="SHIP-FIRSTNAME" maxlength="25">
+                           {% if s_form.errors.shipping_first_name%}
+                           <strong style="color:red">{{ s_form.errors.shipping_first_name | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-LASTNAME" class="col-sm-4 control-label  padding-top">LAST NAME<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_last_name" value="{{shipping.shipping_last_name}}" id="SHIP-LASTNAME" maxlength="25">
+                           {% if s_form.errors.shipping_last_name%}
+                           <strong style="color:red">{{ s_form.errors.shipping_last_name | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-ADDRESS" class="col-sm-4 control-label  padding-top">EMAIL<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_email" value="{{shipping.shipping_email}}" id="SHIP-EMAIL" maxlength="80">
+                           {% if s_form.errors.shipping_email %}
+                           <strong style="color:red">{{ s_form.errors.shipping_email | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-PHONE" class="col-sm-4 control-label  padding-top">PHONE<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="tel" class="form-control bgcolor" name="shipping_phone" value="{{shipping.shipping_phone}}" id="SHIP-PHONE" maxlength="15">
+                           {% if s_form.errors.shipping_phone %}
+                           <strong style="color:red">{{ s_form.errors.shipping_phone | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-ADDRESS" class="col-sm-4 control-label padding-top">ADDRESS<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <textarea type="text" class="form-control bgcolor shipping-textarea" name="shipping_address" id="SHIP-ADDRESS" maxlength="80">{{shipping.shipping_address}}</textarea>
+                           {% if s_form.errors.shipping_address %}
+                           <strong style="color:red">{{ s_form.errors.shipping_address | escape }}
+                           </strong> 
+                           {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-STATE" class="col-sm-4 control-label  padding-top">STATE<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <select class="form-control bgcolor" name="shipping_state" value="{{shipping.shipping_state}}" id="SHIP-STATE">
+                              <option></option>
+                           </select>
+                           {% if s_form.errors.shipping_state %}
+                           <strong style="color:red">{{ s_form.errors.shipping_state | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-CITY" class="col-sm-4 control-label  padding-top">CITY<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_city" value="{{shipping.shipping_city}}" id="SHIP-CITY" maxlength="50">
+                           {% if s_form.errors.shipping_city %}
+                           <strong style="color:red">{{ s_form.errors.shipping_city | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-ZIP" class="col-sm-4 control-label  padding-top">ZIP<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_zip" value="{{shipping.shipping_zip}}" id="SHIP-ZIP" maxlength="15">
+                           {% if s_form.errors.shipping_zip %}
+                           <strong style="color:red">{{ s_form.errors.shipping_zip | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6" style="display: none">
+                     <div class="form-group">
+                        <label for="SHIP-COUNTRY" class="col-sm-4 control-label  padding-top">COUNTRY<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_country" value="{{shipping.shipping_country.value}}" id="country3">
+                           {% if s_form.errors.shipping_country %}
+                           <strong style="color:red">{{ s_form.errors.shipping_country | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6">
+                     <div class="form-group">
+                        <label for="SHIP-COMPANY" class="col-sm-4 control-label  padding-top">COMPANY</label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_company" value="{{shipping.shipping_company}}" id="SHIP-COMPANY" maxlength="50">
+                           {% if s_form.errors.shipping_company %}
+                           <strong style="color:red">{{ s_form.errors.shipping_company | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+                  <div class="col-sm-6" style="display: none">
+                     <div class="form-group">
+                        <label for="SHIP-ADDRESS" class="col-sm-4 control-label  padding-top">Country Abbreviation<span class="required-field">*</span></label>
+                        <div class="col-sm-8">
+                           <input type="text" class="form-control bgcolor" name="shipping_country_abbreviation" value="{{shipping.shipping_country_abbreviation}}" id="SHIP-country_abbriviation" maxlength="2">
+                           {% if s_form.errors.shipping_country_abbreviation %}
+                           <strong style="color:red">{{ s_form.errors.shipping_country_abbreviation | escape }}</strong> {% endif %}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+
+               <div class="col-sm-12">
+                  <div class="inner-info">
+                     <div class="form-heading ">SHIPPING & HANDLING </div>
+                     <div class="col-sm-6">As Previously <strong>{{shipping.mode_of_transport}}</strong> is selected as mode of transport by you.But if you want to change you can Change at the time of <span style="color: red"><strong>Proceed to Checkout</strong></span></div>
+                     <div class="form-check disabled col-sm-8">
+                        <div class="text-left" id="amount">
+                            <div id="price"> Subtotal: <span style="color:red">${{sub_total|floatformat:2}}</span></div>
+                            <div id="shipping">Tax:<span style="color:red">{{tax.tax}}%</span></div>
+                            {% ifequal shipping.mode_of_transport "GPS" %}
+                            <div id="shipping">GPS Shipping Charge:<span style="color:red">$5</span></div>
+                            {% endifequal %}
+                            <div id="price"> Total Amount<small>({{total_message}}):</small><span style="color:red">${{shipping_amount|floatformat:2}}</span></div>
+                        </div>
+                     </div>
+                     <div class="col-sm-4" style="padding:12px 0px !important;visibility: hidden;" >
+                        <div class="form-check">
+                           <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="GPS" id='gps_radio' checked="checked">
+                           GPS Transporte
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="DHL" id='DHL_radio'>
+                           DHL
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </label>
+                        </div>
+                        <div class="form-check">
+                           <label class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="FedEx" id='FedEx_radio'>
+                           FedEx
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </label>
+                        </div>
+                     </div>
+                     <button type="submit" class="btn btn-success btn-continue">CONTINUE</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </form>
+</section>
+{% if billing.billing_state.value %}
+   <script type="text/javascript">
+      bill_state_selected = "{{billing.billing_state.value}}"
+   </script>
+{% endif %}
+{% if shipping.shipping_state.value %}
+   <script type="text/javascript">
+      ship_state_selected = "{{shipping.shipping_state.value}}"
+   </script>
+{% endif %}
+<script type="text/javascript">
+   allStates("BILL-STATE")
+   allStates("SHIP-STATE")
+   $("#SHIP-STATE").on('change',function(){
+      SelectedStateCountry("country3", "SHIP-country_abbriviation", $(this).val())
+   })
+   $("#BILL-STATE").on('change',function(){
+      SelectedStateCountry("Bill-COUNTRY", "BILL-country_abbriviation", $(this).val())
+   })
+   var same_as_billing = function(val){
+      $('#SHIP-FIRSTNAME').val($('#FIRSTNAME').val())
+      $('#SHIP-LASTNAME').val($('#LASTNAME').val())
+      $('#SHIP-COMPANY').val($('#COMPANY').val())
+      $('#country3').val($('#Bill-COUNTRY').val())
+      $('#SHIP-STATE').val($('#BILL-STATE').val())
+      $('#SHIP-CITY').val($('#CITY').val())
+      $('#SHIP-ZIP').val($('#ZIP').val())
+      $('#SHIP-ADDRESS').val($('#ADDRESS').val())
+      $('#SHIP-PHONE').val($('#PHONE').val())
+      $('#SHIP-EMAIL').val($('#Email').val())
+      $('#SHIP-country_abbriviation').val($('#BILL-country_abbriviation').val())
+    }
+
+   $("#billing_checkbox_id").on('change',function(){
+      same_as_billing($(this).val())
+   })
+   if(bill_state_selected){
+      $("#BILL-STATE").val(bill_state_selected)
+   }
+   if(ship_state_selected){
+      $("#SHIP-STATE").val(ship_state_selected)
+   }
+   
+</script>
+{% endblock %}

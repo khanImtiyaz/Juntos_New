@@ -976,7 +976,7 @@ class ContactUsEmail(View):
 		return JsonResponse({"status":400,"message":"Something went wrong."})
 
 class ChangeModeofTransport(View):
-	"""docstring for ContactUsEmail"""
+	"""docstring for ChangeModeofTransport"""
 	def post(self,request):
 		params = request.POST
 		shippingAdress = request.user.shiping_address.latest('created_at')
@@ -986,6 +986,29 @@ class ChangeModeofTransport(View):
 		shippingAdress.save()
 		billingAddress.save()
 		return JsonResponse({"status":200})
+
+class UpdateShipping(View):
+	"""docstring for UpdateShipping"""
+	def get(self,request):
+		shipping = request.user.shiping_address.latest('created_at')
+		billing = request.user.billing_address.latest('created_at')
+		return render(request, 'update-shipping-address.html',{"shipping":shipping,"billing":billing})		
+	def post(self,request):
+		if request.user.is_authenticated() and request.user.is_customer:
+			shipping = request.user.shiping_address.latest('created_at')
+			billing = request.user.billing_address.latest('created_at')
+			s_form = ShippingForm(request.POST or None, instance=shipping)
+			b_form = BillingForm(request.POST or None, instance=billing)
+			if b_form.is_valid() and s_form.is_valid():
+				b_form.save()
+				s_form.save()
+				messages.success(request, "Shipping address update successfully")
+				return redirect('Juntos:customer-order-summary')
+			else:
+				return render(request, 'update-shipping-address.html',{"shipping":shipping,"billing":billing,"b_form":b_form,"s_form":s_form})
+		else:
+			messages.info(request, "Before you place your order! Please Sign In First.")
+			return render(request, 'new_shipping_cart.html')
 
 
 														

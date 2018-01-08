@@ -60,7 +60,6 @@ urlpatterns = [
 	url(r'^order-cancel/$', views.OrderCancel.as_view(), name='order-cancel'),
 	url(r'^contact-us-email/$', views.ContactUsEmail.as_view(), name='contact-us-email'),
 	url(r'^change-mode-of-transport/$', views.ChangeModeofTransport.as_view(), name='change-mode-of-transport'),
-
-
+	url(r'^update-shipping/$', views.UpdateShipping.as_view(), name='update-shipping')
 ]
 
