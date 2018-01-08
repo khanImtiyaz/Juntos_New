@@ -18,6 +18,7 @@ from django.conf import settings
 from django.contrib.auth import (REDIRECT_FIELD_NAME, get_user_model, login as auth_login, logout as auth_logout, update_session_auth_hash, )
 from django.contrib.auth.decorators import login_required
 from django.views import View
+from django.http import JsonResponse
 from random import randint
 from datetime import datetime, timedelta
 import ast
@@ -122,12 +123,12 @@ class ProceedCart(View):
 				grand_total = total_price + (total_price * int(taxvalue.tax))/100
 				if address:
 					address = address.latest('created_at')
-					if address.mode_of_transport=="DHL":
-						total_message = "exclusive shipping charge"
-						pass
-					else:
+					if address.mode_of_transport=="GPS":
 						grand_total = grand_total + int(5)
 						total_message = "inclusive all"
+						
+					else:
+						total_message = "exclusive shipping charge"
 				else:
 					total_message = "exclusive shipping charge"
 			else:
@@ -974,5 +975,17 @@ class ContactUsEmail(View):
 			return JsonResponse({"status":200,"message":"Your request save will contact you soon."})
 		return JsonResponse({"status":400,"message":"Something went wrong."})
 
-																				
+class ChangeModeofTransport(View):
+	"""docstring for ContactUsEmail"""
+	def post(self,request):
+		params = request.POST
+		shippingAdress = request.user.shiping_address.latest('created_at')
+		billingAddress = request.user.billing_address.latest('created_at')
+		shippingAdress.mode_of_transport = params['value']
+		billingAddress.mode_of_transport = params['value']
+		shippingAdress.save()
+		billingAddress.save()
+		return JsonResponse({"status":200})
+
+
 														

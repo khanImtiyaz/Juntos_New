@@ -103,10 +103,6 @@
                               <div class="text-right">
                                  Shipping Charge: <span>$5</span>
                               </div>
-                              {% else %}
-                              <div class="text-right">
-                                 Shipping Charge: <span><small>(depends on Vendor)</small></span>
-                              </div>
                               {% endifequal %}
                               {% endif %}
                               <div class="text-right">
@@ -147,15 +143,43 @@
                   </div>
                   {% if user.id %}
                   {% if address %}
-                  <div id="demo" class="collapse" style="text-align: center">
-                     <div class="form-group">
-                        {% ifequal address.mode_of_transport "GPS" %}
-                          <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected GPS Transport as mode of Shipping,therefore shipping charge is $5.</div>
-                        {% else %}
-                        <div style="padding:0px 10px;text-align: center;color:#3498DB">You have selected {{address.mode_of_transport}} as mode of Shipping,therefore shipping charge is depend on Vendor</div>
-                        {% endifequal %}
+                  <div id="demo" class="collapse col-sm-12" style="padding:12px 0px !important">
+                        <div class="form-check">
+                           <div class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="GPS" id='GPS_radio'>
+                           GPS Transporte
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-check">
+                           <div class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="pickup" id='pickup_radio'>
+                           Pick up at location
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-check">
+                           <div class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="DHL" id='DHL_radio'>
+                           DHL
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </div>
+                        </div>
+                        <div class="form-check">
+                           <div class="form-check-label">
+                           <input type="radio" class="form-check-input" name="mode_of_transport" value="FedEx" id='FedEx_radio'>
+                           FedEx
+                           {% if s_form.errors.mode_of_transport %}
+                           <strong style="color:red">{{ s_form.errors.mode_of_transport | escape }}</strong> {% endif %}
+                           </div>
+                        </div>
+                      <div style="text-align: center">Select and Submit your Mode of Transport</div>
+                     <button type="button" class="btn btn-default" id="submit_mode_of_transport" style="background: #3498DB;color:white;text-align: center">Submit</button>
                      </div>
-                  </div>
+
                   {% else %}
                   <div id="demo" class="collapse" style="text-align: center">
                      <button type="submit" class="btn btn-default" style="background: #3498DB;color:white" onclick="return Proceed(this);">Add Shipping Detail</button>
@@ -219,6 +243,43 @@
    </div>
 </section>
 <script type="text/javascript">
+  window.addEventListener( "pageshow", function ( event ) {
+    var historyTraversal = event.persisted || ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
+    if ( historyTraversal ) {
+      window.location.reload();
+    }
+  });
+  {% if address.mode_of_transport %}
+    document.getElementById("{{address.mode_of_transport}}_radio").checked = true;
+  {% endif %}
+  $("#submit_mode_of_transport").on('click',function(){
+    radioBtnValue = $('input[name=mode_of_transport]:checked').val()
+    $.ajax({
+       type: 'POST',
+       url: "{% url 'Juntos:change-mode-of-transport' %}",
+       dataType: 'json',
+       data: {
+         'value': radioBtnValue,
+         'csrfmiddlewaretoken': '{{ csrf_token }}',
+       },
+       success: function(e) {
+        if(e.status){
+          if(radioBtnValue=="GPS" || radioBtnValue=="pickup"){
+              window.location.assign("{% url 'Juntos:proceed-cart' %}");
+          }else if(radioBtnValue=="DHL"){
+              window.location.assign("https://www.mydhl.dhl.com/mydhl/appmanager/smep/customerDesktop?_nfpb=true&_pageLabel=smep_portal_page_login&utm_source=PE&utm_medium=hp_tc&utm_campaign=login_link");
+          }else if(radioBtnValue=="FedEx"){
+              window.location.assign("https://www.fedex.com/ratefinder/home?cc=pe&language=es");
+          }
+
+        }
+       },
+       error : function(){
+         
+         }
+     });
+  });
+
    $("#grand_total").hide()
    $('#estimateTax').on('click',function(){
        $("#grand_total").show()

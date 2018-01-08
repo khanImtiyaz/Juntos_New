@@ -290,17 +290,20 @@
                </div>
             </div>
             <div class="row">
-               <div class="col-sm-6">
+
+               <div class="col-sm-12">
                   <div class="inner-info">
                      <div class="form-heading ">SHIPPING & HANDLING </div>
+                     <div class="col-sm-6">Default <strong>GPS Transporte</strong> is selected as mode of transport for you.But if you want to change you can Change at the time of <span style="color: red"><strong>Proceed to Checkout</strong></span></div>
                      <div class="form-check disabled col-sm-8">
                         <div class="text-left" id="amount">
                             <div id="price"> Subtotal: <span style="color:red">${{sub_total|floatformat:2}}</span></div>
                             <div id="shipping">Tax:<span style="color:red">{{tax.tax}}%</span></div>
-                            <div id="price"> Total Amount<small>(inclusive tax):</small><span style="color:red">${{shipping_amount|floatformat:2}}</span></div>
+                            <div id="shipping">GPS Shipping Charge:<span style="color:red">$5</span></div>
+                            <div id="price"> Total Amount<small>({{total_message}}):</small><span style="color:red">${{shipping_amount|floatformat:2}}</span></div>
                         </div>
                      </div>
-                     <div class="col-sm-4" style="padding:12px 0px !important">
+                     <div class="col-sm-4" style="padding:12px 0px !important;visibility: hidden;" >
                         <div class="form-check">
                            <label class="form-check-label">
                            <input type="radio" class="form-check-input" name="mode_of_transport" value="GPS" id='gps_radio' checked="checked">

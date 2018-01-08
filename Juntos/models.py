@@ -289,7 +289,7 @@ class BillingAddress(models.Model):
   billing_zip = models.CharField(('Billing Zip'),max_length=50,blank=False)
   billing_address = models.CharField(('Billing Address'),max_length=500,blank=False)
   billing_email = models.CharField(('Billing Email'),max_length=50,blank=False)
-  mode_of_transport = models.CharField(('Mode of Transport'),max_length=50,blank=False)
+  mode_of_transport = models.CharField(('Mode of Transport'),max_length=50,blank=False,default="GPS")
   created_at = models.DateTimeField(('created_at'), auto_now = True)
   updated_at = models.DateTimeField(('updated_at'), auto_now = True)
 
@@ -306,7 +306,7 @@ class ShippingAddress(models.Model):
   shipping_zip = models.CharField(('Shipping Zip'),max_length=50,blank=False)
   shipping_address = models.CharField(('Shipping Address'),max_length=500,blank=False)
   shipping_email = models.CharField(('Shipping Email'),max_length=50,blank=False)
-  mode_of_transport = models.CharField(('Mode of Transport'),max_length=50,blank=False)
+  mode_of_transport = models.CharField(('Mode of Transport'),max_length=50,blank=False,default="GPS")
   created_at = models.DateTimeField(('created_at'), auto_now = True)
   updated_at = models.DateTimeField(('updated_at'), auto_now = True)
 

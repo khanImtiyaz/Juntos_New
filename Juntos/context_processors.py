@@ -35,16 +35,15 @@ def cart(request):
 			address = ShippingAddress.objects.filter(user=request.user)
 			if address:
 				address = address.latest('created_at')
-				if address.mode_of_transport=="DHL":
+				if address.mode_of_transport=="GPS":
+					shipping_amount = total_amount + int(5)
+					total_message = "inclusive all"
+				else:
 					for item in cartObj:
 						# dhl_service_rates(item,address)
 						total_amount = total_amount + 00.00
 					total_message = "exclusive shipping charge"
 					shipping_amount = total_amount
-					pass
-				else:
-					shipping_amount = total_amount + int(5)
-					total_message = "inclusive all"
 			else:
 				shipping_amount = total_amount
 				total_message = "exclusive shipping charge"
