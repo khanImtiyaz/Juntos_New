@@ -338,7 +338,7 @@ i.y-color{color:#daac0a;}
 .hide-bullets {list-style:none;margin-left: -40px;margin-top:20px;}
 .cart{position:relative;}
 .cart-count { background: #ffffff none repeat scroll 0 0; border: 1px solid #775e02; border-radius: 50%; color: #775e02; font-size: 12px; height: 17px; line-height: 15px; position: absolute; right: -7px; text-align: center; top: -5px; width: 17px; }
-.close.close-custom { color: #ff0000; font-size: 30px; opacity: 0.7; position: relative; right: 10px; z-index:99;}
+.close.close-custom { color: #ff0000 !important; font-size: 30px; opacity: 0.7; position: relative; right: 10px; z-index:99;}
 .indicators_thumb{position:relative;}
 #quote-carousel .fa{color:#fff;}
 .post-review-sec{width:100%; padding:20px 0;}

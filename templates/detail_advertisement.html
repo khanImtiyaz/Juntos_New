@@ -27,13 +27,23 @@
                      {% for banner in ads_details.advertisement_images.all %}
                      {% if forloop.counter0 == 0 %}
                      <div class="item active">
-                        <img title="{{id}}" src="{{banner.image.url}}" data-target="#asdfas" data-toggle="modal">
+                        <img title="{{id}}" src="{{banner.image.url}}" data-target="#productImage_{{forloop.counter}}" data-toggle="modal">
                      </div>
                      {% else %}
                      <div class="item">
-                        <img title="{{id}}" src="{{banner.image.url}}" data-target="#sadas" data-toggle="modal">
+                        <img title="{{id}}" src="{{banner.image.url}}" data-target="#productImage_{{forloop.counter}}" data-toggle="modal">
                      </div>
                      {% endif %}
+                     <div id="productImage_{{forloop.counter}}" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                           <div class="modal-content">
+                              <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>
+                              <div class="modal-body" style="padding: 40px">
+                                 <img src="{{banner.image.url}}" style="width:100%;">
+                              </div>
+                           </div>
+                        </div>
+                     </div>
                      {% endfor %}
                   </div>
                   <div class="indicators_thumb">
