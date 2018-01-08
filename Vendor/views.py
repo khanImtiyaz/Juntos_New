@@ -292,11 +292,13 @@ class AddProduct(View):
 		files = request.FILES
 		params['vendor'] = request.user.id
 		if 'product_id' in params:
+			print("Inside Product ID")
 			product = ProductsManagement.objects.get(id=request.POST['product_id'])
 			form = NewProductAddForm(params or None,instance=product)
-			image_Array = product.image
+			image_Array = product.image if product.image else []
 		else:
 			form = NewProductAddForm(params or None ,files or None)
+		print("image_Array-------",image_Array)
 		if form.is_valid():
 			product = form.save()
 			product.expiryDate()
