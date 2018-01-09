@@ -245,12 +245,21 @@
 <div id="pickupModal" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
        <div class="modal-content">
-          <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>
+          <!-- <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button> -->
           <div class="modal-body" style="padding: 40px">
           <div style="text-align: center;"><strong>Delivery/Pick up Locations</strong></div>
-          <div style="text-align: center;">{{address.shipping_address}}</div>
-
+          <!-- <div style="text-align: center;">{{address.shipping_address}}</div> -->
+          {% for adrs in address_radio %}
+          <div class="form-check">
+             <div class="form-check-label">
+             <input type="radio" class="form-check-input" name="address_radio" value="{{adrs}}" id='{{adrs}}'>
+             {{adrs}}
+             </div>
           </div>
+          {% endfor %}
+          <button type="button" class="btn btn-default col-sm-8" id="submit_address_radio" style="background: #3498DB;color:white;text-align: center;margin:0px 85px">Submit</button>
+          </div>
+
        </div>
     </div>
  </div>
@@ -295,7 +304,23 @@
          }
      });
   });
-
+  $("#submit_address_radio").on('click',function(){
+      addressradioBtnValue = $('input[name=address_radio]:checked').val();
+      $.ajax({
+       type: 'POST',
+       url: "{% url 'Juntos:change-address-field' %}",
+       dataType: 'json',
+       data: {
+         'value': addressradioBtnValue,
+         'csrfmiddlewaretoken': '{{ csrf_token }}',
+       },
+       success: function(e) {
+        if(e.status){
+             $("#pickupModal").modal('hide');
+        }
+       }
+     });
+  })
    $("#grand_total").hide()
    $('#estimateTax').on('click',function(){
        $("#grand_total").show()

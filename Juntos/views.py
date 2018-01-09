@@ -1010,5 +1010,16 @@ class UpdateShipping(View):
 			messages.info(request, "Before you place your order! Please Sign In First.")
 			return render(request, 'new_shipping_cart.html')
 
-
+class ChangeAddressField(View):
+	"""docstring for ChangeAddressField"""
+	def post(self,request):
+		params = request.POST
+		shippingAdress = request.user.shiping_address.latest('created_at')
+		billingAddress = request.user.billing_address.latest('created_at')
+		shippingAdress.shipping_address = params['value']
+		billingAddress.billing_address = params['value']
+		shippingAdress.save()
+		billingAddress.save()
+		return JsonResponse({"status":200})
+		
 														

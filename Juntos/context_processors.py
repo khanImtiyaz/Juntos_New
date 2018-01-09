@@ -20,7 +20,7 @@ def about(request):
     return {"abouts":content}
     
 def starRating(request):
-    return {"star_rating":[1,2,3,4,5]}
+    return {"star_rating":[1,2,3,4,5],"address_radio":["Lima(cercado)","Lince","Magdalena"]}
 
 def cart(request):
 	if request.user.is_authenticated() and request.user.is_customer:
