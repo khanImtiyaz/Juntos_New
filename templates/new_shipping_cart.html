@@ -177,7 +177,7 @@
                            </div>
                         </div>
                       <div style="text-align: center">Select and Submit your Mode of Transport</div>
-                     <button type="button" class="btn btn-default" id="submit_mode_of_transport" style="background: #3498DB;color:white;text-align: center">Submit</button>
+                     <button type="button" class="btn btn-default col-sm-8" id="submit_mode_of_transport" style="background: #3498DB;color:white;text-align: center;margin:0 35px">Submit</button>
                      </div>
 
                   {% else %}
@@ -242,6 +242,18 @@
    </div>
    </div>
 </section>
+<div id="pickupModal" class="modal fade modal-cstm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+       <div class="modal-content">
+          <button type="button" class="close close-custom" data-dismiss="modal" aria-hidden="true">×</button>
+          <div class="modal-body" style="padding: 40px">
+          <div style="text-align: center;"><strong>Delivery/Pick up Locations</strong></div>
+          <div style="text-align: center;">{{address.shipping_address}}</div>
+
+          </div>
+       </div>
+    </div>
+ </div>
 <script type="text/javascript">
   window.addEventListener( "pageshow", function ( event ) {
     var historyTraversal = event.persisted || ( typeof window.performance != "undefined" && window.performance.navigation.type === 2 );
@@ -264,14 +276,18 @@
        },
        success: function(e) {
         if(e.status){
-          if(radioBtnValue=="GPS" || radioBtnValue=="pickup"){
+          if(radioBtnValue=="GPS"){
               window.location.assign("{% url 'Juntos:proceed-cart' %}");
+          }else if(radioBtnValue=="pickup"){
+             $("#pickupModal").modal('show');
+             $('#pickupModal').bind('hidden.bs.modal', function () {
+                window.location.assign("{% url 'Juntos:proceed-cart' %}");
+             });
           }else if(radioBtnValue=="DHL"){
               window.location.assign("https://www.mydhl.dhl.com/mydhl/appmanager/smep/customerDesktop?_nfpb=true&_pageLabel=smep_portal_page_login&utm_source=PE&utm_medium=hp_tc&utm_campaign=login_link");
           }else if(radioBtnValue=="FedEx"){
               window.location.assign("https://www.fedex.com/ratefinder/home?cc=pe&language=es");
           }
-
         }
        },
        error : function(){
