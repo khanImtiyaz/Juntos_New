@@ -63,6 +63,7 @@
                               {% endif %}
                            </div>
                         </div>
+                        <input type="hidden" name="muti_image_array" id="muti_image_array">
                         <div class="form-group">
                            <label class="control-label col-sm-3">Subir foto☀️</label>
                            <div class="col-sm-9 file-preview-input">
@@ -102,7 +103,7 @@
                               {% endif %}
                               <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
                               <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
-                              <input type="file" name="image" id="image" accept="png/jpg/jpeg" multiple>
+                              <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png">
                               {% if add_form.errors.image %}
                               <strong style="color:red">{{ add_form.errors.image|escape}}</strong>
                               {% endif %}
@@ -323,13 +324,13 @@
 </script>
 {% endif %}
 {% if edit_form.productColor.all %}
-   <script type="text/javascript">
-      colorCount = '{{edit_form.productColor.count}}'
-   </script>
+<script type="text/javascript">
+   colorCount = '{{edit_form.productColor.count}}'
+</script>
 {% else %}
-   <script type="text/javascript">
-      colorCount = 0
-   </script>
+<script type="text/javascript">
+   colorCount = 0
+</script>
 {% endif %}
 <script>
    $(document).ready(function() {
@@ -425,14 +426,12 @@
             all_select();
        })
       all_select();
-       multiple_Image_Array = []
+      multiple_Image_Array = []
        $("#image").on('change', function() {
            var countFiles = $(this)[0].files.length;
            var imgPath = $(this)[0].value;
            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
            var image_holder = $("#image_preview");
-            $('[id^="remove_photo_business_"]').remove()
-            multiple_Image_Array = []
            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                if (typeof(FileReader) != "undefined") {
                    for (var i = 0; i < countFiles; i++) {
@@ -443,7 +442,21 @@
                                "src": e.target.result,
                                "class": "thumb-image"
                            }).appendTo(image_holder);
-                           multiple_Image_Array.push(e.target.result)
+                           $.ajax({
+                              url: "{% url 'Vendor:upload-image'%}",
+                              type: 'POST',
+                              dataType: 'json',
+                              data: {
+                                  "image": e.target.result,
+                                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                              },
+                              success: function(e) {
+                                 if(e.status==200){
+                                    multiple_Image_Array.push(e.image)
+                                    $("#muti_image_array").val(multiple_Image_Array)
+                                 }
+                              }
+                           });
                            $("#product_image").append('<div class="col-sm-2" id="remove_photo_business_'+(--countFiles)+'"><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right;display:none;"></i><img src="'+e.target.result+'"%}" style="width: 100%;padding-top:20px;"></div></div>')
                        }
                        image_holder.show();

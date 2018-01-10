@@ -286,30 +286,28 @@ class AddProduct(View):
 	def get(self,request):
 		return render(request, 'vendor/add-new-product.html')
 	def post(self,request):
-		print("POST--------",request.POST)
-		image_Array = []
+		image_Array = request.POST.get("muti_image_array").split(',') if request.POST.get("muti_image_array").split(',') else []
 		params = request.POST
 		files = request.FILES
 		params['vendor'] = request.user.id
 		if 'product_id' in params:
-			print("Inside Product ID")
 			product = ProductsManagement.objects.get(id=request.POST['product_id'])
 			form = NewProductAddForm(params or None,instance=product)
-			image_Array = product.image if product.image else []
+			image_Array = product.image + image_Array if product.image else [] + image_Array
 		else:
 			form = NewProductAddForm(params or None ,files or None)
-		print("image_Array-------",image_Array)
 		if form.is_valid():
 			product = form.save()
 			product.expiryDate()
 			product.is_active = True
+			product.image = image_Array
 			product.save()
-			if "image" in files:
-				for img in files.getlist('image'):
-					upresult = upload(img)
-					image_Array.append(upresult['url'])
-				product.image = image_Array
-				product.save()
+			# if "image" in files:
+			# 	for img in files.getlist('image'):
+			# 		upresult = upload(img)
+			# 		image_Array.append(upresult['url'])
+			# 	product.image = image_Array
+			# 	product.save()
 			if request.POST.get('total_color',None):
 				totalColor = int(request.POST.get('total_color',None))
 				while totalColor >= 1:
@@ -328,15 +326,15 @@ class AddProduct(View):
 			messages.success(request, 'Product added successfully')
 			return redirect("Vendor:product-list", 1)
 		else:
-			image_Array = []
-			mime = None
-			if "image" in files:
-				for img in files.getlist('image'):
-					data = img.read()
-					encoded = b64encode(data)
-					mime = img.content_type + ";" if img.content_type else ";"
-					image_Array.append("data:%sbase64,%s" % (mime, str(encoded,'utf-8')))
-			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":image_Array})
+			# image_Array = []
+			# mime = None
+			# if "image" in files:
+			# 	for img in files.getlist('image'):
+			# 		data = img.read()
+			# 		encoded = b64encode(data)
+			# 		mime = img.content_type + ";" if img.content_type else ";"
+			# 		image_Array.append("data:%sbase64,%s" % (mime, str(encoded,'utf-8')))
+			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":request.POST.get("muti_image_array").split(',')})
 
 
 class UpdateProduct(View):
@@ -675,5 +673,15 @@ class DeleteProductImage(View):
 		product.image.remove(params['img'])
 		product.save()
 		return JsonResponse({"status":200,"image":product.image})
+
+class UploadImage(View):
+	"""docstring for UploadImage"""
+
+	def post(self,request):
+		params = request.POST
+		upresult = upload(params['image'])
+		return JsonResponse({"status":200,"image":upresult['url']})
+	
+		
 																		
 																																														

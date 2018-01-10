@@ -75,10 +75,13 @@
                               {% for img in image %}
                                  <div class="col-sm-2" id="remove_photo_"{{img.count}}>
                                     <div>
-                                       <i class="fa fa-times" aria-hidden="true" style="color:black;float:right"></i>
                                        <img src="{{img}}" style="width: 100%">
                                     </div>
                                  </div>
+                                 <script type="text/javascript">
+                                    multiple_Image_Array.push({{img}})
+                                    $("#muti_image_array").val(multiple_Image_Array)
+                                 </script>
                               {% endfor %}
                               </div>
                               {% else %}
@@ -86,12 +89,13 @@
                               {% endif %}
                               <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
                               <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
-                              <input type="file" name="image" id="image" accept="png/jpg/jpeg" multiple>
+                              <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png">
                               {% if add_form.errors.image %}
                               <strong style="color:red">{{ add_form.errors.image|escape }}</strong>
                               {% endif %}
                            </div>
                         </div>
+                        <input type="hidden" name="muti_image_array" id="muti_image_array">
                         <div class="form-group">
                            <label class="control-label col-sm-3" >Aseguranza</label>
                            <div class="col-sm-9">
@@ -387,13 +391,13 @@
        removePhoto =function(index){
             alert(index)
         }
+         multiple_Image_Array = []
+         $("#muti_image_array").val(multiple_Image_Array)
        $("#image").on('change', function() {
            var countFiles = $(this)[0].files.length;
            var imgPath = $(this)[0].value;
            var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
            var image_holder = $("#image_preview");
-            $("#product_image").empty()
-            multiple_Image_Array = []
            if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
                if (typeof(FileReader) != "undefined") {
                    for (var i = 0; i < countFiles; i++) {
@@ -404,8 +408,22 @@
                                "src": e.target.result,
                                "class": "thumb-image"
                            }).appendTo(image_holder);
-                           multiple_Image_Array.push(e.target.result)
-                           $("#product_image").append('<div class="col-sm-2" id="remove_photo_business_'+(--countFiles)+'"><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right;display:none;"></i><img src="'+e.target.result+'"%}" style="width: 100%;padding-top:20px;"></div></div>')
+                           $.ajax({
+                              url: "{% url 'Vendor:upload-image'%}",
+                              type: 'POST',
+                              dataType: 'json',
+                              data: {
+                                  "image": e.target.result,
+                                  'csrfmiddlewaretoken': '{{ csrf_token }}',
+                              },
+                              success: function(e) {
+                                 if(e.status==200){
+                                    multiple_Image_Array.push(e.image)
+                                    $("#muti_image_array").val(multiple_Image_Array)
+                                 }
+                              }
+                           });
+                           $("#product_image").append('<div class="col-sm-2" id="remove_photo_business"><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right;display:none;"></i><img src="'+e.target.result+'"%}" style="width: 100%;padding-top:20px;"></div></div>')
                         }
                        image_holder.show();
                        reader.readAsDataURL($(this)[0].files[i]);
@@ -421,6 +439,45 @@
                this.value = "";
            }
        });
+
+
+       // $("#image").on('change', function() {
+       //     var countFiles = $(this)[0].files.length;
+       //     var imgPath = $(this)[0].value;
+       //     var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+       //     var image_holder = $("#image_preview");
+       //      // $("#product_image").empty()
+       //      multiple_Image_Array = []
+       //     if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+       //         if (typeof(FileReader) != "undefined") {
+       //             for (var i = 0; i < countFiles; i++) {
+       //                 var reader = new FileReader();
+       //                 reader.onload = function(e) {
+       //                     image_holder.empty();
+       //                     $("<img />", {
+       //                         "src": e.target.result,
+       //                         "class": "thumb-image"
+       //                     }).appendTo(image_holder);
+       //                     multiple_Image_Array.push(e.target.result)
+       //                     $("#product_image").append('<div class="col-sm-2" id="remove_photo_business_'+(--countFiles)+'"><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right;display:none;"></i><img src="'+e.target.result+'"%}" style="width: 100%;padding-top:20px;"></div></div>')
+       //                  }
+       //                 image_holder.show();
+       //                 reader.readAsDataURL($(this)[0].files[i]);
+       //             }
+       //         } else {
+       //             alert("This browser does not support FileReader.");
+       //         }
+       //     } else {
+       //         Lobibox.alert('error', {
+       //             sound: false,
+       //             msg: 'Favor de subir imagen válida.'
+       //         });
+       //         this.value = "";
+       //     }
+       // });
+
+       
+
        
        // Add Color Logic
        var x = 0; //initlal text box count
