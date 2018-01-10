@@ -68,7 +68,6 @@ class SubCategoryInlines(admin.TabularInline):
 
 class CategoryModelAdmin(admin.ModelAdmin):
 	list_display = ["category_name","priority"]
-	list_display_links = ["category_name"]
 	list_filter = ['category_name']
 	inlines = [SubCategoryInlines]
 	
@@ -174,29 +173,29 @@ class Payment_methodInline(nested_admin.NestedStackedInline):
 	model = PaymentMethod
 	fields = ['case_on_delivery', 'online_payment', 'paypal', 'product', 'services']
 	extra = 1
-	can_delete = False
+	can_delete = True
 
-class ProductManagementForm(forms.ModelForm):
-	# feature = forms.CharField(widget=CKEditorWidget())
-	description = forms.CharField(widget=CKEditorWidget())
+# class ProductManagementForm(forms.ModelForm):
+# 	# feature = forms.CharField(widget=CKEditorWidget())
+# 	description = forms.CharField(widget=CKEditorWidget())
 	
-	# feature     = forms.CharField(widget=CKEditorWidget())
-	class Meta:
-		model = ProductsManagement
-		fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price",
-		          "in_stock", "product_quantity", "image", "recommended"]
+# 	# feature     = forms.CharField(widget=CKEditorWidget())
+# 	class Meta:
+# 		model = ProductsManagement
+# 		fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price",
+# 		          "in_stock", "product_quantity", "image", "recommended"]
 	
-	def __init__(self, *args, **kwargs):
-		super(ProductManagementForm, self).__init__(*args, **kwargs)
-		self.fields['vendor'].queryset = MyUser.objects.filter(is_vendor=True, is_active=True)
+# 	def __init__(self, *args, **kwargs):
+# 		super(ProductManagementForm, self).__init__(*args, **kwargs)
+# 		self.fields['vendor'].queryset = MyUser.objects.filter(is_vendor=True, is_active=True)
 
 
 class ProductModelAdmin(nested_admin.NestedModelAdmin):
-	list_display = ["title", "vendor", "category",  "subs_category", "product_images", "payment_mode","price", "expiry_date"]
-	fields = ["vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price","in_stock", "product_quantity", "image", "recommended"]
+	list_display = ("title", "vendor", "category", "subs_category", "product_images", "payment_mode","price", "expiry_date")
+	fields = ("vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price","in_stock", "product_quantity", "image", "recommended")
 	list_filter = ["updated", "description"]
 	search_fields = ["title", "description"]
-	readonly_fields = ['image']
+	readonly_fields = ('image',)
 	# inlines = [Product_colorInline]
 	# form = ProductManagementForm
 
@@ -250,22 +249,13 @@ class ProductModelAdmin(nested_admin.NestedModelAdmin):
 		return form
 	
 	def has_add_permission(self, request, obj=None):
-		if request.user.is_subadmin:
-			return False
-		else:
-			return True
+		return True
 	
 	def has_delete_permission(self, request, obj=None):
-		if request.user.is_subadmin:
-			return False
-		else:
-			return True
+		return True
 	
 	def has_change_permission(self, request, obj=None):
-		if request.user.is_subadmin:
-			return False
-		else:
-			return True
+		return True
 	
 	# def save_model(self, request, obj, form, change):
 	# 	if obj.image:

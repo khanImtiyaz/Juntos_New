@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^Juntosadmin/', admin.site.urls),
     url(r'^', include('Juntos.urls', namespace="Juntos")),
     url(r'^', include('Vendor.urls', namespace="Vendor")),
-    url(r'^nested_admin/', include('nested_admin.urls')),
+    # url(r'^nested_admin/', include('nested_admin.urls')),
     
 ]

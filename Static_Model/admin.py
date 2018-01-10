@@ -52,6 +52,7 @@ class ContactUsForm(forms.ModelForm):
     class Meta:
         model = JuntosContactUs
         fields = ["contact_user", "message"]
+        
 @admin.register(JuntosContactUs)
 class JuntosContactUsAdmin(admin.ModelAdmin):
     list_display = ["message","contact_user"]
