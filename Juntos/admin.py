@@ -145,12 +145,10 @@ class AdvertisementForm(forms.ModelForm):
     #     self.fields['subs_category'].queryset = SubCategory.objects.filter(sub_category_tag="VP")
 
 
-class AdvertisementAdmin(nested_admin.NestedModelAdmin):
+class AdvertisementAdmin(admin.ModelAdmin):
 	list_display = ["name", "email","title","description","price"]
 	inlines = [AdvertisementImageInline]
 	form = AdvertisementForm
-
-
 admin.site.register(Advertisement, AdvertisementAdmin)
 
 class ProductImageInline(admin.TabularInline):
