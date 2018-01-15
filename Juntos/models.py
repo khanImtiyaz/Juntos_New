@@ -402,8 +402,10 @@ class Advertisement(models.Model):
   price = models.FloatField(('Price'), blank=True, null=True)
   new = models.BooleanField(('Mark as new'), default=True)
   slug = AutoSlugField(populate_from='subs_category',unique=True, max_length=100)
-  updated = models.DateTimeField(auto_now=True)
+  valid_upto = models.DateField()
   created_at = models.DateTimeField(auto_now=True)
+  updated = models.DateTimeField(auto_now=True)
+
   
   def __str__(self):
     return self.title

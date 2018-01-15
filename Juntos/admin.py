@@ -138,7 +138,7 @@ class AdvertisementForm(forms.ModelForm):
     
     class Meta:
         model = Advertisement
-        fields = ["title", "type_of_services","description","price","name","email","mobile","location","recommended"]
+        fields = ["title", "type_of_services","description","price","name","email","mobile","location","recommended","valid_upto"]
 
     # def __init__(self, *args, **kwargs):
     #     super(AdvertisementForm, self).__init__(*args, **kwargs)
