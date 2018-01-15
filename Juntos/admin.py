@@ -130,7 +130,7 @@ admin.site.register(TaxPercentage)
 class AdvertisementImageInline(admin.TabularInline):
     model = AdvertisementImage
     fields = ['image']
-    extra = 1
+    extra = 0
 
 
 class AdvertisementForm(forms.ModelForm):
@@ -154,14 +154,14 @@ admin.site.register(Advertisement, AdvertisementAdmin)
 class ProductImageInline(admin.TabularInline):
 	model = ProductImage
 	fields = ['product_images', 'product_color']
-	extra = 1
+	extra = 0
 
 
 class Product_colorInline(admin.TabularInline):
 	model = ProductColor
 	fields = ['color', 'product']
 	list_editable = ["color", ]
-	extra = 1
+	extra = 0
 	inlines = [ProductImageInline]
 
 
@@ -170,7 +170,7 @@ class Payment_methodInline(nested_admin.NestedStackedInline):
 	services = forms.CharField(widget=CKEditorWidget())
 	model = PaymentMethod
 	fields = ['case_on_delivery', 'online_payment', 'paypal', 'product', 'services']
-	extra = 1
+	extra = 0
 	can_delete = True
 
 # class ProductManagementForm(forms.ModelForm):
