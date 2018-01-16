@@ -58,7 +58,7 @@ def home(request):
 		products = paginator.page(paginator.num_pages)
 	offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
 	hotItems = OrderItems.objects.filter(product__expiry_date__gt=current_date.date()).distinct('product')
-	advertiseProducts = Advertisement.objects.filter(valid_upto__lte=datetime.now().date()).order_by("-created_at")
+	advertiseProducts = Advertisement.objects.filter(valid_upto__gte=current_date.date()).order_by("-created_at")
 	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
 	return render(request,'index.html',{"all_product_list":products,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
@@ -70,7 +70,7 @@ class SearchProduct(View):
 		product = ProductsManagement.objects.filter(Q(category__category_name__icontains=params['q']) | Q(subs_category__sub_category_name__icontains=params['q']) | Q(title__icontains=params['q'])).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
 		offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
 		hotItems = OrderItems.objects.filter(product__expiry_date__gt=current_date.date()).distinct('product')
-		advertiseProducts = Advertisement.objects.filter(Q(title__icontains=params['q']),valid_upto__lte=datetime.now().date()).order_by("-created_at")
+		advertiseProducts = Advertisement.objects.filter(Q(title__icontains=params['q']),valid_upto__gte=current_date.date()).order_by("-created_at")
 		recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
 		return render(request,'index.html',{"all_product_list":product,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
 
@@ -838,7 +838,7 @@ class CancelOrderAndRefund(View):
 class Recommended(View):
 	"""docstring for Recommended"""
 	def get(self,request):
-		all_recommendeds = Advertisement.objects.filter(recommended=True,valid_upto__lte=datetime.now().date())
+		all_recommendeds = Advertisement.objects.filter(recommended=True,valid_upto__gte=datetime.now().date())
 		if all_recommendeds.exists():
 			paginator = Paginator(all_recommendeds, 12)
 			all_category=Category.objects.all()
@@ -861,7 +861,7 @@ class AdvertisementDetail(View):
 		sb_ct= SubCategory.objects.filter(sub_category_tag="VP")
 		advertisement = Advertisement.objects.get(slug=slug)
 		# total_review = advertisement.reviews_adv.all()
-		related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location,valid_upto__lte=datetime.now().date()).exclude(slug=slug)
+		related_services = Advertisement.objects.filter(type_of_services=advertisement.type_of_services,location=advertisement.location,valid_upto__gte=datetime.now().date()).exclude(slug=slug)
 		return render(request, 'detail_advertisement.html', {'ads_details':advertisement, 'related_services':related_services,'res_cat':sb_ct})
 
 

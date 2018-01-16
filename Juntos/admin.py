@@ -146,7 +146,7 @@ class AdvertisementForm(forms.ModelForm):
 
 
 class AdvertisementAdmin(admin.ModelAdmin):
-	list_display = ["name", "email","title","description","price"]
+	list_display = ["name", "email","title","description","price","valid_upto"]
 	inlines = [AdvertisementImageInline]
 	form = AdvertisementForm
 admin.site.register(Advertisement, AdvertisementAdmin)
