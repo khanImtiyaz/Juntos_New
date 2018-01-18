@@ -85,6 +85,9 @@ class MyUser(AbstractBaseUser,PermissionsMixin):
   def get_short_name(self):
     return self.email
 
+  def get_full_name(self):
+    return self.email
+
   def otp_creation(self):
     totp = pyotp.TOTP("JBSWY3DPEHPK3PXP",digits=4)
     otp = totp.now()
