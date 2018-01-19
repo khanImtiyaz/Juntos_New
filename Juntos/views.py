@@ -208,7 +208,8 @@ class FaqList(View):
 class ConditionsView(View):
 	"""docstring for ConditionsView"""
 	def get(self,request):
-		return render(request, 'conditions.html')
+		JuntosTermConditions = JuntosTermCondition.objects.all()
+		return render(request, 'conditions.html',{"lists":JuntosTermConditions})
 
 class TermsList(View):
 	"""docstring for TermsList"""

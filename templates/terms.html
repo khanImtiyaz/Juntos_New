@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<section class="term_section" style="min-height: 500px;">
+   <div class="container">
+      {% for terms in lists %}
+      <div class="heading_top">
+         <h2>{{terms.heading}}</h2>
+         <p>{{terms.content}}</p>
+      </div>
+      {% endfor %}
+   </div>
+</section>
+</body>
+</html>
+{% endblock %}
