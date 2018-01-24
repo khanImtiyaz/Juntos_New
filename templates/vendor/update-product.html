@@ -447,6 +447,7 @@
                         }
                         else if($(this).prop("checked") == false){
                            product_size.splice(product_size.indexOf($(this).val()), 1)
+                           console.log(product_size+"--"+$(this).val())
                         }
                         $("#product_size").val(product_size)
                   });
