@@ -1,5 +1,6 @@
 {% extends 'vendor/account_header.html'%} 
-{% load staticfiles %} 
+{% load staticfiles %}
+{% load natural_time %}
 {% block content %}
 <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 <div class="col-md-9">
@@ -364,7 +365,7 @@
 {% endif %}
 {% if add_form.product_size %}
 <script type="text/javascript">
-   update_product_size_selected = "{{add_form.product_size}}"
+   update_product_size_selected = "{{add_form.product_size|safeString}}"
 </script>
 {% else %}
 <script type="text/javascript">

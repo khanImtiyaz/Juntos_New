@@ -4,10 +4,16 @@ from django.utils.timezone import is_aware, utc, get_current_timezone
 from django.template import defaultfilters
 from django.db.models import Avg
 from datetime import date, datetime, timedelta
+from django.utils.safestring import mark_safe
+import json
 from Juntos.models import *
 
 register = template.Library()
 
+
+@register.filter(is_safe=True)
+def safeString(obj):
+	return mark_safe(obj)
 
 @register.filter
 def adv(value):

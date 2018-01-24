@@ -195,13 +195,19 @@ class Payment_methodInline(nested_admin.NestedStackedInline):
 
 
 class ProductModelAdmin(nested_admin.NestedModelAdmin):
-	list_display = ("title", "vendor", "category", "subs_category", "product_images", "payment_mode","price", "expiry_date")
+	list_display = ("title", "vendor", "category", "subs_category", "product_images", "payment_mode","price", "product_type", "product_size", "expiry_date")
 	fields = ("vendor", "category", "subs_category", "title", "description", "feature", "price", "selling_price","in_stock", "product_quantity", "image", "recommended")
 	list_filter = ["updated", "description"]
 	search_fields = ["title", "description"]
 	readonly_fields = ('image',)
 	# inlines = [Product_colorInline]
 	# form = ProductManagementForm
+
+	def product_type(self,obj):
+		return obj.product_type if obj.product_type else "-"
+
+	def product_size(self,obj):
+		return obj.product_size if obj.product_size else "-"
 
 	def price(self,obj):
 		return obj.selling_price if obj.selling_price else obj.price
