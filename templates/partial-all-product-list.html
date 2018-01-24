@@ -42,7 +42,7 @@
       <li class="disabled">
         <a class="paginate left">&#xab;</a>
       </li>
-      {% endif %} {% for i in all_product_list.paginator.page_range %} {% if contacts.number == i %}
+      {% endif %} {% for i in all_product_list.paginator.page_range %} {% if all_product_list.number == i %}
       <li class="active"><a>{{ i }}</a></li>
       {% else %}
       <li><a href="?page={{ i }}">{{ i }}</a></li>
