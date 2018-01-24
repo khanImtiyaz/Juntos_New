@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.views import View
 from django.contrib.auth import update_session_auth_hash 
@@ -288,7 +289,6 @@ class AddProduct(View):
 	def post(self,request):
 		image_Array = request.POST.get("muti_image_array").split(',') if request.POST.get("muti_image_array").split(',') else []
 		params = request.POST
-		print(params)
 		files = request.FILES
 		params['vendor'] = request.user.id
 		if 'product_id' in params:
