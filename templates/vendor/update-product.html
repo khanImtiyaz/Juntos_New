@@ -55,7 +55,7 @@
                                  {% for p in producttype %}
                                     <div class="form-check">
                                        <div class="form-check-label">
-                                       <input type="radio" class="form-check-input" name="product_type" value="{{p.p_type}}" id='{{p.p_type}}_RADIO'>
+                                          <input type="radio" class="form-check-input" name="product_type" value="{{p.p_type}}" id='{{p.p_type}}_RADIO' {% ifequal add_form.product_type p.p_type %}checked{% endifequal %}>
                                        {{p.p_type}}
                                        {% if s_form.errors.product_type %}
                                        <strong style="color:red">{{ s_form.errors.product_type | escape }}</strong> {% endif %}
@@ -362,6 +362,15 @@
    product_size_selected = undefined
 </script>
 {% endif %}
+{% if add_form.product_size %}
+<script type="text/javascript">
+   update_product_size_selected = "{{add_form.product_size}}"
+</script>
+{% else %}
+<script type="text/javascript">
+   update_product_size_selected = undefined
+</script>
+{% endif %}
 {% if add_form.productColor.all %}
 <script type="text/javascript">
    colorCount = '{{add_form.productColor.count}}'
@@ -420,8 +429,11 @@
                   $("#size_container").empty()
                   $("#size_container").append("<p>Please select size for your Product</p>")
                   $("#size_container").append('<input type="hidden" name="product_size" id="product_size"/>')
+                  if(update_product_size_selected){
+                     product_size_selected = update_product_size_selected
+                  }
                   for(i=0;i<e.data.length;i++){
-                     if(product_size_selected && product_size_selected.includes(e.data[i])){
+                     if((product_size_selected && product_size_selected.includes(e.data[i])) || (product_size_selected && product_size_selected.includes(e.data[i])) ){
                         $("#size_container").append(' <input type="checkbox" name="product_size_value" value="'+e.data[i]+'" checked=true/> '+ e.data[i])
                            product_size.push(e.data[i])
                      }
@@ -447,27 +459,27 @@
          });
 
        function sub_category_change(){
-            $.ajax({
-               url: "{% url 'Vendor:subcategory-tag'%}",
-               type: 'POST',
-               dataType: 'json',
-               data: {
-                   subcategory_id: $("#id_subs_category").val(),
-                   'csrfmiddlewaretoken': '{{ csrf_token }}',
-               },
-               success: function(e) {
-                   if(e.data=="CP"){
-                     $("#product_type_size").show()
-                   }else{
-                     $("#product_type_size").hide()
-                   }
-               }
-            });
-            if(product_type_selected){
-               $('input[type=radio][name=product_type]').filter('[value='+product_type_selected+']').attr('checked', true);
-               set_size_container_data(product_type_selected)
+         $.ajax({
+            url: "{% url 'Vendor:subcategory-tag'%}",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                subcategory_id: $("#id_subs_category").val(),
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+            },
+            success: function(e) {
+                if(e.data=="CP"){
+                  $("#product_type_size").show()
+                }else{
+                  $("#product_type_size").hide()
+                }
             }
+         });
+         if(product_type_selected){
+            $('input[type=radio][name=product_type]').filter('[value='+product_type_selected+']').attr('checked', true);
+            set_size_container_data(product_type_selected)
          }
+      }
        $("#id_category").on('change',function(){
          categoryChange($("#id_category").val())
        });
@@ -475,6 +487,7 @@
          sub_category_change()
        });
       categoryChange($("#id_category").val())
+      set_size_container_data($('input[type=radio][name=product_type]:checked').val())
       $("#product_quantity_id").blur(function() {
            var val = $("#product_quantity_id").val();
            if (val > 0) {
