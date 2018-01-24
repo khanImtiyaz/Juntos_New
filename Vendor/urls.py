@@ -43,5 +43,7 @@ urlpatterns = [
 	url(r'^order-invoice$', views.InvoiceOrder.as_view(), name="invoice-order"),
 	url(r'^delete-product-image$', views.DeleteProductImage.as_view(), name="delete-product-image"),
 	url(r'^upload-image$', views.UploadImage.as_view(), name="upload-image"),
+	url(r'^get-product-size$', views.GetProductSize.as_view(), name="get-product-size"),
+
 
 ]

@@ -23,6 +23,17 @@ from .choices import *
 # Register your models here.
 admin.site.register(MyUser)
 
+class AvailableSizeInline(admin.TabularInline):
+    model = AvailableSize
+    fields = ['size']
+    extra = 0
+    
+class ProductTypeAdmin(admin.ModelAdmin):
+	list_display = ["p_type",]
+	inlines = [AvailableSizeInline]
+
+admin.site.register(ProductType,ProductTypeAdmin)
+
 class BannerForm(forms.ModelForm):
 	description = forms.CharField(widget=CKEditorWidget())
 	class Meta:
@@ -45,16 +56,11 @@ admin.site.register(Banner,BannerModelAdmin)
 class SubCategoryForm(forms.ModelForm):
 	class Meta:
 		model = SubCategory
-		fields = ['sub_category_tag', 'sub_category_name', 'priority', 'sub_category_flage', 'subcategory_size',
-		          'subcategory_shoes_size', 'category']
+		fields = ['sub_category_tag', 'sub_category_name', 'priority', 'category']
 	
 	def __init__(self, *args, **kwargs):
 		super(SubCategoryForm, self).__init__(*args, **kwargs)
-		self.fields['subcategory_size'].widget = forms.CheckboxSelectMultiple(choices=SIZE,
-		                                                                      attrs={'style': 'display:initial'})
-		self.fields['subcategory_shoes_size'].widget = forms.CheckboxSelectMultiple(choices=SHOES_SIZE,
-		                                                                            attrs={'style': 'display:initial',
-		                                                                                   'label': "Shoes Size"})
+		
 class SubCategoryInlines(admin.TabularInline):
 	model = SubCategory
 	form = SubCategoryForm

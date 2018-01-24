@@ -18,6 +18,14 @@ def categoriesData(request):
 def about(request):
     content = JuntosAboutus.objects.first()
     return {"abouts":content}
+
+def productSize(request):
+    size = AvailableSize.objects.all()
+    return {"productsize":size}
+    
+def producttype(request):
+    product_type = ProductType.objects.all()
+    return {"producttype":product_type}
     
 def starRating(request):
     return {"star_rating":[1,2,3,4,5],"address_radio":["Lima(cercado)","Lince","Magdalena"]}

@@ -89,7 +89,9 @@ TEMPLATES = [
                 'Juntos.context_processors.unreadCount',
                 'Juntos.context_processors.bannerList',
                 'Juntos.context_processors.newsSection',
-                'Juntos.context_processors.taxValue'
+                'Juntos.context_processors.taxValue',
+                'Juntos.context_processors.productSize',
+                'Juntos.context_processors.producttype'
             ],
         },
     },

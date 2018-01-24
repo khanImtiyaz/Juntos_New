@@ -115,7 +115,7 @@
                            {% else %}
                            <a href="javascript:void(0);" data-toggle="modal" data-target="#size_chart" class="btn btn-info btn-xs">Size Chart</a>
                            <ul class="product-picker">
-                              {% for cloth in details.subs_category.get_subcategory_size_display|convertToList %}
+                              {% for cloth in details.product_size %}
                               <li class="radio" style="border:none;">
                                  <input type="radio" id="{{cloth}}-option" name="sizes" value="{{forloop.counter}}">
                                  <label for="{{cloth}}-option"></label>

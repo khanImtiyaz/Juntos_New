@@ -162,9 +162,6 @@ class SubCategory(models.Model):
     sub_category_tag = models.CharField(('Tag'),max_length=120,default='SP',blank=True,null=True,choices=TAG)
     sub_category_name = models.CharField(('Name'),max_length=120)
     priority = models.IntegerField(('Priority'),blank=True,null=True,default=10)
-    subcategory_size = MultiSelectField(('Size'),choices=SIZE, max_length=50, default="", null=True, blank=True)
-    subcategory_shoes_size = MultiSelectField(('Shoes Size'),choices=SHOES_SIZE, max_length=50, default="", null=True, blank=True)
-    sub_category_flage = models.CharField(('Flag'),max_length=10,blank=True, choices=FLAGE, null=True, help_text="Is Cloth or Shoes ?")
     slug = AutoSlugField(populate_from=['sub_category_name', 'sub_category_tag'],unique=True)
     ordering = ['priority']
     def __str__(self):
@@ -178,6 +175,11 @@ class SubCategory(models.Model):
              }
 
   ###It is important at this place please don't change it postition
+class ProductType(models.Model):
+  p_type = models.CharField(('Product Type'), max_length=40)
+class AvailableSize(models.Model):
+  parent = models.ForeignKey(ProductType, on_delete=models.CASCADE, related_name="size_type")
+  size = models.CharField(('Size'), max_length=5)
 
 class ProductsManagement(models.Model):
     vendor = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name="vendor_product")
@@ -188,6 +190,8 @@ class ProductsManagement(models.Model):
     description = models.TextField('Description', blank=True)
     feature = models.TextField('Features', blank=True, null=True, default="Not a feature product")
     price = models.FloatField('Price', blank=False)
+    product_type = models.CharField('Type', max_length=10,blank=True,null=True)
+    product_size = ArrayField(models.CharField('Product Size', max_length=2),blank=True,null=True)
     selling_price = models.FloatField('Selling Price', blank=True,null=True)
     product_quantity = models.IntegerField('Available Quantity',default=0)
     product_rating = models.IntegerField('Rating', default=0,blank=True,null=True)
@@ -499,3 +503,7 @@ class AdvertismentReview(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     class Meta:
         verbose_name_plural = 'Advertisement Reviews'
+
+
+
+

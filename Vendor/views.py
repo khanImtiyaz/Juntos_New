@@ -288,6 +288,7 @@ class AddProduct(View):
 	def post(self,request):
 		image_Array = request.POST.get("muti_image_array").split(',') if request.POST.get("muti_image_array").split(',') else []
 		params = request.POST
+		print(params)
 		files = request.FILES
 		params['vendor'] = request.user.id
 		if 'product_id' in params:
@@ -302,18 +303,11 @@ class AddProduct(View):
 			product.is_active = True
 			product.image = image_Array
 			product.save()
-			# if "image" in files:
-			# 	for img in files.getlist('image'):
-			# 		upresult = upload(img)
-			# 		image_Array.append(upresult['url'])
-			# 	product.image = image_Array
-			# 	product.save()
 			if request.POST.get('total_color',None):
 				totalColor = int(request.POST.get('total_color',None))
 				while totalColor >= 1:
 					if "product-colors-{}-color".format(totalColor) in params:
 						for x in range(1, len(request.FILES)):
-							print("fdfdsfdsfdsfdsfdsfsfsd")
 							if 'product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x) in request.FILES:
 								color = ProductColor.objects.get_or_create(color=params['product-colors-{}-color'.format(totalColor)],product=product)
 								print("Color",color)
@@ -323,17 +317,9 @@ class AddProduct(View):
 									uploaedimg = upload(img)
 									ProductImage.objects.get_or_create(product_images=uploaedimg['url'],product_color=color[0])
 					totalColor = totalColor-1
-			messages.success(request, 'Product added successfully')
+			messages.success(request, 'Product {} successfully'.format("updated" if 'product_id' in params else "added"))
 			return redirect("Vendor:product-list", 1)
 		else:
-			# image_Array = []
-			# mime = None
-			# if "image" in files:
-			# 	for img in files.getlist('image'):
-			# 		data = img.read()
-			# 		encoded = b64encode(data)
-			# 		mime = img.content_type + ";" if img.content_type else ";"
-			# 		image_Array.append("data:%sbase64,%s" % (mime, str(encoded,'utf-8')))
 			return render(request, 'vendor/add-new-product.html',{"add_form":form,"image":request.POST.get("muti_image_array").split(',')})
 
 
@@ -343,7 +329,7 @@ class UpdateProduct(View):
 		user = request.user
 		try:
 			product = ProductsManagement.objects.get(vendor=user,slug=slug)
-			return render(request, 'vendor/update-product.html',{'edit_form':product})
+			return render(request, 'vendor/update-product.html',{'add_form':product})
 		except Exception as e:
 			print("Exception--------",e)
 			messages.error(request, "Product may not exists or wrong url typed !")
@@ -503,6 +489,17 @@ class GetSubCategoryTag(View):
 		subcategory = params['subcategory_id']
 		data = SubCategory.objects.get(id=subcategory)
 		datas = json.dumps({"data": data.sub_category_tag})
+		return HttpResponse(datas, content_type='application/json')
+
+
+class GetProductSize(View):
+	"""docstring for GetProductSize"""
+	def post(self,request):
+		params = request.POST
+		parent = params['value']
+		data = AvailableSize.objects.filter(parent__p_type=parent)
+		dictionaries = [ obj.size for obj in data ]
+		datas = json.dumps({"data": dictionaries})
 		return HttpResponse(datas, content_type='application/json')
 
 class ProfileView(View):

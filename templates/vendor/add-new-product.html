@@ -2,6 +2,7 @@
 {% load staticfiles %}
 {% block content %}
 <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+<script type="text/javascript">multiple_Image_Array = []</script>
 <div class="col-md-9">
    <div class="profile-content">
       <div class="panel panel-info">
@@ -48,6 +49,28 @@
                               {% endif %}
                            </div>
                         </div>
+                        <div class="form-group" id="product_type_size">
+                           <label class="control-label col-sm-3">Type of Product</label>
+                           <div class="col-sm-9">
+                              <div class="row">
+                                 <div class="col-sm-6">
+                                 {% for p in producttype %}
+                                    <div class="form-check">
+                                       <div class="form-check-label">
+                                       <input type="radio" class="form-check-input" name="product_type" value="{{p.p_type}}" id='{{p.p_type}}_RADIO'>
+                                       {{p.p_type}}
+                                       {% if s_form.errors.product_type %}
+                                       <strong style="color:red">{{ s_form.errors.product_type | escape }}</strong> {% endif %}
+                                       </div>
+                                    </div>
+                                 {% endfor %}
+                                 </div>
+                                 <div class="col-sm-6" id="size_container">
+                                    
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
                         <div class="form-group">
                            <label class="control-label col-sm-3">Precio ($) ☀️</label>
                            <div class="col-sm-9">
@@ -72,219 +95,302 @@
                               <div id="image_preview"><img src="{% static 'img/no-image.jpg'%}"></div>
                               {% if image %}
                               <div class="row" id='product_image' name='product_image' style="margin-top: 10px">
-                              {% for img in image %}
+                                 {% for img in image %}
                                  <div class="col-sm-2" id="remove_photo_"{{img.count}}>
-                                    <div>
-                                       <img src="{{img}}" style="width: 100%">
-                                    </div>
+                                 <div>
+                                    <img src="{{img}}" style="width: 100%">
                                  </div>
-                                 <script type="text/javascript">
-                                    multiple_Image_Array.push({{img}})
-                                    $("#muti_image_array").val(multiple_Image_Array)
-                                 </script>
+                              </div>
+                              <script type="text/javascript">
+                                 multiple_Image_Array.push({{img}})
+                                 $("#muti_image_array").val(multiple_Image_Array)
+                              </script>
                               {% endfor %}
-                              </div>
-                              {% else %}
-                              <div class="row" id='product_image' name='product_image' style="margin-top: 10px"></div>
-                              {% endif %}
-                              <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
-                              <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
-                              <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png">
-                              {% if add_form.errors.image %}
-                              <strong style="color:red">{{ add_form.errors.image|escape }}</strong>
-                              {% endif %}
                            </div>
-                        </div>
-                        <input type="hidden" name="muti_image_array" id="muti_image_array">
-                        <div class="form-group">
-                           <label class="control-label col-sm-3" >Aseguranza</label>
-                           <div class="col-sm-9">
-                              <input type="text" class="form-control" name="insured_amount"  placeholder="Ingrese cantidad asegurada" maxlength="16" id="insured_amount" value="{{add_form.insured_amount.value}}">
-                              {% if add_form.errors.insured_amount %}
-                              <strong style="color:red">{{ add_form.errors.insured_amount|escape }}</strong>
-                              {% endif %}
-                           </div>
-                        </div>
-                        <div class="row">
-                           <div class="col-md-3">
-                              <label class="control-label">Peso</label>
-                              <div class="form-group">
-                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_weight"  placeholder="Ingrese el peso del producto" maxlength="16" id="product_weight" value="{{add_form.product_weight.value}}">
-                                    {% if add_form.errors.product_weight %}
-                                    <strong style="color:red">{{ add_form.errors.product_weight|escape }}</strong>
-                                    {% endif %}
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-md-3">
-                              <label class="control-label">Altura</label>
-                              <div class="form-group">
-                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_height"  placeholder="Ingrese la altura del producto" maxlength="50" value="{{add_form.product_height.value}}">
-                                    {% if add_form.errors.product_height %}
-                                    <strong style="color:red">{{ add_form.errors.product_height|escape }}</strong>
-                                    {% endif %}
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-md-3">
-                              <label class="control-label">Fondo</label>
-                              <div class="form-group">
-                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_depth" id="state"  placeholder="Ingrese la profundidad del producto" maxlength="50" value="{{add_form.product_depth.value}}">
-                                    {% if add_form.errors.product_depth %}
-                                    <strong style="color:red">{{ add_form.errors.product_depth|escape }}</strong>
-                                    {% endif %}
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="col-md-3">
-                              <label class="control-label">Ancho</label>
-                              <div class="form-group">
-                                 <div class="col-sm-12">
-                                    <input type="text" class="form-control" name="product_width" id="country"  placeholder="Ingrese el ancho del producto" maxlength="50" value="{{add_form.product_width.value}}">
-                                    {% if add_form.errors.product_width %}
-                                    <strong style="color:red">{{ add_form.errors.product_depth|escape }}</strong>
-                                    {% endif %}
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="row" style="padding: 0px 15px">
-                           <div class="col-sm-6">
-                              <div class="form-group" style="padding-right:5px">
-                                 <label class="control-label" style="padding-bottom: 5px">Descripción ☀️</label>
-                                 <textarea class="form-control" placeholder="Include the Brand, Model, Age and other details.." name="description" value="{{add_form.description|safe}}"></textarea>
-                                 {% if add_form.errors.description %}
-                                 <strong style="color:red">{{add_form.errors.description|escape}}</strong>
-                                 {% endif %}
-                              </div>
-                           </div>
-                           <div class="col-sm-6">
-                              <div class="form-group" id="id_feature" style="padding-left:5px">
-                                 <label class="control-label" style="padding-bottom: 5px">Detalles</label>
-                                 <textarea class="form-control" placeholder="Includa descripción de detalles.." name="feature" value="{{add_form.feature}}"></textarea>
-                                 {% if add_form.errors.feature %}
-                                 <strong style="color:red">{{add_form.errors.feature|escape}}</strong>
-                                 {% endif %}
-                              </div>
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <label class="control-label col-sm-3" for="id_in_stock">Disponible☀️</label>
-                           <div class="col-sm-1">
-                              <input id="id_in_stock" checked="checked" name="in_stock" type="checkbox">
-                              {% if add_form.errors.in_stock %}
-                              <strong style="color:red">{{ add_form.errors.in_stock|escape }}</strong>
-                              {% endif %}
-                           </div>
-                           <div class="col-sm-8">
-                              <input type="text" class="form-control" name="product_quantity" id="product_quantity_id" placeholder="Cantidad disponible" value="{{add_form.product_quantity.value}}" />
-                              {% if add_form.errors.product_quantity %}
-                              <strong style="color:red">{{ add_form.errors.product_quantity|escape }}</strong>
-                              {% endif %}
-                           </div>
-                        </div>
-                        <h4 class="heading_info">Product Payment Method Details</h4>
-                        <div class="form-group">
-                           <div class="row" style="padding: 0px 15px">
-                              <div class="col-md-3">
-                                 <div class="form-group">
-                                    <label class="control-label col-sm-8">Todas</label>
-                                    <div class="col-sm-4">
-                                       <input  name="all" type="checkbox" id='all_payment'>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-md-3">
-                                 <div class="form-group">
-                                    <label class="control-label col-sm-8">Contra reembolso</label>
-                                    <div class="col-sm-4">
-                                       <input  name="payment_method_case_on_delivery" id='payment_method_case_on_delivery' type="checkbox">
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-md-3">
-                                 <div class="form-group">
-                                    <label class="control-label col-sm-8">Pago en línea</label>
-                                    <div class="col-sm-4">
-                                       <input  name="payment_method_online_payment" id='payment_method_online_payment'  type="checkbox">
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="col-md-3">
-                                 <div class="form-group">
-                                    <label class="control-label col-sm-8">Paypal</label>
-                                    <div class="col-sm-4">
-                                       <input  name="payment_method_paypal" id='payment_method_paypal'  type="checkbox">
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           {% if add_form.errors.payment_mode %}
-                              <strong style="color:red">{{ add_form.errors.payment_mode | escape }}</strong>
+                           {% else %}
+                           <div class="row" id='product_image' name='product_image' style="margin-top: 10px"></div>
+                           {% endif %}
+                           <span class="glyphicon glyphicon-folder-open" style="margin-top: 10px"></span>
+                           <span class="file-preview-input-title" style="margin-top: 10px">Agregar imagen del producto</span>
+                           <input type="file" name="image" id="image" accept=".jpg, .jpeg, .png"/>
+                           {% if add_form.errors.image %}
+                           <strong style="color:red">{{ add_form.errors.image|escape }}</strong>
                            {% endif %}
                         </div>
-                        <div class="form-group" style="display:none;">
-                           <input type="text" class="form-control" name="payment_mode" id='payment_mode'>
-                        </div>
-                        <div class="form-group">
-                           <label class="control-label col-sm-2">Servicios ☀️</label>
-                           <div class="col-sm-10">
-                              <textarea class="form-control" placeholder="Include Services.. " name="services" value="{{add_form.services|safe}}"></textarea>
-                              {% if add_form.errors.services %}
-                                 <strong style="color:red">{{ add_form.errors.services|escape}}</strong>
-                              {% endif %}
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <div class="col-sm-12 input_fields_wrap">
-                           </div>
-                        </div>
-                     </fieldset>
-                     <input type="hidden" name="total_color" id="id_total_color">
-                     <input type="hidden" id="id_total_color_images">
-                     <span id="sub_tag" style="display:none;"></span>
-                     <div class="form-group edit-sec-btn">
-                        <div class="col-md-6" style="margin-top: 10px !important">
-                           <button class="btn btn-custom pull-right add_field_button" type="button"  style="float: left !important;">Añadir color <i class="fa fa-plus" aria-hidden="true"></i></button>
-                        </div>
-                        <div class="col-md-6" style="margin-top: 10px !important">
-                           <input type="submit" class="btn btn-success pull-right" value="✅ Enviar" id="submit_form">
-                        </div>
-                     </div>
-                  </form>
                </div>
+               <input type="hidden" name="muti_image_array" id="muti_image_array"/>
+               <div class="form-group">
+               <label class="control-label col-sm-3" >Aseguranza</label>
+               <div class="col-sm-9">
+               <input type="text" class="form-control" name="insured_amount"  placeholder="Ingrese cantidad asegurada" maxlength="16" id="insured_amount" value="{{add_form.insured_amount.value}}">
+               {% if add_form.errors.insured_amount %}
+               <strong style="color:red">{{ add_form.errors.insured_amount|escape }}</strong>
+               {% endif %}
+               </div>
+               </div>
+               <div class="row">
+               <div class="col-md-3">
+               <label class="control-label">Peso</label>
+               <div class="form-group">
+               <div class="col-sm-12">
+               <input type="text" class="form-control" name="product_weight"  placeholder="Ingrese el peso del producto" maxlength="16" id="product_weight" value="{{add_form.product_weight.value}}">
+               {% if add_form.errors.product_weight %}
+               <strong style="color:red">{{ add_form.errors.product_weight|escape }}</strong>
+               {% endif %}
+               </div>
+               </div>
+               </div>
+               <div class="col-md-3">
+               <label class="control-label">Altura</label>
+               <div class="form-group">
+               <div class="col-sm-12">
+               <input type="text" class="form-control" name="product_height"  placeholder="Ingrese la altura del producto" maxlength="50" value="{{add_form.product_height.value}}">
+               {% if add_form.errors.product_height %}
+               <strong style="color:red">{{ add_form.errors.product_height|escape }}</strong>
+               {% endif %}
+               </div>
+               </div>
+               </div>
+               <div class="col-md-3">
+               <label class="control-label">Fondo</label>
+               <div class="form-group">
+               <div class="col-sm-12">
+               <input type="text" class="form-control" name="product_depth" id="state"  placeholder="Ingrese la profundidad del producto" maxlength="50" value="{{add_form.product_depth.value}}">
+               {% if add_form.errors.product_depth %}
+               <strong style="color:red">{{ add_form.errors.product_depth|escape }}</strong>
+               {% endif %}
+               </div>
+               </div>
+               </div>
+               <div class="col-md-3">
+               <label class="control-label">Ancho</label>
+               <div class="form-group">
+               <div class="col-sm-12">
+               <input type="text" class="form-control" name="product_width" id="country"  placeholder="Ingrese el ancho del producto" maxlength="50" value="{{add_form.product_width.value}}">
+               {% if add_form.errors.product_width %}
+               <strong style="color:red">{{ add_form.errors.product_depth|escape }}</strong>
+               {% endif %}
+               </div>
+               </div>
+               </div>
+               </div>
+               <div class="row" style="padding: 0px 15px">
+               <div class="col-sm-6">
+               <div class="form-group" style="padding-right:5px">
+               <label class="control-label" style="padding-bottom: 5px">Descripción ☀️</label>
+               <textarea class="form-control" placeholder="Include the Brand, Model, Age and other details.." name="description" value="{{add_form.description|safe}}"></textarea>
+               {% if add_form.errors.description %}
+               <strong style="color:red">{{add_form.errors.description|escape}}</strong>
+               {% endif %}
+               </div>
+               </div>
+               <div class="col-sm-6">
+               <div class="form-group" id="id_feature" style="padding-left:5px">
+               <label class="control-label" style="padding-bottom: 5px">Detalles</label>
+               <textarea class="form-control" placeholder="Includa descripción de detalles.." name="feature" value="{{add_form.feature}}"></textarea>
+               {% if add_form.errors.feature %}
+               <strong style="color:red">{{add_form.errors.feature|escape}}</strong>
+               {% endif %}
+               </div>
+               </div>
+               </div>
+               <div class="form-group">
+               <label class="control-label col-sm-3" for="id_in_stock">Disponible☀️</label>
+               <div class="col-sm-1">
+               <input id="id_in_stock" checked="checked" name="in_stock" type="checkbox">
+               {% if add_form.errors.in_stock %}
+               <strong style="color:red">{{ add_form.errors.in_stock|escape }}</strong>
+               {% endif %}
+               </div>
+               <div class="col-sm-8">
+               <input type="text" class="form-control" name="product_quantity" id="product_quantity_id" placeholder="Cantidad disponible" value="{{add_form.product_quantity.value}}" />
+               {% if add_form.errors.product_quantity %}
+               <strong style="color:red">{{ add_form.errors.product_quantity|escape }}</strong>
+               {% endif %}
+               </div>
+               </div>
+               <h4 class="heading_info">Product Payment Method Details</h4>
+               <div class="form-group">
+               <div class="row" style="padding: 0px 15px">
+               <div class="col-md-3">
+               <div class="form-group">
+               <label class="control-label col-sm-8">Todas</label>
+               <div class="col-sm-4">
+               <input  name="all" type="checkbox" id='all_payment'>
+               </div>
+               </div>
+               </div>
+               <div class="col-md-3">
+               <div class="form-group">
+               <label class="control-label col-sm-8">Contra reembolso</label>
+               <div class="col-sm-4">
+               <input  name="payment_method_case_on_delivery" id='payment_method_case_on_delivery' type="checkbox">
+               </div>
+               </div>
+               </div>
+               <div class="col-md-3">
+               <div class="form-group">
+               <label class="control-label col-sm-8">Pago en línea</label>
+               <div class="col-sm-4">
+               <input  name="payment_method_online_payment" id='payment_method_online_payment'  type="checkbox">
+               </div>
+               </div>
+               </div>
+               <div class="col-md-3">
+               <div class="form-group">
+               <label class="control-label col-sm-8">Paypal</label>
+               <div class="col-sm-4">
+               <input  name="payment_method_paypal" id='payment_method_paypal'  type="checkbox">
+               </div>
+               </div>
+               </div>
+               </div>
+               {% if add_form.errors.payment_mode %}
+               <strong style="color:red">{{ add_form.errors.payment_mode | escape }}</strong>
+               {% endif %}
+               </div>
+               <div class="form-group" style="display:none;">
+               <input type="text" class="form-control" name="payment_mode" id='payment_mode'>
+               </div>
+               <div class="form-group">
+               <label class="control-label col-sm-2">Servicios ☀️</label>
+               <div class="col-sm-10">
+               <textarea class="form-control" placeholder="Include Services.. " name="services" value="{{add_form.services|safe}}"></textarea>
+               {% if add_form.errors.services %}
+               <strong style="color:red">{{ add_form.errors.services|escape}}</strong>
+               {% endif %}
+               </div>
+               </div>
+               <div class="form-group">
+               <div class="col-sm-12 input_fields_wrap">
+               </div>
+               </div>
+               </fieldset>
+               <input type="hidden" name="total_color" id="id_total_color">
+               <input type="hidden" id="id_total_color_images">
+               <span id="sub_tag" style="display:none;"></span>
+               <div class="form-group edit-sec-btn">
+               <div class="col-md-6" style="margin-top: 10px !important">
+               <button class="btn btn-custom pull-right add_field_button" type="button"  style="float: left !important;">Añadir color <i class="fa fa-plus" aria-hidden="true"></i></button>
+               </div>
+               <div class="col-md-6" style="margin-top: 10px !important">
+               <input type="submit" class="btn btn-success pull-right" value="✅ Enviar" id="submit_form">
+               </div>
+               </div>
+               </form>
             </div>
          </div>
       </div>
    </div>
 </div>
+</div>
 {% if add_form.category.value %}
-   <script type="text/javascript">
-      $("#id_category").val({{add_form.category.value}})
-   </script>
+<script type="text/javascript">
+   $("#id_category").val({{add_form.category.value}})
+</script>
 {% endif %}
 {% if add_form.subs_category.value %}
-   <script type="text/javascript">
-      sub_cate_selected = "{{add_form.subs_category.value}}"
-   </script>
+<script type="text/javascript">
+   sub_cate_selected = "{{add_form.subs_category.value}}"
+</script>
+{% endif %}
+{% if add_form.product_type.value %}
+<script type="text/javascript">
+   product_type_selected = "{{add_form.product_type.value}}"
+</script>
+{% else %}
+<script type="text/javascript">
+   product_type_selected = undefined
+</script>
+{% endif %}
+{% if add_form.product_size.value %}
+<script type="text/javascript">
+   product_size_selected = "{{add_form.product_size.value}}"
+</script>
+{% else %}
+<script type="text/javascript">
+   product_size_selected = undefined
+</script>
 {% endif %}
 {% if add_form.payment_mode.value %}
-   <script type="text/javascript">
-         payment_mode_value = '{{add_form.payment_mode.value}}'
-   </script>
+<script type="text/javascript">
+   payment_mode_value = '{{add_form.payment_mode.value}}'
+</script>
 {% else %}
-   <script type="text/javascript">
-         payment_mode_value = undefined
-   </script>
+<script type="text/javascript">
+   payment_mode_value = undefined
+</script>
 {% endif %}
-
 <script>
    $(document).ready(function() {
-         // Category Select Logic
-            
+         $("#product_type_size").hide()
+         function sub_category_change(){
+            $.ajax({
+               url: "{% url 'Vendor:subcategory-tag'%}",
+               type: 'POST',
+               dataType: 'json',
+               data: {
+                   subcategory_id: $("#id_subs_category").val(),
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+               },
+               success: function(e) {
+                   if(e.data=="CP"){
+                     $("#product_type_size").show()
+                   }else{
+                     $("#product_type_size").hide()
+                   }
+               }
+            });
+            if(product_type_selected){
+               $('input[type=radio][name=product_type]').filter('[value='+product_type_selected+']').attr('checked', true);
+               set_size_container_data(product_type_selected)
+            }
+         }
+
+         function set_size_container_data(value){
+            $.ajax({
+               url: "{% url 'Vendor:get-product-size'%}",
+               type: 'POST',
+               dataType: 'json',
+               data: {
+                   value: value,
+                   'csrfmiddlewaretoken': '{{ csrf_token }}',
+               },
+               success: function(e) {
+                  product_size = []
+                  $("#size_container").empty()
+                  $("#size_container").append("<p>Please select size for your Product</p>")
+                  $("#size_container").append('<input type="hidden" name="product_size" id="product_size"/>')
+                  for(i=0;i<e.data.length;i++){
+                     if(product_size_selected && product_size_selected.includes(e.data[i])){
+                        $("#size_container").append(' <input type="checkbox" name="product_size_value" value="'+e.data[i]+'" checked=true/> '+ e.data[i])
+                           product_size.push(e.data[i])
+                     }
+                     else{
+                        $("#size_container").append(' <input type="checkbox" name="product_size_value" value="'+e.data[i]+'"/> '+ e.data[i])
+                     }
+                  }
+                  $('input[type=checkbox][name=product_size_value]').on('change',function () {
+                        if($(this).prop("checked") == true){
+                           product_size.push($(this).val())
+                        }
+                        else if($(this).prop("checked") == false){
+                           product_size.splice(product_size.indexOf($(this).val()), 1)
+                        }
+                        $("#product_size").val(product_size)
+                  });
+               }
+            });
+         }
+
+         $('input[type=radio][name=product_type]').on('change',function () {
+               set_size_container_data($(this).val())
+         });
+
+
+
+         
+
          function category_change(){
             $.ajax({
                url: "{% url 'Vendor:subcategories'%}",
@@ -303,15 +409,23 @@
                    $("#id_subs_category").empty().append(str1 + str);
                    if(sub_cate_selected){
                      $("#id_subs_category").val(sub_cate_selected)
+                     sub_category_change();
                   }
                }
             });
          }
+   
+         
+
+         
+
+        
+   
          $("#menu-content li:eq(4)").attr('class','active')
          if($("#id_category").val()){
             category_change();
          }
-
+   
          // Payment Moethod Select Logic
          if(payment_mode_value){
             if(payment_mode_value.indexOf('COD')!=-1)
@@ -354,7 +468,7 @@
                $("#payment_method_paypal").prop("checked", false)
           }
        })
-
+   
        function all_select(){
          if($("#payment_method_case_on_delivery").is(":checked") && $("#payment_method_online_payment").is(":checked") && $("#payment_method_paypal").is(":checked")){
                $("#payment_mode").val(['COD','Online','Paypal'])
@@ -386,13 +500,15 @@
          sub_cate_selected = undefined
          category_change();
       })
-
+      $("#id_subs_category").on('change',function(){
+         sub_category_change();
+      })
+   
       // Multiple Photo Add Logic
        removePhoto =function(index){
             alert(index)
         }
-         multiple_Image_Array = []
-         $("#muti_image_array").val(multiple_Image_Array)
+       $("#muti_image_array").val(multiple_Image_Array)
        $("#image").on('change', function() {
            var countFiles = $(this)[0].files.length;
            var imgPath = $(this)[0].value;
@@ -438,47 +554,7 @@
                });
                this.value = "";
            }
-       });
-
-
-       // $("#image").on('change', function() {
-       //     var countFiles = $(this)[0].files.length;
-       //     var imgPath = $(this)[0].value;
-       //     var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
-       //     var image_holder = $("#image_preview");
-       //      // $("#product_image").empty()
-       //      multiple_Image_Array = []
-       //     if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
-       //         if (typeof(FileReader) != "undefined") {
-       //             for (var i = 0; i < countFiles; i++) {
-       //                 var reader = new FileReader();
-       //                 reader.onload = function(e) {
-       //                     image_holder.empty();
-       //                     $("<img />", {
-       //                         "src": e.target.result,
-       //                         "class": "thumb-image"
-       //                     }).appendTo(image_holder);
-       //                     multiple_Image_Array.push(e.target.result)
-       //                     $("#product_image").append('<div class="col-sm-2" id="remove_photo_business_'+(--countFiles)+'"><div><i class="fa fa-times" aria-hidden="true" style="color:black;float:right;display:none;"></i><img src="'+e.target.result+'"%}" style="width: 100%;padding-top:20px;"></div></div>')
-       //                  }
-       //                 image_holder.show();
-       //                 reader.readAsDataURL($(this)[0].files[i]);
-       //             }
-       //         } else {
-       //             alert("This browser does not support FileReader.");
-       //         }
-       //     } else {
-       //         Lobibox.alert('error', {
-       //             sound: false,
-       //             msg: 'Favor de subir imagen válida.'
-       //         });
-       //         this.value = "";
-       //     }
-       // });
-
-       
-
-       
+       });       
        // Add Color Logic
        var x = 0; //initlal text box count
        $(".add_field_button").click(function(e) { //on add input button click
@@ -510,8 +586,8 @@
                });
            }
        });
-
-
+   
+   
        $(".input_fields_wrap").on("click", ".remove_color_field", function(e) { //user click on remove text
                e.preventDefault();
                $(this).parent('div').remove();
@@ -521,8 +597,8 @@
                });
                $("#id_total_color").val(x - 1);
            })
-
-
+   
+   
        var y = 0;
        $(".input_fields_wrap").on("click", ".add_color_image", function(e) { 
            e.preventDefault();
@@ -537,16 +613,16 @@
            }
            $("#id_total_color_images").val(y);
        });
-
-
+   
+   
        $(".input_fields_wrap").on("click", ".remove_color_field1", function(e) { //user click on remove text
            e.preventDefault();
            $(this).parent('div').remove();
            y--;
            $("#id_total_color_images").val(y - 1);
        });
-
-
+   
+   
        $('#product_form').submit(function(e) {
            if ($("#sub_tag").text() == "CP") {
                color_counter = $("#id_total_color").val();
