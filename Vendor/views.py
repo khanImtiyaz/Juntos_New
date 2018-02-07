@@ -287,7 +287,7 @@ class AddProduct(View):
 	def get(self,request):
 		return render(request, 'vendor/add-new-product.html')
 	def post(self,request):
-		image_Array = request.POST.get("muti_image_array").split(',') if request.POST.get("muti_image_array").split(',') else []
+		image_Array = list(request.POST.get("muti_image_array"))
 		print("Image",image_Array)
 		params = request.POST
 		files = request.FILES
@@ -304,10 +304,10 @@ class AddProduct(View):
 			product = form.save()
 			product.expiryDate()
 			product.is_active = True
-			for i in image_Array:
-				print("cfdff",i)
-				if i == '' or i == None:
-					image_Array.remove(i)
+			# for i in image_Array:
+			# 	print("cfdff",i)
+			# 	if i == '' or i == None:
+			# 		image_Array.remove(i)
 			print(image_Array)
 			product.image = image_Array
 			product.save()
@@ -315,7 +315,7 @@ class AddProduct(View):
 				totalColor = int(request.POST.get('total_color',None))
 				while totalColor >= 1:
 					if "product-colors-{}-color".format(totalColor) in params:
-						for x in range(1, len(request.FILES)):
+						for x in range(0, len(request.FILES)+1):
 							if 'product-colors-{}-product-color-images-{}-product-images'.format(totalColor,x) in request.FILES:
 								color = ProductColor.objects.get_or_create(color=params['product-colors-{}-color'.format(totalColor)],product=product)
 								print("Color",color)
@@ -588,13 +588,15 @@ class RemoveNotification(View):
 			
 class DeleteColors(View):
 	"""docstring for DeleteColors"""
-	def get(self,request):
+	def post(self,request):
 		params = request.POST
 		try:
-			Product_color.objects.get(id=params['id']).delete()
+			ProductColor.objects.get(id=params['id']).delete()
 			return HttpResponse({"status":200,"message": "Successfully Deleted"}, content_type='application/json')
-		except:
+		except Exception as e:
+			print("Exception is ------",e)
 			return HttpResponse({"status":500,"message": "Not Deleted Successfully"}, content_type='application/json')
+
 
 
 @login_required(login_url="/")
