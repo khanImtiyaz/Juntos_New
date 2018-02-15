@@ -287,7 +287,7 @@ class AddProduct(View):
 	def get(self,request):
 		return render(request, 'vendor/add-new-product.html')
 	def post(self,request):
-		image_Array = list(request.POST.get("muti_image_array"))
+		image_Array = (request.POST.get("muti_image_array")).split()
 		print("Image",image_Array)
 		params = request.POST
 		files = request.FILES
@@ -304,10 +304,10 @@ class AddProduct(View):
 			product = form.save()
 			product.expiryDate()
 			product.is_active = True
-			# for i in image_Array:
-			# 	print("cfdff",i)
-			# 	if i == '' or i == None:
-			# 		image_Array.remove(i)
+			for i in image_Array:
+				print("cfdff",i)
+				if i == '' or i == None:
+					image_Array.remove(i)
 			print(image_Array)
 			product.image = image_Array
 			product.save()

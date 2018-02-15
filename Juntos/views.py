@@ -45,21 +45,40 @@ def bad_request(request):
 	return response
 
 def home(request):
-	current_date = datetime.now()
-	product = ProductsManagement.objects.all().exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
-	paginator = Paginator(product, 15)
-	page = request.GET.get('page')
-	try:
-		products = paginator.page(page)
-	except PageNotAnInteger:
-		products = paginator.page(1)
-	except EmptyPage:
-		products = paginator.page(paginator.num_pages)
-	offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
-	hotItems = OrderItems.objects.filter(product__expiry_date__gt=current_date.date()).exclude(product__is_active=False).distinct('product')
-	advertiseProducts = Advertisement.objects.filter(valid_upto__gte=current_date.date()).order_by("-created_at")
-	recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
-	return render(request,'index.html',{"all_product_list":products,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
+        current_date = datetime.now()
+        product = ProductsManagement.objects.all().exclude(Q(expiry_date__lte=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False) | Q(recommended=True)).order_by('-created_at')
+        delete_product=Cart.objects.filter(product__expiry_date__lte=datetime.now())
+        for i in delete_product:
+                i.delete()
+                remove_user_order_confirmation(product)
+        paginator = Paginator(product, 15)
+        page = request.GET.get('page')
+        try:
+                products = paginator.page(page)
+        except PageNotAnInteger:
+                products = paginator.page(1)
+        except EmptyPage:
+                products = paginator.page(paginator.num_pages)
+        offers = Offer.objects.filter(offer_end_date_time__gte=current_date.date())
+        hotItems = OrderItems.objects.filter(product__expiry_date__gt=current_date.date()).exclude(product__is_active=False).distinct('product')
+        advertiseProducts = Advertisement.objects.filter(valid_upto__gte=current_date.date()).order_by("-created_at")
+        recommendedProduct = ProductsManagement.objects.filter(recommended=True).exclude(Q(expiry_date__lt=datetime.now()) | Q(expiry_date__isnull=True) | Q(product_quantity=0) | Q(is_active=False))
+        return render(request,'index.html',{"all_product_list":products,"offers":offers,"hot_items":hotItems,"advertisements":advertiseProducts,"recomended_product":recommendedProduct})
+
+
+def remove_user_order_confirmation(product):
+        recipient_list=[product[0].vendor.email]
+        print("recipient_list",recipient_list)
+        send_templated_mail(
+                template_name='remove_order',
+                from_email=settings.EMAIL_HOST_USER,
+                auth_user=settings.EMAIL_HOST_USER,
+                auth_password=settings.EMAIL_HOST_PASSWORD,
+                recipient_list=[product[0].vendor.email],
+                context={
+                        "obj":product
+        }
+        )
 
 class SearchProduct(View):
 	"""docstring for SearchProduct"""
