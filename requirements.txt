@@ -75,7 +75,7 @@ social-auth-core==1.4.0
 suds-jurko==0.6
 twilio==6.5.0
 Unidecode==0.4.21
-urllib3==1.22
+urllib3==1.26.5
 webencodings==0.5.1
 whitenoise==3.3.0
 wrapt==1.10.11
