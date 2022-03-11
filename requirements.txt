@@ -47,7 +47,7 @@ oauthlib==2.0.2
 olefile==0.44
 pbr==3.1.1
 phonenumberslite==8.7.1
-Pillow==4.2.1
+Pillow==9.0.1
 psycopg2==2.7.3
 pusher==1.7.2
 pyasn1==0.3.1
