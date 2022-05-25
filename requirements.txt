@@ -52,7 +52,7 @@ psycopg2==2.7.3
 pusher==1.7.2
 pyasn1==0.3.1
 pycparser==2.18
-PyJWT==1.5.0
+PyJWT==2.4.0
 pylint==1.7.4
 pyOpenSSL==17.2.0
 pyotp==2.2.6
